@@ -19,6 +19,10 @@
                             (Note: * indicates required fields)
                         </p>
                     </div>
+                    <div layout="column">
+                        Excel Files:
+                        {{$ctrl.excel_files}}
+                    </div>
                     <form layout="column" class="dialog-form">
                         <md-input-container md-no-float>
                             <label>Experiment Name</label>
@@ -32,7 +36,7 @@
                             <label>Excel file for ETL</label>
                             <md-select ng-required="true" ng-model="$ctrl.excelFile">
                                 <md-option ng-value="choice"
-                                           ng-repeat="choice in $ctrl.excelFiles">
+                                           ng-repeat="choice in $ctrl.excel_files">
                                     {{::choice}}
                                 </md-option>
                             </md-select>
@@ -141,7 +145,7 @@
     <md-dialog-actions  ng-if="$ctrl.currentTab == 0" layout="row">
         <md-button class="md-primary"
                    ng-disabled="!$ctrl.project_upload_ok()"
-                   ng-click="$ctrl.uploadDirect()">Run ETL</md-button>
+                   ng-click="$ctrl.etlInProject()">Run ETL</md-button>
         <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
     </md-dialog-actions>
     <md-dialog-actions  ng-if="$ctrl.currentTab == 1" layout="row">

@@ -24,6 +24,8 @@ class MCProjectHomeComponentController {
         this.etlStatusAvailable = false;
         this.etlInProgress = false;
         this.etlStatusRecordId = null;
+        this.project = null;
+        this.excelFileList = [];
         if (User.isAuthenticated()) {
             this.user = User.attr().fullname;
             this.isAdmin = User.attr().admin;
@@ -42,18 +44,19 @@ class MCProjectHomeComponentController {
             doReload = true;
         });
         this._reloadComponentState(false);
-        this.etlServerAPI.getEtlStatusForProject(this.project.id).then(
-            status => {
-                if (status && status.status) {
-                    status = status.status;
-                    if (! (status.status === "Success" || status.status === "Failure") ){
-                        this.etlInProgress = true;
-                        this.etlStatusRecordId = status.id;
-                    }
-                }
-                this.etlStatusAvailable = true;
-            }
-        );
+        // deprecated!
+        // this.etlServerAPI.getEtlStatusForProject(this.project.id).then(
+        //     status => {
+        //         if (status && status.status) {
+        //             status = status.status;
+        //             if (! (status.status === "Success" || status.status === "Failure") ){
+        //                 this.etlInProgress = true;
+        //                 this.etlStatusRecordId = status.id;
+        //             }
+        //         }
+        //         this.etlStatusAvailable = true;
+        //     }
+        // );
     }
 
     getProjectActivities() {
@@ -199,27 +202,35 @@ class MCProjectHomeComponentController {
     }
 
     etlStart(){
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/mc-etl-upload-dialog.html',
-            controller: EtlUploadDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {
-                project: this.project,
-            }
-        }).then(
+        this.excelFileList = [];
+        this.etlServerAPI.getEtlFilesFromProject(this.project.id).then(
             (results) => {
-                this.etlInProgress = true;
-                this.etlStatusRecordId = results.status_record_id;
-                if (results.status == "ERROR") {
-                    this.etlReportComplexError(results);
-                } else if (results.status == "DONE") {
-                    this.etlInProgress = false;
-                    this.etlReportImmediateComplete(results);
-                }
-                this._reloadComponentState();
+                this.excelFileList = results.file_list;
+                console.log('this.excelFileList =', this.excelFileList)
             },
-            () => {}
+            () => {
+                this.toast.error('Project contains no ETL files');
+                this.excelFileList = [];
+            }
+        ).then( () => {
+                console.log("Before dialog: ", this.excelFileList);
+                this.$mdDialog.show({
+                    templateUrl: 'app/modals/mc-etl-upload-dialog.html',
+                    controller: EtlUploadDialogController,
+                    controllerAs: '$ctrl',
+                    bindToController: true,
+                    locals: {
+                        project: this.project,
+                        excel_files: this.excelFileList
+                    }
+                }).then(
+                    () => {
+                        this.toast.error("ETL Done; click 'Sync'");
+                        this._reloadComponentState();
+                    },
+                    () => {}
+                )
+            }
         );
     }
 
@@ -263,33 +274,34 @@ class MCProjectHomeComponentController {
             });
     }
 
-    etlMonitor(){
-        this.etlServerAPI.getEtlStatus(this.etlStatusRecordId).then(
-            status => {
-                this.$mdDialog.show({
-                    templateUrl: 'app/modals/mc-etl-status-dialog.html',
-                    controller: EtlStatusDialogController,
-                    controllerAs: '$ctrl',
-                    bindToController: true,
-                    locals: {
-                        status: status
-                    }
-                }).then(
-                    () => {
-                        this.etlInProgress = false;
-                        this.etlStatusRecordId = null;
-                        this._reloadComponentState();
-                    },
-                    (status) => {
-                        this.etlInProgress = true;
-                        this.etlStatusRecordId = status.id;
-                        this._reloadComponentState();
-                    }
-                );
-
-            }
-        );
-    }
+    // deprecated!
+    // etlMonitor(){
+    //     this.etlServerAPI.getEtlStatus(this.etlStatusRecordId).then(
+    //         status => {
+    //             this.$mdDialog.show({
+    //                 templateUrl: 'app/modals/mc-etl-status-dialog.html',
+    //                 controller: EtlStatusDialogController,
+    //                 controllerAs: '$ctrl',
+    //                 bindToController: true,
+    //                 locals: {
+    //                     status: status
+    //                 }
+    //             }).then(
+    //                 () => {
+    //                     this.etlInProgress = false;
+    //                     this.etlStatusRecordId = null;
+    //                     this._reloadComponentState();
+    //                 },
+    //                 (status) => {
+    //                     this.etlInProgress = true;
+    //                     this.etlStatusRecordId = status.id;
+    //                     this._reloadComponentState();
+    //                 }
+    //             );
+    //
+    //         }
+    //     );
+    // }
 }
 
 class CreateNewExperimentDialogController {
@@ -427,28 +439,21 @@ class EtlUploadDialogController {
         this.user_id = User.u();
         this.name = "";
         this.description = "";
-        // for direct upload, without Globus
+        // for direct upload
         this.files = [];
-        // for Globus upload
-        let etlGlobus = this.globusEndpointSaver.getEtlEndpoint();
-        this.ep_uuid = etlGlobus.uuid;
-        this.base_path = etlGlobus.path;
-        this.spreadsheet_rel_path = etlGlobus.spreadsheet;
-        this.data_dir_rel_path = etlGlobus.data;
         // for Project upload
-        this.excelFiles = ['excel_file_one.xslx', 'excel_file_two.xslx'];
         this.excelFile = "";
-        this.dirPaths = ["/data","/not/data/dir"];
-        this.dirPath = "";
-        // test data settings
-        // this.name = "Exp Test-";
-        // this.description = "Test experiment for testing";
-        // this.ep_uuid = "40b2f76c-c265-11e8-8c2a-0a1d4c5c824a";
-        // this.base_path = "/~/GlobusEndpoint/FromSharing/etlBuildSharing/";
-        // this.spreadsheet_rel_path = "input.xlsx";
-        // this.data_dir_rel_path = "data";
+
+        // deprecated!
+        // for Globus upload
+        // let etlGlobus = this.globusEndpointSaver.getEtlEndpoint();
+        // this.ep_uuid = etlGlobus.uuid;
+        // this.base_path = etlGlobus.path;
+        // this.spreadsheet_rel_path = etlGlobus.spreadsheet;
+        // this.data_dir_rel_path = etlGlobus.data;
     }
 
+    //deprecated!
     globus_upload_ok() {
         return this.name && this.ep_uuid && this.base_path
             && this.spreadsheet_rel_path && this.data_dir_rel_path
@@ -459,6 +464,29 @@ class EtlUploadDialogController {
         return this.name && (this.excelFile.length > 0);
     }
 
+    etlInProject() {
+        let data = {};
+        data.project_id = this.project.id;
+        data.excel_file_path = this.excelFile;
+        console.log("project_based_etl");
+        console.log("project_based_etl", this.project.id, this.excelFile);
+        this.etlServerAPI.createExperimentFromEtl(
+            this.project.id, this.excelFile, this.name, this.description).then(
+            (reply) => {
+                this.$mdDialog.hide(reply);
+            },
+            (e) => {
+                if (e.status === 502) {
+                    this.toast.error("Excel file ETL; Service not available. Contact Admin.");
+                } else if (e.status > 200) {
+                    this.toast.error("Excel file ETL; Service not available. Code - " + e.status + ". Contact Admin.");
+                }
+                this.$mdDialog.cancel(e);
+            }
+        );
+    }
+
+    //deprecated!
     uploadWithGlobus() {
         let data = {};
         data.project_id = this.project.id;
@@ -520,6 +548,7 @@ class EtlUploadDialogController {
     }
 }
 
+// deprecated!
 class EtlStatusDialogController {
     /*@ngInject*/
     constructor($mdDialog, etlServerAPI, toast, User) {
@@ -547,15 +576,16 @@ class EtlStatusDialogController {
     }
 
     didFail() {
-        return (this.status.status == "Fail");
+        return (this.status.status === "Fail");
     }
 
     didSucceed() {
-        return (this.status.status == "Success");
+        return (this.status.status === "Success");
     }
 
 }
 
+// deprecated!
 class EtlMessageDialogController {
     /*@ngInject*/
     constructor($mdDialog) {

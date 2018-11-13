@@ -19,6 +19,7 @@ from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
 from servers.etlserver.common.GlobusInfo import GlobusInfo
 from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from servers.etlserver.globus.GlobusMonitor import GlobusMonitor
+from servers.etlserver.app.AppHelper import AppHelper
 
 log = logging.getLogger(__name__)
 
@@ -72,8 +73,10 @@ def project_excel_files_for_etl():
         message = "Project-based ETL - project_id missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
-    ret_value = {'status': 'ok'}
+    file_list = AppHelper(api_key).get_project_excel_files(project_id)
+    ret_value = {"file_list": file_list}
     ret = format_as_json_return(ret_value)
+    log.info("project_excel_files_for_etl: returns {}".format(ret))
     return ret
 
 
@@ -84,22 +87,27 @@ def project_based_etl():
     j = request.get_json(force=True)
     log.info("project_based_etl: data in = {}".format(j))
     project_id = j['project_id']
-    excel_file_path = j['excel_file_path']
+    excel_file_path = j['file_path']
+    experiment_name = j['experiment_name']
+    experiment_desc = j['experiment_desc']
     api_key = request.args.get('apikey', default="no_such_key")
     user_id = access.get_user()
     log.info("  project_id = {}".format(project_id))
     log.info("  excel_file_path = {}".format(excel_file_path))
+    log.info("  experiment_name = {}".format(experiment_name))
+    log.info("  experiment_desc = {}".format(experiment_desc))
     log.info("  api_key = {}".format(api_key))
     log.info("  user_id = {}".format(user_id))
     if not project_id:
         message = "Project-based ETL - project_id missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
-    if not excel_file_path:
-        message = "Project-based ETL - excel_file_path missing, required"
+    if not experiment_name:
+        message = "Project-based ETL - experiment_name missing, required"
         log.error(message)
         return message, status.HTTP_400_BAD_REQUEST
-    ret_value = {'status': 'ok'}
+    ret_value = AppHelper(apikey).run_project_based_etl(
+        project_id, excel_file_path, experiment_name, experiment_desc)
     ret = format_as_json_return(ret_value)
     return ret
 
