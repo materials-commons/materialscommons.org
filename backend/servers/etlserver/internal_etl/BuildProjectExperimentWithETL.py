@@ -29,7 +29,6 @@ class BuildProjectExperiment:
         self.process_files = {}
         self.data_directory = None
         self.suppress_data_upload = False
-        self.log.info("In __init__ of BuildProjectExperiment, just before call to _make_template_table()")
         self._make_template_table()
 
     def build(self, spread_sheet_path, data_dir_path, project_id, exp_name, exp_description=None):
@@ -54,7 +53,7 @@ class BuildProjectExperiment:
 
         self.metadata.set_input_information(spread_sheet_path, data_dir_path)
         self.data_directory = self._get_project_directory_from_path(data_dir_path)
-        self.log.info("  data directorn name = {}".format(self.data_directory.name))
+        self.log.debug("  data directory name = {}".format(self.data_directory.name))
 
         self.suppress_data_upload = not self.data_directory
 
@@ -115,7 +114,7 @@ class BuildProjectExperiment:
             if parent_process_record:
                 parent_process = parent_process_record['process']
             if self._start_new_process(row_key, parent_process):
-                # self.log.info("Start new process: {} ({})".format(template_id, row_index))
+                self.log.debug("Start new process: {} ({})".format(template_id, row_index))
                 process = self.experiment.create_process_from_template(template_id)
                 if not process.name == process_name:
                     process = process.rename(process_name)
@@ -325,10 +324,10 @@ class BuildProjectExperiment:
         if not path:
             return None
         directory = self.project.get_top_directory()
-        self.log.info("_get_project_directory_from_path: path = {}".format(path))
+        self.log.debug("_get_project_directory_from_path: path = {}".format(path))
         if path.startswith('/'):
             path = path[1:]
-        self.log.info("_get_project_directory_from_path: path = {}".format(path))
+        self.log.debug("_get_project_directory_from_path: path = {}".format(path))
         for part in path.split('/'):
             probe = None
             for child in directory.get_children():
@@ -347,16 +346,16 @@ class BuildProjectExperiment:
         if not self.data_directory:
             return
         process_data_path_list = [x.strip() for x in files_from_sheet.split(',')]
-        self.log.info("add files to process: {} ({})".format(process.name, process.id))
-        self.log.info("process_data_path_list = {}".format(process_data_path_list))
+        self.log.debug("add files to process: {} ({})".format(process.name, process.id))
+        self.log.debug("process_data_path_list = {}".format(process_data_path_list))
         process_files = []
         for path in process_data_path_list:
             path_list = path.split('/')
             process_files += self._all_files_in_data_directory_path(self.data_directory, path_list)
         if len(process_files) > 0:
-            self.log.info("for process {}({}) adding files {}".
+            self.log.debug("for process {}({}) adding files {}".
                           format(process.name, process.id, [x.name for x in process_files]))
-            self.log.info("  file id's {}".
+            self.log.debug("  file id's {}".
                           format([[x.name, x.id] for x in process_files]))
             process.add_files(process_files)
             samples = process.output_samples
@@ -585,11 +584,7 @@ class BuildProjectExperiment:
         return row_key
 
     def _make_template_table(self):
-        self.log.info("in _make_template_table; just before call to get_all_templates")
-        self.log.info(type(self.apikey))
-        self.log.info(self.apikey)
         template_list = get_all_templates(apikey=self.apikey)
-        self.log.info("in _make_template_table; just after call to get_all_templates")
         table = {}
         for template in template_list:
             self.log.debug("Init Template entry for {}".format(template.id))
@@ -609,7 +604,7 @@ class BuildProjectExperiment:
         top_directory = project.get_top_directory()
         if project_path.startswith('/'):
             project_path = project_path[1:]
-        self.log.info("Finding file for path {}".format(project_path))
+        self.log.debug("Finding file for path {}".format(project_path))
         file = self._find_file_in_dir(top_directory, project_path.split('/'))
         mc_dirs_base = os.environ['MCDIR']
         internal_file_path = None
@@ -625,7 +620,7 @@ class BuildProjectExperiment:
         return internal_file_path
 
     def _find_file_in_dir(self, directory, path_list):
-        self.log.info("path_list = {}".format(path_list))
+        self.log.debug("path_list = {}".format(path_list))
         if not path_list:
             return None
         name = path_list[0]

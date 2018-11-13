@@ -107,7 +107,6 @@ def project_based_etl():
             message = "Project-based ETL - experiment_name missing, required"
             log.error(message)
             return message, status.HTTP_400_BAD_REQUEST
-        log.info("Just before call to AppHelper")
         ret_value = AppHelper(api_key).run_project_based_etl(
            project_id, excel_file_path, experiment_name, experiment_desc)
         ret = format_as_json_return(ret_value)

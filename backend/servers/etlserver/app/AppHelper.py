@@ -37,16 +37,14 @@ class AppHelper:
 
     def run_project_based_etl(self, project_id, excel_file_path, name, desc):
         data_dir_path = os_path.dirname(excel_file_path)
-        self.log.info("run_project_based_etl")
-        self.log.info("  project_id = {}".format(project_id))
-        self.log.info("  excel_file_path = {}".format(excel_file_path))
-        self.log.info("  data_dir_path = {}".format(data_dir_path))
-        self.log.info("  exp_name = {}".format(name))
-        self.log.info("  exp_desc = {}".format(desc))
+        self.log.debug("run_project_based_etl")
+        self.log.debug("  project_id = {}".format(project_id))
+        self.log.debug("  excel_file_path = {}".format(excel_file_path))
+        self.log.debug("  data_dir_path = {}".format(data_dir_path))
+        self.log.debug("  exp_name = {}".format(name))
+        self.log.debug("  exp_desc = {}".format(desc))
 
-        self.log.info("Before call to BuildProjectExperiment")
         builder = BuildProjectExperiment(self.apikey)
-        self.log.info("Before call to BuildProjectExperiment().build()")
         builder.build(excel_file_path, data_dir_path, project_id, name, desc)
         return {"status": "ok"}
 
