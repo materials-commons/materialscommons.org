@@ -1,8 +1,16 @@
+import logging
+from random import randint
+
+import os.path as os_path
+
 from materials_commons.api import get_project_by_id, get_all_projects
+
+from ..internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
+from ..utils.LoggingHelper import LoggingHelper
 
 class AppHelper:
     def __init__(self, apikey):
-        # self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
+        self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.apikey = apikey
 
     def get_project_excel_files(self, project_id):
@@ -27,20 +35,50 @@ class AppHelper:
                     files_here = files_here + ["{}{}".format(path, child.name)]
         return files_so_far + files_here
 
-    def run_project_based_etl(self, project_id, excel_file_path, exp_name, exp_desc):
+    def run_project_based_etl(self, project_id, excel_file_path, name, desc):
+        data_dir_path = os_path.dirname(excel_file_path)
+        self.log.info("run_project_based_etl")
+        self.log.info("  project_id = {}".format(project_id))
+        self.log.info("  excel_file_path = {}".format(excel_file_path))
+        self.log.info("  data_dir_path = {}".format(data_dir_path))
+        self.log.info("  exp_name = {}".format(name))
+        self.log.info("  exp_desc = {}".format(desc))
+
+        self.log.info("Before call to BuildProjectExperiment")
+        builder = BuildProjectExperiment(self.apikey)
+        self.log.info("Before call to BuildProjectExperiment().build()")
+        builder.build(excel_file_path, data_dir_path, project_id, name, desc)
         return {"status": "ok"}
 
-# if __name__ == "__main__":
-#     main_log = logging.getLogger("Main")
-#     my_apikey = "totally-bogus"
-#     helper = AppHelper(my_apikey)
-#     projects = get_all_projects(my_apikey)
-#     my_project = None
-#     for probe in projects:
-#         if probe.name == "Test1":
-#             my_project = probe
-#     if not my_project:
-#         print("Can not fine project Test1")
-#         exit(-1)
-#     my_files = helper.get_project_excel_files(my_project.id)
-#     print("files: {}".format(my_files))
+
+def fake_name(prefix):
+    number = "%05d" % randint(0, 99999)
+    return prefix + number
+
+
+if __name__ == "__main__":
+    LoggingHelper().set_root()
+    my_apikey = "totally-bogus"
+    helper = AppHelper(my_apikey)
+    projects = get_all_projects(my_apikey)
+    my_project = None
+    for probe in projects:
+        if probe.name == "Test1":
+            my_project = probe
+    if not my_project:
+        print("Can not fine project Test1")
+        exit(-1)
+    my_files = helper.get_project_excel_files(my_project.id)
+    print("files: {}".format(my_files))
+    excel_file_path = None
+    file_name = "small_input.xlsx"
+    for probe in my_files:
+        if file_name in probe:
+            excel_file_path = probe
+    if not excel_file_path:
+        print("missing excel file for test: {}".format(file_name))
+        exit(-1)
+    name = fake_name("Exp-")
+    desc = "Test Experiment: testing project-based ETL"
+    results = helper.run_project_based_etl(my_project.id, excel_file_path, name, desc)
+    print(results)

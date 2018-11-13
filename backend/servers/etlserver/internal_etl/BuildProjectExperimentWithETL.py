@@ -29,6 +29,7 @@ class BuildProjectExperiment:
         self.process_files = {}
         self.data_directory = None
         self.suppress_data_upload = False
+        self.log.info("In __init__ of BuildProjectExperiment, just before call to _make_template_table()")
         self._make_template_table()
 
     def build(self, spread_sheet_path, data_dir_path, project_id, exp_name, exp_description=None):
@@ -44,16 +45,16 @@ class BuildProjectExperiment:
         if not self.experiment_description:
             self.experiment_description = "Experiment from ETL: excel file path = {}".format(spread_sheet_path)
 
-        self._set_etl_source_date_from_path(self.project, spread_sheet_path)
-
         self.log.info("Building Experiment from ETL spreadsheet: ")
         self.log.info("  project: name = {}, id = {}".format(self.project.name, self.project.id))
         self.log.info("  spreadsheet = {}".format(spread_sheet_path))
         self.log.info("  data = {}".format(data_dir_path))
 
+        self._set_etl_source_date_from_path(self.project, spread_sheet_path)
+
         self.metadata.set_input_information(spread_sheet_path, data_dir_path)
         self.data_directory = self._get_project_directory_from_path(data_dir_path)
-        print(self.data_directory.name)
+        self.log.info("  data directorn name = {}".format(self.data_directory.name))
 
         self.suppress_data_upload = not self.data_directory
 
@@ -73,6 +74,7 @@ class BuildProjectExperiment:
 
         self.log.info("Context project: " + self.project.name + " (" + self.project.id + ")")
         self.log.info("With Experiment: " + self.experiment.name + " (" + self.experiment.id + ")")
+        return {"status": "ok", "project_id": self.project.id, "experiment_id": self.experiment.id}
 
     def _write_metadata(self):
         self.log.debug("Writing metadata for experiment '" + self.experiment.name + "'")
@@ -323,6 +325,10 @@ class BuildProjectExperiment:
         if not path:
             return None
         directory = self.project.get_top_directory()
+        self.log.info("_get_project_directory_from_path: path = {}".format(path))
+        if path.startswith('/'):
+            path = path[1:]
+        self.log.info("_get_project_directory_from_path: path = {}".format(path))
         for part in path.split('/'):
             probe = None
             for child in directory.get_children():
@@ -341,14 +347,23 @@ class BuildProjectExperiment:
         if not self.data_directory:
             return
         process_data_path_list = [x.strip() for x in files_from_sheet.split(',')]
+        self.log.info("add files to process: {} ({})".format(process.name, process.id))
+        self.log.info("process_data_path_list = {}".format(process_data_path_list))
         process_files = []
         for path in process_data_path_list:
             path_list = path.split('/')
             process_files += self._all_files_in_data_directory_path(self.data_directory, path_list)
-        self.log.debug("for process {}({})adding files {}".
-                       format(process.name, process.id, [x.name for x in process_files]))
         if len(process_files) > 0:
+            self.log.info("for process {}({}) adding files {}".
+                          format(process.name, process.id, [x.name for x in process_files]))
+            self.log.info("  file id's {}".
+                          format([[x.name, x.id] for x in process_files]))
             process.add_files(process_files)
+            samples = process.output_samples
+            if not process.does_transform:
+                samples = process.input_samples
+            for sample in samples:
+                sample.link_files(process_files)
 
     def _set_etl_source_date_from_path(self, project, spread_sheet_path):
         # Note: passing in project to facilitate partial testing
@@ -570,7 +585,11 @@ class BuildProjectExperiment:
         return row_key
 
     def _make_template_table(self):
+        self.log.info("in _make_template_table; just before call to get_all_templates")
+        self.log.info(type(self.apikey))
+        self.log.info(self.apikey)
         template_list = get_all_templates(apikey=self.apikey)
+        self.log.info("in _make_template_table; just after call to get_all_templates")
         table = {}
         for template in template_list:
             self.log.debug("Init Template entry for {}".format(template.id))
@@ -588,6 +607,9 @@ class BuildProjectExperiment:
     def _server_side_file_path_for_project_path(self, project, project_path):
         # Note: passing in project to facilitate partial testing
         top_directory = project.get_top_directory()
+        if project_path.startswith('/'):
+            project_path = project_path[1:]
+        self.log.info("Finding file for path {}".format(project_path))
         file = self._find_file_in_dir(top_directory, project_path.split('/'))
         mc_dirs_base = os.environ['MCDIR']
         internal_file_path = None
@@ -603,6 +625,7 @@ class BuildProjectExperiment:
         return internal_file_path
 
     def _find_file_in_dir(self, directory, path_list):
+        self.log.info("path_list = {}".format(path_list))
         if not path_list:
             return None
         name = path_list[0]

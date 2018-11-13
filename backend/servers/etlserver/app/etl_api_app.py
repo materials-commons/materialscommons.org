@@ -83,33 +83,39 @@ def project_excel_files_for_etl():
 @app.route('/project/etl', methods=['POST'])
 @apikey
 def project_based_etl():
-    log.info("project_based_etl")
-    j = request.get_json(force=True)
-    log.info("project_based_etl: data in = {}".format(j))
-    project_id = j['project_id']
-    excel_file_path = j['file_path']
-    experiment_name = j['experiment_name']
-    experiment_desc = j['experiment_desc']
-    api_key = request.args.get('apikey', default="no_such_key")
-    user_id = access.get_user()
-    log.info("  project_id = {}".format(project_id))
-    log.info("  excel_file_path = {}".format(excel_file_path))
-    log.info("  experiment_name = {}".format(experiment_name))
-    log.info("  experiment_desc = {}".format(experiment_desc))
-    log.info("  api_key = {}".format(api_key))
-    log.info("  user_id = {}".format(user_id))
-    if not project_id:
-        message = "Project-based ETL - project_id missing, required"
-        log.error(message)
+    try:
+        log.info("project_based_etl")
+        j = request.get_json(force=True)
+        log.info("project_based_etl: data in = {}".format(j))
+        project_id = j['project_id']
+        excel_file_path = j['file_path']
+        experiment_name = j['experiment_name']
+        experiment_desc = j['experiment_desc']
+        api_key = request.args.get('apikey', default="no_such_key")
+        user_id = access.get_user()
+        log.info("  project_id = {}".format(project_id))
+        log.info("  excel_file_path = {}".format(excel_file_path))
+        log.info("  experiment_name = {}".format(experiment_name))
+        log.info("  experiment_desc = {}".format(experiment_desc))
+        log.info("  api_key = {}".format(api_key))
+        log.info("  user_id = {}".format(user_id))
+        if not project_id:
+            message = "Project-based ETL - project_id missing, required"
+            log.error(message)
+            return message, status.HTTP_400_BAD_REQUEST
+        if not experiment_name:
+            message = "Project-based ETL - experiment_name missing, required"
+            log.error(message)
+            return message, status.HTTP_400_BAD_REQUEST
+        log.info("Just before call to AppHelper")
+        ret_value = AppHelper(api_key).run_project_based_etl(
+           project_id, excel_file_path, experiment_name, experiment_desc)
+        ret = format_as_json_return(ret_value)
+        return ret
+    except BaseException as e:
+        message = "{}".format(e)
+        log.exception(e, message)
         return message, status.HTTP_400_BAD_REQUEST
-    if not experiment_name:
-        message = "Project-based ETL - experiment_name missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    ret_value = AppHelper(apikey).run_project_based_etl(
-        project_id, excel_file_path, experiment_name, experiment_desc)
-    ret = format_as_json_return(ret_value)
-    return ret
 
 
 @app.route('/upload', methods=['POST'])
