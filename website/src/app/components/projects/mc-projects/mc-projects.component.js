@@ -1,26 +1,22 @@
 class MCProjectsComponentController {
     /*@ngInject*/
-    constructor($mdDialog, User, blockUI, demoProjectService, toast, mcprojstore, ProjectModel) {
+    constructor($mdDialog, User, blockUI, demoProjectService, toast) {
         this.$mdDialog = $mdDialog;
         this.User = User;
         this.blockUI = blockUI;
         this.demoProjectService = demoProjectService;
         this.toast = toast;
         this.mcuser = User.attr();
-        this.mcprojstore = mcprojstore;
-        this.ProjectModel = ProjectModel;
         this.myProjects = [];
         this.joinedProjects = [];
     }
 
-    $onInit() {
-        this.getUserProjects();
-        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVADD,
-            projects => this._fillProjects(_.values(projects)));
-    }
-
-    $onDestroy() {
-        this.unsubscribe();
+    $onChanges(changes) {
+        if (changes.projects) {
+            let projects = changes.projects.currentValue;
+            this.myProjects = projects.filter(p => p.owner === this.mcuser.email);
+            this.joinedProjects = projects.filter(p => p.owner !== this.mcuser.email);
+        }
     }
 
     createNewProject() {
@@ -45,7 +41,7 @@ class MCProjectsComponentController {
     }
 
     buildDemoProject() {
-        this.blockUI.start("Building demo project (this may take up to a minute)...");
+        this.blockUI.start('Building demo project (this may take up to a minute)...');
         this.demoProjectService.buildDemoProject(this.mcuser.email).then(
             (p) => {
                 this.mcuser.demo_installed = true;
@@ -76,7 +72,7 @@ class MCProjectsComponentController {
                     }
                 );
             }
-        )
+        );
     }
 }
 
@@ -107,5 +103,8 @@ class CreateNewProjectDialogController {
 
 angular.module('materialscommons').component('mcProjects', {
     template: require('./mc-projects.html'),
-    controller: MCProjectsComponentController
+    controller: MCProjectsComponentController,
+    bindings: {
+        projects: '<'
+    }
 });

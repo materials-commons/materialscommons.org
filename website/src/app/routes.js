@@ -26,28 +26,14 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             abstract: true,
             template: '<div flex layout="column" ui-view></div>',
             resolve: {
-                _projstore: ['mcprojstore', function(mcprojstore) {
-                    return mcprojstore.ready();
-                }],
-                _projects: ['mcprojstore', 'ProjectModel', '_projstore', function(mcprojstore, ProjectModel) {
-                    let projects = mcprojstore.projects;
-                    if (projects.length) {
-                        return projects;
-                    }
-
-                    return ProjectModel.getProjectsForCurrentUser().then(
-                        (projects) => {
-                            mcprojstore.addProjects(...projects);
-                            return mcprojstore.projects;
-                        }
-                    );
+                _projects: ['projectsAPI', function(projectsAPI) {
+                    return projectsAPI.getProjectsForUser();
                 }]
             }
         })
         .state('projects.list', {
             url: '/list',
-            // template: '<mc-long-list flex layout="column"></mc-long-list>'
-            template: '<mc-projects flex layout="column"></mc-projects>'
+            template: '<mc-projects projects="$resolve._projects" flex layout="column"></mc-projects>'
         })
         .state('globus', {
             url: '/globus',
