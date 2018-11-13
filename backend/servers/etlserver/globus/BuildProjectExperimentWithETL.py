@@ -397,8 +397,15 @@ class BuildProjectExperiment:
                 process_files += file_list
             except BaseException as e:
                 self.log.error(e)
+        if not process_files:
+            return
         self.log.debug("for process {}({})adding files {}".format(process.name, process.id, process_files))
         process.add_files(process_files)
+        samples = process.output_samples
+        if not process.does_transform:
+            samples = process.input_samples
+        for sample in samples:
+            sample.link_files(process_files)
 
     def set_project_description(self, description):
         if not self.override_project_id:

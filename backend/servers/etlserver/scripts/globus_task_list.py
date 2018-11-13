@@ -158,7 +158,7 @@ if __name__ == '__main__':
 
     loop = True
     while loop:
-        yesterday = datetime.date.today() - datetime.timedelta(1)
+        yesterday = datetime.date.today() - datetime.timedelta(10)
         tasks = cc_transfer_client.endpoint_manager_task_list(num_results=None,
                                                               filter_endpoint=target_endpoint,
                                                               filter_completion_time=yesterday.isoformat(),
@@ -194,4 +194,4 @@ if __name__ == '__main__':
                 delete_processed_task_files(p)
             # load_files(conn, task['owner_string'])
             count = count + 1
-        time.sleep(10)
+        time.sleep(3)
