@@ -78,7 +78,8 @@ async function getDatasetsForProject(projectId) {
 }
 
 async function getDataset(datasetId) {
-    let rql = commonQueries.datasetDetailsRql(r.table('datasets').get(datasetId), r);
+    //let rql = commonQueries.datasetDetailsRql(r.table('datasets').get(datasetId), r);
+    let rql = r.table('datasets').get(datasetId);
     let dataset = await dbExec(rql);
     if (dataset.doi !== '') {
         dataset.doi_url = `${doiUrl}id/${dataset.doi}`;
@@ -86,12 +87,37 @@ async function getDataset(datasetId) {
     if (!dataset.published) {
         let publishedState = await canPublishDataset(datasetId);
         dataset.status = publishedState;
-        dataset.status.files_count = dataset.files.length;
+        // dataset.status.files_count = dataset.files.length;
         if (dataset.status.files_count && dataset.status.samples_count && dataset.status.processes_count) {
             dataset.status.can_be_published = true;
         }
     }
     return dataset;
+}
+
+async function getDatasetFiles(datasetId) {
+    let files = await r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'})
+        .eqJoin('datafile_id', r.table('datafiles')).zip()
+        .merge(df => {
+            return {
+                path: r.table('datadir2datafile').getAll(df('datafile_id'), {index: 'datafile_id'})
+                    .eqJoin('datadir_id', r.table('datadirs')).zip().pluck('name').nth(0).getField('name')
+            };
+        });
+    return files;
+}
+
+async function getDatasetSamplesAndProcesses(datasetId) {
+    let ds = await r.table('datasets').get(datasetId).merge(ds => {
+        return {
+            samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'})
+                .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
+            processes: commonQueries.datasetProcessDetailsRql(r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
+                .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
+        };
+    });
+
+    return ds;
 }
 
 async function canPublishDataset(datasetId) {
@@ -454,6 +480,8 @@ module.exports = {
     deleteDataset,
     getDatasetsForProject,
     getDataset,
+    getDatasetFiles,
+    getDatasetSamplesAndProcesses,
     updateDataset,
     addFilesToDataset,
     deleteFilesFromDataset,

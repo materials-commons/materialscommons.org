@@ -3,7 +3,7 @@ class MCDatasetFilesComponentController {
     constructor(datasetFiles) {
         this.datasetFiles = datasetFiles;
         this.state = {
-            files: []
+            files: [],
         };
     }
 
