@@ -6,6 +6,7 @@ from materials_commons.api import create_project, get_all_projects
 from backend.servers.etlserver.internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
 from backend.servers.etlserver.common.worksheet_data import ExcelIO
 from backend.servers.etlserver.database.DatabaseInterface import DatabaseInterface
+from backend.servers.etlserver.common.McdirHelper import McdirHelper
 
 EXCEL_FILE_NAME = "small_input.xlsx"
 DATA_DIR_NAME = "data"
@@ -142,8 +143,7 @@ class TestFileProcessSample(unittest.TestCase):
 
         # SET UP THE LINK
         uuid = DatabaseInterface().get_uuid()
-        mcdir = os.environ['MCDIR'].split(':')[0]
-        link_base_path = os.path.join(mcdir, 'ExcelFileLinks')
+        link_base_path = McdirHelper().get_excel_file_link_dir()
         file_name = "{}.xlsx".format(uuid)
         link_path = os.path.join(link_base_path, file_name)
         os.link(internal_file_path, link_path)

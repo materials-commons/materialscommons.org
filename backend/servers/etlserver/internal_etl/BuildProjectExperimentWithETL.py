@@ -7,6 +7,7 @@ from materials_commons.api import File as FileRecord
 from ..common.utils import normalise_property_name
 from ..common.worksheet_data import ExcelIO
 from ..common.metadata import Metadata
+from ..common.McdirHelper import McdirHelper
 from ..common.access_exceptions import NoSuchItem, RequiredAttributeException
 from ..database.DatabaseInterface import DatabaseInterface
 
@@ -370,9 +371,7 @@ class BuildProjectExperiment:
         server_side_file = self._server_side_file_path_for_project_path(project, spread_sheet_path)
         # create link dir (if needed) and link
         uuid = DatabaseInterface().get_uuid()
-        mcdir = os.environ['MCDIR'].split(':')[0]
-        link_base_path = os.path.join(mcdir, '__ExcelFileLinks')
-        # missing code to create dir if not there!
+        link_base_path = McdirHelper().get_excel_file_link_dir()
         file_name = "{}.xlsx".format(uuid)
         link_path = os.path.join(link_base_path, file_name)
         self.log.info("link_path {}".format(link_path))
