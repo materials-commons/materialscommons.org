@@ -33,7 +33,6 @@ function MCProjectSamplesTableComponentController($mdDialog) {
         }
     }
 
-    console.log(ctrl.samplesByExperiment);
     ctrl.allSamples = [];
     for (let key in ctrl.samplesByExperiment) {
         for (let i = 0; i < ctrl.samplesByExperiment[key].length; i++) {
