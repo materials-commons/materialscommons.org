@@ -24,10 +24,15 @@ function MCProjectSamplesTableComponentController($mdDialog) {
             }
             let s = angular.copy(sample);
             s.processes_count = s.processes.length;
-            s.files_count = s.files.length;
+            if (s.files) {
+                s.files_count = s.files.length;
+                delete s['files'];
+            } else {
+                s.files_count = 0;
+            }
+
             delete s['processes'];
             delete s['experiments'];
-            delete s['files'];
             s.experiment = experiment.name;
             ctrl.samplesByExperiment[experiment.name].push(s);
         }
