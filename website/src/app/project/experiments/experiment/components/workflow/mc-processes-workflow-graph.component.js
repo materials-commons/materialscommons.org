@@ -155,6 +155,10 @@ class MCProcessesWorkflowGraphComponentController {
         if (this.navigator) {
             this.navigator.destroy();
         }
+
+        if (this.cMenu) {
+            this.cMenu.destroy();
+        }
     }
 
     // This method will be called implicitly when the component is loaded.
@@ -324,7 +328,7 @@ class MCProcessesWorkflowGraphComponentController {
                 }
             ]
         };
-        this.cy.contextMenus(options);
+        this.cMenu = this.cy.contextMenus(options);
     }
 
     _showDetails(event) {

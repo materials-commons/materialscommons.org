@@ -91,6 +91,7 @@ class WorkflowService {
                         samples: samplesToAdd,
                         process_id: process.id
                     };
+                    this.mcprojstore.addProcess(p);
 
                     this.experimentsAPI.updateProcess(projectId, experimentId, process.id, samplesArgs).then(
                         (pUpdated) => {
