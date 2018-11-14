@@ -1,36 +1,30 @@
 <div>
     <md-table-container>
         <table md-table>
-            <thead md-head md-order="$ctrl.sortOrder">
+            <thead md-head style="margin-bottom: 40px; margin-top: 40px">
             <tr md-row>
-                <th md-column md-order-by="name">Sample</th>
-                <!--<th md-column>Description</th>-->
-                <!--<th md-column>Composition</th>-->
-                <th md-column md-order-by="mtime.epoch_time">Modified</th>
-                <th md-column md-order-by="files.length"># Files</th>
-                <th md-column md-order-by="processes.length"># Processes</th>
+                <th md-column>Sample</th>
+                <th md-column>Experiment</th>
+                <th md-column>Modified</th>
+                <th md-column># Files</th>
+                <th md-column># Processes</th>
             </tr>
             </thead>
-            <tbody md-body>
+            <tbody md-body style="margin-top: 20px">
             <tr md-row class="md-row-hover pointer"
-                ng-repeat="sample in $ctrl.samples | filter:$ctrl.filterBy | orderBy:$ctrl.sortOrder">
+                ng-repeat="sample in $ctrl.allSamples | filter:$ctrl.filterBy | orderBy:['experiment', 'name']">
                 <td md-cell>
                     <a class="md-primary" ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
                 </td>
-                <!--<td md-cell style="width: 20%">-->
-                    <!--{{sample.description}}-->
-                <!--</td>-->
-                <!--<td md-cell>-->
-                    <!--Unknown-->
-                <!--</td>-->
+                <td md-cell>{{sample.experiment}}</td>
                 <td md-cell>
                     {{sample.mtime | toDate}}
                 </td>
                 <td md-cell>
-                    {{sample.files.length}}
+                    {{sample.files_count}}
                 </td>
                 <td md-cell>
-                    {{sample.processes.length}}
+                    {{sample.processes_count}}
                 </td>
             </tr>
             </tbody>

@@ -11,7 +11,35 @@ angular.module('materialscommons').component('mcProjectSamplesTable', {
 function MCProjectSamplesTableComponentController($mdDialog) {
     const ctrl = this;
     ctrl.showSample = showSample;
-    ctrl.sortOrder = "name";
+    ctrl.sortOrder = 'experiment';
+
+    ctrl.samplesByExperiment = {};
+
+    for (let i = 0; i < ctrl.samples.length; i++) {
+        let sample = ctrl.samples[i];
+        for (let j = 0; j < sample.experiments.length; j++) {
+            let experiment = sample.experiments[j];
+            if (!(experiment.name in ctrl.samplesByExperiment)) {
+                ctrl.samplesByExperiment[experiment.name] = [];
+            }
+            let s = angular.copy(sample);
+            s.processes_count = s.processes.length;
+            s.files_count = s.files.length;
+            delete s['processes'];
+            delete s['experiments'];
+            delete s['files'];
+            s.experiment = experiment.name;
+            ctrl.samplesByExperiment[experiment.name].push(s);
+        }
+    }
+
+    console.log(ctrl.samplesByExperiment);
+    ctrl.allSamples = [];
+    for (let key in ctrl.samplesByExperiment) {
+        for (let i = 0; i < ctrl.samplesByExperiment[key].length; i++) {
+            ctrl.allSamples.push(ctrl.samplesByExperiment[key][i]);
+        }
+    }
 
     function showSample(sample) {
         $mdDialog.show({
