@@ -25,15 +25,15 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/projects',
             abstract: true,
             template: '<div flex layout="column" ui-view></div>',
-            resolve: {
-                _projects: ['projectsAPI', function(projectsAPI) {
-                    return projectsAPI.getProjectsForUser();
-                }]
-            }
+            // resolve: {
+            //     _projects: ['projectsAPI', function(projectsAPI) {
+            //         return projectsAPI.getProjectsForUser();
+            //     }]
+            // }
         })
         .state('projects.list', {
             url: '/list',
-            template: '<mc-projects projects="$resolve._projects" flex layout="column"></mc-projects>'
+            template: '<mc-projects-list-view-container flex layout="column"></mc-projects-list-view-container>'
         })
         .state('globus', {
             url: '/globus',

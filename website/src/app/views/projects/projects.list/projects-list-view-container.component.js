@@ -14,6 +14,10 @@ class MCProjectsListViewContainerComponentController {
         };
     }
 
+    $onInit() {
+        this._getProjectsForUser();
+    }
+
     _getProjectsForUser() {
         this.projectsAPI.getProjectsForUser().then(
             projects => this.state.projects = angular.copy(projects),
@@ -21,7 +25,7 @@ class MCProjectsListViewContainerComponentController {
         );
     }
 
-    handleAddProject() {
+    handleCreateProject() {
         this.$mdDialog.show({
             templateUrl: 'app/modals/create-project-dialog.html',
             controller: CreateNewProjectDialogController,
@@ -86,11 +90,11 @@ class CreateNewProjectDialogController {
     }
 }
 
-angular.module('materialscommons').component('mcProjectListViewContainer', {
-    template: `<mc-project-list-view projects="$ctrl.state.projects" user="$ctrl.state.user"
-                                on-add-project="$ctrl.handleAddProject()"
+angular.module('materialscommons').component('mcProjectsListViewContainer', {
+    template: `<mc-projects-list-view projects="$ctrl.state.projects" user="$ctrl.state.user"
+                                on-create-project="$ctrl.handleCreateProject()"
                                 on-create-demo-project="$ctrl.handleCreateDemoProject()"
                                 on-hide-demo-project="$ctrl.handleHideDemoProject()"
-                                on-sync="$ctrl.handleSync()"></mc-project-list-view>`,
+                                on-sync="$ctrl.handleSync()" class="height-100" layout="column"></mc-projects-list-view>`,
     controller: MCProjectsListViewContainerComponentController
 });
