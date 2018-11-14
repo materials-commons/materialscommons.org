@@ -365,18 +365,22 @@ class BuildProjectExperiment:
                 sample.link_files(process_files)
 
     def _set_etl_source_date_from_path(self, project, spread_sheet_path):
+        self.log.info("Starting _set_etl_source_date_from_path - {}".format(spread_sheet_path))
         # Note: passing in project to facilitate partial testing
         server_side_file = self._server_side_file_path_for_project_path(project, spread_sheet_path)
         # create link dir (if needed) and link
         uuid = DatabaseInterface().get_uuid()
         mcdir = os.environ['MCDIR'].split(':')[0]
-        link_base_path = os.path.join(mcdir, 'ExcelFileLinks')
+        link_base_path = os.path.join(mcdir, '__ExcelFileLinks')
+        # missing code to create dir if not there!
         file_name = "{}.xlsx".format(uuid)
         link_path = os.path.join(link_base_path, file_name)
+        self.log.info("link_path {}".format(link_path))
         os.link(server_side_file, link_path)
         # read data
         # noinspection PyBroadException
         try:
+            self.log.info("Starting read of Excel Spreadsheet at {}".format(link_path))
             excel_io_controller = ExcelIO()
             excel_io_controller.read_workbook(link_path)
             sheet_name_list = excel_io_controller.sheet_name_list()
