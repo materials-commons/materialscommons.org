@@ -9,7 +9,7 @@ class MCProjectDatasetViewComponentController {
 
     $onChanges(changes) {
         if (changes.dataset) {
-            this.state.dataset = changes.dataset.currentValue; //angular.copy(changes.dataset.currentValue);
+            this.state.dataset = angular.copy(changes.dataset.currentValue);
         }
     }
 
@@ -36,6 +36,22 @@ class MCProjectDatasetViewComponentController {
     handleAddDOI(doiDetails) {
         this.onAddDoi({doiDetails: doiDetails});
     }
+
+    handleCancel() {
+        this.onCancel();
+    }
+
+    samplesSelected() {
+        if (!this.state.dataset.samplesLoaded) {
+            this.onLoadSamples();
+        }
+    }
+
+    filesSelected() {
+        if (!this.state.dataset.filesLoaded) {
+            this.onLoadFiles();
+        }
+    }
 }
 
 angular.module('materialscommons').component('mcProjectDatasetView', {
@@ -49,5 +65,8 @@ angular.module('materialscommons').component('mcProjectDatasetView', {
         onPublishDataset: '&',
         onUnpublishDataset: '&',
         onAddDoi: '&',
+        onCancel: '&',
+        onLoadSamples: '&',
+        onLoadFiles: '&',
     }
 });

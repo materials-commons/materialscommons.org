@@ -44,7 +44,7 @@ function datasetDetailsRql (rql, r) {
         return {
             samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
-            processes: processDetailsRql(r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
+            processes: datasetProcessDetailsRql(r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
                 .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
             comments: r.table('comments').getAll(ds('id'), {index: 'item_id'}).coerceTo('array'),
             files: r.table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
@@ -56,6 +56,19 @@ function datasetDetailsRql (rql, r) {
                     }
                 }).coerceTo('array'),
         }
+    });
+}
+
+function datasetProcessDetailsRql(rql, r) {
+    return rql.merge(function(process) {
+        return {
+            input_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
+                .filter({'direction': 'in'})
+                .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
+            output_samples: r.table('process2sample').getAll(process('id'), {index: 'process_id'})
+                .filter({'direction': 'out'})
+                .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
+        };
     });
 }
 
@@ -216,6 +229,7 @@ function processDetailsRql (rql, r) {
 
 module.exports = {
     sampleDetailsRql,
+    datasetProcessDetailsRql,
     fileDetailsRql,
     datasetDetailsRql,
     processDetailsSimpleRql,
