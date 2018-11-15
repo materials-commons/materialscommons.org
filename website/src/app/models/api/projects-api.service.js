@@ -10,6 +10,10 @@ class ProjectsAPIService {
         return this.Restangular.one('v4').one('ui').one('getProjectsForUser').customPOST().then(projects => projects.plain());
     }
 
+    getProjectOverview(projectId) {
+        return this.Restangular.one('v4').one('ui').one('getProjectOverview').customPOST({project_id: projectId}).then(p => p.plain());
+    }
+
     //////////////////////////// Check if these calls are being used ////////////////////////////////////
     getAllProjects() {
         return this.projectsAPIRoute().getList().then(projects => projects.plain());

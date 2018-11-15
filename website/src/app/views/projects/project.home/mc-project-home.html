@@ -60,9 +60,9 @@
                             <th md-column>
                                 <span tooltip="Files"><i class="fa fa-fw fa-files-o"></i> F</span>
                             </th>
-                            <th md-column>
-                                <span tooltip="Datasets"><i class="fa fa-fw fa-database"></i> DS</span>
-                            </th>
+                            <!--<th md-column>-->
+                            <!--<span tooltip="Datasets"><i class="fa fa-fw fa-database"></i> DS</span>-->
+                            <!--</th>-->
                             <th md-column>
                                 <span tooltip="Samples"><i class="fa fa-fw fa-cubes"></i>S</span>
                             </th>
@@ -72,7 +72,7 @@
                         <tr md-row class="md-row-hover pointer"
                             ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
                             style='border-left-width: 8px;'
-                            ng-repeat="experiment in $ctrl.experiments | filter:{status: $ctrl.experimentType} | orderBy:$ctrl.sortOrder">
+                            ng-repeat="experiment in $ctrl.project.experiments | filter:{status: $ctrl.experimentType} | orderBy:$ctrl.sortOrder">
                             <td md-cell>
                                 <div layout="column">
                                     <div layout="row">
@@ -93,10 +93,10 @@
                                 {{experiment.owner_details.fullname}}
                             </td>
                             <td md-cell>
-                                {{experiment.mtime | toDateString}}
+                                {{experiment.mtime | date:'shortDate'}}
                             </td>
                             <td md-cell><span>{{experiment.files_count | number}}</span></td>
-                            <td md-cell><span>{{experiment.datasets.length | number}}</span></td>
+                            <!--<td md-cell><span>{{experiment.datasets.length | number}}</span></td>-->
                             <td md-cell style="border-right-width: 8px"
                                 ng-class="{'cell-right-odd': $index%2 !== 0, 'cell-right-even': $index%2 ==0}">
                                 <span>{{experiment.samples | toSize | number}}</span>

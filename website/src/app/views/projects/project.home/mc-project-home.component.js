@@ -32,28 +32,34 @@ class MCProjectHomeComponentController {
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
+    $onChanges(changes) {
+        if (changes.project) {
+            this.project = angular.copy(changes.project.currentValue);
+        }
+    }
+
     $onInit() {
         // subscribed function will be called in $onInit the first time this activates, and we don't want this
         // call to go through because it isn't needed. So set a flag to ignore first call. This is a work around
         // that will be removed eventually.
-        let doReload = false;
-        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
-            this._reloadComponentState(doReload);
-            doReload = true;
-        });
-        this._reloadComponentState(false);
-        this.etlServerAPI.getEtlStatusForProject(this.project.id).then(
-            status => {
-                if (status && status.status) {
-                    status = status.status;
-                    if (! (status.status === "Success" || status.status === "Failure") ){
-                        this.etlInProgress = true;
-                        this.etlStatusRecordId = status.id;
-                    }
-                }
-                this.etlStatusAvailable = true;
-            }
-        );
+        // let doReload = false;
+        // this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
+        //     this._reloadComponentState(doReload);
+        //     doReload = true;
+        // });
+        // this._reloadComponentState(false);
+        // this.etlServerAPI.getEtlStatusForProject(this.project.id).then(
+        //     status => {
+        //         if (status && status.status) {
+        //             status = status.status;
+        //             if (! (status.status === "Success" || status.status === "Failure") ){
+        //                 this.etlInProgress = true;
+        //                 this.etlStatusRecordId = status.id;
+        //             }
+        //         }
+        //         this.etlStatusAvailable = true;
+        //     }
+        // );
     }
 
     getProjectActivities() {
@@ -567,5 +573,8 @@ class EtlMessageDialogController {
 
 angular.module('materialscommons').component('mcProjectHome', {
     template: require('./mc-project-home.html'),
-    controller: MCProjectHomeComponentController
+    controller: MCProjectHomeComponentController,
+    bindings: {
+        project: '<',
+    }
 });

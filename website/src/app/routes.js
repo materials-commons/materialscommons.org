@@ -25,11 +25,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/projects',
             abstract: true,
             template: '<div flex layout="column" ui-view></div>',
-            // resolve: {
-            //     _projects: ['projectsAPI', function(projectsAPI) {
-            //         return projectsAPI.getProjectsForUser();
-            //     }]
-            // }
         })
         .state('projects.list', {
             url: '/list',
@@ -111,21 +106,15 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             // template: '<ui-view flex="100" layout="column"></ui-view>',
             template: '<mc-project class="height-100" flex="100" layout="column"></mc-project>',
             resolve: {
-                _projstore: ['mcprojstore', function(mcprojstore) {
-                    return mcprojstore.ready();
-                }],
-                _projignore: ['mcprojectstore2', '$stateParams', '_projstore', function(mcprojectstore2, $stateParams) {
-                    return mcprojectstore2.loadProject($stateParams.project_id).then(() => true);
-                }],
                 /* inject _projstore to force next resolve to wait for store to ready ready*/
-                _project: ['mcprojstore', '$stateParams', '_projstore', '_projignore', function(mcprojstore, $stateParams) {
-                    return mcprojstore.getProject($stateParams.project_id);
+                _project: ['projectsAPI', '$stateParams', function(projectsAPI, $stateParams) {
+                    return projectsAPI.getProjectOverview($stateParams.project_id);
                 }]
             }
         })
         .state('project.home', {
             url: '/home',
-            template: '<mc-project-home class="height-100"></mc-project-home>'
+            template: '<mc-project-home project="$resolve._project" class="height-100"></mc-project-home>'
         })
         .state('project.details', {
             url: '/details',
