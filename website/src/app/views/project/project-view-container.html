@@ -1,0 +1,11 @@
+<div layout="column" flex="100">
+    <div layout="row" layout-fill layout-align="start stretch">
+        <mc-project-sidenav></mc-project-sidenav>
+        <div layout="column" flex="100">
+            <div ng-if="$ctrl.getRoute() == 'project.experiment.workflow'"
+                 ui-view flex="100" layout="column"></div>
+            <md-content ng-if="$ctrl.getRoute() !== 'project.experiment.workflow'"
+                        ui-view flex="100" layout="column"></md-content>
+        </div>
+    </div>
+</div>

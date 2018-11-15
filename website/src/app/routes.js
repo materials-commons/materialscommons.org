@@ -102,13 +102,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project', {
             url: '/project/:project_id',
-            // abstract: true,
-            // template: '<ui-view flex="100" layout="column"></ui-view>',
-            template: '<mc-project class="height-100" flex="100" layout="column"></mc-project>',
+            template: '<mc-project-view-container class="height-100" flex="100" layout="column"></mc-project-view-container>',
             resolve: {
-                /* inject _projstore to force next resolve to wait for store to ready ready*/
-                _project: ['projectsAPI', '$stateParams', function(projectsAPI, $stateParams) {
-                    return projectsAPI.getProjectOverview($stateParams.project_id);
+                _project: ['projectsAPI', '$stateParams', 'mcStateStore', function(projectsAPI, $stateParams, mcStateStore) {
+                    return projectsAPI.getProjectOverview($stateParams.project_id).then(p => {
+                        mcStateStore.updateState('project', p);
+                        return p;
+                    });
                 }]
             }
         })
