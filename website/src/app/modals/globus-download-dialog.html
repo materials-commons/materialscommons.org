@@ -15,8 +15,14 @@
             <b>Error: {{$ctrl.error}}</b>
         </div>
         <div ng-if="$ctrl.url">
-            <a href="{{$ctrl.url}}" target="_blank" ng-click="$ctrl.cancel()">
-                Globus download transfer panel
+            To download files or directories from your project '{{$ctrl.project.name}}': this
+            presents a Materials Commons globus endpoint reflecting
+            the top level directory of your project. This is link is reusable,
+            but is only a snapshot. When the content of your project changes, or if
+            you have lost track of the ULR, you may return to this dialog and obtain
+            a new snapshot link.
+            <a class="md-button md-raised md-primary" href="{{$ctrl.url}}" target="_blank" ng-click="$ctrl.cancel()">
+                Materials Commons Globus download transfer panel
             </a>
         </div>
     </md-dialog-content>

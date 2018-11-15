@@ -9,39 +9,41 @@
             <md-tab>
                 <md-tab-label>Using Project Files</md-tab-label>
                 <md-tab-body>
-                    <div layout="column">
-                        <p>To create new experiment in this project,
-                            <b>{{$ctrl.project.name}}</b>,
-                            select an Excel file from the project.
-                            Project data files, as specified in your spreadsheet,
-                            will be uploaded from (and relative to)
-                            the project directory that contains the excel file.
-                            (Note: * indicates required fields)
-                        </p>
+                    <div ng-if="!$ctrl.excel_files.length">
+                        Warning: There are no Excel files in this project. Upload files and data using the
+                        'Globus Upload To Project' item in the left-side navigation bar.
                     </div>
-                    <div layout="column">
-                        Excel Files:
-                        {{$ctrl.excel_files}}
+                    <div ng-if="$ctrl.excel_files.length">
+                        <div layout="column">
+                            <p>To create new experiment in this project,
+                                <b>{{$ctrl.project.name}}</b>,
+                                select an Excel file from the project. For that ETL,
+                                the data files, as specified in your spreadsheet,
+                                will be used, from your Project, in (and relative to)
+                                the project directory that contains the excel file.
+                                (Note: * indicates required fields)
+                            </p>
+                        </div>
+                        <form layout="column" class="dialog-form">
+                            <md-input-container md-no-float>
+                                <label>Select an Excel file for ETL</label>
+                                <md-select ng-required="true" ng-model="$ctrl.excelFile">
+                                    <md-option ng-value="choice"
+                                               ng-repeat="choice in $ctrl.excel_files">
+                                        {{::choice}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container md-no-float>
+                                <label>Experiment Name</label>
+                                <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
+                            </md-input-container>
+                            <md-input-container md-no-float>
+                                <label>Experiment Description</label>
+                                <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
+                            </md-input-container>
+                        </form>
                     </div>
-                    <form layout="column" class="dialog-form">
-                        <md-input-container md-no-float>
-                            <label>Experiment Name</label>
-                            <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
-                        </md-input-container>
-                        <md-input-container md-no-float>
-                            <label>Experiment Description</label>
-                            <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
-                        </md-input-container>
-                        <md-input-container md-no-float>
-                            <label>Excel file for ETL</label>
-                            <md-select ng-required="true" ng-model="$ctrl.excelFile">
-                                <md-option ng-value="choice"
-                                           ng-repeat="choice in $ctrl.excel_files">
-                                    {{::choice}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                    </form>
                 </md-tab-body>
             </md-tab>
             <md-tab ng-if="False">

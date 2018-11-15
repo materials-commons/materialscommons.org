@@ -216,7 +216,7 @@ class MCProjectHomeComponentController {
                 console.log("Before dialog: ", this.excelFileList);
                 this.$mdDialog.show({
                     templateUrl: 'app/modals/mc-etl-upload-dialog.html',
-                    controller: EtlUploadDialogController,
+                    controller: EtlDialogController,
                     controllerAs: '$ctrl',
                     bindToController: true,
                     locals: {
@@ -225,7 +225,7 @@ class MCProjectHomeComponentController {
                     }
                 }).then(
                     () => {
-                        this.toast.error("ETL Done; click 'Sync'");
+                        this.toast.success("ETL Done; click 'Sync'");
                         this._reloadComponentState();
                     },
                     () => {}
@@ -426,7 +426,7 @@ class DeleteExperimentsDialogController {
     }
 }
 
-class EtlUploadDialogController {
+class EtlDialogController {
     /*@ngInject*/
     constructor($mdDialog, Upload, etlServerAPI, sidenavGlobus, toast, User, globusEndpointSaver) {
         this.$mdDialog = $mdDialog;

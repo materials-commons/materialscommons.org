@@ -18,17 +18,19 @@
     </md-dialog-content>
     <md-dialog-content ng_if="$ctrl.url" layout-margin>
         <p>
-            To upload one or more files from your Globus endpoint to the top level directory
-                of the project '{{$ctrl.project.name}}':
+            To upload a file or directory to your project '{{$ctrl.project.name}}': this
+            presents a 'one time use' Materials Commons globus endpoint to
+            the top level directory of your project in the globus transfer web app.
+            Click, set the source by browsing in your globus endpoint to the
+            desired directory or file,
+            and then transfer to the indicated destination.
             <br />
-            this
-            <a ng-click="$ctrl.dismiss()"
+            <a class="md-button md-raised md-primary" ng-click="$ctrl.dismiss()"
                  href="{{$ctrl.url}}"
                  target="_blank">
-                one-time-use link</a>
-            to the destination endpoint {{$ctrl.upload_endpoint}}.
+                one-time-use link to the Materials Commons destination endpoint</a>
             <br />
-            Simply click and browse to your globus endpoint. You may return to this dialog
+            You may return to this dialog
             to obtain additional upload links. Each link should only be used once.
         </p>
     </md-dialog-content>

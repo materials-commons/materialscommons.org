@@ -127,7 +127,7 @@ class GlobusDownload:
                 path = "/" + path
             if not path.endswith('/'):
                 path = path + "/"
-            url_base = "https://www.globus.org/app/transfer"
+            url_base = "https://app.globus.org/file-manager"
             path = path.replace('/', '%2F')
             url = '{}?origin_id={}&origin_path={}'.format(url_base, origin_id, path)
             return url
