@@ -9,7 +9,7 @@ class StateStoreService {
 
     updateState(key, value) {
         this.states[key] = angular.copy(value);
-        let val = angular.copy(this.states[key]);
+        let val = this.states[key];
         this.bus.fireEvent(key, val);
     }
 
