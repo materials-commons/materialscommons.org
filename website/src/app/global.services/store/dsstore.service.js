@@ -61,6 +61,9 @@ class MCDSStoreService {
     }
 
     transformDataset(dataset, project) {
+        if (!project.samples) {
+            return dataset;
+        }
         let projectSamplesLookup = _.indexBy(project.samples, 'id');
         let transformedSamples = [],
             transformedDS = angular.copy(dataset);
@@ -68,7 +71,7 @@ class MCDSStoreService {
             transformedSamples.push(projectSamplesLookup[s.id]);
         });
         transformedDS.samples = angular.copy(transformedSamples);
-        return transformedDS;
+        return angular.copy(transformedDS);
     }
 }
 
