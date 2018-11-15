@@ -3,7 +3,7 @@
         <div style="padding: 0 0 8px 0; background-colorx: #0656b1;background-color: #4393ee">
             <div style="margin-top: 15px; background-colorx: #1a82d4; padding: 3px;">
                 <a class="md-subhead white margin-left-10 project-sidenav-title" ui-sref="project.home">
-                    <i class="fa fa-fw fa-home"></i>{{$ctrl.project.name}}
+                    <i class="fa fa-fw fa-home"></i>{{$ctrl.state.project.name}}
                 </a>
             </div>
         </div>
@@ -19,7 +19,7 @@
 
             <div class="padding-3" ui-sref-active="pst-active">
                 <a class="project-sidenav-tool margin-left-30" ui-sref="project.collaborators">
-                    <i class="fa fa-fw fa-user-circle"></i>Collaborators({{($ctrl.project.users | toSize) - 1}})
+                    <i class="fa fa-fw fa-user-circle"></i>Collaborators({{$ctrl.state.project.users_count - 1 | number}})
                 </a>
             </div>
 
@@ -39,10 +39,10 @@
             <div class="padding-3">
                 <md-menu class="margin-left-30">
                     <a aria-label="Experiments" style="color:white; text-transform: none" ng-click="$mdMenu.open()">
-                        <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.project.experiments | toSize}})
+                        <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.state.project.experiments | toSize}})
                     </a>
                     <md-menu-content width="10">
-                        <md-menu-item ng-repeat="experiment in $ctrl.project.experiments | toList | orderBy:'name'">
+                        <md-menu-item ng-repeat="experiment in $ctrl.state.project.experiments | orderBy:'name'">
                             <md-button ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
                                 <i class="fa fa-fw flask"></i>{{experiment.name}}
                             </md-button>

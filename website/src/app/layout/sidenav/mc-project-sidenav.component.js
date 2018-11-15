@@ -1,14 +1,11 @@
 class MCProjectSidenavComponentController {
     /*@ngInject*/
-    constructor($state, $window, mcprojstore, mcprojectstore2, $timeout, ProjectModel, projectFileTreeAPI,
+    constructor($state, $window, $timeout, projectFileTreeAPI,
                 $mdDialog, mcRouteState, $q, User, sidenavGlobus, $interval, blockUI) {
         this.$state = $state;
         this.$window = $window;
-        this.mcprojstore = mcprojstore;
-        this.mcprojectstore2 = mcprojectstore2;
         this.experiment = null;
         this.$timeout = $timeout;
-        this.ProjectModel = ProjectModel;
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.$mdDialog = $mdDialog;
         this.mcRouteState = mcRouteState;
@@ -18,37 +15,30 @@ class MCProjectSidenavComponentController {
         this.$interval = $interval;
         this.blockUI = blockUI;
         this.isAuthenticatedToGlobus = false;
+
+        this.state = {
+            project: null,
+            experiment: null,
+            files: null,
+        };
     }
 
     $onInit() {
-        this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTEXPERIMENT, this.mcprojstore.EVSET, (e) => {
-            this.$timeout(() => {
-                if (!e) {
-                    this.experiment = null;
-                    return;
-                }
-
-                if (!this.experiment) {
-                    this.experiment = angular.copy(e);
-                } else if (this.experiment.id !== e.id) {
-                    this.experiment = angular.copy(e);
-                }
-            });
-        });
-
-        this.project = this.mcprojstore.currentProject;
         this.isBetaUser = this.User.isBetaUser();
         this.sidenavGlobus.isAuthenticated().then(authStatus => this.isAuthenticatedToGlobus = authStatus);
     }
 
+    $onChanges(changes) {
+        if (changes.project) {
+            this.state.project = angular.copy(changes.project.currentValue);
+            console.log('this.state.project', this.state.project);
+        }
+    }
+
     loadProjectFiles() {
-        if (!this.project.files) {
-            return this.projectFileTreeAPI.getProjectRoot(this.project.id).then((files) => {
-                return this.mcprojstore.updateCurrentProject(currentProject => {
-                    this.project.files = files;
-                    currentProject.files = this.project.files;
-                    return currentProject;
-                });
+        if (!this.state.files) {
+            return this.projectFileTreeAPI.getProjectRoot(this.state.project.id).then((files) => {
+                this.state.files = files;
             });
         } else {
             return this.$q.resolve(null);
@@ -56,12 +46,10 @@ class MCProjectSidenavComponentController {
     }
 
     $onDestroy() {
-        this.unsubscribe();
     }
 
     refreshProject() {
-        this.mcprojectstore2.reloadProject(this.project.id);
-        this.ProjectModel.getProjectForCurrentUser(this.project.id).then((p) => this._updateProject(p));
+
     }
 
     startGlobusDownloadTransfer() {
@@ -207,5 +195,8 @@ class ModifyProjectShortcutsDialogController {
 
 angular.module('materialscommons').component('mcProjectSidenav', {
     template: require('./mc-project-sidenav.html'),
-    controller: MCProjectSidenavComponentController
+    controller: MCProjectSidenavComponentController,
+    bindings: {
+        project: '<',
+    }
 });
