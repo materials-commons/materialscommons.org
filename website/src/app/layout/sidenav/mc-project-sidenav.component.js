@@ -49,7 +49,7 @@ class MCProjectSidenavComponentController {
     }
 
     refreshProject() {
-
+        this.onSync();
     }
 
     startGlobusDownloadTransfer() {
@@ -89,30 +89,6 @@ class MCProjectSidenavComponentController {
                 }
             });
         }, 2000, 2);
-    }
-
-
-
-    _updateProject(project) {
-        this.mcprojstore.updateCurrentProject((currentProject, transformers) => {
-            let transformedExperiments = project.experiments.map(e => transformers.transformExperiment(e));
-            project.experiments = _.indexBy(transformedExperiments, 'id');
-            project.experimentsFullyLoaded = true;
-            this.project = project;
-            return project;
-        }).then(
-            () => {
-                if (!this.project.files) {
-                    this.projectFileTreeAPI.getProjectRoot(this.project.id).then((files) => {
-                        this.mcprojstore.updateCurrentProject(currentProject => {
-                            this.project.files = files;
-                            currentProject.files = this.project.files;
-                            return currentProject;
-                        });
-                    });
-                }
-            }
-        );
     }
 
     modifyShortcuts() {
@@ -198,5 +174,6 @@ angular.module('materialscommons').component('mcProjectSidenav', {
     controller: MCProjectSidenavComponentController,
     bindings: {
         project: '<',
+        onSync: '&'
     }
 });

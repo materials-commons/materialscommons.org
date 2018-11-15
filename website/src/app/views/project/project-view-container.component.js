@@ -1,8 +1,10 @@
 class MCProjectViewContainerComponentController {
     /*@ngInject*/
-    constructor(mcStateStore, mcRouteState) {
+    constructor(mcStateStore, mcRouteState, projectsAPI, $stateParams) {
         this.mcStateStore = mcStateStore;
         this.mcRouteState = mcRouteState;
+        this.projectsAPI = projectsAPI;
+        this.$stateParams = $stateParams;
         this.state = {
             project: mcStateStore.getState('project'),
         };
@@ -18,6 +20,10 @@ class MCProjectViewContainerComponentController {
 
     getRoute() {
         return this.mcRouteState.getRouteName();
+    }
+
+    handleSync() {
+        this.projectsAPI.getProjectOverview(this.$stateParams.project_id).then(p => this.mcStateStore.updateState('project', p));
     }
 }
 
