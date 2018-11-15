@@ -31,6 +31,7 @@ import './natural-sort.service';
 import './store/mcprojstore.service';
 import './store/dsstore.service';
 import './store/projectstore.service';
+import './store/state-store.service';
 import './project-shortcuts.service';
 import './mc-route-state.service';
 import './process-edit.service';
