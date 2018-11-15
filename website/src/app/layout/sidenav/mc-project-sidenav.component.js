@@ -95,8 +95,8 @@ class MCProjectSidenavComponentController {
         this.loadProjectFiles().then(
             () => {
                 let dirs = [];
-                if (this.project.files[0]) {
-                    dirs = this.project.files[0].children.filter(d => d.data.otype === 'directory').map(d => d.data);
+                if (this.state.files[0]) {
+                    dirs = this.state.files[0].children.filter(d => d.data.otype === 'directory').map(d => d.data);
                 }
 
                 this.$mdDialog.show({
@@ -105,7 +105,7 @@ class MCProjectSidenavComponentController {
                     controllerAs: '$ctrl',
                     bindToController: true,
                     locals: {
-                        project: this.project,
+                        project: this.state.project,
                         dirs: dirs
                     }
                 }).then(
