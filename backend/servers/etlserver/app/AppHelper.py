@@ -6,7 +6,8 @@ import os.path as os_path
 from materials_commons.api import get_project_by_id, get_all_projects
 
 from ..internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
-from ..utils.LoggingHelper import LoggingHelper
+# from ..utils.LoggingHelper import LoggingHelper
+
 
 class AppHelper:
     def __init__(self, apikey):
@@ -14,11 +15,14 @@ class AppHelper:
         self.apikey = apikey
 
     def get_project_excel_files(self, project_id):
-        project = get_project_by_id(project_id, apikey=self.apikeyapikey)
+        self.log.info("get_project_excel_files: project_id = {}".format(project_id))
+        project = get_project_by_id(project_id, apikey=self.apikey)
+        self.log.info("got project = {}".format(project.name))
         if not project:
             raise AttributeError("Project not found for projectId = {}".format(project_id))
         directory = project.get_top_directory()
         found_files = self.recursively_find_excel_files(directory, [], '/')
+        self.log.info("found {} excel files".format(len(found_files)))
         return found_files
 
     def recursively_find_excel_files(self, directory, files_so_far, path):
@@ -37,8 +41,7 @@ class AppHelper:
 
     def run_project_based_etl(self, project_id, excel_file_path, name, desc):
         data_dir_path = os_path.dirname(excel_file_path)
-        self.log.debug("run_project_based_etl")
-        self.log.debug("  project_id = {}".format(project_id))
+        self.log.info("run_project_based_etl: project_id = {}".format(project_id))
         self.log.debug("  excel_file_path = {}".format(excel_file_path))
         self.log.debug("  data_dir_path = {}".format(data_dir_path))
         self.log.debug("  exp_name = {}".format(name))
@@ -46,6 +49,7 @@ class AppHelper:
 
         builder = BuildProjectExperiment(self.apikey)
         builder.build(excel_file_path, data_dir_path, project_id, name, desc)
+        self.log.info("done")
         return {"status": "ok"}
 
 
