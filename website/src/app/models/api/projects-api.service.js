@@ -23,6 +23,10 @@ class ProjectsAPIService {
             });
     }
 
+    getProjectAccessEntries(projectId) {
+        return this.Restangular.one('v4').one('ui').one('getProjectAccessEntries').customPOST({project_id: projectId}).then(u => u.plain());
+    }
+
     //////////////////////////// Check if these calls are being used ////////////////////////////////////
     getAllProjects() {
         return this.projectsAPIRoute().getList().then(projects => projects.plain());

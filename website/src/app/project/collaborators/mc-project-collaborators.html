@@ -33,13 +33,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr md-row class="md-row-hover" ng-repeat="user in $ctrl.project.users | orderBy: 'user_id'">
-                        <td md-cell>{{user.fullname}} ({{user.user_id}})</td>
+                    <tr md-row class="md-row-hover" ng-repeat="user in $ctrl.users | orderBy: 'id'">
+                        <td md-cell>{{user.fullname}} ({{user.id}})</td>
                         <td md-cell ng-if="$ctrl.isOwner($ctrl.signedInUser)">
-                            <div ng-if="$ctrl.signedInUser === user.user_id">
+                            <div ng-if="$ctrl.signedInUser === user.id">
                                 Owner
                             </div>
-                            <div ng-if="$ctrl.signedInUser !== user.user_id">
+                            <div ng-if="$ctrl.signedInUser !== user.id">
                                 <md-button ng-click="$ctrl.deleteUser(user.id)" class="md-warn">Remove</md-button>
                             </div>
                         </td>
