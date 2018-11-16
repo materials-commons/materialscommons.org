@@ -43,25 +43,29 @@ class MCProjectHomeComponentController {
 
     }
 
+    $onDestroy() {
+        // this.unsubscribe();
+    }
+
     getProjectActivities() {
         this.projectsAPI.getActivities(this.project.id).then(
             (activities) => {
                 activities.forEach(a => {
                     switch (a.item_type) {
-                        case "project":
-                            a.icon = "fa-briefcase";
+                        case 'project':
+                            a.icon = 'fa-briefcase';
                             break;
-                        case "experiment":
-                            a.icon = "fa-flask";
+                        case 'experiment':
+                            a.icon = 'fa-flask';
                             break;
-                        case "file":
-                            a.icon = "fa-files-o";
+                        case 'file':
+                            a.icon = 'fa-files-o';
                             break;
-                        case "sample":
-                            a.icon = "fa-cubes";
+                        case 'sample':
+                            a.icon = 'fa-cubes';
                             break;
-                        case "process":
-                            a.icon = "fa-code-fork";
+                        case 'process':
+                            a.icon = 'fa-code-fork';
                             break;
                     }
                     a.message = `${a.event_type === 'create' ? 'Added' : 'Modified'} ${a.item_type} ${a.item_name}`;
@@ -69,10 +73,6 @@ class MCProjectHomeComponentController {
                 this.activities = activities;
             }
         );
-    }
-
-    $onDestroy() {
-        this.unsubscribe();
     }
 
     getProjectExperiments() {
@@ -181,23 +181,23 @@ class MCProjectHomeComponentController {
 
     gotoWorkflow(e) {
         if (!this.selectingExperiments) {
-            this.$state.go("project.experiment.workflow", {experiment_id: e.id});
+            this.$state.go('project.experiment.workflow', {experiment_id: e.id});
         }
     }
 
-    etlStart(){
+    etlStart() {
         this.excelFileList = [];
         this.etlServerAPI.getEtlFilesFromProject(this.project.id).then(
             (results) => {
                 this.excelFileList = results.file_list;
-                console.log('this.excelFileList =', this.excelFileList)
+                console.log('this.excelFileList =', this.excelFileList);
             },
             () => {
                 this.toast.error('Project contains no ETL files');
                 this.excelFileList = [];
             }
-        ).then( () => {
-                console.log("Before dialog: ", this.excelFileList);
+        ).then(() => {
+            console.log('Before dialog: ', this.excelFileList);
                 this.$mdDialog.show({
                     templateUrl: 'app/modals/mc-etl-upload-dialog.html',
                     controller: EtlDialogController,
@@ -209,16 +209,16 @@ class MCProjectHomeComponentController {
                     }
                 }).then(
                     () => {
-                        this.toast.success("ETL Done; click 'Sync'");
+                        this.toast.success('ETL Done; click \'Sync\'');
                         this._reloadComponentState();
                     },
                     () => {}
-                )
+                );
             }
         );
     }
 
-    etlReportImmediateComplete(status){
+    etlReportImmediateComplete(status) {
         this.$mdDialog.show({
             templateUrl: 'app/modals/mc-etl-message-dialog.html',
             controller: EtlMessageDialogController,
@@ -226,7 +226,7 @@ class MCProjectHomeComponentController {
             bindToController: true,
             locals: {
                 status: status,
-                message_text: "",
+                message_text: '',
                 should_sync_flag: true
             }
         }).then(() => {
@@ -235,7 +235,7 @@ class MCProjectHomeComponentController {
         });
     }
 
-    etlReportComplexError(status){
+    etlReportComplexError(status) {
         this.etlStatusRecordId = status.status_record_id;
         this.$mdDialog.show({
             templateUrl: 'app/modals/mc-etl-status-dialog.html',
@@ -392,12 +392,12 @@ class EtlDialogController {
         this.toast = toast;
         this.User = User;
         this.user_id = User.u();
-        this.name = "";
-        this.description = "";
+        this.name = '';
+        this.description = '';
         // for direct upload
         this.files = [];
         // for Project upload
-        this.excelFile = "";
+        this.excelFile = '';
 
         // deprecated!
         // for Globus upload
@@ -423,8 +423,8 @@ class EtlDialogController {
         let data = {};
         data.project_id = this.project.id;
         data.excel_file_path = this.excelFile;
-        console.log("project_based_etl");
-        console.log("project_based_etl", this.project.id, this.excelFile);
+        console.log('project_based_etl');
+        console.log('project_based_etl', this.project.id, this.excelFile);
         this.etlServerAPI.createExperimentFromEtl(
             this.project.id, this.excelFile, this.name, this.description).then(
             (reply) => {
@@ -432,9 +432,9 @@ class EtlDialogController {
             },
             (e) => {
                 if (e.status === 502) {
-                    this.toast.error("Excel file ETL; Service not available. Contact Admin.");
+                    this.toast.error('Excel file ETL; Service not available. Contact Admin.');
                 } else if (e.status > 200) {
-                    this.toast.error("Excel file ETL; Service not available. Code - " + e.status + ". Contact Admin.");
+                    this.toast.error('Excel file ETL; Service not available. Code - ' + e.status + '. Contact Admin.');
                 }
                 this.$mdDialog.cancel(e);
             }
@@ -452,15 +452,15 @@ class EtlDialogController {
         data.globus_excel_file = this.spreadsheet_rel_path;
         data.globus_data_dir = this.data_dir_rel_path;
         this.globusEndpointSaver.saveEtlEndpoint(this.base_path, this.ep_uuid, this.spreadsheet_rel_path, this.data_dir_rel_path);
-        return this.etlServerAPI.startBackgroundEtlUpload(data).then (
+        return this.etlServerAPI.startBackgroundEtlUpload(data).then(
             (reply) => {
                 this.$mdDialog.hide(reply);
             },
             (e) => {
                 if (e.status === 502) {
-                    this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
+                    this.toast.error('Excel file uplaod; Service not available. Contact Admin.');
                 } else if (e.status > 200) {
-                    this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
+                    this.toast.error('Excel file uplaod; Service not available. Code - ' + e.status + '. Contact Admin.');
                 }
                 this.$mdDialog.cancel(e);
             }
@@ -480,7 +480,7 @@ class EtlDialogController {
         }).then(
             (uploaded) => {
                 let results = {
-                    status: "DONE",
+                    status: 'DONE',
                     data: uploaded.data
                 };
                 this.$mdDialog.hide(results);
@@ -488,9 +488,9 @@ class EtlDialogController {
             },
             (e) => {
                 if (e.status === 502) {
-                    this.toast.error("Excel file uplaod; Service not available. Contact Admin.");
+                    this.toast.error('Excel file uplaod; Service not available. Contact Admin.');
                 } else if (e.status > 200) {
-                    this.toast.error("Excel file uplaod; Service not available. Code - " + e.status + ". Contact Admin.");
+                    this.toast.error('Excel file uplaod; Service not available. Code - ' + e.status + '. Contact Admin.');
                 }
                 this.$mdDialog.cancel(e);
                 this.isUploading = false;
@@ -527,15 +527,15 @@ class EtlStatusDialogController {
     }
 
     isError() {
-        return (this.didFail() || (this.status.status === "ERROR"));
+        return (this.didFail() || (this.status.status === 'ERROR'));
     }
 
     didFail() {
-        return (this.status.status === "Fail");
+        return (this.status.status === 'Fail');
     }
 
     didSucceed() {
-        return (this.status.status === "Success");
+        return (this.status.status === 'Success');
     }
 
 }
@@ -547,7 +547,7 @@ class EtlMessageDialogController {
         this.$mdDialog = $mdDialog;
     }
 
-    shouldSync(){
+    shouldSync() {
         return this.should_sync_flag;
     }
 
