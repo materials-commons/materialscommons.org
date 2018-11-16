@@ -1,4 +1,4 @@
-class ProjectShortcutsService {
+class ModifyProjectShortcutsService {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
@@ -37,8 +37,8 @@ class ModifyProjectShortcutsDialogController {
     loadProjectDirs() {
         this.projectFileTreeAPI.getProjectRoot(this.project.id).then((files) => {
             this.state.dirs = files[0].children.filter(d => d.data.otype === 'directory').map(d => d.data);
-            this.state.defaultShortcuts = projectShortcuts.defaultShortcutPaths(this.project.name, this.state.dirs);
-            this.state.otherDirs = projectShortcuts.filterExistingDefaults(angular.copy(this.state.dirs));
+            this.state.defaultShortcuts = this.projectShortcuts.defaultShortcutPaths(this.project.name, this.state.dirs);
+            this.state.otherDirs = this.projectShortcuts.filterExistingDefaults(angular.copy(this.state.dirs));
             this.state.dirsMap = _.indexBy(this.state.dirs, 'path');
         });
     }
@@ -78,4 +78,4 @@ class ModifyProjectShortcutsDialogController {
     }
 }
 
-angular.module('materialscommons').service('projectShortcuts', ProjectShortcutsService);
+angular.module('materialscommons').service('modifyProjectShortcuts', ModifyProjectShortcutsService);
