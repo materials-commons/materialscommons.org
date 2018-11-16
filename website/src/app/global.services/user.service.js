@@ -99,6 +99,10 @@ function UserService($window, $log, Restangular) {
             return Restangular.one('v2').one('users').customPUT({affiliation: affiliation});
         },
 
+        updateGlobusUserName: function(globusName) {
+            return Restangular.one('v2').one('users').customPUT({globus_user: globusName});
+        },
+
         updateDemoInstalled: function(demoInstalled) {
             return Restangular.one('v2').one('users').customPUT({demo_installed: demoInstalled});
         },

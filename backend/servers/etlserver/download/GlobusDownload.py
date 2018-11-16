@@ -4,7 +4,7 @@ from random import randint
 
 from materials_commons.api import get_project_by_id
 
-from ..common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
+from ..common.MaterialsCommonsACLInterface import MaterialsCommonsACLInterface
 from ..common.access_exceptions import RequiredAttributeException
 from ..common.McdirHelper import McdirHelper
 from ..database.DatabaseInterface import DatabaseInterface
@@ -22,7 +22,7 @@ class GlobusDownload:
         self.path_list = None
         self.transfer_client = None
         self.user_dir = None
-        self.mc_globus_interface = MaterialsCommonsGlobusInterface(mc_user_id)
+        self.mc_globus_acl_interface = MaterialsCommonsACLInterface(mc_user_id)
         download_ep_id = os.environ.get('MC_CONFIDENTIAL_CLIENT_ENDPOINT')
         self.log.info("Download endpoint id = {}".format(download_ep_id))
         if not download_ep_id:
@@ -42,7 +42,12 @@ class GlobusDownload:
         return self.exposed_ep_url()
 
     def setup(self):
-        self.mc_globus_interface.setup_transfer_clients()
+        probe = self.mc_globus_acl_interface.set_user_globus_id()
+        if not probe:
+            self.log.error("Users globus_user_id is undefined")
+            raise RequiredAttributeException("Globus user id is not set correctly")
+        self.log.info("Using globus id: {}".format(probe))
+        self.mc_globus_acl_interface.get_cc_transfer_client()
         project = get_project_by_id(self.project_id, self.apikey)
         self.log.info("Get file list for project = {} ({})".
                       format(project.name, project.id))
@@ -111,7 +116,7 @@ class GlobusDownload:
     def expose(self):
         self.log.info("Expose - start")
         self.log.info("Setting ACL rule for path = {}".format(self.mc_endpoint_path))
-        self.mc_globus_interface.set_user_access_rule(self.mc_endpoint_path)
+        self.mc_globus_acl_interface.set_user_access_rule(self.mc_endpoint_path)
         self.log.info("Expose - end")
 
     def exposed_ep_url(self):
@@ -122,7 +127,7 @@ class GlobusDownload:
                 path = "/" + path
             if not path.endswith('/'):
                 path = path + "/"
-            url_base = "https://www.globus.org/app/transfer"
+            url_base = "https://app.globus.org/file-manager"
             path = path.replace('/', '%2F')
             url = '{}?origin_id={}&origin_path={}'.format(url_base, origin_id, path)
             return url

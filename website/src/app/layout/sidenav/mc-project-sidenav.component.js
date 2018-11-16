@@ -25,7 +25,6 @@ class MCProjectSidenavComponentController {
 
     $onInit() {
         this.isBetaUser = this.User.isBetaUser();
-        this.sidenavGlobus.isAuthenticated().then(authStatus => this.isAuthenticatedToGlobus = authStatus);
     }
 
     $onChanges(changes) {
@@ -52,43 +51,12 @@ class MCProjectSidenavComponentController {
         this.onSync();
     }
 
-    startGlobusDownloadTransfer() {
+    startGlobusDownload() {
         this.sidenavGlobus.globusDownload(this.project)
     }
 
-    showGlobusTasks() {
-        this.sidenavGlobus.showGlobusTasks(this.project);
-    }
-
-    startGlobusTransfer() {
+    setupGlobusUpload() {
         this.sidenavGlobus.globusUpload(this.project);
-    }
-
-    loginToGlobus() {
-        this.sidenavGlobus.loginToGlobus().then(() => this._checkGlobusAuthStatus());
-    }
-
-    logoutFromGlobus() {
-        this.sidenavGlobus.logoutFromGlobus().then(() => this._checkGlobusAuthStatus());
-    }
-
-    _checkGlobusAuthStatus() {
-        let promise = null;
-        this.blockUI.stop();
-        promise = this.$interval(() => {
-            this.blockUI.stop();
-            this.sidenavGlobus.isAuthenticated().then(authStatus => {
-                console.log(`${this.isAuthenticatedToGlobus}/${authStatus}`);
-                // check if we are logging out
-                if (this.isAuthenticatedToGlobus && !authStatus) {
-                    this.isAuthenticatedToGlobus = authStatus;
-                    this.$interval.cancel(promise);
-                } else if (!this.isAuthenticatedToGlobus && authStatus) {
-                    this.isAuthenticatedToGlobus = authStatus;
-                    this.$interval.cancel(promise);
-                }
-            });
-        }, 2000, 2);
     }
 
     modifyShortcuts() {

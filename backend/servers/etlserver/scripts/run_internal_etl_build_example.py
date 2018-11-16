@@ -5,38 +5,26 @@ import argparse
 from materials_commons.api import get_all_projects
 
 from ..utils.LoggingHelper import LoggingHelper
-from ..internal_etl.MCInternalBuildProjectExperimentFromETL import MCInternalBuiltProjectExperimentFromELT
-from ..internal_etl.MCInternalETLPrepare import MCInternalETLPrepare
+from ..internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
 
-
-def main(project, user_id, excel_file_path, data_dir_path):
+def main(project, user_id, apikey, excel_file_path, data_dir_path):
     main_log = logging.getLogger("main")
 
     experiment_name = "Test from excel"
     experiment_description = "An experiment built via etl from test data"
 
     main_log.info("user_id = {}".format(user_id))
+    main_log.info("apikey = {}".format(apikey))
     main_log.info("project = '{}' ({})".format(project.name, project.id))
     main_log.info("experiment_name = {}".format(experiment_name))
     main_log.info("experiment_description = {}".format(experiment_description))
     main_log.info("excel_file_path = {}".format(excel_file_path))
     main_log.info("data_dir_path = {}".format(data_dir_path))
 
-    main_log.info("Starting setup")
-    handler = MCInternalETLPrepare(user_id)
-    status_record_id = handler.setup_etl(project.id, experiment_name, experiment_description,
-                                         excel_file_path, data_dir_path)
-    main_log.info("Starting verify")
-    verify_status = handler.verify(status_record_id)
-    main_log.info("Verify status = {}".format(verify_status))
-
-    if not verify_status['status'] == 'SUCCESS':
-        main_log.info("Aborting Transfer and ELT because of verify failure(s) = {}".format(verify_status))
-        exit(-1)
-
-    handler = MCInternalBuiltProjectExperimentFromELT()
+    handler = BuildProjectExperiment(apikey)
     main_log.info("Starting ETL")
-    etl_status = handler.build_experiment(status_record_id)
+    etl_status = handler.build(excel_file_path, data_dir_path, project.id,
+                               experiment_name, exp_description=experiment_description)
     main_log.info("ETL status = {}".format(etl_status))
 
 
@@ -101,4 +89,6 @@ if __name__ == "__main__":
     startup_log.info("Found match with name-match = {}; project.name = {}; id = {}".
                    format(args.name, project_selected.name, project_selected.id))
 
-    main(project_selected, args.user, args.input, args.data)
+    main(project_selected, args.user, args.apikey, args.input, args.data)
+
+    startup_log.info("Done; project name = {}".format(project_selected.name))

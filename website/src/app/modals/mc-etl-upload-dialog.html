@@ -1,15 +1,52 @@
 <md-dialog flex="50">
     <md-toolbar layout="row">
-        <div ng-if="!$ctrl.currentTab" layout-margin>
-            ETL - Create Experiment using Globus
-        </div>
-        <div ng-if="$ctrl.currentTab" layout-margin>
-            ETL - Create Experiment using direct upload
+        <div layout-margin>
+            ETL - Create Experiment from ETL spreadsheet
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
         <md-tabs md-selected="$ctrl.currentTab" md-stretch-tabs md-dynamic-height flex="100" layout-margin>
             <md-tab>
+                <md-tab-label>Using Project Files</md-tab-label>
+                <md-tab-body>
+                    <div ng-if="!$ctrl.excel_files.length">
+                        Warning: There are no Excel files in this project. Upload files and data using the
+                        'Globus Upload To Project' item in the left-side navigation bar.
+                    </div>
+                    <div ng-if="$ctrl.excel_files.length">
+                        <div layout="column">
+                            <p>To create new experiment in this project,
+                                <b>{{$ctrl.project.name}}</b>,
+                                select an Excel file from the project. For that ETL,
+                                the data files, as specified in your spreadsheet,
+                                will be used, from your Project, in (and relative to)
+                                the project directory that contains the excel file.
+                                (Note: * indicates required fields)
+                            </p>
+                        </div>
+                        <form layout="column" class="dialog-form">
+                            <md-input-container md-no-float>
+                                <label>Select an Excel file for ETL</label>
+                                <md-select ng-required="true" ng-model="$ctrl.excelFile">
+                                    <md-option ng-value="choice"
+                                               ng-repeat="choice in $ctrl.excel_files">
+                                        {{::choice}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container md-no-float>
+                                <label>Experiment Name</label>
+                                <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
+                            </md-input-container>
+                            <md-input-container md-no-float>
+                                <label>Experiment Description</label>
+                                <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
+                            </md-input-container>
+                        </form>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab ng-if="False">
                 <md-tab-label>Using Globus</md-tab-label>
                 <md-tab-body>
                     <div layout="column">
@@ -76,18 +113,14 @@
                 <md-tab-label>Drag and Drop</md-tab-label>
                 <md-tab-body>
                     <form layout="column" class="dialog-form">
-                        <p> To create an experiment <b>without uploading files</b>,
-                            fill out the form and drag/drop (or open)
-                            the Excel spreadsheet, below.
-                        </p>
-                        <p> To create an experiment with the data files uploaded, using Globus,
-                            switch to the alternate dialog using the 'USING GLOBUS' tab (above).
+                        <p> To create new experiment in the project <b>{{$ctrl.project.name}}</b>,
+                            <b>without data files</b>, fill out the form below and drag/drop (or open)
+                            the Excel spreadsheet from your machine. (Note: * indicates required fields)
                         </p>
                         <br />
-                        <p> To create new experiment in the project <b>{{$ctrl.project.name}}</b>.
-                            The experiment name and the excel file are required (*).
+                        <p> To create an experiment with the data files see the tab
+                            'USING PROJECT FILES' and follow the instructions there.
                         </p>
-                        <br />
                         <md-input-container md-no-float>
                             <label>Experiment Name</label>
                             <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
@@ -111,13 +144,19 @@
             </md-tab>
         </md-tabs>
     </md-dialog-content>
-    <md-dialog-actions  ng-if="$ctrl.currentTab" layout="row">
+    <md-dialog-actions  ng-if="$ctrl.currentTab == 0" layout="row">
+        <md-button class="md-primary"
+                   ng-disabled="!$ctrl.project_upload_ok()"
+                   ng-click="$ctrl.etlInProject()">Run ETL</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+    <md-dialog-actions  ng-if="$ctrl.currentTab == 1" layout="row">
         <md-button class="md-primary"
                    ng-disabled="!(($ctrl.files.length > 0) && $ctrl.name)"
                    ng-click="$ctrl.uploadDirect()">Upload</md-button>
         <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
     </md-dialog-actions>
-    <md-dialog-actions  ng-if="!$ctrl.currentTab" layout="row">
+    <md-dialog-actions  ng-if="$ctrl.currentTab == 2" layout="row">
         <md-button class="md-primary"
                    ng-disabled="!$ctrl.globus_upload_ok()"
                    ng-click="$ctrl.uploadWithGlobus()">Start Upload</md-button>

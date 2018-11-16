@@ -21,8 +21,8 @@ class SidenavGlobusService {
 
     globusUpload(project) {
         return this.$mdDialog.show({
-                templateUrl: 'app/modals/globus-upload-transfer-dialog.html',
-                controller: GlobusUploadTransferDialogController,
+                templateUrl: 'app/modals/globus-upload-dialog.html',
+                controller: GlobusUploadDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
                 locals: {
@@ -32,80 +32,31 @@ class SidenavGlobusService {
         );
     }
 
-    showGlobusTasks(project) {
-        return this.$mdDialog.show({
-                templateUrl: 'app/modals/globus-report-status-dialog.html',
-                controller: GlobusReportStatusDialogController,
-                controllerAs: '$ctrl',
-                bindToController: true,
-                locals: {
-                    project: project,
-                }
-            }
-        );
-    }
-
-    loginToGlobus() {
-        return this.$mdDialog.show({
-            templateUrl: 'app/modals/globus-login-logout-dialog.html',
-            controller: GlobusLoginLogoutDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {}
-        });
-    }
-
-    logoutFromGlobus() {
-        return this.$mdDialog.show({
-            templateUrl: 'app/modals/globus-login-logout-dialog.html',
-            controller: GlobusLoginLogoutDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-            locals: {}
-        });
-    }
-
-    isAuthenticated() {
-        return this.etlServerAPI.getGlobusAuthStatus().then(authStatus => authStatus.status.authenticated, () => false);
-    }
 }
 
-class GlobusUploadTransferDialogController {
+class GlobusUploadDialogController {
     /*@ngInject*/
-    constructor($mdDialog, etlServerAPI, globusEndpointSaver) {
-        this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
-        this.globusEndpointSaver = globusEndpointSaver;
-        let globusEndpoint = globusEndpointSaver.getNonEtlEndpoint();
-        this.endpoint = globusEndpoint.uuid;
-        this.endpointPath = globusEndpoint.path;
-        this.uploadName = 'undefined';
-        this.uploadUniquename = 'undefined';
-        this.uploadId = 'undefined';
-        this.status = '';
-        this.etlServerAPI.getSystemGlobusInformation()
-            .then(infoResults => {
-                console.log('Info results returned from server: ', infoResults);
-                this.uploadName = infoResults.upload_user_name;
-                this.uploadUniquename = infoResults.upload_user_unique_name;
-                this.uploadId = infoResults.upload_user_id;
-            });
+    constructor($mdDialog, User, globusInterfaceAPI) {
+        this.$mdDialog = $mdDialog;this.user =
+        this.url = null;
+        this.error = null;
+        globusInterfaceAPI.setupUploadEndpoint(this.project.id).then(
+            results => {
+                if (results.globus_url) {
+                    this.url = results.globus_url;
+                } else {
+                    this.error = results.error;
+                    if (!this.error) {
+                        this.error = 'Unexpected error, no URL: please contact site admin';
+                    }
+                }
+            },
+            error => this.error = error
+        );
     }
 
-    submitToServer() {
-        console.log('Submitting request to server: ', this.project.id, this.endpoint, this.endpointPath);
-        this.globusEndpointSaver.saveNonEtlEndpoint(this.endpointPath, this.endpoint);
-        this.etlServerAPI.setupGlobusUploadTransfer(this.project.id, this.endpoint, this.endpointPath)
-            .then(globusResults => {
-                console.log('Results returned from server: ', globusResults);
-                if (globusResults) {
-                    this.status = globusResults.status;
-                    this.status_record_id = globusResults.status_record_id;
-                }
-                else {
-                    this.status = 'FAIL';
-                }
-            });
+    dismiss() {
+        this.$mdDialog.cancel();
     }
 
     cancel() {
@@ -113,6 +64,36 @@ class GlobusUploadTransferDialogController {
     }
 }
 
+//new Version
+// class GlobusDownloadDialogController {
+//     /*@ngInject*/
+//     constructor($mdDialog, User, globusInterfaceAPI) {
+//         this.$mdDialog = $mdDialog;
+//         this.url = null;
+//         this.error = null;
+//         globusInterfaceAPI.setupDownloadEndpoint(this.project.id).then(
+//             results => {
+//                 if (results.globus_url) {
+//                     this.url = results.globus_url;
+//                 } else {
+//                     this.error = results.error;
+//                     if (!this.error) {
+//                         this.error = 'Unexpected error, no URL: please contact site admin';
+//                     }
+//                 }
+//             },
+//             error => this.error = error
+//         );
+//     }
+//
+//     cancel() {
+//         this.$mdDialog.cancel();
+//     }
+//
+// }
+
+
+// old version
 class GlobusDownloadDialogController {
     /*@ngInject*/
     constructor($mdDialog, etlServerAPI) {
@@ -127,110 +108,11 @@ class GlobusDownloadDialogController {
                 } else {
                     this.error = results.error;
                     if (!this.error) {
-                        this.error = 'Unexpected error: please contact site admin';
+                        this.error = 'Unexpected error, no URL: please contact site admin';
                     }
                 }
-            });
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-
-}
-
-class GlobusReportStatusDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, etlServerAPI) {
-        this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
-        this.statusReportList = [];
-        console.log('GlobusReportStatusDialogController - Fetching status');
-        this.etlServerAPI.getRecentGlobusStatus(this.project.id)
-            .then(results => {
-                this.statusReportList = results.status_list;
-                for (let i = 0; i < this.statusReportList.length; i++) {
-                    let d = new Date(0);
-                    d.setUTCSeconds(this.statusReportList[i].timestamp);
-                    let iso = d.toISOString().match(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/);
-                    this.statusReportList[i].timestamp = iso[1] + ' ' + iso[2];
-                }
-                console.log(this.statusReportList);
-            });
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
-
-class GlobusLoginLogoutDialogController {
-    /*@ngInject*/
-    constructor($mdDialog, etlServerAPI) {
-        this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
-        this.refreshGlobusStatus();
-    }
-
-    globusLogin() {
-        this.etlServerAPI.globusLogin().then(
-            (login) => {
-                this.loginUrl = login.url;
-                this.loggedin = true;
-            }
-        );
-    }
-
-    globusLogout() {
-        this.etlServerAPI.globusLogout().then(
-            (retVal) => {
-                this.logoutUrl = retVal.url;
-                this.loggedin = false;
-            }
-        );
-    }
-
-    resetFromLogin() {
-        this.loginUrl = null;
-        this.globusStatus = null;
-        this.loggedin = false;
-        this.$mdDialog.hide();
-    }
-
-    resetFromLogout() {
-        this.logoutUrl = null;
-        this.globusStatus = null;
-        this.loggedin = true;
-        this.$mdDialog.hide();
-    }
-
-    refreshGlobusStatus() {
-        console.log('refreshGlobusStatus');
-        this.etlServerAPI.getGlobusAuthStatus().then(
-            (retVal) => {
-                this.details = [];
-                this.globusStatus = retVal.status;
-                this.loggedIn = this.globusStatus.authenticated;
-                if (this.loggedIn) {
-                    let token_keys = ['auth.globus.org', 'transfer.api.globus.org'];
-                    for (let i = 0; i < token_keys.length; i++) {
-                        let key = token_keys[i];
-                        this.details.push(key + ', access: ' + this.globusStatus.validated[key].access);
-                        this.details.push(key + ', refresh: ' + this.globusStatus.validated[key].refresh);
-                        console.log(this.globusStatus.validated[key].expires);
-                        let s = this.globusStatus.validated[key].expires;
-                        if (s > 0) {
-                            let d = new Date();
-                            d.setTime(1000 * s);
-                            console.log(d.toString());
-                            this.details.push(key + ', expires: ' + d.toString());
-                        }
-                    }
-                }
-                else {
-                    this.details.push('Not Authenticated');
-                }
-            }
+            },
+            error => this.error = error
         );
     }
 

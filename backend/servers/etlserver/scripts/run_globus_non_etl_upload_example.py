@@ -6,6 +6,7 @@ from ..utils.LoggingHelper import LoggingHelper
 from ..common.TestProject import TestProject
 from ..globus.GlobusMCUploadPrepare import GlobusMCUploadPrepare
 from ..globus.GlobusMCTransfer import GlobusMCTransfer
+from ..globus.GlobusMCLoadAndTransform import GlobusMCLoadAndTransform
 
 
 def main(user_id, project_id, globus_endpoint_id, globus_endpoint_path):
@@ -27,6 +28,10 @@ def main(user_id, project_id, globus_endpoint_id, globus_endpoint_path):
     transfer_status = handler.transfer_and_await(status_record_id)
     main_log.info("Transfer status = {}".format(transfer_status))
 
+    handler = GlobusMCLoadAndTransform()
+    main_log.info("Starting file transform into MC")
+    transform_status = handler.load_source_directory_into_project(status_record_id)
+    main_log.info("File transform status = {}".format(transform_status))
 
 if __name__ == "__main__":
     LoggingHelper().set_root()
@@ -73,3 +78,5 @@ if __name__ == "__main__":
                      format(test_project.name, test_project.id))
 
     main(args.user, test_project.id, args.endpoint, args.path)
+    startup_log.info("Finished: test project - name = {}; id = {}".
+                     format(test_project.name, test_project.id))

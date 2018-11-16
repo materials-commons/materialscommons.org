@@ -43,6 +43,10 @@ function* updateUserSettings(next) {
             settingArgs.affiliation = args.affiliation;
         }
 
+        if (args.globus_user) {
+            settingArgs.globus_user = args.globus_user;
+        }
+
         if (args.demo_installed) {
             settingArgs.demo_installed = args.demo_installed;
         }

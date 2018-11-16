@@ -3,6 +3,49 @@ class EtlServerAPIService {
     constructor(etlAPIRoute) {
         this.etlAPIRoute = etlAPIRoute;
     }
+
+    getEtlFilesFromProject(projectId) {
+        let route = this.etlAPIRoute('project').one('etlexcelfiles');
+        let data = {
+            project_id: projectId
+        };
+        console.log("Backend call to /project/etlexcelfiles");
+        return route.customPOST(data).then(
+            n => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = n.plain();
+                console.log("etlexcelfiles returns: ", results);
+                return results;
+            },
+            () => {
+                console.log("etlexcelfiles returns error");
+                return null;
+            });
+    }
+
+    createExperimentFromEtl(projectId, excelFilePath, experiment_name, experiment_desc) {
+        let route = this.etlAPIRoute('project').one('etl');
+        let data = {
+            project_id: projectId,
+            file_path: excelFilePath,
+            experiment_name: experiment_name,
+            experiment_desc: experiment_desc
+        };
+        console.log("Backend call to /project/etl", data);
+        return route.customPOST(data).then(
+            n => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = n.plain();
+                console.log("etl returns: ", results);
+                return results;
+            },
+            (e) => {
+                console.log("etl returns error", e);
+                return e;
+            });
+    }
+
+    // deprecated!
     startBackgroundEtlUpload(data) {
         let route = this.etlAPIRoute('globus').one('stage');
         return route.customPOST(data).then(
@@ -16,6 +59,7 @@ class EtlServerAPIService {
             });
     }
 
+    // deprecated!
     getEtlStatus(statusRecordId) {
         let route = this.etlAPIRoute('globus').one('monitor');
         let data = {
@@ -33,6 +77,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     getEtlStatusForProject(projectId) {
         let route = this.etlAPIRoute('project').one('status');
         let data = {
@@ -86,6 +131,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // noinspection JSMethodCanBeStatic
     getRecentGlobusStatus(projectId){
         let route = this.etlAPIRoute('globus').one('transfer').one('status');
@@ -101,6 +147,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getSystemGlobusInformation(){
         let route = this.etlAPIRoute('globus').one('transfer').one('info');
@@ -113,6 +160,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getGlobusTransferAdminInfo() {
         let route = this.etlAPIRoute('globus').one('transfer').one('admin').one('info');
@@ -126,6 +174,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getGlobusTransferAdminStatus(){
         let route = this.etlAPIRoute('globus').one('transfer').one('admin').one('status');
@@ -139,6 +188,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // -- /globus/transfer/admin/cctasks
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getGlobusConfidentialClientTaskList(){
@@ -153,6 +203,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     getGlobusAuthStatus() {
         let route = this.etlAPIRoute('globus').one('auth').one('status');
         let data = {};
@@ -165,6 +216,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     globusLogin() {
         let route = this.etlAPIRoute('globus').one('auth').one('login');
         let data = {};
@@ -177,6 +229,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     globusLogout() {
         let route = this.etlAPIRoute('globus').one('auth').one('logout');
         let data = {};
