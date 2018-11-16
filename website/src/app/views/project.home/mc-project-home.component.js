@@ -47,54 +47,6 @@ class MCProjectHomeComponentController {
         // this.unsubscribe();
     }
 
-    getProjectActivities() {
-        this.projectsAPI.getActivities(this.project.id).then(
-            (activities) => {
-                activities.forEach(a => {
-                    switch (a.item_type) {
-                        case 'project':
-                            a.icon = 'fa-briefcase';
-                            break;
-                        case 'experiment':
-                            a.icon = 'fa-flask';
-                            break;
-                        case 'file':
-                            a.icon = 'fa-files-o';
-                            break;
-                        case 'sample':
-                            a.icon = 'fa-cubes';
-                            break;
-                        case 'process':
-                            a.icon = 'fa-code-fork';
-                            break;
-                    }
-                    a.message = `${a.event_type === 'create' ? 'Added' : 'Modified'} ${a.item_type} ${a.item_name}`;
-                });
-                this.activities = activities;
-            }
-        );
-    }
-
-    getProjectExperiments() {
-        this.experiments = _.values(this.project.experiments).map(e => {
-            e.selected = false;
-            return e;
-        });
-    }
-
-    _reloadComponentState(reload) {
-        this.project = this.mcprojstore.getProject(this.$stateParams.project_id);
-        this.projectOverview = this.project.overview;
-        let experimentsList = _.values(this.project.experiments);
-        this.activeExperimentsCount = experimentsList.filter(e => e.status === 'active').length;
-        this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
-        this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
-        this.getProjectExperiments();
-        if (reload) {
-            this.mcprojectstore2.reloadProject(this.$stateParams.project_id);
-        }
-    }
-
     startNewExperiment() {
         this.$mdDialog.show({
             templateUrl: 'app/modals/create-experiment-dialog.html',
@@ -130,7 +82,6 @@ class MCProjectHomeComponentController {
         }).then(
             () => {
                 this.cancelMerge();
-                this._reloadComponentState();
             },
             () => this.cancelMerge()
         );
@@ -165,7 +116,6 @@ class MCProjectHomeComponentController {
         }).then(
             () => {
                 this.clearDelete();
-                this._reloadComponentState();
             },
             () => {
                 this.clearDelete();
@@ -210,7 +160,6 @@ class MCProjectHomeComponentController {
                 }).then(
                     () => {
                         this.toast.success('ETL Done; click \'Sync\'');
-                        this._reloadComponentState();
                     },
                     () => {}
                 );
