@@ -13,6 +13,10 @@ class StateStoreService {
         this.bus.fireEvent(key, val);
     }
 
+    fire(key) {
+        this.bus.fireEvent(key);
+    }
+
     getState(key) {
         if (_.has(this.states, key)) {
             return angular.copy(this.states[key]);

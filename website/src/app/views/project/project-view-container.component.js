@@ -13,10 +13,12 @@ class MCProjectViewContainerComponentController {
 
     $onInit() {
         this.unsubscribe = this.mcStateStore.subscribe('project', p => this.state.project = angular.copy(p));
+        this.unsubscribeSync = this.mcStateStore.subscribe('sync:project', () => this.handleSync());
     }
 
     $onDestroy() {
         this.unsubscribe();
+        this.unsubscribeSync();
     }
 
     getRoute() {

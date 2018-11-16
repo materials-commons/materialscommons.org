@@ -19,7 +19,6 @@ class MCProjectSidenavComponentController {
     $onChanges(changes) {
         if (changes.project) {
             this.state.project = angular.copy(changes.project.currentValue);
-            console.log('this.state.project', this.state.project);
         }
     }
 
