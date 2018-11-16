@@ -35,7 +35,7 @@ class BuildProjectExperiment:
     def build(self, spread_sheet_path, data_dir_path, project_id, exp_name, exp_description=None):
         if not project_id:
             raise RequiredAttributeException("Project id not defined")
-        self.project = get_project_by_id(project_id)
+        self.project = get_project_by_id(project_id, apikey=self.apikey)
         if not self.project:
             raise NoSuchItem("Missing unexpected missing project; project_id = {}".format(project_id))
         self.metadata.set_project_id(self.project.id)
