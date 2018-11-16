@@ -11,7 +11,16 @@ class ProjectsAPIService {
     }
 
     getProjectOverview(projectId) {
-        return this.Restangular.one('v4').one('ui').one('getProjectOverview').customPOST({project_id: projectId}).then(p => p.plain());
+        return this.Restangular.one('v4').one('ui').one('getProjectOverview').customPOST({project_id: projectId}).then(
+            p => {
+                let proj = p.plain();
+                proj.shortcuts = proj.shortcuts.map(d => {
+                    d.path = d.name;
+                    d.name = d.name.replace(`${p.name}/`, '');
+                    return d;
+                });
+                return proj;
+            });
     }
 
     //////////////////////////// Check if these calls are being used ////////////////////////////////////
@@ -63,7 +72,7 @@ class ProjectsAPIService {
 
     getProjectSample(projectID, sampleID) {
         return this.Restangular.one('sample').one('details', sampleID).get()
-            .then(function(samples) {
+            .then(function (samples) {
                 let s = samples.plain();
                 return s[0];
             });
