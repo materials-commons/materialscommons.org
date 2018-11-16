@@ -8,7 +8,7 @@
                 <md-list>
                     <md-subheader class="md-no-sticky">Users Not In Project</md-subheader>
                     <md-list-item class="md-2-line"
-                                  ng-repeat="user in $ctrl.usersAvailable | orderBy:'id' | filter:$ctrl.filterUsersBy">
+                                  ng-repeat="user in $ctrl.usersAvailable | orderBy:'fullname' | filter:$ctrl.filterUsersBy">
                         <md-checkbox aria-label="selected" ng-model="user.selected" ng-change="$ctrl.addUser(user)"></md-checkbox>
                         <div class="md-list-item-text">
                             <h3 class="md-subhead">{{user.fullname}}</h3>
@@ -33,13 +33,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr md-row class="md-row-hover" ng-repeat="user in $ctrl.users | orderBy: 'id'">
+                    <tr md-row class="md-row-hover" ng-repeat="user in $ctrl.users | orderBy:'fullname'">
                         <td md-cell>{{user.fullname}} ({{user.id}})</td>
                         <td md-cell ng-if="$ctrl.isOwner($ctrl.signedInUser)">
-                            <div ng-if="$ctrl.signedInUser === user.id">
+                            <div ng-if="$ctrl.signedInUser === user.user_id">
                                 Owner
                             </div>
-                            <div ng-if="$ctrl.signedInUser !== user.id">
+                            <div ng-if="$ctrl.signedInUser !== user.user_id">
                                 <md-button ng-click="$ctrl.deleteUser(user.id)" class="md-warn">Remove</md-button>
                             </div>
                         </td>

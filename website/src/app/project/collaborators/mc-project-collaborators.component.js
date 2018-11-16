@@ -28,7 +28,6 @@ function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsA
                 ctrl.users = users;
                 ctrl.projectUsers = _.indexBy(ctrl.users, 'user_id');
                 mcapi('/users').success(function(users) {
-                    console.log('called users', users);
                     allUsers = users;
                     ctrl.usersAvailable = usersNotInProject();
                 }).jsonp();
@@ -45,6 +44,7 @@ function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsA
 
                 if (i !== -1) {
                     loadUsers();
+                    mcStateStore.fire('sync:project');
                 }
             }).delete();
     }
@@ -66,6 +66,7 @@ function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsA
             mcapi('/access/new')
                 .success(function() {
                     loadUsers();
+                    mcStateStore.fire('sync:project');
                 })
                 .error((e) => toast.error(e.error)).post(accessArgs);
         }
