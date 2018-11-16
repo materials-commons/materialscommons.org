@@ -14,7 +14,7 @@ class AppHelper:
         self.apikey = apikey
 
     def get_project_excel_files(self, project_id):
-        project = get_project_by_id(project_id)
+        project = get_project_by_id(project_id, apikey=self.apikeyapikey)
         if not project:
             raise AttributeError("Project not found for projectId = {}".format(project_id))
         directory = project.get_top_directory()
@@ -54,29 +54,29 @@ def fake_name(prefix):
     return prefix + number
 
 
-if __name__ == "__main__":
-    LoggingHelper().set_root()
-    my_apikey = "totally-bogus"
-    helper = AppHelper(my_apikey)
-    projects = get_all_projects(my_apikey)
-    my_project = None
-    for probe in projects:
-        if probe.name == "Test1":
-            my_project = probe
-    if not my_project:
-        print("Can not fine project Test1")
-        exit(-1)
-    my_files = helper.get_project_excel_files(my_project.id)
-    print("files: {}".format(my_files))
-    excel_file_path = None
-    file_name = "small_input.xlsx"
-    for probe in my_files:
-        if file_name in probe:
-            excel_file_path = probe
-    if not excel_file_path:
-        print("missing excel file for test: {}".format(file_name))
-        exit(-1)
-    name = fake_name("Exp-")
-    desc = "Test Experiment: testing project-based ETL"
-    results = helper.run_project_based_etl(my_project.id, excel_file_path, name, desc)
-    print(results)
+# if __name__ == "__main__":
+#     LoggingHelper().set_root()
+#     my_apikey = "totally-bogus"
+#     helper = AppHelper(my_apikey)
+#     projects = get_all_projects(my_apikey)
+#     my_project = None
+#     for probe in projects:
+#         if probe.name == "Test1":
+#             my_project = probe
+#     if not my_project:
+#         print("Can not fine project Test1")
+#         exit(-1)
+#     my_files = helper.get_project_excel_files(my_project.id)
+#     print("files: {}".format(my_files))
+#     excel_file_path = None
+#     file_name = "small_input.xlsx"
+#     for probe in my_files:
+#         if file_name in probe:
+#             excel_file_path = probe
+#     if not excel_file_path:
+#         print("missing excel file for test: {}".format(file_name))
+#         exit(-1)
+#     name = fake_name("Exp-")
+#     desc = "Test Experiment: testing project-based ETL"
+#     results = helper.run_project_based_etl(my_project.id, excel_file_path, name, desc)
+#     print(results)
