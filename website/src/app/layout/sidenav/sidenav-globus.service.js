@@ -37,9 +37,12 @@ class SidenavGlobusService {
 class GlobusUploadDialogController {
     /*@ngInject*/
     constructor($mdDialog, User, globusInterfaceAPI) {
-        this.$mdDialog = $mdDialog;this.user =
+        this.$mdDialog = $mdDialog;
+        this.User = User;
+        this.globusUser = User.attr().globus_user
         this.url = null;
         this.error = null;
+        console.log("this.globusUser = ",this.globusUser);
         globusInterfaceAPI.setupUploadEndpoint(this.project.id).then(
             results => {
                 if (results.globus_url) {
