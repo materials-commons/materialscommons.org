@@ -36,7 +36,7 @@ def create_mc_tables():
     run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
     run(r.db('materialscommons').table("datafiles")
-        .indexCreate('mediatype_description', r.row["mediatype"]["description"]))
+        .index_create('mediatype_description', r.row["mediatype"]["description"]))
 
     create_mc_table("datadirs", "name", "project", "parent")
     create_compound_index("datadirs", "datadir_project_name", ['project', 'name'])
