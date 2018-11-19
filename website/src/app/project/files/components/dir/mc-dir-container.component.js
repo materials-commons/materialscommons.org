@@ -1,8 +1,8 @@
 class MCDirContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams, mcprojstore, gridFiles, projectFileTreeAPI, fileTreeMoveService, fileTreeDeleteService, $state, $timeout) {
+    constructor($stateParams, mcStateStore, gridFiles, projectFileTreeAPI, fileTreeMoveService, fileTreeDeleteService, $state, $timeout) {
         this.$stateParams = $stateParams;
-        this.mcprojstore = mcprojstore;
+        this.mcStateStore = mcStateStore;
         this.gridFiles = gridFiles;
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.fileTreeMoveService = fileTreeMoveService;
@@ -22,12 +22,13 @@ class MCDirContainerComponentController {
     }
 
     _loadDir() {
-        this.project = this.mcprojstore.currentProject;
+        this.project = this.mcStateStore.getState('project');
         const entry = this.gridFiles.findEntry(this.project.files[0], this.$stateParams.dir_id);
         if (!entry) {
             console.log(`MCDirContainer: Couldn't find entry ${this.$stateParams.dir_id}`)
         }
         this.dir = entry.model;
+
     }
 
     handleRenameDir(newDirName) {

@@ -263,7 +263,8 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.files', {
             url: '/files',
-            template: '<mc-file-tree flex layout-fill></mc-file-tree>'
+            // template: '<mc-file-tree flex layout-fill></mc-file-tree>'
+            template: '<mc-project-files-view-container flex layout-fill></mc-project-files-view-container>'
         })
         .state('project.files.uploads2', {
             url: '/uploads2/:directory_id',
