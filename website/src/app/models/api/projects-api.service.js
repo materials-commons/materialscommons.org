@@ -31,6 +31,22 @@ class ProjectsAPIService {
         return this.Restangular.one('v4').one('ui').one('getProjectAccessEntries').customPOST({project_id: projectId}).then(u => u.plain());
     }
 
+    addProjectNote(projectId, note) {
+        return this.notesAPI.addNote(note, 'project', projectId);
+    }
+
+    updateProjectNote(projectId, note) {
+        return this.notesAPI.updateNote(note, 'project', projectId);
+    }
+
+    deleteProjectNote(projectId, note) {
+        return this.notesAPI.deleteNote(note, 'project', projectId);
+    }
+
+    updateProject(projectID, projectAttrs) {
+        return this.projectsAPIRoute(projectID).customPUT(projectAttrs).then(p => p.plain());
+    }
+
     //////////////////////////// Check if these calls are being used ////////////////////////////////////
     getAllProjects() {
         return this.projectsAPIRoute().getList().then(projects => projects.plain());
@@ -98,10 +114,6 @@ class ProjectsAPIService {
         return this.projectsAPIRoute(projectID).one('processes', process.id).customPUT(process).then(p => p.plain());
     }
 
-    updateProject(projectID, projectAttrs) {
-        return this.projectsAPIRoute(projectID).customPUT(projectAttrs).then(p => p.plain());
-    }
-
     createProjectProcess(projectID, process) {
         return this.projectsAPIRoute(projectID).one('processes').customPOST(process).then(p => p.plain());
     }
@@ -127,18 +139,6 @@ class ProjectsAPIService {
 
     getProjectFile(projectID, fileID) {
         return this.projectsAPIRoute(projectID).one('files', fileID).get().then(f => f.plain());
-    }
-
-    addProjectNote(projectId, note) {
-        return this.notesAPI.addNote(note, 'project', projectId);
-    }
-
-    updateProjectNote(projectId, note) {
-        return this.notesAPI.updateNote(note, 'project', projectId);
-    }
-
-    deleteProjectNote(projectId, note) {
-        return this.notesAPI.deleteNote(note, 'project', projectId);
     }
 }
 
