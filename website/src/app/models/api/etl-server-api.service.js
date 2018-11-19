@@ -4,25 +4,6 @@ class EtlServerAPIService {
         this.etlAPIRoute = etlAPIRoute;
     }
 
-    getEtlFilesFromProject(projectId) {
-        let route = this.etlAPIRoute('project').one('etlexcelfiles');
-        let data = {
-            project_id: projectId
-        };
-        console.log("Backend call to /project/etlexcelfiles");
-        return route.customPOST(data).then(
-            n => {
-                // noinspection UnnecessaryLocalVariableJS
-                let results = n.plain();
-                console.log("etlexcelfiles returns: ", results);
-                return results;
-            },
-            () => {
-                console.log("etlexcelfiles returns error");
-                return null;
-            });
-    }
-
     createExperimentFromEtl(projectId, excelFilePath, experiment_name, experiment_desc) {
         let route = this.etlAPIRoute('project').one('etl');
         let data = {

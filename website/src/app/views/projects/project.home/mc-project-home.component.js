@@ -202,8 +202,9 @@ class MCProjectHomeComponentController {
     }
 
     etlStart(){
+        console.log("etlStart()");
         this.excelFileList = [];
-        this.etlServerAPI.getEtlFilesFromProject(this.project.id).then(
+        this.projectsAPI.getExcelFiles(this.project.id).then(
             (results) => {
                 this.excelFileList = results.file_list;
                 console.log('this.excelFileList =', this.excelFileList)

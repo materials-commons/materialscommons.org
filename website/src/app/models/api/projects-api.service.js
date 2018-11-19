@@ -31,6 +31,15 @@ function projectsAPIService(Restangular, notesAPI) {
                 });
         },
 
+        getExcelFiles(projectId){
+            return projectsAPIRoute(projectId).one('excelFiles').get().then(
+                results => {
+                    console.log("getExcelFiles - results", results);
+                    return {'file_list': ['fileone.xlsx, filetwo.xlsx']};
+                }
+            )
+        },
+
         createShortcut(projectId, directoryId) {
             return projectsAPIRoute(projectId).one('shortcuts', directoryId).put().then(d => d.plain());
         },
