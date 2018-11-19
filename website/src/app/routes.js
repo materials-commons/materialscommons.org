@@ -114,11 +114,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.home', {
             url: '/home',
-            template: '<mc-project-home project="$resolve._project" class="height-100"></mc-project-home>'
+            template: '<md-content layout="column" className="height-100"><mc-project-home project="$resolve._project" class="height-100"></mc-project-home></md-content>'
         })
         .state('project.details', {
             url: '/details',
-            template: '<mc-project-details class="height-100"></mc-project-details>'
+            template: '<md-content layout="column" class="height-100"><mc-project-details class="height-100"></mc-project-details></md-content>'
         })
         .state('project.search', {
             url: '/search/:query',
@@ -126,7 +126,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.notes', {
             url: '/notes',
-            template: '<mc-project-notes class="height-100"></mc-project-notes>'
+            template: '<md-content layout="column" class="height-100"><mc-project-notes class="height-100"></mc-project-notes></md-content>'
         })
         .state('project.create', {
             url: '/create',
@@ -162,7 +162,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.details', {
             url: '/details',
-            template: '<mc-experiment-details experiment="$resolve.experiment" show-note="true"></mc-experiment-details>'
+            template: '<md-content layout="column" class="height-100"><mc-experiment-details experiment="$resolve.experiment" show-note="true"></mc-experiment-details></md-content>'
         })
         .state('project.experiment.forecast', {
             url: '/forecast',
@@ -177,7 +177,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.samples', {
             url: '/samples',
-            template: '<mc-project-samples samples="$resolve.samples"></mc-project-samples>',
+            template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples"></mc-project-samples></md-content>',
             resolve: {
                 samples: ['experimentsAPI', 'mcprojstore',
                     (experimentsAPI, mcprojstore) => {
@@ -190,7 +190,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.files', {
             url: '/files',
-            template: '<mc-experiment-files files="$resolve.files"></mc-experiment-files>',
+            template: '<md-content layout="column" class="height-100"><mc-experiment-files files="$resolve.files"></mc-experiment-files></md-content>',
             resolve: {
                 files: ['experimentsAPI', '$stateParams',
                     (experimentsAPI, $stateParams) =>
@@ -200,7 +200,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.tbuilder', {
             url: '/tbuilder',
-            template: '<mc-template-builder layout="column" layout-fill></mc-template-builder>'
+            template: '<md-content layout="column" class="height-100"><mc-template-builder layout="column" layout-fill></mc-template-builder></md-content>'
         })
         .state('project.experiment.publish', {
             url: '/publish',
@@ -208,7 +208,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.datasets', {
             url: '/datasets',
-            template: '<div flex layout="column" ui-view layout-fill></div>',
+            template: '<md-content layout="column" class="height-100"><div flex layout="column" ui-view layout-fill></div></md-content>',
             abstract: true
         })
         .state('project.experiment.datasets.list', {
@@ -249,7 +249,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.samples', {
             url: '/samples',
-            template: '<mc-project-samples samples="$resolve.samples" class="height-100"></mc-project-samples>',
+            template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples" class="height-100"></mc-project-samples></md-content>',
             resolve: {
                 samples: ['samplesAPI', '$stateParams',
                     (samplesAPI, $stateParams) =>
