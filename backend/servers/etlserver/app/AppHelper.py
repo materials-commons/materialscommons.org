@@ -3,10 +3,12 @@ from random import randint
 
 import os.path as os_path
 
-from materials_commons.api import get_project_by_id, get_all_projects
-
+from materials_commons.api import get_project_by_id
 from ..internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
+
+# used in "main" for interactive testing...
 # from ..utils.LoggingHelper import LoggingHelper
+# from materials_commons.api import get_all_projects
 
 
 class AppHelper:
