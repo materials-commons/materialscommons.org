@@ -31,11 +31,11 @@ function projectsAPIService(Restangular, notesAPI) {
                 });
         },
 
-        getExcelFiles(projectId){
-            return projectsAPIRoute(projectId).one('excelFiles').get().then(
+        getExcelFilePaths(projectId){
+            return projectsAPIRoute(projectId).one('excel_files').get().then(
                 results => {
-                    console.log("getExcelFiles - results", results);
-                    return {'file_list': ['fileone.xlsx, filetwo.xlsx']};
+                    console.log("getExcelFilesPaths - results", results);
+                    return {'file_list': results};
                 }
             )
         },

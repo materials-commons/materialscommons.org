@@ -95,8 +95,8 @@ function* getProjectActivityFeed(next) {
     yield next;
 }
 
-function * getExcelFilesInProject(next) {
-    this.body = yield projects.getExcelFiles(this.params.project_id);
+function * getExcelFilePathsInProject(next) {
+    this.body = yield projects.getExcelFilePaths(this.params.project_id);
     yield next;
 }
 
@@ -260,7 +260,7 @@ function createResource() {
     router.put('/:project_id/access', ra.validateProjectOwner, updateUserAccessForProject);
 
     router.get('/:project_id/activity_feed', getProjectActivityFeed);
-    router.get('/:project_id/excel_files', getExcelFilesInProject);
+    router.get('/:project_id/excel_files', getExcelFilePathsInProject);
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());
