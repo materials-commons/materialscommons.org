@@ -264,7 +264,6 @@ function* update(projectID, attrs) {
 }
 
 function* getExcelFilePaths(projectID) {
-    console.log("Getting all excel file paths for project", projectID);
     let fileList = yield r.table("project2datafile")
         .getAll(projectID, {index: "project_id"})
         .eqJoin([r.row("datafile_id"), "Spreadsheet"],
@@ -279,16 +278,13 @@ function* getExcelFilePaths(projectID) {
     pathList = [];
     for (let i = 0; i < fileList.length; i++) {
         let path = fileList[i].dir[0].name;
-        console.log(path, fileList[i].name);
         // remove project name from path (Project1/allInOne -> /allInOne)
         path = path.slice(path.indexOf('/'));
         fileList[i].dir = path;
         // add file name to path
         path = path + '/' + fileList[i].name;
         pathList.push(path);
-        console.log(path);
     }
-    console.log(pathList);
     return pathList;
 }
 

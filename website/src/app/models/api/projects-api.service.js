@@ -34,7 +34,6 @@ function projectsAPIService(Restangular, notesAPI) {
         getExcelFilePaths(projectId){
             return projectsAPIRoute(projectId).one('excel_files').get().then(
                 results => {
-                    console.log("getExcelFilesPaths - results", results);
                     return {'file_list': results};
                 }
             )

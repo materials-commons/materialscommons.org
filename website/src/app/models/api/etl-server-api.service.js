@@ -12,12 +12,10 @@ class EtlServerAPIService {
             experiment_name: experiment_name,
             experiment_desc: experiment_desc
         };
-        console.log("Backend call to /project/etl", data);
         return route.customPOST(data).then(
             n => {
                 // noinspection UnnecessaryLocalVariableJS
                 let results = n.plain();
-                console.log("etl returns: ", results);
                 return results;
             },
             (e) => {
