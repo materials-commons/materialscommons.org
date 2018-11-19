@@ -95,6 +95,11 @@ function* getProjectActivityFeed(next) {
     yield next;
 }
 
+function * getExcelFilesInProject(next) {
+    this.body = yield projects.getExcelFiles(this.params.project_id);
+    yield next;
+}
+
 function * updateDatasetForProject (next) {
     let datasetArgs = yield parse(this);
     schema.prepare(schema.updateDatasetSchema, datasetArgs);
@@ -255,6 +260,7 @@ function createResource() {
     router.put('/:project_id/access', ra.validateProjectOwner, updateUserAccessForProject);
 
     router.get('/:project_id/activity_feed', getProjectActivityFeed);
+    router.get('/:project_id/excel_files', getExcelFilesInProject);
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());
