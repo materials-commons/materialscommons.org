@@ -23,6 +23,10 @@ class ProjectsAPIService {
             });
     }
 
+    getProjectNotes(projectId) {
+        return this.Restangular.one('v4').one('ui').one('getProjectNotes').customPOST({project_id: projectId}).then(notes => notes.plain());
+    }
+
     getProjectAccessEntries(projectId) {
         return this.Restangular.one('v4').one('ui').one('getProjectAccessEntries').customPOST({project_id: projectId}).then(u => u.plain());
     }

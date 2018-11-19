@@ -1,18 +1,23 @@
 class MCProjectNotesComponentController {
     /*@ngInject*/
-    constructor(mcprojstore, projectsAPI, toast) {
-        this.mcprojstore = mcprojstore;
+    constructor(mcStateStore, projectsAPI, toast) {
+        this.mcStateStore = mcStateStore;
         this.projectsAPI = projectsAPI;
         this.toast = toast;
     }
 
     $onInit() {
-        this.project = this.mcprojstore.currentProject;
-        this.project.notes.forEach(n => n.selected = false);
-        this.note = this.project.notes.length ? this.project.notes[0] : null;
-        if (this.note !== null) {
-            this.note.selected = true;
-        }
+        this.project = this.mcStateStore.getState('project');
+        this.projectsAPI.getProjectNotes(this.project.id).then(
+            notes => {
+                this.project.notes = notes;
+                this.project.notes.forEach(n => n.selected = false);
+                this.note = this.project.notes.length ? this.project.notes[0] : null;
+                if (this.note !== null) {
+                    this.note.selected = true;
+                }
+            }
+        );
         this.noteTitle = 'This is a note title';
     }
 
@@ -22,10 +27,7 @@ class MCProjectNotesComponentController {
         };
         this.projectsAPI.updateProject(this.project.id, update).then(
             () => {
-                this.mcprojstore.updateCurrentProject(currentProj => {
-                    currentProj.todos = this.project.todos;
-                    return currentProj;
-                });
+                this.mcStateStore.fire('sync:project');
             },
             () => this.toast.error('Unable to update project to-dos on server')
         );
@@ -63,15 +65,11 @@ class MCProjectNotesComponentController {
         };
         this.projectsAPI.addProjectNote(this.project.id, note).then(
             (n) => {
-                this.mcprojstore.updateCurrentProject(currentProj => {
-                    this.project.notes.push(n);
-                    this.project.notes.forEach(n => n.selected = false);
-                    currentProj.notes = this.project.notes;
-                    this.note = this.project.notes[this.project.notes.length - 1];
-                    this.note.selected = true;
-                    this.note.edit = true;
-                    return currentProj;
-                });
+                this.project.notes.push(n);
+                this.project.notes.forEach(n => n.selected = false);
+                this.note = this.project.notes[this.project.notes.length - 1];
+                this.note.selected = true;
+                this.note.edit = true;
             },
             () => this.toast.error('Unable to add note to project on server')
         );
@@ -80,11 +78,7 @@ class MCProjectNotesComponentController {
     deleteNote(index) {
         this.projectsAPI.deleteProjectNote(this.project.id, this.project.notes[index]).then(
             () => {
-                this.mcprojstore.updateCurrentProject(currentProj => {
-                    this.project.notes.splice(index, 1);
-                    currentProj.notes = this.project.notes;
-                    return currentProj;
-                })
+                this.project.notes.splice(index, 1);
             },
             () => this.toast.error('Unable to delete note on server')
         );
@@ -94,13 +88,9 @@ class MCProjectNotesComponentController {
         if (note.edit) {
             this.projectsAPI.updateProjectNote(this.project.id, note).then(
                 () => {
-                    this.mcprojstore.updateCurrentProject(currentProj => {
-                        let index = _.findIndex(this.project.notes, n => n.id == note.id);
-                        this.project.notes[index].title = note.title;
-                        this.project.notes[index].note = note.note;
-                        currentProj.notes = this.project.notes;
-                        return currentProj;
-                    })
+                    let index = _.findIndex(this.project.notes, n => n.id == note.id);
+                    this.project.notes[index].title = note.title;
+                    this.project.notes[index].note = note.note;
                 },
                 () => this.toast.error('Unable to update note on server')
             );
