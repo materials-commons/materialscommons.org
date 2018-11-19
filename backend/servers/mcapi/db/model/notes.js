@@ -4,7 +4,7 @@ const db = require('./db');
 
 function* createNote(note, itemType, itemId) {
     let n = yield db.insert('notes', note);
-    let n2i = new model.Note2Item(itemId, itemId, n.id);
+    let n2i = new model.Note2Item(itemId, itemType, n.id);
     yield db.insert('note2item', n2i);
     return n;
 }
