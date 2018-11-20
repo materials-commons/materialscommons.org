@@ -1,11 +1,13 @@
 import logging
 import os.path as os_path
 from random import randint
+import time
 
 from materials_commons.api import get_project_by_id
 
 from ..internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
-
+from ..database.DatabaseInterface import DatabaseInterface
+from ..common.GlobusAccess import GlobusAccess
 
 # used in "main" for interactive testing...
 from ..utils.LoggingHelper import LoggingHelper
@@ -56,9 +58,28 @@ class AppHelper:
         return {"status": "ok"}
 
     def get_project_globus_upload_status(self, project_id):
-        message = "Test Globus upload status for project {}".format(project_id)
-        self.log.info(message)
-        return {"status": message}
+        database = DatabaseInterface()
+        globus_upload_records = list(database.get_globus_upload_records())
+        found_upload_record = False
+        for r in globus_upload_records:
+            if r['project_id'] == project_id:
+                found_upload_record = True
+                break
+        if found_upload_record:
+            message = "Globus is still upload files - Check Globus UI for progress"
+            self.log.info(message)
+            return {"status": message}
+        else:
+            file_load_records = list(database.get_file_loads_records())
+            found_file_load_record = False
+            for r in file_load_records:
+                if r['project_id'] == project_id:
+                    found_file_load_record = True
+                    break
+            if found_file_load_record:
+                message = "Materials Commons is still loading files - Check back later - Wait for this activity to finish"
+                return {"status": message}
+        return {"status": None}
 
 
 class AppHelperTester:
@@ -105,14 +126,20 @@ class AppHelperTester:
         print(results)
 
     def test_get_project_globus_upload_status(self):
-        print("test_get_all_projects")
+        print("test_get_project_globus_upload_status")
         my_project = self.get_project_for_test("Test1")
-        print("---------- running test: elper.get_project_globus_upload_status ---------")
-        status = self.helper.get_project_globus_upload_status(my_project.id)
-        print("---------- done running test ---------")
-        print("Expected return results:")
-        print(status)
-
+        return_value = {"status": None}
+        print("Starting loop to wait for start...")
+        while not return_value['status']:
+            return_value = self.helper.get_project_globus_upload_status(my_project.id)
+            print("Waiting for a globus request on project {}".format(my_project.name))
+            time.sleep(5)
+        print("Starting loop to wait for done...")
+        while return_value['status']:
+            print(return_value)
+            time.sleep(5)
+            return_value = self.helper.get_project_globus_upload_status(my_project.id)
+        print("done")
 
 if __name__ == "__main__":
     LoggingHelper().set_root()
