@@ -1,17 +1,16 @@
 import logging
 import os.path as os_path
-from random import randint
-import time
 
 from materials_commons.api import get_project_by_id
 
 from ..internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
 from ..database.DatabaseInterface import DatabaseInterface
-from ..common.GlobusAccess import GlobusAccess
 
 # used in "main" for interactive testing...
-from ..utils.LoggingHelper import LoggingHelper
-from materials_commons.api import get_all_projects
+# from random import randint
+# import time
+# from ..utils.LoggingHelper import LoggingHelper
+# from materials_commons.api import get_all_projects
 
 
 class AppHelper:
@@ -77,73 +76,74 @@ class AppHelper:
                     found_file_load_record = True
                     break
             if found_file_load_record:
-                message = "Materials Commons is still loading files - Check back later - Wait for this activity to finish"
+                message = "Materials Commons is still loading files - " \
+                        + "Check back later - Wait for this activity to finish"
                 return {"status": message}
         return {"status": None}
 
-
-class AppHelperTester:
-    def __init__(self, apikey):
-        self.apikey = apikey
-        self.helper = AppHelper(apikey)
-
-    @staticmethod
-    def fake_name(prefix):
-        number = "%05d" % randint(0, 99999)
-        return prefix + number
-
-    def get_project_for_test(self, name):
-        projects = get_all_projects(self.apikey)
-        project = None
-        for probe in projects:
-            if probe.name == name:
-                project = probe
-        if not project:
-            print("Can not find project {}".format(name))
-            exit(-1)
-        print("got project for test{}".format(project.name))
-        return project
-
-    def test_project_file_based_etl(self):
-        print("test_project_file_based_etl")
-        my_project = self.get_project_for_test("Test1")
-        my_files = self.helper.get_project_excel_files(my_project.id)
-        print("files: {}".format(my_files))
-        excel_file_path = None
-        file_name = "small_input.xlsx"
-        for probe in my_files:
-            if file_name in probe:
-                excel_file_path = probe
-        if not excel_file_path:
-            print("missing excel file for test: {}".format(file_name))
-            exit(-1)
-        print("---------- running test: helper.run_project_based_etl ---------")
-        name = self.fake_name("Exp-")
-        desc = "Test Experiment: testing project-based ETL"
-        results = self.helper.run_project_based_etl(my_project.id, excel_file_path, name, desc)
-        print("---------- done running test ---------")
-        print("Expected return results:")
-        print(results)
-
-    def test_get_project_globus_upload_status(self):
-        print("test_get_project_globus_upload_status")
-        my_project = self.get_project_for_test("Test1")
-        return_value = {"status": None}
-        print("Starting loop to wait for start...")
-        while not return_value['status']:
-            return_value = self.helper.get_project_globus_upload_status(my_project.id)
-            print("Waiting for a globus request on project {}".format(my_project.name))
-            time.sleep(5)
-        print("Starting loop to wait for done...")
-        while return_value['status']:
-            print(return_value)
-            time.sleep(5)
-            return_value = self.helper.get_project_globus_upload_status(my_project.id)
-        print("done")
-
-if __name__ == "__main__":
-    LoggingHelper().set_root()
-    my_apikey = "totally-bogus"
-    tester = AppHelperTester(my_apikey)
-    # tester.test_project_file_based_etl()
-    tester.test_get_project_globus_upload_status()
+# used in "main" for interactive testing
+# class AppHelperTester:
+#     def __init__(self, apikey):
+#         self.apikey = apikey
+#         self.helper = AppHelper(apikey)
+#
+#     @staticmethod
+#     def fake_name(prefix):
+#         number = "%05d" % randint(0, 99999)
+#         return prefix + number
+#
+#     def get_project_for_test(self, name):
+#         projects = get_all_projects(self.apikey)
+#         project = None
+#         for probe in projects:
+#             if probe.name == name:
+#                 project = probe
+#         if not project:
+#             print("Can not find project {}".format(name))
+#             exit(-1)
+#         print("got project for test{}".format(project.name))
+#         return project
+#
+#     def test_project_file_based_etl(self):
+#         print("test_project_file_based_etl")
+#         my_project = self.get_project_for_test("Test1")
+#         my_files = self.helper.get_project_excel_files(my_project.id)
+#         print("files: {}".format(my_files))
+#         excel_file_path = None
+#         file_name = "small_input.xlsx"
+#         for probe in my_files:
+#             if file_name in probe:
+#                 excel_file_path = probe
+#         if not excel_file_path:
+#             print("missing excel file for test: {}".format(file_name))
+#             exit(-1)
+#         print("---------- running test: helper.run_project_based_etl ---------")
+#         name = self.fake_name("Exp-")
+#         desc = "Test Experiment: testing project-based ETL"
+#         results = self.helper.run_project_based_etl(my_project.id, excel_file_path, name, desc)
+#         print("---------- done running test ---------")
+#         print("Expected return results:")
+#         print(results)
+#
+#     def test_get_project_globus_upload_status(self):
+#         print("test_get_project_globus_upload_status")
+#         my_project = self.get_project_for_test("Test1")
+#         return_value = {"status": None}
+#         print("Starting loop to wait for start...")
+#         while not return_value['status']:
+#             return_value = self.helper.get_project_globus_upload_status(my_project.id)
+#             print("Waiting for a globus request on project {}".format(my_project.name))
+#             time.sleep(5)
+#         print("Starting loop to wait for done...")
+#         while return_value['status']:
+#             print(return_value)
+#             time.sleep(5)
+#             return_value = self.helper.get_project_globus_upload_status(my_project.id)
+#         print("done")
+#
+# if __name__ == "__main__":
+#     LoggingHelper().set_root()
+#     my_apikey = "totally-bogus"
+#     tester = AppHelperTester(my_apikey)
+#     # tester.test_project_file_based_etl()
+#     tester.test_get_project_globus_upload_status()
