@@ -70,6 +70,10 @@ class MCProjectSidenavComponentController {
         this.sidenavGlobus.globusUpload(this.project);
     }
 
+    showGlobusUploadStatus() {
+        this.sidenavGlobus.showUploadStatus(this.project);
+    }
+
     _updateProject(project) {
         this.mcprojstore.updateCurrentProject((currentProject, transformers) => {
             let transformedExperiments = project.experiments.map(e => transformers.transformExperiment(e));

@@ -1,7 +1,6 @@
 import json
 import logging
 
-import os
 import pkg_resources
 from flask import Flask, request
 from flask_api import status
@@ -11,7 +10,6 @@ from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload, DOWNLOAD_NO_FILES_FOUND
 from servers.etlserver.globus_non_etl_upload.non_etl_task_library import non_etl_startup_and_verify
-from servers.etlserver.globus_etl_upload.etl_task_library import startup_and_verify
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
 from servers.etlserver.utils.UploadUtility import UploadUtility
@@ -183,6 +181,26 @@ def globus_transfer_download():
         message = "Download transfer with Globus - unexpected exception"
         log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/globus/upload/status', methods=['GET', 'POST'])
+@apikey
+def globus_upload_status():
+    project_id = None
+
+    # noinspection PyBroadException
+    try:
+        j = request.get_json(force=True)
+        project_id = j["project_id"]
+    except BaseException:
+        pass
+    message = "This is a test status report"
+    if project_id:
+        message += ". Project id = {}".format(project_id)
+    else:
+        message += ". No project id."
+    log.info(message)
+    return format_as_json_return({"status": message})
 
 
 @app.route('/globus/transfer/upload', methods=['POST'])

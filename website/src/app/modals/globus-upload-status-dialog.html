@@ -1,0 +1,30 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            <i class="fa fa-fw fa-folder-open"></i>Status of Globus Upload for <b>{{$ctrl.project.name}}</b>
+        </div>
+    </md-toolbar>
+    <md-dialog-content ng-if="!$ctrl.status" layout-margin>
+        <div ng-if="$ctrl.count > 0">
+            Repeated requests: {{$ctrl.count}}
+        </div>
+        <div ng-if="!$ctrl.error">
+            There appear to be no active Globus Uploads at this time. Try clicking on "Sync"
+            in the left-side navigation bar and reviewing the files by clicking on "All Files".
+        </div>
+        <div ng-if="$ctrl.error">
+            An error was encountered when making the request for status:
+            <br />
+            {{$ctrl.error}}
+        </div>
+    </md-dialog-content>
+    <md-dialog-content ng-if="$ctrl.status" layout-margin>
+        <div>
+            Status = {{$ctrl.status}}.
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-info" ng-click="$ctrl.reload()">Repeat Status Info Request</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.dismiss()">Dismiss</md-button>
+    </md-dialog-actions>
+</md-dialog>

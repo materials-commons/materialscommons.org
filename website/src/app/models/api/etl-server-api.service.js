@@ -24,6 +24,25 @@ class EtlServerAPIService {
             });
     }
 
+    getGlobusUplaodStatus(projectId) {
+        let route = this.etlAPIRoute('globus').one('upload').one('status');
+        let data = {
+            project_id: projectId
+        };
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return {'status': results};
+            },
+            e => {
+                let message =
+                    "Status server not available or internal server error occurred: " + e.status;
+                return {'error': message};
+            }
+        );
+    }
+
     // deprecated!
     startBackgroundEtlUpload(data) {
         let route = this.etlAPIRoute('globus').one('stage');
