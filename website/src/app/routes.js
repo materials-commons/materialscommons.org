@@ -227,10 +227,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/tbuilder',
             template: '<md-content layout="column" class="height-100"><mc-template-builder layout="column" layout-fill></mc-template-builder></md-content>'
         })
-        .state('project.experiment.notes', {
-            url: '/notes',
-            template: '<md-content layout="column" class="height-100"><mc-experiment-notes experiment="$resolve.experiment"></mc-experiment-notes></md-content>'
-        })
         .state('project.experiment.publish', {
             url: '/publish',
             template: '<mc-experiment-publish></mc-experiment-publish>'
