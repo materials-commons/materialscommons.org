@@ -1,5 +1,10 @@
 # Release Notes
 
+## Nov 2018
+- :star: **Beta:** Globus for Upload/Download without login.
+- :star: **Beta:** ETL modified to work from files already uploaded to Project.
+- :boom: **Fixed:** Bug fixes and layout changes.
+
 ## October 2018
 - :star: **Beta:** Globus Upload/Download with user login.
 - :star: **Beta:** ETL improvements and integration with Globus.
