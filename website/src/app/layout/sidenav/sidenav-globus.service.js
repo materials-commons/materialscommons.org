@@ -4,9 +4,17 @@ class SidenavGlobusService {
         this.User = User;
         this.etlServerAPI = etlServerAPI;
         this.$mdDialog = $mdDialog;
+        console.log(User.attr());
+        this.globus_user = User.attr().globus_user
+        console.log(this.globus_user);
     }
 
     globusDownload(project) {
+        console.log("this.globus_user", this.globus_user);
+        console.log((this.globus_user === ''));
+        if (this.globus_user === '') {
+            return this.noGlobusId();
+        }
         return this.$mdDialog.show({
                 templateUrl: 'app/modals/globus-download-dialog.html',
                 controller: GlobusDownloadDialogController,
@@ -20,6 +28,11 @@ class SidenavGlobusService {
     }
 
     globusUpload(project) {
+        console.log("this.globus_user", this.globus_user);
+        console.log((this.globus_user === ''));
+        if (this.globus_user === '') {
+            return this.noGlobusId();
+        }
         return this.$mdDialog.show({
                 templateUrl: 'app/modals/globus-upload-dialog.html',
                 controller: GlobusUploadDialogController,
@@ -30,6 +43,14 @@ class SidenavGlobusService {
                 }
             }
         );
+    }
+
+    noGlobusId(){
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/globus_id_missing.html',
+            controller: NoGlobusIdDialogController,
+            controllerAs: '$ctrl'
+        });
     }
 
     showUploadStatus(project) {
@@ -46,6 +67,24 @@ class SidenavGlobusService {
         );
     }
 
+}
+
+class NoGlobusIdDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        console.log('NoGlobusIdDialogController');
+    }
+
+    dismiss() {
+        console.log('NoGlobusIdDialogController - dismiss');
+        this.$mdDialog.cancel();
+    }
+
+    cancel() {
+        console.log('NoGlobusIdDialogController - cancel');
+        this.$mdDialog.cancel();
+    }
 }
 
 class GlobusUploadDialogController {
