@@ -1,14 +1,15 @@
 import logging
+import os.path as os_path
 from random import randint
 
-import os.path as os_path
-
 from materials_commons.api import get_project_by_id
+
 from ..internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
 
+
 # used in "main" for interactive testing...
-# from ..utils.LoggingHelper import LoggingHelper
-# from materials_commons.api import get_all_projects
+from ..utils.LoggingHelper import LoggingHelper
+from materials_commons.api import get_all_projects
 
 
 class AppHelper:
@@ -54,35 +55,68 @@ class AppHelper:
         self.log.info("done")
         return {"status": "ok"}
 
+    def get_project_globus_upload_status(self, project_id):
+        message = "Test Globus upload status for project {}".format(project_id)
+        self.log.info(message)
+        return {"status": message}
 
-def fake_name(prefix):
-    number = "%05d" % randint(0, 99999)
-    return prefix + number
+
+class AppHelperTester:
+    def __init__(self, apikey):
+        self.apikey = apikey
+        self.helper = AppHelper(apikey)
+
+    @staticmethod
+    def fake_name(prefix):
+        number = "%05d" % randint(0, 99999)
+        return prefix + number
+
+    def get_project_for_test(self, name):
+        projects = get_all_projects(self.apikey)
+        project = None
+        for probe in projects:
+            if probe.name == name:
+                project = probe
+        if not project:
+            print("Can not find project {}".format(name))
+            exit(-1)
+        print("got project for test{}".format(project.name))
+        return project
+
+    def test_project_file_based_etl(self):
+        print("test_project_file_based_etl")
+        my_project = self.get_project_for_test("Test1")
+        my_files = self.helper.get_project_excel_files(my_project.id)
+        print("files: {}".format(my_files))
+        excel_file_path = None
+        file_name = "small_input.xlsx"
+        for probe in my_files:
+            if file_name in probe:
+                excel_file_path = probe
+        if not excel_file_path:
+            print("missing excel file for test: {}".format(file_name))
+            exit(-1)
+        print("---------- running test: helper.run_project_based_etl ---------")
+        name = self.fake_name("Exp-")
+        desc = "Test Experiment: testing project-based ETL"
+        results = self.helper.run_project_based_etl(my_project.id, excel_file_path, name, desc)
+        print("---------- done running test ---------")
+        print("Expected return results:")
+        print(results)
+
+    def test_get_project_globus_upload_status(self):
+        print("test_get_all_projects")
+        my_project = self.get_project_for_test("Test1")
+        print("---------- running test: elper.get_project_globus_upload_status ---------")
+        status = self.helper.get_project_globus_upload_status(my_project.id)
+        print("---------- done running test ---------")
+        print("Expected return results:")
+        print(status)
 
 
-# if __name__ == "__main__":
-#     LoggingHelper().set_root()
-#     my_apikey = "totally-bogus"
-#     helper = AppHelper(my_apikey)
-#     projects = get_all_projects(my_apikey)
-#     my_project = None
-#     for probe in projects:
-#         if probe.name == "Test1":
-#             my_project = probe
-#     if not my_project:
-#         print("Can not fine project Test1")
-#         exit(-1)
-#     my_files = helper.get_project_excel_files(my_project.id)
-#     print("files: {}".format(my_files))
-#     excel_file_path = None
-#     file_name = "small_input.xlsx"
-#     for probe in my_files:
-#         if file_name in probe:
-#             excel_file_path = probe
-#     if not excel_file_path:
-#         print("missing excel file for test: {}".format(file_name))
-#         exit(-1)
-#     name = fake_name("Exp-")
-#     desc = "Test Experiment: testing project-based ETL"
-#     results = helper.run_project_based_etl(my_project.id, excel_file_path, name, desc)
-#     print(results)
+if __name__ == "__main__":
+    LoggingHelper().set_root()
+    my_apikey = "totally-bogus"
+    tester = AppHelperTester(my_apikey)
+    # tester.test_project_file_based_etl()
+    tester.test_get_project_globus_upload_status()
