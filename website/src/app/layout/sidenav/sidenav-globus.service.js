@@ -86,11 +86,10 @@ class GlobusUploadStatusDialogController {
     constructor($mdDialog, User, etlServerAPI) {
         this.$mdDialog = $mdDialog;
         this.User = User;
-        this.etlServerAPI = etlServerAPI
+        this.etlServerAPI = etlServerAPI;
         this.globusUser = User.attr().globus_user;
         this.url = null;
         this.error = null;
-        this.count = 0;
         this.status = null;
         console.log("this.globusUser = ", this.globusUser, this.project.name);
         this.submitRequest();
@@ -102,7 +101,7 @@ class GlobusUploadStatusDialogController {
         console.log("submitting request to update status", this.project.name);
         this.etlServerAPI.getGlobusUplaodStatus(this.project.id).then(
             results => {
-                console.log("Results from request to update status", results);
+                console.log("Results from request to update status", results.status);
                 if (results.status) {
                     this.status = results.status;
                 } else {
@@ -113,7 +112,6 @@ class GlobusUploadStatusDialogController {
     }
 
     reload() {
-        this.count = this.count + 1;
         console.log("GlobusUploadStatusDialogController-Reload");
         this.submitRequest();
     }

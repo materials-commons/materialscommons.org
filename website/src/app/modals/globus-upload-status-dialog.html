@@ -5,9 +5,6 @@
         </div>
     </md-toolbar>
     <md-dialog-content ng-if="!$ctrl.status" layout-margin>
-        <div ng-if="$ctrl.count > 0">
-            Repeated requests: {{$ctrl.count}}
-        </div>
         <div ng-if="!$ctrl.error">
             There appear to be no active Globus Uploads at this time. Try clicking on "Sync"
             in the left-side navigation bar and reviewing the files by clicking on "All Files".
@@ -20,7 +17,7 @@
     </md-dialog-content>
     <md-dialog-content ng-if="$ctrl.status" layout-margin>
         <div>
-            Status = {{$ctrl.status}}.
+            {{$ctrl.status}}.
         </div>
     </md-dialog-content>
     <md-dialog-actions layout="row">

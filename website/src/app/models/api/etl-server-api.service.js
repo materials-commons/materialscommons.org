@@ -33,7 +33,7 @@ class EtlServerAPIService {
             r => {
                 // noinspection UnnecessaryLocalVariableJS
                 let results = r.plain();
-                return {'status': results};
+                return results;
             },
             e => {
                 let message =

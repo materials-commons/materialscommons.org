@@ -183,22 +183,12 @@ def globus_transfer_download():
         return message, status.HTTP_400_BAD_REQUEST
 
 
-@app.route('/globus/upload/status', methods=['GET', 'POST'])
+@app.route('/globus/upload/status', methods=['POST'])
 @apikey
 def globus_upload_status():
-    project_id = None
-
-    # noinspection PyBroadException
-    try:
-        j = request.get_json(force=True)
-        project_id = j["project_id"]
-    except BaseException:
-        pass
-    message = "This is a test status report"
-    if project_id:
-        message += ". Project id = {}".format(project_id)
-    else:
-        message += ". No project id."
+    j = request.get_json(force=True)
+    project_id = j["project_id"]
+    message = "This is a test status report. Project id = {}".format(project_id)
     log.info(message)
     return format_as_json_return({"status": message})
 
