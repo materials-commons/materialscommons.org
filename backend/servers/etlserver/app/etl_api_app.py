@@ -5,18 +5,14 @@ import pkg_resources
 from flask import Flask, request
 from flask_api import status
 
-from servers.etlserver.globus.BuildProjectExperimentWithETL import BuildProjectExperiment
 from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload, DOWNLOAD_NO_FILES_FOUND
-from servers.etlserver.globus_non_etl_upload.non_etl_task_library import non_etl_startup_and_verify
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
-from servers.etlserver.utils.UploadUtility import UploadUtility
 from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
 from servers.etlserver.common.GlobusInfo import GlobusInfo
 from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
-from servers.etlserver.globus.GlobusMonitor import GlobusMonitor
 from servers.etlserver.app.AppHelper import AppHelper
 
 log = logging.getLogger(__name__)
@@ -24,7 +20,6 @@ log = logging.getLogger(__name__)
 log.info("Starting Flask with {}".format(__name__.split('.')[0]))
 
 app = Flask(__name__.split('.')[0])
-app.config['GLOBUS_AUTH_LOGOUT_URI'] = 'https://auth.globus.org/v2/web/logout'
 
 
 def format_as_json_return(what):
@@ -115,49 +110,6 @@ def project_based_etl():
         return message, status.HTTP_400_BAD_REQUEST
 
 
-@app.route('/upload', methods=['POST'])
-@apikey
-def upload_file():
-    log.info("etl-only; no data file upload - starting")
-    api_key = request.args.get('apikey', default="no_such_key")
-    name = request.form.get('name')
-    project_id = request.form.get("project_id")
-    description = request.form.get("description")
-    log.info(api_key)
-    log.info(name)
-    log.info(project_id)
-    log.info(description)
-    if not name:
-        message = "etl file upload - experiment name missing, required"
-        log.info(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if not project_id:
-        message = "etl file upload - project_id missing, required"
-        log.info(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    log.info("etl file upload - getting file")
-    uploader = UploadUtility()
-    (message_or_ret, http_status) = uploader.get_file()
-    if http_status:
-        return message_or_ret, http_status
-    file_path = message_or_ret
-    log.info("etl file upload - file saved to " + file_path)
-    # noinspection PyBroadException
-    try:
-        builder = BuildProjectExperiment(api_key)
-        builder.set_rename_is_ok(True)
-        builder.preset_project_id(project_id)
-        builder.preset_experiment_name_description(name, description)
-        log.info("etl file upload - build starting...")
-        builder.build(file_path, None)
-        log.info("etl file upload - done")
-        return format_as_json_return({"project_id": project_id})
-    except Exception as e:
-        log.info("Unexpected exception...", exc_info=True)
-        message = str(e)
-        return message, status.HTTP_500_INTERNAL_SERVER_ERROR
-
-
 @app.route('/globus/transfer/download', methods=['POST'])
 @apikey
 def globus_transfer_download():
@@ -194,40 +146,6 @@ def globus_upload_status():
     return format_as_json_return(return_value)
 
 
-@app.route('/globus/transfer/upload', methods=['POST'])
-@apikey
-def globus_transfer_upload():
-    log.info("Project upload shared endpoint to top-level directory with Globus - starting")
-    j = request.get_json(force=True)
-    project_id = j["project_id"]
-    globus_endpoint_id = j["endpoint"]
-    globus_endpoint_path = j["path"]
-    user_id = access.get_user()
-    log.info("Project id = {}; Globus user name = {}".format(project_id, globus_endpoint_id))
-    if not globus_endpoint_id:
-        message = "Project upload with Globus - globus_endpoint_id is missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if not globus_endpoint_path:
-        message = "Project upload with Globus - globus_endpoint_path is missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    if not project_id:
-        message = "Project upload with Globus - project_id missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    # noinspection PyBroadException
-    try:
-        results = non_etl_startup_and_verify(user_id, project_id, globus_endpoint_id, globus_endpoint_path)
-        log.info("Project id = {}; Globus user name = {}".format(project_id, results))
-        ret = format_as_json_return(results)
-        return ret
-    except Exception:
-        message = "Download transfer with Globus - unexpected exception"
-        log.exception(message)
-        return message, status.HTTP_400_BAD_REQUEST
-
-
 @app.route('/globus/transfer/admin/info', methods=['GET', 'POST'])
 @apikey
 def globus_transfer_admin_info():
@@ -248,28 +166,6 @@ def globus_transfer_admin_info():
         return ret
     except Exception:
         message = "Admin info for transfers with Globus - unexpected exception"
-        log.exception(message)
-        return message, status.HTTP_400_BAD_REQUEST
-
-
-@app.route('/globus/transfer/admin/status', methods=['GET', 'POST'])
-@apikey
-def globus_transfer_admin_status():
-    log.info("Globus transfer admin status - starting")
-    user_id = access.get_user()
-    if not access.is_administrator(user_id):
-        message = "User is not admin"
-        log.exception(message)
-        return message, status.HTTP_401_UNAUTHORIZED
-
-    # noinspection PyBroadException
-    try:
-        source = GlobusMonitor()
-        returned_info = source.get_background_process_status_list()
-        ret = format_as_json_return(returned_info)
-        return ret
-    except Exception:
-        message = "Admin status for transfers with Globus - unexpected exception"
         log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
 
