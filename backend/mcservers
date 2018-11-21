@@ -78,6 +78,7 @@ function stop_etl_server() {
     do
         kill ${line}
         echo "  Stopped mcetlserver with pid ${line}"
+        sleep 3
     done
 }
 
