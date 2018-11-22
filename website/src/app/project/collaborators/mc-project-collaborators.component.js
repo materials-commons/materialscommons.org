@@ -59,7 +59,7 @@ function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsA
         });
         if (i === -1) {
             let accessArgs = {
-                user_id: userToAdd.email,
+                user_id: userToAdd.id,
                 project_id: ctrl.project.id,
                 project_name: ctrl.project.name
             };
