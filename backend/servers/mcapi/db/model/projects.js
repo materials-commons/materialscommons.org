@@ -263,6 +263,31 @@ function* update(projectID, attrs) {
     return yield r.table('projects').get(projectID);
 }
 
+function* getExcelFilePaths(projectID) {
+    let fileList = yield r.table("project2datafile")
+        .getAll(projectID, {index: "project_id"})
+        .eqJoin([r.row("datafile_id"), "Spreadsheet"],
+		        r.table("datafiles"), {index: "id_mediatype_description"}).zip()
+        .merge(function(df) {
+            return {
+                dir: r.table("datadir2datafile").getAll(df("id"), {index: "datafile_id"})
+                        .eqJoin("datadir_id", r.db("materialscommons")
+                        .table("datadirs")).zip().coerceTo("array")
+            }
+        });
+    pathList = [];
+    for (let i = 0; i < fileList.length; i++) {
+        let path = fileList[i].dir[0].name;
+        // remove project name from path (Project1/allInOne -> /allInOne)
+        path = path.slice(path.indexOf('/'));
+        fileList[i].dir = path;
+        // add file name to path
+        path = path + '/' + fileList[i].name;
+        pathList.push(path);
+    }
+    return pathList;
+}
+
 function* renameTopDirectory(projectID, oldName, newName) {
     let dirsList = yield r.table('project2datadir').getAll(projectID, {index: 'project_id'})
         .eqJoin('datadir_id',r.table('datadirs')).zip()
@@ -345,6 +370,7 @@ module.exports = {
     get: function (id, index) {
         return getSingle(r, 'projects', id, index);
     },
+    getExcelFilePaths,
     addFileToProject,
     getProject,
     update,

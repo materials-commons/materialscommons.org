@@ -65,14 +65,23 @@ class ProjectsAPIService {
     }
 
     getActivities(projectId) {
-        return this.projectsAPIRoute(projectId).one('activity_feed').get()
-            .then(activities => {
+        return this.projectsAPIRoute(projectId).one('activity_feed').get().then(
+            activities => {
                 let plainActivities = activities.plain();
                 plainActivities.forEach(a => {
                     a.birthtime = new Date(a.birthtime * 1000);
                 });
                 return plainActivities;
-            });
+            }
+        );
+    }
+
+    getExcelFilePaths(projectId) {
+        return this.projectsAPIRoute(projectId).one('excel_files').get().then(
+            results => {
+                return {'file_list': results};
+            }
+        );
     }
 
     createShortcut(projectId, directoryId) {
@@ -96,7 +105,7 @@ class ProjectsAPIService {
 
     getProjectSample(projectID, sampleID) {
         return this.Restangular.one('sample').one('details', sampleID).get()
-            .then(function (samples) {
+            .then(function(samples) {
                 let s = samples.plain();
                 return s[0];
             });

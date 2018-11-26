@@ -8,7 +8,6 @@ setup(
         'materials_commons',
         'configparser',
         'flask-api',
-        'faktory',
         'rethinkdb',
         'argparse',
         'six',

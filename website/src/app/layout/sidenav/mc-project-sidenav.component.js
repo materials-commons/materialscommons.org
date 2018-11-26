@@ -34,6 +34,10 @@ class MCProjectSidenavComponentController {
         this.sidenavGlobus.globusUpload(this.project);
     }
 
+    showGlobusUploadStatus() {
+        this.sidenavGlobus.showUploadStatus(this.project);
+    }
+
     modifyShortcuts() {
         this.onModifyShortcuts();
     }
