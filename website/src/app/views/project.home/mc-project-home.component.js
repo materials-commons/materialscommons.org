@@ -137,17 +137,15 @@ class MCProjectHomeComponentController {
 
     etlStart() {
         this.excelFileList = [];
-        this.etlServerAPI.getEtlFilesFromProject(this.project.id).then(
+        this.projectsAPI.getExcelFilePaths(this.project.id).then(
             (results) => {
                 this.excelFileList = results.file_list;
-                console.log('this.excelFileList =', this.excelFileList);
             },
             () => {
                 this.toast.error('Project contains no ETL files');
                 this.excelFileList = [];
             }
         ).then(() => {
-            console.log('Before dialog: ', this.excelFileList);
                 this.$mdDialog.show({
                     templateUrl: 'app/modals/mc-etl-upload-dialog.html',
                     controller: EtlDialogController,
@@ -372,8 +370,6 @@ class EtlDialogController {
         let data = {};
         data.project_id = this.project.id;
         data.excel_file_path = this.excelFile;
-        console.log('project_based_etl');
-        console.log('project_based_etl', this.project.id, this.excelFile);
         this.etlServerAPI.createExperimentFromEtl(
             this.project.id, this.excelFile, this.name, this.description).then(
             (reply) => {

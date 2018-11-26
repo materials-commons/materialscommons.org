@@ -1,0 +1,17 @@
+<md-dialog flex="60">
+    <md-toolbar ng-if="!$ctrl.requestComplete" layout="row">
+        <div layout-margin>
+            Warning: Globus Username (email) not set
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <p>
+            To use globus uploads or downloads you need to set your Globus
+            User Name (email) in your Account Settings
+            (top-right pull down menu).
+        </p>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.dismiss()">Dismiss</md-button>
+    </md-dialog-actions>
+</md-dialog>

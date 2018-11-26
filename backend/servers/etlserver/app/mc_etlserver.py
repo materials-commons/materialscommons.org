@@ -51,18 +51,8 @@ def main():
     # requests_log.setLevel(logging.DEBUG)
     # requests_log.propagate = True
 
-    if SERVER_TYPE and SERVER_TYPE == 'dev':
-        if not _SSL_DIR:
-            log.error("Environment missing MC_ETL_SSL_DIR; can not run server; quitting")
-
-        log.info("Starting https server using SSL dir - {}".format(_SSL_DIR))
-        app.run(debug=True, host=_HOST, port=int(_PORT),
-                ssl_context=(os.path.join(_SSL_DIR,'server.crt'),
-                             os.path.join(_SSL_DIR,'server.key')),
-                processes=1)
-    else:
-        log.info("Starting http server")
-        app.run(debug=True, host=_HOST, port=int(_PORT), processes=5, threaded=False)
+    log.info("Starting http server")
+    app.run(debug=True, host=_HOST, port=int(_PORT), processes=5, threaded=False)
 
 
 if __name__ == '__main__':
