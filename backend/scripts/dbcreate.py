@@ -62,7 +62,7 @@ def create_mc_tables():
     create_mc_table("background_process", "project_id", "queue", "status")
     create_mc_table("globus_auth_info", "owner")
 
-    create_mc_table("globus_uploads")
+    create_mc_table("globus_uploads", "project_id")
 
     create_mc_table("processes", "template_id", "birthtime")
     create_mc_table("project2process", "project_id", "process_id")
@@ -140,7 +140,7 @@ def create_mc_tables():
 
     create_mc_table("experiment_etl_metadata", "experiment_id")
 
-    create_mc_table("file_loads")
+    create_mc_table("file_loads", "project_id")
 
     run(r.db('materialscommons').wait())
 

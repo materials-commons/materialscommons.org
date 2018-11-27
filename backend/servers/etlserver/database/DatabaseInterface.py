@@ -18,11 +18,13 @@ class DatabaseInterface:
     def get_all_projects_by_owner(self, mc_user_id):
         return self.r.table('projects').get_all(mc_user_id, index='owner').run(self.conn)
 
-    def get_globus_upload_records(self):
-        return self.r.table('globus_uploads').run(self.conn)
+    def get_globus_upload_records(self, project_id):
+        return self.r.table('globus_uploads').get_all(project_id, index="project_id").\
+            order_by(self.r.desc('birthtime')).run(self.conn)
 
-    def get_file_loads_records(self):
-        return self.r.table('file_loads').run(self.conn)
+    def get_file_loads_records(self, project_id):
+        return self.r.table('file_loads').get_all(project_id, index="project_id").\
+            order_by(self.r.desc('birthtime')).run(self.conn)
 
     def create_status_record(self, user_id, project_id, name):
         record_obj = BackgroundProcess(user_id, project_id, name)
