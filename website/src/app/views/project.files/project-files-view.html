@@ -4,7 +4,7 @@
             <md-content layout-margin flex layout-fill>
                 <div flex>
                     <ul class="padding-left-15">
-                        <li ng-repeat="file in $ctrl.state.root track by file.data.id">
+                        <li ng-repeat="file in $ctrl.state.root track by file.id">
                             <div class="mc-active-tree-node">
                                 <div layout="row" layout-align="start center">
                                     <a ng-click="$ctrl.gotoTopLevel(file)">
@@ -14,7 +14,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <!--<mc-file-tree-dir file="file" ng-if="file.expand"></mc-file-tree-dir>-->
+                            <mc-file-tree-directory file="file" ng-if="file.expand"></mc-file-tree-directory>
                         </li>
                     </ul>
                 </div>
