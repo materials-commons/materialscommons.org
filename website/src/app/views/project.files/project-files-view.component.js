@@ -11,18 +11,15 @@ class MCProjectFilesViewComponentController {
     $onChanges(changes) {
         if (changes.root) {
             this.state.root = angular.copy(changes.root.currentValue);
-            console.log('root', this.state.root);
         }
     }
 
     handleOnLoadDir(dir) {
-        console.log('MCProjectsFilesViewComponentController handleOnLoadDir');
         this.onLoadDir({dir: dir});
         this.state.active = dir;
     }
 
     handleOnShowFile(file) {
-        console.log('MCProjectFilesView handleOnShowFile', file);
         this.state.active = file;
     }
 }

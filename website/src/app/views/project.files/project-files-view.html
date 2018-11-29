@@ -24,8 +24,10 @@
         </div>
     </md-sidenav>
     <md-content flex layout-margin>
-        file/dir details here
-        {{$ctrl.state.active | json}}
+        <mc-project-files-view-file file="$ctrl.state.active.data" ng-if="$ctrl.state.active.data.otype == 'file'"></mc-project-files-view-file>
+        <mc-project-files-view-dir dir="$ctrl.state.active" ng-if="$ctrl.state.active.data.otype == 'directory'"></mc-project-files-view-dir>
+        <!--file/dir details here-->
+        <!--{{$ctrl.state.active | json}}-->
         <!--<div ui-view flex></div>-->
     </md-content>
 </div>

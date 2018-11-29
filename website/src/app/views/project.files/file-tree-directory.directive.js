@@ -33,7 +33,6 @@ class MCFileTreeDirectoryDirectiveController {
     }
 
     handleOnShowFile(file) {
-        console.log('MCFileTreeDirectory handleOnShowFile', file);
         this.onShowFile({file: file});
     }
 }

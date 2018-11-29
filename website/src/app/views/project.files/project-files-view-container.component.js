@@ -12,14 +12,12 @@ class MCProjectFilesViewContainerComponentController {
     }
 
     $onInit() {
-        console.log('this.state.project', this.state.project);
         if (this.state.fileTree == null) {
             this.projectFileTreeAPI.getProjectRoot(this.state.project.id).then(
                 files => {
                     files[0].data.childrenLoaded = true;
                     files[0].expand = true;
                     this.state.fileTree = angular.copy(files);
-                    console.log('this.state.fileTree', this.state.fileTree);
                 },
                 () => this.toast.error('Unable to retrieve project root')
             );
@@ -27,11 +25,9 @@ class MCProjectFilesViewContainerComponentController {
     }
 
     handleLoadDir(dir) {
-        console.log(`handleLoadDir(${dir})`);
         if (!dir.data.childrenLoaded) {
             this.projectFileTreeAPI.getDirectory(this.state.project.id, dir.data.id).then(
                 files => {
-                    console.log('projectFileTreeAPI.getDirectory', files, files.length);
                     dir.children = files;
                     dir.active = true;
                     dir.data.childrenLoaded = true;
