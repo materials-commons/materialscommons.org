@@ -3,8 +3,7 @@ class MCProjectFilesViewComponentController {
     constructor() {
         this.state = {
             root: null,
-            all: [],
-            active: 'active',
+            active: null,
         }
     }
 
@@ -12,11 +11,14 @@ class MCProjectFilesViewComponentController {
         if (changes.root) {
             this.state.root = angular.copy(changes.root.currentValue);
         }
+
+        if (changes.activeDir) {
+            this.state.active = angular.copy(changes.activeDir.currentValue);
+        }
     }
 
     handleOnLoadDir(dir) {
         this.onLoadDir({dir: dir});
-        this.state.active = dir;
     }
 
     handleOnShowFile(file) {
@@ -30,5 +32,6 @@ angular.module('materialscommons').component('mcProjectFilesView', {
     bindings: {
         root: '<',
         onLoadDir: '&',
+        activeDir: '<',
     }
 });
