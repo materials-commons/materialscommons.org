@@ -26,21 +26,29 @@ class MCProjectFilesViewContainerComponentController {
         }
     }
 
-    handleLoadDir(node) {
-        this.projectFileTreeAPI.getDirectory(this.state.project.id, dirId).then(
-            files => {
-                console.log('projectFileTreeAPI.getDirectory', files);
-                file.children = files;
-                file.active = true;
-                file.data.childrenLoaded = true;
-                file.expand = !file.expand;
-            },
-            () => this.toast.error('unable to retrieve directory')
-        );
+    handleLoadDir(dir) {
+        console.log(`handleLoadDir(${dir})`);
+        if (!dir.data.childrenLoaded) {
+            this.projectFileTreeAPI.getDirectory(this.state.project.id, dir.data.id).then(
+                files => {
+                    console.log('projectFileTreeAPI.getDirectory', files, files.length);
+                    dir.children = files;
+                    dir.active = true;
+                    dir.data.childrenLoaded = true;
+                    dir.expand = !dir.expand;
+                    this.state.fileTree = angular.copy(this.state.fileTree);
+                },
+                () => this.toast.error('unable to retrieve directory')
+            );
+        } else {
+            dir.active = true;
+            dir.expand = !dir.expand;
+            this.state.fileTree = angular.copy(this.state.fileTree);
+        }
     }
 }
 
 angular.module('materialscommons').component('mcProjectFilesViewContainer', {
     controller: MCProjectFilesViewContainerComponentController,
-    template: `<mc-project-files-view root="$ctrl.state.fileTree"></mc-project-files-view>`
+    template: `<mc-project-files-view root="$ctrl.state.fileTree" on-load-dir="$ctrl.handleLoadDir(dir)"></mc-project-files-view>`
 });

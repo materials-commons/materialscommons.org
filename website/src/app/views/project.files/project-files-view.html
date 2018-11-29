@@ -14,15 +14,18 @@
                                     </a>
                                 </div>
                             </div>
-                            <mc-file-tree-directory file="file" ng-if="file.expand"></mc-file-tree-directory>
+                            <mc-file-tree-directory file="file" ng-if="file.expand"
+                                                    on-load-dir="$ctrl.handleOnLoadDir(dir)"
+                                                    on-show-file="$ctrl.handleOnShowFile(file)"></mc-file-tree-directory>
                         </li>
                     </ul>
                 </div>
             </md-content>
         </div>
     </md-sidenav>
-    <md-content flex>
+    <md-content flex layout-margin>
         file/dir details here
+        {{$ctrl.state.active | json}}
         <!--<div ui-view flex></div>-->
     </md-content>
 </div>

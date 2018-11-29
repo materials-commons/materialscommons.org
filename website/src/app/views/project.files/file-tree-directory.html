@@ -5,7 +5,7 @@
             <div class="mc-active-tree-node">
                 <div ng-if="file.data.otype === 'directory'">
                     <div layout="row" layout-align="start center">
-                        <a ng-click="$ctrl.setActive(file)">
+                        <a ng-click="$ctrl.handleOnLoadDir(file)">
                             <span ng-if="file.expand"><i
                                     class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
                             <span ng-if="!file.expand"><i class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
@@ -15,7 +15,7 @@
                 </div>
                 <div ng-if="file.data.otype === 'file'">
                     <div ng-if="file.data.name !== $ctrl.placeholderName">
-                        <a ng-click="$ctrl.setActive(file)">
+                        <a ng-click="$ctrl.handleOnShowFile(file)">
                             <span><i class="fa fa-fw fa-file file-tree-icon-color"></i></span>
                             {{file.data.name}}
                         </a>
@@ -23,7 +23,9 @@
                 </div>
             </div>
             <div ng-if="file.data.otype === 'directory'">
-                <mc-file-tree-directory ng-if="file.expand" file="file"></mc-file-tree-directory>
+                <mc-file-tree-directory ng-if="file.expand" file="file"
+                                        on-load-dir="$ctrl.handleOnLoadDir(dir)"
+                                        on-show-file="$ctrl.handleOnShowFile(file)"></mc-file-tree-directory>
             </div>
         </li>
     </ul>
