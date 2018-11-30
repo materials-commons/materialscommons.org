@@ -24,6 +24,30 @@ class MCProjectFilesViewComponentController {
     handleOnShowFile(file) {
         this.state.active = file;
     }
+
+    handleDownloadFiles(files) {
+
+    }
+
+    handleUploadFiles(files) {
+
+    }
+
+    handleCreateDir(createDirName) {
+
+    }
+
+    handleMove(item) {
+
+    }
+
+    handleDelete(items) {
+
+    }
+
+    handleRenameDir(newDirName) {
+
+    }
 }
 
 angular.module('materialscommons').component('mcProjectFilesView', {

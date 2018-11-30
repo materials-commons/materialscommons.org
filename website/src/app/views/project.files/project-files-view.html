@@ -24,10 +24,14 @@
         </div>
     </md-sidenav>
     <md-content flex layout-margin>
-        <mc-file file="$ctrl.state.active.data" ng-if="$ctrl.state.active.data.otype == 'file'"></mc-file>
-        <mc-project-files-view-dir dir="$ctrl.state.active" ng-if="$ctrl.state.active.data.otype == 'directory'"></mc-project-files-view-dir>
-        <!--file/dir details here-->
-        <!--{{$ctrl.state.active | json}}-->
-        <!--<div ui-view flex></div>-->
+        <mc-file ng-if="$ctrl.state.active.data.otype == 'file'" file="$ctrl.state.active.data"></mc-file>
+        <mc-dir ng-if="$ctrl.state.active.data.otype == 'directory'"
+                dir="$ctrl.state.active"
+                on-download-files="$ctrl.handleDownloadFiles(files)"
+                on-upload-files="$ctrl.handleUploadFiles()"
+                on-create-dir="$ctrl.handleCreateDir(createDirName)"
+                on-move="$ctrl.handleMove(item)"
+                on-delete="$ctrl.handleDelete(items)"
+                on-rename-dir="$ctrl.handleRenameDir(newDirName)"></mc-dir>
     </md-content>
 </div>
