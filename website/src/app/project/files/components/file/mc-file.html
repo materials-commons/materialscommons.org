@@ -1,25 +1,25 @@
 <div layout="column" layout-fill layout-margin layout-wrap>
-    <div ng-if="$ctrl.file">
-        <mc-file-edit-controls file="$ctrl.file"></mc-file-edit-controls>
+    <div ng-if="$ctrl.state.file">
+        <mc-file-edit-controls file="$ctrl.state.file"></mc-file-edit-controls>
         <div layout="row" flex="60" layout-align="space-around center">
-            <span class="md-subhead-light"><i class="fa fa-calendar"></i>{{$ctrl.file.birthtime | toDateString}}</span>
-            <span class="md-subhead-light"><i class="fa fa-user"></i>{{$ctrl.file.owner}}</span>
-            <span class="md-subhead-light"><i class="fa fa-copy"></i>{{$ctrl.file.size | bytes}}</span>
-            <span class="md-subhead-light"><i class=""></i>{{$ctrl.file.mediatype.mime}}</span>
+            <span class="md-subhead-light"><i class="fa fa-calendar"></i>{{$ctrl.state.file.birthtime | toDateString}}</span>
+            <span class="md-subhead-light"><i class="fa fa-user"></i>{{$ctrl.state.file.owner}}</span>
+            <span class="md-subhead-light"><i class="fa fa-copy"></i>{{$ctrl.state.file.size | bytes}}</span>
+            <span class="md-subhead-light"><i class=""></i>{{$ctrl.state.file.mediatype.mime}}</span>
         </div>
 
         <div layout-margin>
-            <mc-file-description file="$ctrl.file"></mc-file-description>
+            <mc-file-description file="$ctrl.state.file"></mc-file-description>
 
-            <display-file-contents file="$ctrl.file"></display-file-contents>
+            <display-file-contents file="$ctrl.state.file"></display-file-contents>
 
             <div flex="100">
-                <file-tags file="$ctrl.file"></file-tags>
+                <file-tags file="$ctrl.state.file"></file-tags>
             </div>
 
             <div ng-if="false" class="row">
                 <div class="section">
-                    <detail-tabs item="$ctrl.file"></detail-tabs>
+                    <detail-tabs item="$ctrl.state.file"></detail-tabs>
                 </div>
             </div>
         </div>
