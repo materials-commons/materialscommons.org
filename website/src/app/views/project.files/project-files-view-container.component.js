@@ -12,6 +12,7 @@ class MCProjectFilesViewContainerComponentController {
             project: this.mcStateStore.getState('project'),
             fileTree: this.mcStateStore.getState('project:file-tree'),
             activeDir: null,
+            show: true,
         };
     }
 
@@ -79,6 +80,7 @@ class MCProjectFilesViewContainerComponentController {
                 this.$timeout(() => {
                     this.state.fileTree = angular.copy(this.state.fileTree);
                     this.state.activeDir = angular.copy(dirEntry.model);
+                    this.state.show = !this.state.show;
                 });
             },
             () => null
@@ -99,14 +101,21 @@ class MCProjectFilesViewContainerComponentController {
         this.state.fileTree = angular.copy(this.state.fileTree);
         dirEntry.model.children = _.sortBy(dirEntry.model.children, f => f.data.name);
         // dirEntry.children = _.sortBy(dirEntry.children, f => f.model.data.name);
-        console.log('dirEntry', dirEntry);
+        // console.log('dirEntry', dirEntry);
         this.state.activeDir = angular.copy(dirEntry.model);
+        this.state.show = !this.state.show;
     }
 }
 
 angular.module('materialscommons').component('mcProjectFilesViewContainer', {
     controller: MCProjectFilesViewContainerComponentController,
-    template: `<mc-project-files-view root="$ctrl.state.fileTree"
+    template: `<mc-project-files-view root="$ctrl.state.fileTree" ng-if="$ctrl.state.show"
+                        project="$ctrl.state.project"
+                        on-load-dir="$ctrl.handleLoadDir(dir)" 
+                        on-delete-files="$ctrl.handleDeleteFiles(dir, files)"
+                        on-finish-files-upload="$ctrl.handleFinishFilesUpload(dir, files)"
+                        active-dir="$ctrl.state.activeDir"></mc-project-files-view>
+                <mc-project-files-view root="$ctrl.state.fileTree" ng-if="!$ctrl.state.show"
                         project="$ctrl.state.project"
                         on-load-dir="$ctrl.handleLoadDir(dir)" 
                         on-delete-files="$ctrl.handleDeleteFiles(dir, files)"
