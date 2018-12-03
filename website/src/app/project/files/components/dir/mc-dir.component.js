@@ -1,6 +1,7 @@
 class MCDirComponentController {
     /*@ngInject*/
     constructor(mcFileOpsDialogs) {
+        console.log('MCDirComponentController');
         this.mcFileOpsDialogs = mcFileOpsDialogs;
         this.selected = false;
         this.selectedFiles = [];
@@ -12,6 +13,14 @@ class MCDirComponentController {
 
     $onInit() {
         this.isNotRoot = this.dir.data.path.indexOf('/') !== -1;
+    }
+
+    $onChanges(changes) {
+        if (changes.dir) {
+            this.dir = changes.dir.currentValue;
+            this.isNotRoot = this.dir.data.path.indexOf('/') !== -1;
+            console.log('dir =', this.dir);
+        }
     }
 
     onSelected(selected) {
@@ -76,7 +85,7 @@ class MCDirComponentController {
 
     handleDelete() {
         this.mcFileOpsDialogs.deleteFiles(this.selectedFiles).then(
-            () => this.onDelete({items: this.selectedFiles})
+            () => this.onDelete({dir: this.dir, files: this.selectedFiles})
         );
     }
 }
