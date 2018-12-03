@@ -22,7 +22,6 @@ function mcFileTreeDirectoryDirective(RecursionHelper) {
 class MCFileTreeDirectoryDirectiveController {
     /*ngInject*/
     constructor() {
-        // console.log('mcFileTreeDirectory', this.file);
         this.state = {
             files: this.file.children
         };
