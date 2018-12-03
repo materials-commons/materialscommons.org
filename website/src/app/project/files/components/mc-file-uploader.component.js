@@ -17,6 +17,20 @@ class MCFileUploaderComponentController {
         this.files.splice(index, 1);
     }
 
+    $onChanges(changes) {
+        if (changes.project) {
+            this.projectId = changes.project.currentValue.id;
+        }
+
+        if (changes.dir) {
+            this.dir = changes.dir.currentValue;
+        }
+
+        if (changes.path) {
+            this.path = changes.path.currentValue;
+        }
+    }
+
     submit() {
         this.uploadFiles = this.files.map((f) => ({
             file: f,
@@ -26,7 +40,7 @@ class MCFileUploaderComponentController {
         this.uploadFailures = [];
         P.map(this.uploadFiles, (f) => {
             return this.Upload.upload({
-                url: `api/v2/projects/${this.projectId}/directories/${this.directoryId}/fileupload?apikey=${this.User.apikey()}`,
+                url: `api/v2/projects/${this.projectId}/directories/${this.dir.data.id}/fileupload?apikey=${this.User.apikey()}`,
                 data: {file: f.file}
             }).then(
                 (uploaded) => {
@@ -52,7 +66,7 @@ class MCFileUploaderComponentController {
                     this.uploadInProgress = false;
                     if (this.onUploadComplete) {
                         let uploadedCopy = this.uploaded.slice();
-                        this.onUploadComplete({files: uploadedCopy});
+                        this.onUploadComplete({dir: this.dir, files: uploadedCopy});
                     }
                     this.uploaded.length = 0;
                 });
@@ -61,10 +75,7 @@ class MCFileUploaderComponentController {
     }
 
     useGlobusForUpload() {
-        console.log("useGlobusForUpload", this.path, this.directoryId);
-        this.mcFileOpsDialogs.uploadUsingGlobus(this.path).then(globusNameOrID => {
-            console.log("Would upload using Globus", globusNameOrID, this.path, this.directoryId);
-        });
+        this.mcFileOpsDialogs.uploadUsingGlobus(this.path).then(() => null);
     }
 }
 
@@ -74,7 +85,7 @@ angular.module('materialscommons').component('mcFileUploader', {
     bindings: {
         onUploadComplete: '&',
         path: '<',
-        directoryId: '<',
-        projectId: '<'
+        dir: '<',
+        project: '<'
     }
 });

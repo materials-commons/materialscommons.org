@@ -1,9 +1,10 @@
 class MCProjectFilesViewContainerComponentController {
     /*@ngInject*/
-    constructor(mcStateStore, projectFileTreeAPI, fileTreeDeleteService, $timeout, toast) {
+    constructor(mcStateStore, projectFileTreeAPI, fileTreeDeleteService, gridFiles, $timeout, toast) {
         this.mcStateStore = mcStateStore;
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.fileTreeDeleteService = fileTreeDeleteService;
+        this.gridFiles = gridFiles;
         this.$timeout = $timeout;
         this.toast = toast;
 
@@ -37,7 +38,6 @@ class MCProjectFilesViewContainerComponentController {
                     dir.data.childrenLoaded = true;
                     dir.expand = !dir.expand;
                     this.state.fileTree = angular.copy(this.state.fileTree);
-                    console.log('setting activeDir to', dir);
                     this.state.activeDir = angular.copy(dir);
                 },
                 () => this.toast.error('unable to retrieve directory')
@@ -51,7 +51,6 @@ class MCProjectFilesViewContainerComponentController {
     }
 
     handleDeleteFiles(dir, files) {
-        console.log('projectfilesviewcontainer handleDeleteFiles', dir, files);
         P.map(files, file => {
             if (file.otype === 'file') {
                 return this.fileTreeDeleteService.deleteFile(this.state.project.id, file.id).then(
@@ -83,12 +82,25 @@ class MCProjectFilesViewContainerComponentController {
             () => null
         );
     }
+
+    handleFinishFilesUpload(dir, files) {
+        let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
+        files.forEach(f => {
+            let file = this.gridFiles.createFileEntry(f);
+            dirEntry.children.push(file);
+            dirEntry.model.children.push(file);
+        });
+
+        this.state.fileTree = angular.copy(this.state.fileTree);
+    }
 }
 
 angular.module('materialscommons').component('mcProjectFilesViewContainer', {
     controller: MCProjectFilesViewContainerComponentController,
-    template: `<mc-project-files-view root="$ctrl.state.fileTree" 
+    template: `<mc-project-files-view root="$ctrl.state.fileTree"
+                        project="$ctrl.state.project"
                         on-load-dir="$ctrl.handleLoadDir(dir)" 
                         on-delete-files="$ctrl.handleDeleteFiles(dir, files)"
+                        on-finish-files-upload="$ctrl.handleFinishFilesUpload(dir, files)"
                         active-dir="$ctrl.state.activeDir"></mc-project-files-view>`
 });

@@ -1,20 +1,29 @@
 class MCProjectFilesViewComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor($timeout) {
+        this.$timeout = $timeout;
         this.state = {
             root: null,
             active: null,
+            uploadStarted: false,
+            project: null,
+            toggle: true,
         }
     }
 
     $onChanges(changes) {
         if (changes.root) {
             this.state.root = angular.copy(changes.root.currentValue);
+            this.state.toggle = false;
+            this.$timeout(() => this.state.toggle = true);
         }
 
         if (changes.activeDir) {
             this.state.active = angular.copy(changes.activeDir.currentValue);
-            console.log('this.state.active', this.state.active);
+        }
+
+        if (changes.project) {
+            this.state.project = changes.project.currentValue;
         }
     }
 
@@ -34,8 +43,13 @@ class MCProjectFilesViewComponentController {
         this.onDownloadFiles({files: files});
     }
 
-    handleUploadFiles() {
-        this.onUploadFiles();
+    handleUploadFiles(dir) {
+        this.state.uploadStarted = true;
+    }
+
+    handleFinishUpload(dir, files) {
+        this.state.uploadStarted = false;
+        this.onFinishFilesUpload({dir: dir, files: files});
     }
 
     handleCreateDir(parent, createDirName) {
@@ -47,7 +61,6 @@ class MCProjectFilesViewComponentController {
     }
 
     handleDelete(dir, files) {
-        console.log('projectFilesView handleDelete', dir, files);
         this.onDeleteFiles({dir: dir, files: files});
     }
 
@@ -61,10 +74,11 @@ angular.module('materialscommons').component('mcProjectFilesView', {
     template: require('./project-files-view.html'),
     bindings: {
         root: '<',
+        project: '<',
         onLoadDir: '&',
         activeDir: '<',
         onDownloadFiles: '&',
-        onUploadFiles: '&',
+        onFinishFilesUpload: '&',
         onCreateDir: '&',
         onMoveFile: '&',
         onDeleteFiles: '&',

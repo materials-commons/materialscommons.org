@@ -14,7 +14,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <mc-file-tree-directory file="file" ng-if="file.expand"
+                            <mc-file-tree-directory file="file" ng-if="file.expand && $ctrl.state.toggle"
                                                     on-load-dir="$ctrl.handleOnLoadDir(dir)"
                                                     on-show-file="$ctrl.handleOnShowFile(file)"></mc-file-tree-directory>
                         </li>
@@ -24,14 +24,26 @@
         </div>
     </md-sidenav>
     <md-content flex layout-margin>
-        <mc-file ng-if="$ctrl.state.active.data.otype == 'file'" file="$ctrl.state.active.data"></mc-file>
-        <mc-dir ng-if="$ctrl.state.active.data.otype == 'directory'"
+        <mc-file ng-if="$ctrl.state.active.data.otype == 'file' && !$ctrl.state.uploadStarted" file="$ctrl.state.active.data"></mc-file>
+        <mc-dir ng-if="$ctrl.state.active.data.otype == 'directory' && !$ctrl.state.uploadStarted"
                 dir="$ctrl.state.active"
                 on-download-files="$ctrl.handleDownloadFiles(files)"
-                on-upload-files="$ctrl.handleUploadFiles()"
+                on-upload-files="$ctrl.handleUploadFiles(dir)"
                 on-create-dir="$ctrl.handleCreateDir(parent, createDirName)"
                 on-move="$ctrl.handleMove(files)"
                 on-delete="$ctrl.handleDelete(dir, files)"
                 on-rename-dir="$ctrl.handleRenameDir(dir, newDirName)"></mc-dir>
+        <div ng-show="$ctrl.state.uploadStarted">
+            <mc-file-uploader project="$ctrl.state.project"
+                              dir="$ctrl.state.active"
+                              path="$ctrl.state.active.data.path"
+                              on-upload-complete="$ctrl.handleFinishUpload(dir, files)">
+            </mc-file-uploader>
+            <div class="margin-left-30">
+                <md-button class="md-warn md-raised" ng-click="$ctrl.state.uploadStarted = false">
+                    close
+                </md-button>
+            </div>
+        </div>
     </md-content>
 </div>

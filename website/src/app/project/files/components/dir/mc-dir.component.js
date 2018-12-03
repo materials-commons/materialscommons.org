@@ -1,14 +1,10 @@
 class MCDirComponentController {
     /*@ngInject*/
     constructor(mcFileOpsDialogs) {
-        console.log('MCDirComponentController');
         this.mcFileOpsDialogs = mcFileOpsDialogs;
         this.selected = false;
         this.selectedFiles = [];
         this.moveFiles = false;
-//        this.globusUpload = "none";
-//        this.globusUpload = "pending";
-//        this.globusUpload = "complete";
     }
 
     $onInit() {
@@ -19,7 +15,6 @@ class MCDirComponentController {
         if (changes.dir) {
             this.dir = changes.dir.currentValue;
             this.isNotRoot = this.dir.data.path.indexOf('/') !== -1;
-            console.log('dir =', this.dir);
         }
     }
 
@@ -42,31 +37,8 @@ class MCDirComponentController {
         );
     }
 
-//    globusUploadPending(){
-//        let ret = this.globusUpload === "pending";
-//        console.log('globusUploadPending',ret);
-//        return ret;
-//    }
-
-//    globusUploadComplete(){
-//        let ret = this.globusUpload === "complete";
-//        console.log('globusUploadComplete',ret);
-//        return ret;
-//    }
-
-//    globusDownloadEndpoint() {
-//        console.log("Globus endpoint enabled"); return true;
-//    }
-
-//    useGlobusForDownload(){
-//        console.log("useGlobusForDownload - fake path 'Demo Project/EPMA_Analysis'");
-//        this.mcFileOpsDialogs.downloadUsingGlobus("Demo Project/EPMA_Analysis").then((g_user) => {
-//            console.log("Would download using Globus", g_user, "Demo Project/EPMA_Analysis");
-//        });
-//    }
-
     uploadFiles() {
-        this.onUploadFiles();
+        this.onUploadFiles({dir: this.dir});
     }
 
     handleDownloadFiles() {
