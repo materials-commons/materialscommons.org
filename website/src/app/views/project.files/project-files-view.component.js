@@ -14,7 +14,12 @@ class MCProjectFilesViewComponentController {
 
         if (changes.activeDir) {
             this.state.active = angular.copy(changes.activeDir.currentValue);
+            console.log('this.state.active', this.state.active);
         }
+    }
+
+    gotoTopLevel(dir) {
+        this.handleOnLoadDir(dir);
     }
 
     handleOnLoadDir(dir) {
@@ -26,27 +31,28 @@ class MCProjectFilesViewComponentController {
     }
 
     handleDownloadFiles(files) {
-
+        this.onDownloadFiles({files: files});
     }
 
-    handleUploadFiles(files) {
-
+    handleUploadFiles() {
+        this.onUploadFiles();
     }
 
-    handleCreateDir(createDirName) {
-
+    handleCreateDir(parent, createDirName) {
+        this.onCreateDir({parent: parent, name: createDirName});
     }
 
-    handleMove(item) {
-
+    handleMove(file) {
+        this.onMoveFile({file: file});
     }
 
-    handleDelete(items) {
-
+    handleDelete(dir, files) {
+        console.log('projectFilesView handleDelete', dir, files);
+        this.onDeleteFiles({dir: dir, files: files});
     }
 
-    handleRenameDir(newDirName) {
-
+    handleRenameDir(dir, newDirName) {
+        this.onRenameDir({dir: dir, name: newDirName});
     }
 }
 
@@ -57,5 +63,11 @@ angular.module('materialscommons').component('mcProjectFilesView', {
         root: '<',
         onLoadDir: '&',
         activeDir: '<',
+        onDownloadFiles: '&',
+        onUploadFiles: '&',
+        onCreateDir: '&',
+        onMoveFile: '&',
+        onDeleteFiles: '&',
+        onRenameDir: '&',
     }
 });
