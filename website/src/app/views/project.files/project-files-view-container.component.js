@@ -51,12 +51,13 @@ class MCProjectFilesViewContainerComponentController {
     }
 
     handleDeleteFiles(dir, files) {
+        let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
         P.map(files, file => {
             if (file.otype === 'file') {
                 return this.fileTreeDeleteService.deleteFile(this.state.project.id, file.id).then(
                     () => {
-                        const i = _.findIndex(dir.children, (f) => f.data.id === file.id);
-                        dir.children.splice(i, 1);
+                        const i = _.findIndex(dirEntry.model.children, (f) => f.data.id === file.id);
+                        dirEntry.model.children.splice(i, 1);
                     },
                     (err) => {
                         this.toast.error(`Unable to delete file ${file.name}: ${err.data}`);
@@ -65,8 +66,8 @@ class MCProjectFilesViewContainerComponentController {
             } else {
                 return this.fileTreeDeleteService.deleteDir(this.state.project.id, file.id).then(
                     () => {
-                        const i = _.findIndex(dir.children, (f) => f.data.id === file.id);
-                        dir.children.splice(i, 1);
+                        const i = _.findIndex(dirEntry.model.children, (f) => f.data.id === file.id);
+                        dirEntry.model.children.splice(i, 1);
                     },
                     err => {
                         this.toast.error(`Unable to delete directory ${file.name}: ${err.data}`);
@@ -77,6 +78,7 @@ class MCProjectFilesViewContainerComponentController {
             () => {
                 this.$timeout(() => {
                     this.state.fileTree = angular.copy(this.state.fileTree);
+                    this.state.activeDir = angular.copy(dirEntry.model);
                 });
             },
             () => null
@@ -85,13 +87,20 @@ class MCProjectFilesViewContainerComponentController {
 
     handleFinishFilesUpload(dir, files) {
         let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
+        //let treeModel = new TreeModel();
         files.forEach(f => {
             let file = this.gridFiles.createFileEntry(f);
             dirEntry.children.push(file);
+            //let parsed = treeModel.parse(file);
+            //dirEntry.addChild(parsed);
             dirEntry.model.children.push(file);
         });
 
         this.state.fileTree = angular.copy(this.state.fileTree);
+        dirEntry.model.children = _.sortBy(dirEntry.model.children, f => f.data.name);
+        // dirEntry.children = _.sortBy(dirEntry.children, f => f.model.data.name);
+        console.log('dirEntry', dirEntry);
+        this.state.activeDir = angular.copy(dirEntry.model);
     }
 }
 

@@ -38,7 +38,7 @@ class MCDirComponentController {
     }
 
     uploadFiles() {
-        this.onUploadFiles({dir: this.dir});
+        this.onUploadFiles();
     }
 
     handleDownloadFiles() {

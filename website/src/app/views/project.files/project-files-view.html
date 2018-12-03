@@ -28,7 +28,7 @@
         <mc-dir ng-if="$ctrl.state.active.data.otype == 'directory' && !$ctrl.state.uploadStarted"
                 dir="$ctrl.state.active"
                 on-download-files="$ctrl.handleDownloadFiles(files)"
-                on-upload-files="$ctrl.handleUploadFiles(dir)"
+                on-upload-files="$ctrl.handleUploadFiles()"
                 on-create-dir="$ctrl.handleCreateDir(parent, createDirName)"
                 on-move="$ctrl.handleMove(files)"
                 on-delete="$ctrl.handleDelete(dir, files)"

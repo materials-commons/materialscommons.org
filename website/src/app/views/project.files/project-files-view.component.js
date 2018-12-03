@@ -43,7 +43,7 @@ class MCProjectFilesViewComponentController {
         this.onDownloadFiles({files: files});
     }
 
-    handleUploadFiles(dir) {
+    handleUploadFiles() {
         this.state.uploadStarted = true;
     }
 
