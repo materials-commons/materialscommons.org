@@ -15,7 +15,7 @@ class MCProjectFilesViewComponentController {
         if (changes.root) {
             this.state.root = angular.copy(changes.root.currentValue);
             this.state.toggle = false;
-            this.$timeout(() => this.state.toggle = true);
+            this.$timeout(() => this.state.toggle = true, 300);
         }
 
         if (changes.activeDir) {
