@@ -56,8 +56,8 @@ class MCProjectFilesViewComponentController {
         this.onCreateDir({parent: parent, name: createDirName});
     }
 
-    handleMove(file) {
-        this.onMoveFile({file: file});
+    handleMove(dir, file) {
+        return this.onMoveFile({dir: dir, file: file});
     }
 
     handleDelete(dir, files) {

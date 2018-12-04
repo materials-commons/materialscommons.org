@@ -24,11 +24,11 @@ class MCDirComponentController {
     }
 
     renameDirectory() {
-        this.mcFileOpsDialogs.renameDirectory(this.dir.data.name).then(name => this.onRenameDir({newDirName: name}));
+        this.mcFileOpsDialogs.renameDirectory(this.dir.data.name).then(name => this.onRenameDir({dir: this.dir, newDirName: name}));
     }
 
     createDirectory() {
-        this.mcFileOpsDialogs.createDirectory(this.dir.data.name).then(name => this.onCreateDir({createDirName: name}));
+        this.mcFileOpsDialogs.createDirectory(this.dir.data.name).then(name => this.onCreateDir({parent: this.dir, createDirName: name}));
     }
 
     deleteDir() {
@@ -52,7 +52,7 @@ class MCDirComponentController {
     }
 
     handleMove(item) {
-        return this.onMove({item: item});
+        return this.onMove({dir: this.dir, file: item});
     }
 
     handleDelete() {

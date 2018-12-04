@@ -1,25 +1,23 @@
 /*@ngInject*/
 function fileTreeMoveService(projectsAPIRoute, mcprojstore) {
 
-    function moveFileOnServer(fileID, oldDirID, newDirID) {
+    function moveFileOnServer(projectId, fileID, oldDirID, newDirID) {
         const moveArgs = {
             move: {
                 old_directory_id: oldDirID,
                 new_directory_id: newDirID
             }
         };
-        const projectID = mcprojstore.currentProject.id;
-        return projectsAPIRoute(projectID).one('files', fileID).customPUT(moveArgs).then(f => f.plain());
+        return projectsAPIRoute(projectId).one('files', fileID).customPUT(moveArgs).then(f => f.plain());
     }
 
-    function moveDirOnServer(dirID, newDirID) {
+    function moveDirOnServer(projectId, dirID, newDirID) {
         const moveArgs = {
             move: {
                 new_directory_id: newDirID
             }
         };
-        const projectID = mcprojstore.currentProject.id;
-        return projectsAPIRoute(projectID).one('directories', dirID).customPUT(moveArgs).then(d => d.plain());
+        return projectsAPIRoute(projectId).one('directories', dirID).customPUT(moveArgs).then(d => d.plain());
     }
 
     function findNodeByID(root, id) {
@@ -35,12 +33,12 @@ function fileTreeMoveService(projectsAPIRoute, mcprojstore) {
     }
 
     return {
-        moveFile: function(fileID, oldDirID, newDirID) {
-            return moveFileOnServer(fileID, oldDirID, newDirID).then(f => f);
+        moveFile: function(projectId, fileID, oldDirID, newDirID) {
+            return moveFileOnServer(projectId, fileID, oldDirID, newDirID).then(f => f);
         },
 
-        moveDir: function(dirID, newDirID) {
-            return moveDirOnServer(dirID, newDirID).then(d => d);
+        moveDir: function(projectId, dirID, newDirID) {
+            return moveDirOnServer(projectId, dirID, newDirID).then(d => d);
         },
 
         findNodeByID,

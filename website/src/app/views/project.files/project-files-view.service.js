@@ -1,8 +1,9 @@
 class ProjectFilesViewService {
     /*@ngInject*/
-    constructor(gridFiles, fileTreeDeleteService, toast) {
+    constructor(gridFiles, fileTreeDeleteService, fileTreeMoveService, toast) {
         this.gridFiles = gridFiles;
         this.fileTreeDeleteService = fileTreeDeleteService;
+        this.fileTreeMoveService = fileTreeMoveService;
         this.toast = toast;
     }
 
@@ -33,6 +34,24 @@ class ProjectFilesViewService {
         }, {concurrency: 3});
     }
 
+    moveFile(projectId, fileTree, dirId, file) {
+        let dirEntry = this.gridFiles.findEntry(fileTree[0], dirId);
+        const nodePath = dirEntry.getPath();
+        const fileDir = nodePath[nodePath.length - 2].model;
+        this.fileTreeMoveService.moveFile(projectId, file.data.id, fileDir.data.id, dirId).then(
+            () => {
+                dirEntry.children.push(file);
+                dirEntry.model.children.push(file);
+            }
+        );
+    }
+
+    moveDir(projectId, fileTree, parentId, dir) {
+        let dirEntry = this.gridFiles.findEntry(fileTree[0], parentId);
+        this.fileTreeMoveService.moveDir(projectId, dir.data.id, parentId).then(
+            () => dirEntry.children.push(dir)
+        );
+    }
 }
 
 angular.module('materialscommons').service('projectFilesViewService', ProjectFilesViewService);

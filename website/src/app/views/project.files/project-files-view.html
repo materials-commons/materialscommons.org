@@ -30,7 +30,7 @@
                 on-download-files="$ctrl.handleDownloadFiles(files)"
                 on-upload-files="$ctrl.handleUploadFiles()"
                 on-create-dir="$ctrl.handleCreateDir(parent, createDirName)"
-                on-move="$ctrl.handleMove(files)"
+                on-move="$ctrl.handleMove(dir, file)"
                 on-delete="$ctrl.handleDelete(dir, files)"
                 on-rename-dir="$ctrl.handleRenameDir(dir, newDirName)"></mc-dir>
         <div ng-show="$ctrl.state.uploadStarted">
