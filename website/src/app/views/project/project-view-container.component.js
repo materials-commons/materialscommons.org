@@ -8,29 +8,32 @@ class MCProjectViewContainerComponentController {
         this.$stateParams = $stateParams;
         this.state = {
             project: mcStateStore.getState('project'),
+            experiment: null,
         };
     }
 
     $onInit() {
-        this.unsubscribe = this.mcStateStore.subscribe('project', p => this.state.project = angular.copy(p));
-        this.unsubscribeSync = this.mcStateStore.subscribe('sync:project', () => this.handleSync());
+        this.unsubscribeProject = this.mcStateStore.subscribe('project', p => this.state.project = angular.copy(p));
+        this.unsubscribeProjectSync = this.mcStateStore.subscribe('sync:project', () => this.handleProjectSync());
+        this.unsubscribeExperiment = this.mcStateStore.subscribe('experiment', e => this.state.experiment = angular.copy(e));
     }
 
     $onDestroy() {
-        this.unsubscribe();
-        this.unsubscribeSync();
+        this.unsubscribeProject();
+        this.unsubscribeProjectSync();
+        this.unsubscribeExperiment();
     }
 
     getRoute() {
         return this.mcRouteState.getRouteName();
     }
 
-    handleSync() {
+    handleProjectSync() {
         this.projectsAPI.getProjectOverview(this.$stateParams.project_id).then(p => this.mcStateStore.updateState('project', p));
     }
 
     handleModifyShortcuts() {
-        this.modifyProjectShortcuts.modifyShortcuts(this.state.project).then(() => this.handleSync());
+        this.modifyProjectShortcuts.modifyShortcuts(this.state.project).then(() => this.handleProjectSync());
     }
 }
 

@@ -1,13 +1,11 @@
 <div layout="column" flex="100">
     <div layout="row" layout-fill layout-align="start stretch">
         <mc-project-sidenav project="$ctrl.state.project"
-                            on-sync="$ctrl.handleSync()"
+                            experiment="$ctrl.state.experiment"
+                            on-sync="$ctrl.handleProjectSync()"
                             on-modify-shortcuts="$ctrl.handleModifyShortcuts()"></mc-project-sidenav>
         <div layout="column" flex="100">
-            <div ng-if="$ctrl.getRoute() == 'project.experiment.workflow'"
-                 ui-view flex="100" layout="column"></div>
-            <md-content ng-if="$ctrl.getRoute() !== 'project.experiment.workflow'"
-                        ui-view flex="100" layout="column"></md-content>
+            <ui-view flex="100" layout="column"></ui-view>
         </div>
     </div>
 </div>

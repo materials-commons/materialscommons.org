@@ -20,6 +20,10 @@ class MCProjectSidenavComponentController {
         if (changes.project) {
             this.state.project = angular.copy(changes.project.currentValue);
         }
+
+        if (changes.experiment) {
+            this.state.experiment = angular.copy(changes.experiment.currentValue);
+        }
     }
 
     refreshProject() {
@@ -56,6 +60,7 @@ angular.module('materialscommons').component('mcProjectSidenav', {
     controller: MCProjectSidenavComponentController,
     bindings: {
         project: '<',
+        experiment: '<',
         onSync: '&',
         onModifyShortcuts: '&'
     }
