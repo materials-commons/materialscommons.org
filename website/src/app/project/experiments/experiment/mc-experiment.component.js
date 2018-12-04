@@ -1,7 +1,7 @@
 class MCExperimentComponentController {
     /*@ngInject*/
-    constructor(mcprojstore, $stateParams) {
-        this.experiment = mcprojstore.getExperiment($stateParams.experiment_id);
+    constructor() {
+        // this.experiment = mcprojstore.getExperiment($stateParams.experiment_id);
     }
 }
 

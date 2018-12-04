@@ -137,25 +137,9 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/experiment/:experiment_id',
             template: `<mc-experiment class="height-100"></mc-experiment>`,
             resolve: {
-                experiment: ['mcprojstore', '$stateParams', 'experimentsAPI', '_projstore',
-                    (mcprojstore, $stateParams, experimentsAPI) => {
-                        let e = mcprojstore.getExperiment($stateParams.experiment_id);
-                        if (e.processes) {
-                            return e;
-                        } else {
-                            return experimentsAPI.getExperimentForProject($stateParams.project_id, $stateParams.experiment_id).then(
-                                e => {
-                                    return mcprojstore.updateCurrentProject((project, transformers) => {
-                                        project.experiments[e.id] = transformers.transformExperiment(e);
-                                        return project;
-                                    }).then(
-                                        () => {
-                                            return mcprojstore.getExperiment($stateParams.experiment_id);
-                                        }
-                                    );
-                                }
-                            );
-                        }
+                experiment: ['$stateParams', 'experimentsAPI',
+                    ($stateParams, experimentsAPI) => {
+                        return experimentsAPI.getExperimentForProject($stateParams.project_id, $stateParams.experiment_id);
                     }
                 ]
             }
