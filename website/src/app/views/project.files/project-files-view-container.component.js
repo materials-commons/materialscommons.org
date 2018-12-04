@@ -1,9 +1,9 @@
 class MCProjectFilesViewContainerComponentController {
     /*@ngInject*/
-    constructor(mcStateStore, projectFileTreeAPI, fileTreeDeleteService, gridFiles, $timeout, toast) {
+    constructor(mcStateStore, projectFileTreeAPI, projectFilesViewService, gridFiles, $timeout, toast) {
         this.mcStateStore = mcStateStore;
         this.projectFileTreeAPI = projectFileTreeAPI;
-        this.fileTreeDeleteService = fileTreeDeleteService;
+        this.projectFilesViewService = projectFilesViewService;
         this.gridFiles = gridFiles;
         this.$timeout = $timeout;
         this.toast = toast;
@@ -52,30 +52,7 @@ class MCProjectFilesViewContainerComponentController {
     }
 
     handleDeleteFiles(dir, files) {
-        let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
-        P.map(files, file => {
-            if (file.otype === 'file') {
-                return this.fileTreeDeleteService.deleteFile(this.state.project.id, file.id).then(
-                    () => {
-                        const i = _.findIndex(dirEntry.model.children, (f) => f.data.id === file.id);
-                        dirEntry.model.children.splice(i, 1);
-                    },
-                    (err) => {
-                        this.toast.error(`Unable to delete file ${file.name}: ${err.data}`);
-                    }
-                );
-            } else {
-                return this.fileTreeDeleteService.deleteDir(this.state.project.id, file.id).then(
-                    () => {
-                        const i = _.findIndex(dirEntry.model.children, (f) => f.data.id === file.id);
-                        dirEntry.model.children.splice(i, 1);
-                    },
-                    err => {
-                        this.toast.error(`Unable to delete directory ${file.name}: ${err.data}`);
-                    }
-                );
-            }
-        }, {concurrency: 3}).then(
+        this.projectFilesViewService.deleteFiles(this.state.fileTree, this.state.project.id, dir, files).then(
             () => {
                 this.$timeout(() => {
                     this.state.fileTree = angular.copy(this.state.fileTree);
@@ -105,20 +82,30 @@ class MCProjectFilesViewContainerComponentController {
         this.state.activeDir = angular.copy(dirEntry.model);
         this.state.show = !this.state.show;
     }
+
+    handleDownloadFiles(files) {
+        const fileIds = files.map(f => f.id);
+        return this.projectFileTreeAPI.downloadProjectFiles(fileIds);
+    }
 }
 
 angular.module('materialscommons').component('mcProjectFilesViewContainer', {
     controller: MCProjectFilesViewContainerComponentController,
+    // There are two instances of the mc-project-files-view component with a toggle flag ($ctrl.state.show)
+    // because there is a recursive directive that needs to be ng-if out/in in order to reload. This allows
+    // us to contain that logic in one spot in the container.
     template: `<mc-project-files-view root="$ctrl.state.fileTree" ng-if="$ctrl.state.show"
                         project="$ctrl.state.project"
                         on-load-dir="$ctrl.handleLoadDir(dir)" 
                         on-delete-files="$ctrl.handleDeleteFiles(dir, files)"
+                        on-download-files="$ctrl.handleDownloadFiles(files)"
                         on-finish-files-upload="$ctrl.handleFinishFilesUpload(dir, files)"
                         active-dir="$ctrl.state.activeDir"></mc-project-files-view>
                 <mc-project-files-view root="$ctrl.state.fileTree" ng-if="!$ctrl.state.show"
                         project="$ctrl.state.project"
                         on-load-dir="$ctrl.handleLoadDir(dir)" 
                         on-delete-files="$ctrl.handleDeleteFiles(dir, files)"
+                        on-download-files="$ctrl.handleDownloadFiles(files)"
                         on-finish-files-upload="$ctrl.handleFinishFilesUpload(dir, files)"
                         active-dir="$ctrl.state.activeDir"></mc-project-files-view>`
 });

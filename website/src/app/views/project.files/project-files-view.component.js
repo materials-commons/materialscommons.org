@@ -40,7 +40,7 @@ class MCProjectFilesViewComponentController {
     }
 
     handleDownloadFiles(files) {
-        this.onDownloadFiles({files: files});
+        return this.onDownloadFiles({files: files});
     }
 
     handleUploadFiles() {
