@@ -19,10 +19,12 @@ class MCExperimentWorflowViewComponentController {
     }
 
     handleSetCurrentProcess(process) {
-        // console.log('handleSetCurrentProcess', process);
+        this.updateComponentState('currentProcess', process);
+    }
+
+    updateComponentState(key, value) {
         this.$timeout(() => {
-            this.state.currentProcess = angular.copy(process);
-            console.log('this.state.currentProcess', this.state.currentProcess.id);
+            this.state[key] = angular.copy(value);
         });
     }
 }
