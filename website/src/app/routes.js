@@ -153,10 +153,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/details',
             template: '<md-content layout="column" class="height-100"><mc-experiment-details experiment="$resolve.experiment" show-note="true"></mc-experiment-details></md-content>'
         })
-        .state('project.experiment.forecast', {
-            url: '/forecast',
-            template: '<mc-experiment-forecast experiment="$resolve.experiment"></mc-experiment-forecast>'
-        })
         .state('project.experiment.workflow', {
             url: '/workflow',
             template: '<mc-experiment-workflow-view-container experiment="$resolve.experiment"></mc-experiment-workflow-view-container>'
