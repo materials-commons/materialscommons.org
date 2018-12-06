@@ -1,0 +1,37 @@
+<div layout="column" layout-margin layout-fill layout-wrap>
+    <md-input-container class="md-block">
+        <label>Process Name</label>
+        <input type="text" name="stringInput"
+               aria-label="Enter process name"
+               ng-model="$ctrl.state.processName">
+    </md-input-container>
+
+    <label>Notes</label>
+    <div md-whiteframe layout-margin>
+        <div ckeditor="editorOptions"
+             ng-model="$ctrl.state.processDescription"
+             contenteditable="true">
+            {{$ctrl.state.process.description}}
+        </div>
+    </div>
+
+    <md-button class="md-primary md-raised" ng-click="$ctrl.save()">save changes</md-button>
+
+    <mc-process-editor process="$ctrl.state.process"></mc-process-editor>
+
+    <!--<mc-process-template-create-samples ng-if="$ctrl.process.process_type === 'create'"-->
+    <!--process="$ctrl.process"-->
+    <!--on-change="$ctrl.onChange()"></mc-process-template-create-samples>-->
+
+    <!--<mc-process-template-sectioning ng-if="$ctrl.process.template_name === 'Sectioning'"-->
+    <!--process="$ctrl.process"-->
+    <!--on-change="$ctrl.onChange()">-->
+    <!--</mc-process-template-sectioning>-->
+
+
+    <!--<mc-process-template-other-->
+    <!--ng-if="$ctrl.process.category !== 'create_sample' && $ctrl.process.template_name !== 'Sectioning'"-->
+    <!--process="$ctrl.process"-->
+    <!--on-change="$ctrl.onChange()">-->
+    <!--</mc-process-template-other>-->
+</div>

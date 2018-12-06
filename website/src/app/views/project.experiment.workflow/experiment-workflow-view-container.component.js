@@ -1,8 +1,9 @@
 class MCExperimentWorkflowViewContainerComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(templates) {
         this.state = {
             experiment: null,
+            templates: templates.get(),
         };
     }
 
@@ -16,7 +17,7 @@ class MCExperimentWorkflowViewContainerComponentController {
 
 angular.module('materialscommons').component('mcExperimentWorkflowViewContainer', {
     controller: MCExperimentWorkflowViewContainerComponentController,
-    template: `<mc-experiment-workflow-view experiment="$ctrl.state.experiment">
+    template: `<mc-experiment-workflow-view experiment="$ctrl.state.experiment" templates="$ctrl.state.templates">
                     </mc-experiment-workflow-view>`,
     bindings: {
         experiment: '<'

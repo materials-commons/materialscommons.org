@@ -1,18 +1,24 @@
 class MCWorkflowSidebarComponentController {
     /*@ngInject*/
     constructor() {
-        console.log('mcWorkflowSidebar');
         this.state = {
             currentProcess: null,
+            templates: [],
         };
     }
 
     $onChanges(changes) {
-        console.log('MCWorkflowSidebar', changes);
         if (changes.currentProcess) {
-            console.log('MCWorkflowSidebar changes', changes);
             this.state.currentProcess = angular.copy(changes.currentProcess.currentValue);
         }
+
+        if (changes.templates) {
+            this.state.templates = angular.copy(changes.templates.currentValue);
+        }
+    }
+
+    addToGraph(template) {
+        this.onAddNode({template: template});
     }
 }
 
@@ -21,5 +27,7 @@ angular.module('materialscommons').component('mcWorkflowSidebar', {
     template: require('./workflow-sidebar.html'),
     bindings: {
         currentProcess: '<',
+        onAddNode: '&',
+        templates: '<'
     }
 });

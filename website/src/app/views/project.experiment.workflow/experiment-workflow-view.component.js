@@ -8,6 +8,7 @@ class MCExperimentWorflowViewComponentController {
             showGraphView: true,
             currentProcess: {},
             showSidebar: true,
+            templates: []
         };
     }
 
@@ -15,6 +16,10 @@ class MCExperimentWorflowViewComponentController {
         if (changes.experiment) {
             this.state.experiment = angular.copy(changes.experiment.currentValue);
             this.state.processes = this.state.experiment.processes;
+        }
+
+        if (changes.templates) {
+            this.state.templates = angular.copy(changes.templates.currentValue);
         }
     }
 
@@ -33,6 +38,7 @@ angular.module('materialscommons').component('mcExperimentWorkflowView', {
     controller: MCExperimentWorflowViewComponentController,
     template: require('./experiment-workflow-view.html'),
     bindings: {
-        experiment: '<'
+        experiment: '<',
+        templates: '<',
     }
 });
