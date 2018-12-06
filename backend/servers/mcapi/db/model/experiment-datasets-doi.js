@@ -3,8 +3,9 @@ const request = require('request-promise');
 
 const datasets = require('./experiment-datasets');
 
-let doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
-let doiPublisher = process.env.MC_DOI_PUBLISHER || "Materials Commons";
+let doiServiceURL = process.env.MC_DOI_SERVICE_URL;
+let doiUserInterfaceURL = process.env.MC_DOI_USER_INTERFACE_URL;
+let doiPublisher = process.env.MC_DOI_PUBLISHER;
 let publicationURLBase = process.env.MC_DOI_PUBLICATION_BASE;
 
 let doiNamespace = process.env.MC_DOI_NAMESPACE;
@@ -13,7 +14,8 @@ let doiPassword = process.env.MC_DOI_PW;
 
 
 function* doiServerStatusIsOK() {
-    let url = doiUrl + "status";
+    checkEnvValues();
+    let url = doiServiceURL + "status";
     let options = {
         method: 'GET',
         uri: url,
@@ -21,10 +23,11 @@ function* doiServerStatusIsOK() {
     };
     let response = yield request(options);
     return ((response.statusCode == "200")
-    && (response.body == "success: EZID is up"));
+    && (response.body == "success: API is up"));
 }
 
 function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
+    checkEnvValues();
     let namespace = doiNamespace;
     let user = doiUser;
     let pw = doiPassword;
@@ -35,9 +38,9 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
     }
 
     let publisher = doiPublisher;
-    let targetUrl = publicationURLBase + "/" + datasetId;
+    let targetUrl = publicationURLBase + datasetId;
     let createCall = "shoulder/" + namespace;
-    let url = doiUrl + createCall;
+    let url = doiServiceURL + createCall;
     let body = "_target: " + targetUrl + "\n"
         + "datacite.creator: " + creator + "\n"
         + "datacite.title: " + title + "\n"
@@ -83,10 +86,11 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
 }
 
 function* doiGetMetadata(datasetId) {
+    checkEnvValues();
     let dataset = yield datasets.getDataset(datasetId);
     let doi = dataset.val.doi;
 
-    let link = doiUrlLink(doi);
+    let link = `${doiServiceURL}id/${doi}`;
 
     let options = {
         method: 'GET',
@@ -112,14 +116,17 @@ function* doiGetMetadata(datasetId) {
 
 }
 
-function* doiGetServerLink(datasetId) {
+function* doiGetUserInterfaceLink(datasetId) {
+    checkEnvValues();
     let dataset = yield datasets.getDataset(datasetId);
     let doi = dataset.val.doi;
-    return doiUrlLink(doi);
+    return doiUILink(doi);
 }
 
-function doiUrlLink(doi) {
-    return `${doiUrl}id/${doi}`;
+function doiUILink(doi) {
+    let retValue = `${doiUserInterfaceURL}clients/${doiUser.toLowerCase()}/dois/`;
+    retValue += encodeURIComponent(doi.substring("doi:".length));
+    return retValue;
 }
 
 function parseNameValueList(linesInAString) {
@@ -136,9 +143,40 @@ function parseNameValueList(linesInAString) {
     return ret;
 }
 
+function checkEnvValues() {
+    // check for all env variables for DOI functions
+    let expectedEnvValues = {
+        'MC_DOI_PUBLISHER':          process.env.MC_DOI_PUBLISHER,
+        'MC_DOI_NAMESPACE':          process.env.MC_DOI_NAMESPACE,
+        'MC_DOI_UI_BASE':            process.env.MC_DOI_UI_BASE,
+        'MC_DOI_USER':               process.env.MC_DOI_USER,
+        'MC_DOI_PW':                 process.env.MC_DOI_PW,
+        'MC_DOI_PUBLICATION_BASE':   process.env.MC_DOI_PUBLICATION_BASE,
+        'MC_DOI_SERVICE_URL':        process.env.MC_DOI_SERVICE_URL,
+        'MC_DOI_USER_INTERFACE_URL': process.env.MC_DOI_USER_INTERFACE_URL
+    };
+
+    let keys = Object.keys(expectedEnvValues);
+
+    var missingValueKeys = [];
+
+    for (var i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        let value = expectedEnvValues[key];
+        if (!value) {
+            missingValueKeys.append(key)
+        }
+    }
+    if (missingValueKeys.len > 0) {
+        let message = "In DOI service, missing one or more env values: " +
+            missingValueKeys.join(', ');
+        throw Error(message);
+    }
+}
+
 module.exports = {
     doiServerStatusIsOK,
     doiMint,
     doiGetMetadata,
-    doiGetServerLink,
+    doiGetUserInterfaceLink,
 };
