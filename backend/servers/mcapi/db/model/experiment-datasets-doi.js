@@ -22,8 +22,8 @@ function* doiServerStatusIsOK() {
         resolveWithFullResponse: true
     };
     let response = yield request(options);
-    return ((response.statusCode == "200")
-    && (response.body == "success: API is up"));
+    return ((response.statusCode === "200")
+    && (response.body === "success: API is up"));
 }
 
 function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
@@ -76,7 +76,7 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
     }
 
     let status = yield r.table('datasets').get(datasetId).update({doi: doi});
-    if (status.replaced != 1) {
+    if (status.replaced !== 1) {
         return {
             error: `Update of DOI in dataset, ${datasetId}, failed.`
         };
@@ -108,7 +108,7 @@ function* doiGetMetadata(datasetId) {
     }
 
     let matches = response.match(/doi:\S*/i);
-    if (doi != matches[0]) {
+    if (doi !== matches[0]) {
         return {error: "Matadata not available for doi: " + doi};
     }
 
@@ -124,8 +124,9 @@ function* doiGetUserInterfaceLink(datasetId) {
 }
 
 function doiUILink(doi) {
-    let retValue = `${doiUserInterfaceURL}clients/${doiUser.toLowerCase()}/dois/`;
-    retValue += encodeURIComponent(doi.substring("doi:".length));
+    // let retValue = `${doiUserInterfaceURL}clients/${doiUser.toLowerCase()}/dois/`;
+    // retValue += doi.substring("doi:".length);
+    let retValue = doiUserInterfaceURL + doi.substring("doi:".length);
     return retValue;
 }
 
@@ -148,7 +149,6 @@ function checkEnvValues() {
     let expectedEnvValues = {
         'MC_DOI_PUBLISHER':          process.env.MC_DOI_PUBLISHER,
         'MC_DOI_NAMESPACE':          process.env.MC_DOI_NAMESPACE,
-        'MC_DOI_UI_BASE':            process.env.MC_DOI_UI_BASE,
         'MC_DOI_USER':               process.env.MC_DOI_USER,
         'MC_DOI_PW':                 process.env.MC_DOI_PW,
         'MC_DOI_PUBLICATION_BASE':   process.env.MC_DOI_PUBLICATION_BASE,
@@ -158,9 +158,9 @@ function checkEnvValues() {
 
     let keys = Object.keys(expectedEnvValues);
 
-    var missingValueKeys = [];
+    let missingValueKeys = [];
 
-    for (var i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         let key = keys[i];
         let value = expectedEnvValues[key];
         if (!value) {

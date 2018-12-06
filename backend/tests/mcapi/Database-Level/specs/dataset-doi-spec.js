@@ -33,7 +33,6 @@ let dataset2 = null;
 
 let doiPublisher = process.env.MC_DOI_PUBLISHER;
 let doiNamespace = process.env.MC_DOI_NAMESPACE;
-let doiUserInterfaceBase = process.env.MC_DOI_UI_BASE;
 let doiUser = process.env.MC_DOI_USER;
 let doiPassword = process.env.MC_DOI_PW;
 let publicationURLBase = process.env.MC_DOI_PUBLICATION_BASE;
@@ -53,7 +52,6 @@ before(function*() {
     let expectedEnvValues = {
         'MC_DOI_PUBLISHER':          process.env.MC_DOI_PUBLISHER,
         'MC_DOI_NAMESPACE':          process.env.MC_DOI_NAMESPACE,
-        'MC_DOI_UI_BASE':            process.env.MC_DOI_UI_BASE,
         'MC_DOI_USER':               process.env.MC_DOI_USER,
         'MC_DOI_PW':                 process.env.MC_DOI_PW,
         'MC_DOI_PUBLICATION_BASE':   process.env.MC_DOI_PUBLICATION_BASE,
@@ -204,10 +202,8 @@ describe('Feature - Dataset: ', function () {
 
             // https://doi.test.datacite.org/clients/UMICH.MC/dois/10.33587%2Fcgsv-cj17
             let link = yield datasetDoi.doiGetUserInterfaceLink(dataset2.id);
-            let expectedLink = doiUserInterfaceUrl +
-                "clients/" + doiUser.toLowerCase() +
-                "/dois/" +
-                encodeURIComponent(doi.substring("doi:".length));
+            console.log(link);
+            let expectedLink = doiUserInterfaceUrl + doi.substring("doi:".length);
             assert.equal(link, expectedLink);
 
             let metadata = yield datasetDoi.doiGetMetadata(dataset2.id);
