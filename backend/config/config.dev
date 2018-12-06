@@ -2,21 +2,35 @@
 export MC_BASE_API_LINK=http://mctest.localhost/#
 export MCPUB_BASE_API_LINK=http://mcpub.localhost/#
 
-## Email
+## base Materials Commons default values (over-ride here, or...)
+# export MCDIR=${HOME}/working/MaterialsCommons/mcdir:${HOME}/working/MaterialsCommons/mcdir
+# export MCDB_CONNECTION="localhost:30815"
+# export MCDB_TYPE="rethinkdb"
+# export MCDB_NAME="materialscommons"
+# export MCDB_DUMPS=${HOME}/working/MaterialsCommons/rethinkdb_dumps
+# export MCDB_FILE=$MCDB_DUMPS/target.tar.gz
+
+## Email - using gmail.org for dev testing
 export MC_VERIFY_LINK=http://mctest.localhost/#/validate
 export MCPUB_VERIFY_LINK=http://mcpub.localhost/#/validate
-export MC_VERIFY_EMAIL=register@materialscommons.org
+export MC_VERIFY_EMAIL=a.gmail.address
 export MC_VERIFY_PASS=if.a.password.is.reguired.for.access
 export MC_SMTP_HOST=smtp.gmail.com
 
-## DOI
-# Remote DOI service URL
-export MC_DOI_SERVICE_URL=https://ezid.lib.purdue.edu/
+## DOI - (see files/doi in operations.materialscommons.org)
+# Remote DOI service URLs
+export MC_DOI_SERVICE_URL=https://ez.test.datacite.org/
+export MC_DOI_USER_INTERFACE_URL=https://search.test.datacite.org/works/
 # Publisher label
 export MC_DOI_PUBLISHER='Materials Commons'
-# Dataset Publication (call back) line
-export MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/details
+# Dataset Publication (call back) url
+export MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/data/dataset/
 # DOI Identification
-export MC_DOI_NAMESPACE='dev.dio.namespace'
-export MC_DOI_USER=dev_doi_user
-export MC_DOI_PW=dev_doi_pw
+export MC_DOI_NAMESPACE='doi-namespace'
+export MC_DOI_USER='doi-user-name'
+export MC_DOI_PW='doi-pw'
+
+## GLOBUS - (see files/globus in operations.materialscommons.org)
+export MC_CONFIDENTIAL_CLIENT_USER='globus-cc-user'
+export MC_CONFIDENTIAL_CLIENT_PW='globus-cc-pw'
+export MC_CONFIDENTIAL_CLIENT_ENDPOINT='globus-cc-endpoint'
