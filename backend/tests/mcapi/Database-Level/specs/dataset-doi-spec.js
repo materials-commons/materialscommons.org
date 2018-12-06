@@ -1,6 +1,8 @@
 'use strict';
 require('mocha');
 require('co-mocha');
+require('chai');
+const assert = require('chai').assert;
 
 // noinspection JSUnresolvedVariable
 const r = require('rethinkdbdash')({
@@ -94,7 +96,7 @@ before(function*() {
     console.log('done before dataset-doi-spec')
 });
 
-describe('Feature - Dataset: ', function () {
+describe.skip('Feature - Dataset: ', function () {
     describe('DOI Request - ', function () {
         it.skip('checks DOI server status - raw', function*() {
 
