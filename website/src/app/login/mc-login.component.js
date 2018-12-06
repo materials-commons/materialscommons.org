@@ -18,28 +18,15 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templ
 
     function login() {
         mcapi('/user/%/apikey', ctrl.userLogin, ctrl.password)
-            .success(function(u) {
+            .success((u) => {
                 User.setAuthenticated(true, u);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
-                templates.getServerTemplates().then(
-                    (t) => templates.set(t)
-                );
-                mcprojstore.reset().then(() => {
-                    if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
-                        $state.go('project.experiment.workflow', {
-                            project_id: u.default_project,
-                            experiment_id: u.default_experiment
-                        });
-                    } else if (u.default_project && u.default_project !== '') {
-                        $state.go('project.home', {project_id: u.default_project});
-                    } else {
-                        $state.go('projects.list');
-                    }
-                    mcbus.send('USER$LOGIN');
-                });
+                templates.getServerTemplates().then((t) => templates.set(t));
+                mcprojstore.reset().then(() => $state.go('data.home.top'));
+                mcbus.send('USER$LOGIN');
             })
-            .error(function(reason) {
-                ctrl.message = "Incorrect Password/Username!";
+            .error((reason) => {
+                ctrl.message = 'Incorrect Password orUsername!';
                 toast.error(reason.error);
             }).put({password: ctrl.password});
     }
