@@ -75,7 +75,9 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
         };
     }
 
+    // noinspection JSUnresolvedFunction
     let status = yield r.table('datasets').get(datasetId).update({doi: doi});
+    // noinspection JSUnresolvedVariable
     if (status.replaced !== 1) {
         return {
             error: `Update of DOI in dataset, ${datasetId}, failed.`
@@ -109,7 +111,7 @@ function* doiGetMetadata(datasetId) {
 
     let matches = response.match(/doi:\S*/i);
     if (doi !== matches[0]) {
-        return {error: "Matadata not available for doi: " + doi};
+        return {error: "Metadata not available for doi: " + doi};
     }
 
     return parseNameValueList(response);
@@ -124,8 +126,7 @@ function* doiGetUserInterfaceLink(datasetId) {
 }
 
 function doiUILink(doi) {
-    // let retValue = `${doiUserInterfaceURL}clients/${doiUser.toLowerCase()}/dois/`;
-    // retValue += doi.substring("doi:".length);
+    // noinspection UnnecessaryLocalVariableJS
     let retValue = doiUserInterfaceURL + doi.substring("doi:".length);
     return retValue;
 }

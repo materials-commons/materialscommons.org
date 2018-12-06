@@ -1,9 +1,8 @@
 'use strict';
 require('mocha');
 require('co-mocha');
-const chai = require('chai');
-const assert = require('chai').assert;
 
+// noinspection JSUnresolvedVariable
 const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
@@ -61,10 +60,10 @@ before(function*() {
 
     let keys = Object.keys(expectedEnvValues);
 
-    for (var i = 0; i < keys.length; i++) {
+    for (let i = 0; i < keys.length; i++) {
         let key = keys[i];
         let value = expectedEnvValues[key];
-        assert.isOk(value, "Miaaing process.env." + key);
+        assert.isOk(value, "Missing process.env." + key);
     }
 
     user = yield dbModelUsers.getUser(userId);
@@ -92,7 +91,7 @@ before(function*() {
     assert.equal(datasetList.length, 2);
     dataset1 = datasetList[0];
     dataset2 = datasetList[1];
-    console.log('done before datset-doi-spec')
+    console.log('done before dataset-doi-spec')
 });
 
 describe('Feature - Dataset: ', function () {
@@ -168,7 +167,9 @@ describe('Feature - Dataset: ', function () {
             let matches = response.match(/doi:\S*/i);
             let doi = matches[0];
 
+            // noinspection JSUnresolvedFunction
             let status = yield r.table('datasets').get(dataset1.id).update({doi: doi});
+            // noinspection JSUnresolvedVariable
             assert.equal(status.replaced, 1);
 
             let valOrError = yield datasets.getDataset(dataset1.id);
