@@ -2,6 +2,7 @@
 require('mocha');
 require('co-mocha');
 require('chai');
+// noinspection JSUnresolvedVariable
 const assert = require('chai').assert;
 
 // noinspection JSUnresolvedVariable
@@ -47,6 +48,7 @@ let random_name = function(){
 
 before(function*() {
     console.log("before dataset-doi-spec");
+    console.log("NOTE: all doi tests are skipped to prevent Minting of test DOI's during routine testing")
     this.timeout(80000); // test setup can take up to 8 seconds
 
     // check for all env variables
@@ -96,9 +98,10 @@ before(function*() {
     console.log('done before dataset-doi-spec')
 });
 
+// noinspection ES6ModulesDependencies
 describe.skip('Feature - Dataset: ', function () {
     describe('DOI Request - ', function () {
-        it.skip('checks DOI server status - raw', function*() {
+        it('checks DOI server status - raw', function*() {
 
             let url = doiServiceUrl + "status";
             let options = {
@@ -113,12 +116,12 @@ describe.skip('Feature - Dataset: ', function () {
             assert.isOk(response.body);
             assert.equal(response.body, "success: API is up");
         });
-        it.skip('calls function to get DOI server status', function*() {
+        it('calls function to get DOI server status', function*() {
             let ok = yield datasetDoi.doiServerStatusIsOK();
             assert.isOk(ok);
             assert(ok);
         });
-        it.skip('creates a test DOI - raw', function*() {
+        it('creates a test DOI - raw', function*() {
 
             this.timeout(60000); // test can take up to 6 seconds
 
