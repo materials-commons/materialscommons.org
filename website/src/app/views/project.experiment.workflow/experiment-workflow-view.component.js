@@ -6,7 +6,7 @@ class MCExperimentWorflowViewComponentController {
             experiment: null,
             processes: [],
             showGraphView: true,
-            currentProcess: {},
+            currentProcess: null,
             showSidebar: true,
             templates: []
         };

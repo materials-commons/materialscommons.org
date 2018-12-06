@@ -42,14 +42,14 @@
                 <span id="wf-step-2"><i class="fa fa-fw fa-gears"></i>details</span>
             </md-tab-label>
             <md-tab-body ng-if="$ctrl.currentTab === 2">
-                <div ng-show="!$ctrl.state.currentProcess">
+                <div ng-show="$ctrl.state.currentProcess === null">
                     No process selected
                 </div>
                 <div ng-show="$ctrl.state.currentProcess">
                     <md-content>
-                        <mc-workflow-process-details ng-if="$ctrl.state.currentProcess"
-                                                     process="$ctrl.state.currentProcess">
-                        </mc-workflow-process-details>
+                        <mc-workflow-sidebar-process-details ng-if="$ctrl.state.currentProcess"
+                                                             process="$ctrl.state.currentProcess">
+                        </mc-workflow-sidebar-process-details>
                     </md-content>
                 </div>
             </md-tab-body>
