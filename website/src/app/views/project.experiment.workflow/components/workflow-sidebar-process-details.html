@@ -1,0 +1,21 @@
+<div layout="column" layout-margin layout-fill layout-wrap>
+    <md-input-container class="md-block">
+        <label>Process Name</label>
+        <input type="text" name="stringInput"
+               aria-label="Enter process name"
+               ng-model="$ctrl.state.processName">
+    </md-input-container>
+
+    <label>Notes</label>
+    <div md-whiteframe layout-margin>
+        <div ckeditor="editorOptions"
+             ng-model="$ctrl.state.processDescription"
+             contenteditable="true">
+            {{$ctrl.state.process.description}}
+        </div>
+    </div>
+
+    <md-button class="md-primary md-raised" ng-click="$ctrl.save()">save changes</md-button>
+
+    <mc-process-editor process="$ctrl.state.process"></mc-process-editor>
+</div>

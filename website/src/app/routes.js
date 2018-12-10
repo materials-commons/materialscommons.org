@@ -135,23 +135,16 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment', {
             url: '/experiment/:experiment_id',
-            template: `<mc-experiment class="height-100"></mc-experiment>`,
+            template: `<mc-experiment experiment="$resolve.experiment" class="height-100"></mc-experiment>`,
             resolve: {
                 experiment: ['$stateParams', 'experimentsAPI', 'mcStateStore',
                     ($stateParams, experimentsAPI, mcStateStore) => {
                         let e = mcStateStore.getState(`experiment:${$stateParams.experiment_id}`);
-                        if (e != null) {
-                            mcStateStore.updateState('experiment', e);
+                        if (e !== null) {
                             return e;
                         }
 
-                        return experimentsAPI.getExperimentForProject($stateParams.project_id, $stateParams.experiment_id).then(
-                            (e) => {
-                                mcStateStore.updateState(`experiment:${$stateParams.experiment_id}`, e);
-                                mcStateStore.updateState('experiment', e);
-                                return e;
-                            }
-                        );
+                        return experimentsAPI.getExperimentForProject($stateParams.project_id, $stateParams.experiment_id).then((e) => e);
                     }
                 ]
             }
@@ -160,26 +153,21 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/details',
             template: '<md-content layout="column" class="height-100"><mc-experiment-details experiment="$resolve.experiment" show-note="true"></mc-experiment-details></md-content>'
         })
-        .state('project.experiment.forecast', {
-            url: '/forecast',
-            template: '<mc-experiment-forecast experiment="$resolve.experiment"></mc-experiment-forecast>'
-        })
         .state('project.experiment.workflow', {
             url: '/workflow',
-            template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
-            resolve: {
-                processes: ['experiment', (experiment) => _.values(experiment.processes)]
-            }
+            template: '<mc-experiment-workflow-view-container experiment="$resolve.experiment"></mc-experiment-workflow-view-container>'
+            // template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
+            // resolve: {
+            //     processes: ['experiment', (experiment) => _.values(experiment.processes)]
+            // }
         })
         .state('project.experiment.samples', {
             url: '/samples',
             template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples"></mc-project-samples></md-content>',
             resolve: {
-                samples: ['experimentsAPI', 'mcprojstore',
-                    (experimentsAPI, mcprojstore) => {
-                        const e = mcprojstore.currentExperiment;
-                        const p = mcprojstore.currentProject;
-                        return experimentsAPI.getSamplesForExperiment(p.id, e.id);
+                samples: ['experimentsAPI', '$stateParams',
+                    (experimentsAPI, $stateParams) => {
+                        return experimentsAPI.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id);
                     }
                 ]
             }
