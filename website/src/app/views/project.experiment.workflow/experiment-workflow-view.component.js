@@ -24,7 +24,9 @@ class MCExperimentWorflowViewComponentController {
     }
 
     handleSetCurrentProcess(process) {
-        this.updateComponentState('currentProcess', process);
+        this.onLoadProcessDetails({processId: process.id}).then(
+            p => this.state.currentProcess = p
+        );
     }
 
     updateComponentState(key, value) {
@@ -40,5 +42,6 @@ angular.module('materialscommons').component('mcExperimentWorkflowView', {
     bindings: {
         experiment: '<',
         templates: '<',
+        onLoadProcessDetails: '&',
     }
 });

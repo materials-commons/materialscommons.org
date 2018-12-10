@@ -1,8 +1,10 @@
 class MCExperimentWorkflowViewContainerComponentController {
     /*@ngInject*/
-    constructor(templates, mcStateStore) {
-        this.mcStateStore = mcStateStore;
+    constructor(templates, mcStateStore, experimentsAPI, $stateParams) {
         this.templates = templates;
+        this.mcStateStore = mcStateStore;
+        this.experimentsAPI = experimentsAPI;
+        this.$stateParams = $stateParams;
         this.state = {
             experiment: null,
             templates: null,
@@ -38,12 +40,17 @@ class MCExperimentWorkflowViewContainerComponentController {
 
         return experiment;
     }
+
+    handleLoadProcessDetails(processId) {
+        return this.experimentsAPI.getProcessForExperiment(this.$stateParams.project_id, this.$stateParams.experiment_id, processId);
+    }
 }
 
 angular.module('materialscommons').component('mcExperimentWorkflowViewContainer', {
     controller: MCExperimentWorkflowViewContainerComponentController,
     template: `<mc-experiment-workflow-view ng-if="$ctrl.state.template !== null"
                     experiment="$ctrl.state.experiment" 
+                    on-load-process-details="$ctrl.handleLoadProcessDetails(processId)"
                     templates="$ctrl.state.templates"></mc-experiment-workflow-view>`,
     bindings: {
         experiment: '<'
