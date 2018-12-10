@@ -29,10 +29,8 @@ class MCExperimentWorflowViewComponentController {
         );
     }
 
-    updateComponentState(key, value) {
-        this.$timeout(() => {
-            this.state[key] = angular.copy(value);
-        });
+    handleUpdateProcess(processId, attrs) {
+        this.onUpdateProcess({processId: processId, attrs: attrs});
     }
 }
 
@@ -43,5 +41,6 @@ angular.module('materialscommons').component('mcExperimentWorkflowView', {
         experiment: '<',
         templates: '<',
         onLoadProcessDetails: '&',
+        onUpdateProcess: '&',
     }
 });

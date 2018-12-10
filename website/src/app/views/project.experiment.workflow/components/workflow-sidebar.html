@@ -48,6 +48,7 @@
                 <div ng-show="$ctrl.state.currentProcess">
                     <md-content>
                         <mc-workflow-sidebar-process-details ng-if="$ctrl.state.currentProcess"
+                                                             on-update-process="$ctrl.handleUpdateProcess(processId, attrs)"
                                                              process="$ctrl.state.currentProcess">
                         </mc-workflow-sidebar-process-details>
                     </md-content>
