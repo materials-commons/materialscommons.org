@@ -1,6 +1,7 @@
 class ExperimentsAPIService {
     /*@ngInject*/
-    constructor(projectsAPIRoute) {
+    constructor(Restangular, projectsAPIRoute) {
+        this.Restangular = Restangular;
         this.projectsAPIRoute = projectsAPIRoute;
     }
 
@@ -10,6 +11,13 @@ class ExperimentsAPIService {
 
     getExperimentForProject(projectId, experimentId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).customGET().then(e => e.plain());
+    }
+
+    getExperimentForProject2(projectId, experimentId) {
+        return this.Restangular.one('v3').one('getProjectExperiment').customPOST({
+            project_id: projectId,
+            experiment_id: experimentId
+        }).then(e => e.plain().data);
     }
 
     createForProject(projectID, experiment) {

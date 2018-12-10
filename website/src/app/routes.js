@@ -144,7 +144,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                             return e;
                         }
 
-                        return experimentsAPI.getExperimentForProject($stateParams.project_id, $stateParams.experiment_id).then((e) => e);
+                        return experimentsAPI.getExperimentForProject2($stateParams.project_id, $stateParams.experiment_id).then((e) => e);
                     }
                 ]
             }
