@@ -7,6 +7,7 @@ from materials_commons.api import get_all_projects
 from ..utils.LoggingHelper import LoggingHelper
 from ..internal_etl.BuildProjectExperimentWithETL import BuildProjectExperiment
 
+
 def main(project, user_id, apikey, excel_file_path, data_dir_path):
     main_log = logging.getLogger("main")
 
@@ -87,7 +88,7 @@ if __name__ == "__main__":
         exit(-1)
 
     startup_log.info("Found match with name-match = {}; project.name = {}; id = {}".
-                   format(args.name, project_selected.name, project_selected.id))
+                     format(args.name, project_selected.name, project_selected.id))
 
     main(project_selected, args.user, args.apikey, args.input, args.data)
 
