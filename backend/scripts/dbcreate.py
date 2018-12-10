@@ -60,9 +60,11 @@ def create_mc_tables():
     create_mc_table("uploads", "owner", "project_id")
 
     create_mc_table("background_process", "project_id", "queue", "status")
+    create_compound_index("background_process", "user_project_process", ['user_id', 'project_id', 'background_process_id'])
+
     create_mc_table("globus_auth_info", "owner")
 
-    create_mc_table("globus_uploads", "project_id")
+    create_mc_table("globus_uploads", "project_id", "owner")
 
     create_mc_table("processes", "template_id", "birthtime")
     create_mc_table("project2process", "project_id", "process_id")
