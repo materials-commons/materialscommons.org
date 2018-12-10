@@ -115,6 +115,32 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
     }
 };
 
+module.exports.GetProjectExperimentAction = class GetProjectExperimentAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getProjectExperiment';
+        this.description = 'Get experiment for a project';
+        // this.do_not_authenticate = true;
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+            experiment_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const experiment = await dal.tryCatch(async() => await projects.getProjectExperiment(params.project_id, params.experiment_id));
+        if (!experiment) {
+            throw new Error(`No such experiment ${params.experiment_id} for given project ${params.project_id}`);
+        }
+
+        response.data = experiment[0];
+    }
+};
+
 module.exports.UpdateProjectAction = class UpdateProjectAction extends Action {
     constructor() {
         super();
