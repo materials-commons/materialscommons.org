@@ -60,8 +60,14 @@ class AppHelper:
         self.log.info("request for globus upload status: user = {}, project = {}"
                       .format(user_id, project_id))
         return_value = DatabaseInterface().get_status_records(user_id, project_id)
+        for record in return_value:
+            record["birthtime"] = self.convertDatetime(record["birthtime"])
+            record["mtime"] = self.convertDatetime(record["mtime"])
         self.log.info("return_value = {}".format(return_value))
         return return_value
+
+    def convertDatetime(self, in_dt):
+        return in_dt.timestamp()
 
 
 # used in "main" for interactive testing

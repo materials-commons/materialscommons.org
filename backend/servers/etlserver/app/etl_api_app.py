@@ -2,7 +2,7 @@ import json
 import logging
 
 import pkg_resources
-from flask import Flask, request
+from flask import Flask, request, Response as flask_response
 from flask_api import status
 
 from servers.etlserver.database.DB import DbConnection
@@ -21,8 +21,7 @@ app = Flask(__name__.split('.')[0])
 
 
 def format_as_json_return(what):
-    return json.dumps(what, indent=4)
-
+    return flask_response(json.dumps(what), mimetype="application/json")
 
 @app.before_request
 def before_request():
@@ -136,14 +135,23 @@ def globus_transfer_download():
 @app.route('/globus/upload/status', methods=['POST'])
 @apikey
 def globus_upload_status():
-    j = request.get_json(force=True)
-    project_id = j["project_id"]
-    api_key = request.args.get('apikey', default="no_such_key")
-    user_id = access.get_user()
-    log.info("Request for globus upload status")
-    return_value = AppHelper(api_key).get_project_globus_upload_status(user_id, project_id)
-    log.info(return_value)
-    return format_as_json_return(return_value)
+    # noinspection PyBroadException
+    try:
+        j = request.get_json(force=True)
+        project_id = j["project_id"]
+        api_key = request.args.get('apikey', default="no_such_key")
+        user_id = access.get_user()
+        log.info("In app level: Request for globus upload status")
+        return_value = AppHelper(api_key).get_project_globus_upload_status(user_id, project_id)
+        return_value = {
+            "value": return_value
+        }
+        log.info("In app level return_value = {}".format(return_value))
+        return format_as_json_return(return_value)
+    except Exception:
+        message = "Globus upload status - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
 
 
 @app.route('/globus/transfer/admin/info', methods=['GET', 'POST'])
