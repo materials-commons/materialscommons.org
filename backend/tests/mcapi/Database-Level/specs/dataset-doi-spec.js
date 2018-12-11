@@ -1,9 +1,11 @@
 'use strict';
 require('mocha');
 require('co-mocha');
-const chai = require('chai');
+require('chai');
+// noinspection JSUnresolvedVariable
 const assert = require('chai').assert;
 
+// noinspection JSUnresolvedVariable
 const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
@@ -36,7 +38,8 @@ let doiNamespace = process.env.MC_DOI_NAMESPACE;
 let doiUser = process.env.MC_DOI_USER;
 let doiPassword = process.env.MC_DOI_PW;
 let publicationURLBase = process.env.MC_DOI_PUBLICATION_BASE;
-let doiUrl = process.env.MC_DOI_SERVICE_URL;
+let doiServiceUrl = process.env.MC_DOI_SERVICE_URL;
+let doiUserInterfaceUrl = process.env.MC_DOI_USER_INTERFACE_URL;
 
 let random_name = function(){
     let number = Math.floor(Math.random()*10000);
@@ -45,15 +48,27 @@ let random_name = function(){
 
 before(function*() {
     console.log("before dataset-doi-spec");
+    console.log("NOTE: all doi tests are skipped to prevent Minting of test DOI's during routine testing")
     this.timeout(80000); // test setup can take up to 8 seconds
 
     // check for all env variables
-    assert.isOk(doiPublisher, "Missing process.env.MC_DOI_PUBLISHER");
-    assert.isOk(doiNamespace, "Missing process.env.MC_DOI_NAMESPACE");
-    assert.isOk(doiUser, "Missing process.env.MC_DOI_USER");
-    assert.isOk(doiPassword, "Missing process.env.MC_DOI_PW");
-    assert.isOk(publicationURLBase, "Missing process.env.MC_DOI_PUBLICATION_BASE");
-    assert.isOk(doiUrl, "Missing process.env.MC_DOI_SERVICE_URL");
+    let expectedEnvValues = {
+        'MC_DOI_PUBLISHER':          process.env.MC_DOI_PUBLISHER,
+        'MC_DOI_NAMESPACE':          process.env.MC_DOI_NAMESPACE,
+        'MC_DOI_USER':               process.env.MC_DOI_USER,
+        'MC_DOI_PW':                 process.env.MC_DOI_PW,
+        'MC_DOI_PUBLICATION_BASE':   process.env.MC_DOI_PUBLICATION_BASE,
+        'MC_DOI_SERVICE_URL':        process.env.MC_DOI_SERVICE_URL,
+        'MC_DOI_USER_INTERFACE_URL': process.env.MC_DOI_USER_INTERFACE_URL
+    };
+
+    let keys = Object.keys(expectedEnvValues);
+
+    for (let i = 0; i < keys.length; i++) {
+        let key = keys[i];
+        let value = expectedEnvValues[key];
+        assert.isOk(value, "Missing process.env." + key);
+    }
 
     user = yield dbModelUsers.getUser(userId);
     assert.isOk(user, "No test user available = " + userId);
@@ -80,14 +95,15 @@ before(function*() {
     assert.equal(datasetList.length, 2);
     dataset1 = datasetList[0];
     dataset2 = datasetList[1];
-    console.log('done before datset-doi-spec')
+    console.log('done before dataset-doi-spec')
 });
 
+// noinspection ES6ModulesDependencies
 describe.skip('Feature - Dataset: ', function () {
     describe('DOI Request - ', function () {
         it('checks DOI server status - raw', function*() {
 
-            let url = doiUrl + "status";
+            let url = doiServiceUrl + "status";
             let options = {
                 method: 'GET',
                 uri: url,
@@ -98,7 +114,7 @@ describe.skip('Feature - Dataset: ', function () {
             assert.isOk(response.statusCode);
             assert.equal(response.statusCode, "200");
             assert.isOk(response.body);
-            assert.equal(response.body, "success: EZID is up");
+            assert.equal(response.body, "success: API is up");
         });
         it('calls function to get DOI server status', function*() {
             let ok = yield datasetDoi.doiServerStatusIsOK();
@@ -113,18 +129,18 @@ describe.skip('Feature - Dataset: ', function () {
             assert.isOk(doiUser);
             assert.isOk(doiPassword);
             assert.isOk(publicationURLBase);
-            assert.isOk(doiUrl);
+            assert.isOk(doiServiceUrl);
 
             assert.isOk(dataset1);
             assert.isOk(dataset1.id);
 
             let createCall = "shoulder/" + doiNamespace;
-            let url = doiUrl + createCall;
+            let url = doiServiceUrl + createCall;
 
             let publisher = doiPublisher;
-            let targetUrl = publicationURLBase + "#/details/" + dataset1.id;
+            let targetUrl = publicationURLBase + dataset1.id;
             let creator = "Test Author";
-            let title = "Test Title - " + project.name;
+            let title = "Test Title - Project: " + project.name;
             let publicationYear = "2017";
             let description = "This is a test project in Materials commons used for " +
                 "testing the the Mint command in the DOI API (REST) suite.";
@@ -156,7 +172,9 @@ describe.skip('Feature - Dataset: ', function () {
             let matches = response.match(/doi:\S*/i);
             let doi = matches[0];
 
+            // noinspection JSUnresolvedFunction
             let status = yield r.table('datasets').get(dataset1.id).update({doi: doi});
+            // noinspection JSUnresolvedVariable
             assert.equal(status.replaced, 1);
 
             let valOrError = yield datasets.getDataset(dataset1.id);
@@ -170,7 +188,7 @@ describe.skip('Feature - Dataset: ', function () {
             this.timeout(60000); // test can take up to 6 seconds
 
             let creator = "Test Author";
-            let title = "Test Title - " + project.name;
+            let title = "Test Title - With Project: " + project.name;
             let publicationYear = "2017";
             let description = "This is a test project in Materials commons used for " +
                 "testing the the Mint command in the DOI API (REST) suite.";
@@ -186,21 +204,21 @@ describe.skip('Feature - Dataset: ', function () {
             let dataset = valOrError.val;
             assert.isOk(dataset.doi);
             let doi = dataset.doi;
-            assert.isTrue(doi.startsWith("doi:10.5072/FK"));
+            assert.isTrue(doi.startsWith(doiNamespace));
 
-            let link = yield datasetDoi.doiGetServerLink(dataset2.id);
-            assert.isTrue(link.startsWith("https://ezid.lib.purdue.edu/id/doi:10.5072/FK"));
+            // https://doi.test.datacite.org/clients/UMICH.MC/dois/10.33587%2Fcgsv-cj17
+            let link = yield datasetDoi.doiGetUserInterfaceLink(dataset2.id);
+            console.log(link);
+            let expectedLink = doiUserInterfaceUrl + doi.substring("doi:".length);
+            assert.equal(link, expectedLink);
 
             let metadata = yield datasetDoi.doiGetMetadata(dataset2.id);
             assert.isOk(metadata);
             assert.isOk(metadata.success);
             assert.equal(metadata.success, doi);
-            assert.equal(metadata['datacite.creator'], creator);
-            assert.equal(metadata['datacite.publicationyear'], publicationYear);
-            assert.equal(metadata['datacite.description'], description);
 
             let target = metadata['_target'];
-            let expected_target = "http://mcpub.localhost/#/details/" + dataset2.id;
+            let expected_target = publicationURLBase + dataset2.id;
             assert.equal(target, expected_target);
         });
     });
