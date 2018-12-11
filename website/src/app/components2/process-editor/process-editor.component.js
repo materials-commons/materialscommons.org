@@ -13,7 +13,7 @@ class MCProcessEditorComponentController {
     }
 
     selectFiles() {
-        this.onSelectFiles();
+        this.onSelectFiles({process: this.state.process});
     }
 
     addSample() {
@@ -32,9 +32,8 @@ class MCProcessEditorComponentController {
 
     }
 
-    updateSampleName() {
+    updateSampleName() {}
 
-    }
 }
 
 angular.module('materialscommons').component('mcProcessEditor', {

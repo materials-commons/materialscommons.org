@@ -33,6 +33,20 @@ class SelectItemsService {
             });
     }
 
+    fileTreeForProject(projectId, uploadFiles = false) {
+        return this.projectFileTreeAPI.getProjectRoot(projectId).then(
+            files => {
+                let project = {};
+                project.files = files;
+                return this.dialog({
+                    showFileTree: true,
+                    showFileTable: false,
+                    uploadFiles,
+                    project
+                }, SelectItemsFilesServiceModalController);
+            });
+    }
+
     fileTable(files = [], uploadFiles = false) {
         return this.dialog({
             showFileTable: true,
@@ -216,6 +230,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
                 }
             });
         }
+
         return filesFromTree;
     }
 }

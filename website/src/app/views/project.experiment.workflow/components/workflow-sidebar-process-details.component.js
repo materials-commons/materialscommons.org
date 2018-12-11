@@ -38,6 +38,11 @@ class MCWorkflowSidebarProcessDetailsComponentController {
             this.wvcCallbacks.handleUpdateProcess(this.state.process.id, changed);
         }
     }
+
+    handleSelectFiles(process) {
+        console.log('handleSelectFiles', process);
+        this.wvcCallbacks.handleSelectFiles(process);
+    }
 }
 
 angular.module('materialscommons').component('mcWorkflowSidebarProcessDetails', {

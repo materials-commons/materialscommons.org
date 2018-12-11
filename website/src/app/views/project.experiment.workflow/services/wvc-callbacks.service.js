@@ -12,12 +12,16 @@ class WvcCallbacksService {
         this.callbacks[name] = method;
     }
 
-    handleAddSample() {
-        return this.callbacks('handleAddSample')();
-    }
+    // handleAddSample() {
+    //     return this.callbacks('handleAddSample')();
+    // }
 
     handleUpdateProcess(processId, attrs) {
         return this.callbacks['handleUpdateProcess'](processId, attrs);
+    }
+
+    handleSelectFiles(process) {
+        return this.callbacks['handleSelectFiles'](process);
     }
 }
 

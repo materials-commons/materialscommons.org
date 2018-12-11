@@ -1,12 +1,14 @@
 class MCExperimentWorkflowViewContainerComponentController {
     /*@ngInject*/
-    constructor(templates, mcStateStore, experimentsAPI, processesAPI, wvcCallbacks, $stateParams) {
+    constructor(templates, mcStateStore, experimentsAPI, processesAPI, wvcCallbacks, wvcService, toast, $stateParams) {
         this.templates = templates;
         this.mcStateStore = mcStateStore;
         this.experimentsAPI = experimentsAPI;
         this.processesAPI = processesAPI;
         this.wvcCallbacks = wvcCallbacks;
+        this.wvcService = wvcService;
         this.$stateParams = $stateParams;
+        this.toast = toast;
         this.state = {
             experiment: null,
             templates: null,
@@ -24,6 +26,7 @@ class MCExperimentWorkflowViewContainerComponentController {
     $onInit() {
         this.templates.getServerTemplates().then(t => this.state.templates = t);
         this.wvcCallbacks.registerCallback('handleUpdateProcess', (processId, attrs) => this.handleUpdateProcess(processId, attrs));
+        this.wvcCallbacks.registerCallback('handleSelectFiles', process => this.handleSelectFiles(process));
     }
 
     // An experiment has a list of samples a list of processes and a relationships.process2sample array
@@ -50,6 +53,13 @@ class MCExperimentWorkflowViewContainerComponentController {
         this.processesAPI.updateProcess(this.$stateParams.project_id, processId, attrs).then(
             () => null,
             () => this.toast.error('Unable to update process')
+        );
+    }
+
+    handleSelectFiles(process) {
+        console.log('container', process);
+        this.wvcService.selectFiles(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(
+            () => null,
         );
     }
 }
