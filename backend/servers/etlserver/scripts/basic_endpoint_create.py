@@ -1,10 +1,8 @@
 import logging
-import json
-import configparser
 from pathlib import Path
 
 from ..utils.LoggingHelper import LoggingHelper
-from ..common.GlobusAccess import GlobusAccess, NATIVE_APP_AUTH
+from ..download.GlobusAccess import GlobusAccess, NATIVE_APP_AUTH
 
 TOKEN_FILE_PATH = Path(Path.home(), '.globus', 'refresh-testing-tokens.json')
 REDIRECT_URI = 'https://auth.globus.org/v2/web/auth-code'
@@ -32,13 +30,14 @@ class BasicEndpointExample:
         }
         self.globus_access.create_shared_endpoint(data)
 
+
 def main(base_ep):
     main_log = logging.getLogger("main")
     main_log.info("Starting main")
 
     globus_access = GlobusAccess(use_implementation=NATIVE_APP_AUTH)
 
-    BasicEndpointExample(base_ep,globus_access).do_it()
+    BasicEndpointExample(base_ep, globus_access).do_it()
 
 
 if __name__ == '__main__':

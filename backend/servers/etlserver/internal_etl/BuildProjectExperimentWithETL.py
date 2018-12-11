@@ -354,10 +354,10 @@ class BuildProjectExperiment:
             path_list = path.split('/')
             process_files += self._all_files_in_data_directory_path(self.data_directory, path_list)
         if len(process_files) > 0:
-            self.log.debug("for process {}({}) adding files {}".
-                          format(process.name, process.id, [x.name for x in process_files]))
-            self.log.debug("  file id's {}".
-                          format([[x.name, x.id] for x in process_files]))
+            self.log.debug("for process {}({}) adding files {}"
+                           .format(process.name, process.id, [x.name for x in process_files]))
+            self.log.debug("  file id's {}"
+                           .format([[x.name, x.id] for x in process_files]))
             process.add_files(process_files)
             samples = process.output_samples
             if not process.does_transform:

@@ -5,7 +5,7 @@ import webbrowser
 import configparser
 from pathlib import Path
 
-from .utils import is_remote_session
+from ..common.utils import is_remote_session
 # from .utils import enable_requests_logging
 
 from globus_sdk import NativeAppAuthClient, TransferClient, \

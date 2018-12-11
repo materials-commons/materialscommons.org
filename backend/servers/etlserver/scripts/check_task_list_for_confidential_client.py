@@ -2,7 +2,7 @@ import os
 import time
 import logging
 from ..utils.LoggingHelper import LoggingHelper
-from ..common.GlobusAccess import GlobusAccess
+from ..download.GlobusAccess import GlobusAccess
 
 
 class MonitorTaskList:

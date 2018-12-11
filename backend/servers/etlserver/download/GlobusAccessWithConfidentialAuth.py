@@ -1,7 +1,7 @@
 import logging
 import os
 
-from .access_exceptions import AuthenticationException
+from ..common.access_exceptions import AuthenticationException
 
 from globus_sdk import ConfidentialAppAuthClient, ClientCredentialsAuthorizer
 from globus_sdk import TransferClient

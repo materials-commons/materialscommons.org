@@ -547,4 +547,4 @@ if __name__ == '__main__':
 
     c = Compare()
     c.set_options(do_files=ok_to_upload, upload=args.upload, download=args.download, checksum=args.checksum)
-    c.compare(args.proj, args.exp, args.input, args.output, apikey=apikey)
+    c.compare(args.proj, args.exp, args.input, args.output, apikey=args.apikey)

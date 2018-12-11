@@ -9,7 +9,7 @@ from globus_sdk import TransferAPIError
 class VerifySetup:
     def __init__(self, mc_globus_service, project_id,
                  globus_source_endpoint, globus_source_path,
-                 globus_destination_path, base_path, dir_file_list=[]):
+                 globus_destination_path, base_path, dir_file_list=None):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.mc_globus_service = mc_globus_service
         self.project_id = project_id
@@ -17,7 +17,7 @@ class VerifySetup:
         self.globus_source_path = globus_source_path
         self.globus_destination_path = globus_destination_path
         self.base_path = base_path
-        self.dir_file_list = dir_file_list
+        self.dir_file_list = dir_file_list or []
         self.log.info("VerifySetup init: ")
         self.log.info("  project_id = {}".format(project_id))
         self.log.info("  globus_source_endpoint = {}".format(globus_source_endpoint))
