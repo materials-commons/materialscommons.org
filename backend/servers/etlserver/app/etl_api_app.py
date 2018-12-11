@@ -2,17 +2,15 @@ import json
 import logging
 
 import pkg_resources
-from flask import Flask, request
+from flask import Flask, request, Response as flask_response
 from flask_api import status
 
-from servers.etlserver.database.DatabaseInterface import DatabaseInterface
 from servers.etlserver.database.DB import DbConnection
 from servers.etlserver.download.GlobusDownload import GlobusDownload, DOWNLOAD_NO_FILES_FOUND
 from servers.etlserver.user import access
 from servers.etlserver.user.api_key import apikey
 from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
 from servers.etlserver.common.GlobusInfo import GlobusInfo
-from servers.etlserver.common.MaterialsCommonsGlobusInterface import MaterialsCommonsGlobusInterface
 from servers.etlserver.app.AppHelper import AppHelper
 
 log = logging.getLogger(__name__)
@@ -23,8 +21,7 @@ app = Flask(__name__.split('.')[0])
 
 
 def format_as_json_return(what):
-    return json.dumps(what, indent=4)
-
+    return flask_response(json.dumps(what), mimetype="application/json")
 
 @app.before_request
 def before_request():
@@ -138,12 +135,23 @@ def globus_transfer_download():
 @app.route('/globus/upload/status', methods=['POST'])
 @apikey
 def globus_upload_status():
-    j = request.get_json(force=True)
-    project_id = j["project_id"]
-    api_key = request.args.get('apikey', default="no_such_key")
-    return_value = AppHelper(api_key).get_project_globus_upload_status(project_id)
-    log.info(return_value)
-    return format_as_json_return(return_value)
+    # noinspection PyBroadException
+    try:
+        j = request.get_json(force=True)
+        project_id = j["project_id"]
+        api_key = request.args.get('apikey', default="no_such_key")
+        user_id = access.get_user()
+        log.info("In app level: Request for globus upload status")
+        return_value = AppHelper(api_key).get_project_globus_upload_status(user_id, project_id)
+        return_value = {
+            "value": return_value
+        }
+        log.info("In app level return_value = {}".format(return_value))
+        return format_as_json_return(return_value)
+    except Exception:
+        message = "Globus upload status - unexpected exception"
+        log.exception(message)
+        return message, status.HTTP_400_BAD_REQUEST
 
 
 @app.route('/globus/transfer/admin/info', methods=['GET', 'POST'])
@@ -193,62 +201,3 @@ def globus_transfer_admin_cctasks():
         message = "Globus transfer admin cc tasks - unexpected exception"
         log.exception(message)
         return message, status.HTTP_400_BAD_REQUEST
-
-
-@app.route('/globus/auth/status', methods=['GET', 'POST'])
-@apikey
-def globus_auth_status():
-    # get tokens - if they exist
-    # validate tokens
-    # return authentication-state, globus user, globus id
-
-    user_id = access.get_user()
-    client = MaterialsCommonsGlobusInterface(user_id).get_auth_client()
-
-    # tokens
-    log.info("Getting Globus Auth status for user = {}".format(user_id))
-    record_list = DatabaseInterface().get_globus_auth_info_records_by_user_id(user_id)
-    # use only the latest
-    record = (record_list[0] if len(record_list) > 0 else None)
-    log.info("Globus Auth record = {}".format(record))
-    tokens = None
-    globus_name = None
-    globus_id = None
-    if record:
-        tokens = record['tokens']
-        globus_name = record['globus_name']
-        globus_id = record['globus_id']
-
-    # validate
-    validated = {}
-    types = ['auth.globus.org', 'transfer.api.globus.org']
-    for token_type in types:
-        if tokens and token_type in tokens:
-            log.info(client.oauth2_validate_token(tokens[token_type]))
-            refresh_value = client.oauth2_validate_token(tokens[token_type]['refresh_token'])
-            access_value = client.oauth2_validate_token(tokens[token_type]['access_token'])
-            seconds = tokens[token_type]['expires_at_seconds']
-            validated[token_type] = {
-                'refresh': refresh_value['active'],
-                'access': access_value['active'],
-                'expires': seconds
-            }
-        else:
-            validated[token_type] = {
-                'refresh': False,
-                'access': False,
-                'expires': 0
-            }
-
-    globus_authentication = \
-        ('auth.globus.org' in validated) \
-        and validated['auth.globus.org']['access']
-
-    return_status = {
-        'globus_name': globus_name,
-        'globus_id': globus_id,
-        'authenticated': globus_authentication,
-        'validated': validated
-    }
-
-    return format_as_json_return({'status': return_status})

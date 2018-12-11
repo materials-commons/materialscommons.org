@@ -6,7 +6,7 @@
     </md-toolbar>
     <md-dialog-content ng-if="!$ctrl.status" layout-margin>
         <div ng-if="!$ctrl.error">
-            There appear to be no active Globus Uploads at this time. Try clicking on "Sync"
+            There appear to be no status records for Globus Uploads at this time. Try clicking on "Sync"
             in the left-side navigation bar and reviewing the files by clicking on "All Files".
         </div>
         <div ng-if="$ctrl.error">
@@ -17,8 +17,34 @@
     </md-dialog-content>
     <md-dialog-content ng-if="$ctrl.status" layout-margin>
         <div>
-            {{$ctrl.status}}.
+            The following are Globus Uplaod status records from the database for your
+            request in this project ({{$ctrl.project.name}}). If the top record is marked
+            finished and success, then is most likely the case that your request completed
+            sucessfully. Old records marked unfinished indicated either a failed request or
+            a request that you started but did not complete.
+            <div></div>
         </div>
+        <md-table-container>
+            <table md-table>
+                <thead md-head style="margin-bottom: 40px; margin-top: 40px">
+                <tr md-row>
+                    <th md-column>Finished</th>
+                    <th md-column>Success</th>
+                    <th md-column>Age (h:m)</th>
+                    <th md-column>Status</th>
+                </tr>
+                </thead>
+                <tbody md-body style="margin-top: 20px">
+                <tr md-row class="md-row-hover pointer"
+                    ng-repeat="record in $ctrl.status">
+                    <td md-cell>{{record.is_finished}}</td>
+                    <td md-cell>{{record.is_ok}}</td>
+                    <td md-cell>{{record.formatted_age}}</td>
+                    <td md-cell>{{record.message}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-info" ng-click="$ctrl.reload()">Repeat Status Info Request</md-button>

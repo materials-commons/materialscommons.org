@@ -18,6 +18,7 @@ _PORT = os.environ.get('MC_ETL_SERVICE_PORT')
 _SSL_DIR = os.environ.get('MC_ETL_SSL_DIR')
 SERVER_TYPE = os.environ.get('SERVERTYPE')
 
+
 # noinspection PyUnusedLocal
 def reload_users(signum, frame):
     from servers.etlserver.user.access import reset as access_reset

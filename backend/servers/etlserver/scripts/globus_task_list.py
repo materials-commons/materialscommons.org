@@ -1,16 +1,17 @@
 #!/usr/bin/env python
 
-import os
-from ..utils.LoggingHelper import LoggingHelper
-from ..common.GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
-from globus_sdk import TransferAPIError
-import logging
-import time
 import datetime
-import rethinkdb as r
-import urllib
-import pathlib
+import logging
+import os
 import shutil
+import time
+import urllib
+
+import rethinkdb as r
+from globus_sdk import TransferAPIError
+
+from ..download.GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
+from ..utils.LoggingHelper import LoggingHelper
 
 # BASEDIR = "/home/gtarcea/mcdir/mcfs/users"
 BASEDIR = "/home/gtarcea/mcdir/mcfs/data/test/__upload_staging"
@@ -187,7 +188,9 @@ if __name__ == '__main__':
                     pieces = p.split('/')
                     id = pieces[2]
                     print(" id = {}".format(id))
-                    items = list(r.table("globus_uploads").get_all(id).eq_join("project_id", r.table("projects")).zip().run(conn))
+                    items = list(
+                        r.table("globus_uploads").get_all(id).eq_join("project_id", r.table("projects")).zip().run(
+                            conn))
                     project = items[0]
                 load_file(conn, p, project)
             if last_dest_path:

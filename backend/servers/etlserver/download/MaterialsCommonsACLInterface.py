@@ -3,7 +3,7 @@ import logging
 
 from .GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
 from ..database.DatabaseInterface import DatabaseInterface
-from .access_exceptions import AuthenticationException, RequiredAttributeException
+from ..common.access_exceptions import RequiredAttributeException
 
 
 class MaterialsCommonsACLInterface:

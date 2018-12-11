@@ -1,10 +1,9 @@
 import logging
 import os
-from random import randint
 
 from materials_commons.api import get_project_by_id
 
-from ..common.MaterialsCommonsACLInterface import MaterialsCommonsACLInterface
+from .MaterialsCommonsACLInterface import MaterialsCommonsACLInterface
 from ..common.access_exceptions import RequiredAttributeException
 from ..common.McdirHelper import McdirHelper
 from ..database.DatabaseInterface import DatabaseInterface
