@@ -4,9 +4,8 @@ class SidenavGlobusService {
         this.User = User;
         this.etlServerAPI = etlServerAPI;
         this.$mdDialog = $mdDialog;
-        console.log(User.attr());
-        this.globus_user = User.attr().globus_user
-        console.log(this.globus_user);
+        this.globus_user = User.attr().globus_user;
+        console.log("for user = ", User.u(), ", globus user =", this.globus_user);
     }
 
     globusDownload(project) {
@@ -124,9 +123,7 @@ class GlobusUploadStatusDialogController {
     /*@ngInject*/
     constructor($mdDialog, User, etlServerAPI) {
         this.$mdDialog = $mdDialog;
-        this.User = User;
         this.etlServerAPI = etlServerAPI;
-        this.globusUser = User.attr().globus_user;
         this.url = null;
         this.error = null;
         this.status = null;
@@ -137,12 +134,37 @@ class GlobusUploadStatusDialogController {
     submitRequest() {
         this.error = null;
         this.status = null;
+        this.activeCount = 0;
+        this.successCount = 0;
+        this.finishedCount = 0;
         console.log("submitting request to update status", this.project.name);
         this.etlServerAPI.getGlobusUplaodStatus(this.project.id).then(
             results => {
-                console.log("Results from request to update status", results.status);
-                if (results.status) {
-                    this.status = results.status;
+                if (results.value) {
+                    console.log("Results from request to update status", results.value);
+                    this.activeCount = 0;
+                    this.finishedCount = 0;
+                    this.successCount = 0;
+                    let record_list = results.value;
+                    let now = new Date()
+                    for (let i = 0; i < record_list.length; i++) {
+                        let record = record_list[i];
+                        record.birthtime = this.convert_date(record.birthtime);
+                        record.mtime = this.convert_date(record.mtime);
+                        record.age_in_minutes = (now - record.birthtime)/60000;
+                        record.formatted_age = this.format_age(record.age_in_minutes);
+                        if (record.is_ok) {
+                            this.successCount += 1
+                        }
+                        if (record.is_finished) {
+                            this.finishedCount += 1
+                        }
+                        if (record.is_ok && !record.is_finished) {
+                            this.activeCount += 1
+                        }
+                    }
+                    console.log("Results converted", record_list);
+                    this.status = record_list;
                 } else {
                     this.error = results.error;
                 }
@@ -150,6 +172,17 @@ class GlobusUploadStatusDialogController {
         );
     }
 
+    format_age(mins) {
+        let hours = Math.floor(mins/60);
+        let minutes = Math.round(mins - (hours*60));
+        return "" + hours + ':' + ((minutes<10)?("0" + minutes):"" + minutes);
+    }
+
+    convert_date(epoch_seconds) {
+        let d = new Date(0);
+        d.setUTCSeconds(epoch_seconds);
+        return d;
+    }
     reload() {
         console.log("GlobusUploadStatusDialogController-Reload");
         this.submitRequest();
