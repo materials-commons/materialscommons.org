@@ -60,6 +60,7 @@ def create_mc_tables():
     create_mc_table("uploads", "owner", "project_id")
 
     create_mc_table("background_process", "project_id", "queue", "status")
+    create_compound_index("background_process", "user_project", ['user_id', 'project_id'])
     create_compound_index("background_process", "user_project_task", ['user_id', 'project_id', 'background_task_id'])
 
     create_mc_table("globus_auth_info", "owner")

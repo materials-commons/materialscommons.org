@@ -1,8 +1,8 @@
 import logging
 import os
 
-from ..common.GlobusAccess import GlobusAccess
-from ..common.GlobusAccess import CONFIDENTIAL_CLIENT_APP_AUTH
+from ..download.GlobusAccess import GlobusAccess
+from ..download.GlobusAccess import CONFIDENTIAL_CLIENT_APP_AUTH
 
 
 class GlobusInfo:

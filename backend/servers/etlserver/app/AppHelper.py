@@ -56,26 +56,19 @@ class AppHelper:
         self.log.info("done")
         return {"status": "ok"}
 
-    def get_project_globus_upload_status(self, project_id):
-        database = DatabaseInterface()
-        globus_upload_records = list(database.get_globus_upload_records(project_id))
-        if len(globus_upload_records) > 0:
-            message = "Globus is still upload files - Check Globus UI for progress"
-            self.log.info(message)
-            return {"status": message, "code": "globus", "count": len(globus_upload_records), "records": globus_upload_records}
-        else:
-            file_load_records = list(database.get_file_loads_records(project_id))
-            if len(file_load_records) > 0:
-                message = "Materials Commons is still loading files - " \
-                        + "Check back later - Wait for this activity to finish"
-                return {"status": message, "code": "files", "count": len(file_load_records), "records": []}
-        return {"status": None}
+    def get_project_globus_upload_status(self, user_id, project_id):
+        self.log.info("request for globus upload status: user = {}, project = {}"
+                      .format(user_id, project_id))
+        return_value = DatabaseInterface().get_status_records(user_id, project_id)
+        self.log.info("return_value = {}".format(return_value))
+        return return_value
 
 
 # used in "main" for interactive testing
 class AppHelperTester:
-    def __init__(self, apikey):
+    def __init__(self, apikey, user_id):
         self.apikey = apikey
+        self.user_id = user_id
         self.helper = AppHelper(apikey)
 
     @staticmethod
@@ -122,20 +115,21 @@ class AppHelperTester:
         return_value = {"status": None}
         print("Starting loop to wait for start...")
         while not return_value['status']:
-            return_value = self.helper.get_project_globus_upload_status(my_project.id)
+            return_value = self.helper.get_project_globus_upload_status(self.user_id, my_project.id)
             print("Waiting for a globus request on project {}".format(my_project.name))
             time.sleep(5)
         print("Starting loop to wait for done...")
         while return_value['status']:
             print(return_value)
             time.sleep(5)
-            return_value = self.helper.get_project_globus_upload_status(my_project.id)
+            return_value = self.helper.get_project_globus_upload_status(self.user_id, my_project.id)
         print("done")
 
 
 if __name__ == "__main__":
     LoggingHelper().set_root()
     my_apikey = "totally-bogus"
-    tester = AppHelperTester(my_apikey)
+    my_user_id = "test@test.mc"
+    tester = AppHelperTester(my_apikey, my_user_id)
     # tester.test_project_file_based_etl()
     tester.test_get_project_globus_upload_status()

@@ -1,6 +1,6 @@
 import time
 import logging
-from ..common.GlobusAccess import GlobusAccess
+from ..download.GlobusAccess import GlobusAccess
 
 
 class ConfClientHelper:
