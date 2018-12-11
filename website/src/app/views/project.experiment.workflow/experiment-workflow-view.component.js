@@ -28,10 +28,6 @@ class MCExperimentWorflowViewComponentController {
             p => this.state.currentProcess = p
         );
     }
-
-    handleUpdateProcess(processId, attrs) {
-        this.onUpdateProcess({processId: processId, attrs: attrs});
-    }
 }
 
 angular.module('materialscommons').component('mcExperimentWorkflowView', {
@@ -41,6 +37,5 @@ angular.module('materialscommons').component('mcExperimentWorkflowView', {
         experiment: '<',
         templates: '<',
         onLoadProcessDetails: '&',
-        onUpdateProcess: '&',
     }
 });

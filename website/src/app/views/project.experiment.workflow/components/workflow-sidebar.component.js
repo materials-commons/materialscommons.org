@@ -20,10 +20,6 @@ class MCWorkflowSidebarComponentController {
     addToGraph(template) {
         this.onAddNode({template: template});
     }
-
-    handleUpdateProcess(processId, attrs) {
-        this.onUpdateProcess({processId: processId, attrs: attrs});
-    }
 }
 
 angular.module('materialscommons').component('mcWorkflowSidebar', {
@@ -33,6 +29,5 @@ angular.module('materialscommons').component('mcWorkflowSidebar', {
         currentProcess: '<',
         onAddNode: '&',
         templates: '<',
-        onUpdateProcess: '&'
     }
 });

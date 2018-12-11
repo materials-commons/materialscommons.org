@@ -1,10 +1,11 @@
 class MCExperimentWorkflowViewContainerComponentController {
     /*@ngInject*/
-    constructor(templates, mcStateStore, experimentsAPI, processesAPI, $stateParams) {
+    constructor(templates, mcStateStore, experimentsAPI, processesAPI, wvcCallbacks, $stateParams) {
         this.templates = templates;
         this.mcStateStore = mcStateStore;
         this.experimentsAPI = experimentsAPI;
         this.processesAPI = processesAPI;
+        this.wvcCallbacks = wvcCallbacks;
         this.$stateParams = $stateParams;
         this.state = {
             experiment: null,
@@ -21,9 +22,8 @@ class MCExperimentWorkflowViewContainerComponentController {
     }
 
     $onInit() {
-        this.templates.getServerTemplates().then(
-            t => this.state.templates = t
-        );
+        this.templates.getServerTemplates().then(t => this.state.templates = t);
+        this.wvcCallbacks.registerCallback('handleUpdateProcess', (processId, attrs) => this.handleUpdateProcess(processId, attrs));
     }
 
     // An experiment has a list of samples a list of processes and a relationships.process2sample array
@@ -58,7 +58,6 @@ angular.module('materialscommons').component('mcExperimentWorkflowViewContainer'
     controller: MCExperimentWorkflowViewContainerComponentController,
     template: `<mc-experiment-workflow-view ng-if="$ctrl.state.template !== null"
                     experiment="$ctrl.state.experiment"
-                    on-update-process="$ctrl.handleUpdateProcess(processId, attrs)"
                     on-load-process-details="$ctrl.handleLoadProcessDetails(processId)"
                     templates="$ctrl.state.templates"></mc-experiment-workflow-view>`,
     bindings: {

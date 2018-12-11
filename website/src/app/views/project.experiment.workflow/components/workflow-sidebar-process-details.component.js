@@ -1,7 +1,8 @@
 class MCWorkflowSidebarProcessDetailsComponentController {
     /*@ngInject*/
-    constructor($scope, editorOpts) {
+    constructor($scope, editorOpts, wvcCallbacks) {
         $scope.editorOptions = editorOpts({height: 25, width: 20});
+        this.wvcCallbacks = wvcCallbacks;
         this.state = {
             process: null,
             processName: '',
@@ -34,7 +35,7 @@ class MCWorkflowSidebarProcessDetailsComponentController {
         }
 
         if (changesWereMade) {
-            this.onUpdateProcess({processId: this.state.process.id, attrs: changed});
+            this.wvcCallbacks.handleUpdateProcess(this.state.process.id, changed);
         }
     }
 }
@@ -44,6 +45,5 @@ angular.module('materialscommons').component('mcWorkflowSidebarProcessDetails', 
     template: require('./workflow-sidebar-process-details.html'),
     bindings: {
         process: '<',
-        onUpdateProcess: '&'
     }
 });
