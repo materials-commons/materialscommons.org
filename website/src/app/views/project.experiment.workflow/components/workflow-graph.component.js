@@ -26,12 +26,9 @@ class MCWorkflowGraphComponentController {
 
     setupOnClick() {
         this.cy.on('click', event => {
-            // console.log('click event');
             let target = event.cyTarget;
             if (target.isNode()) {
-                // console.log('  isNode');
                 let process = target.data('details');
-                // console.log('    process', process);
                 this.onSetCurrentProcess({process: process});
             }
         });
