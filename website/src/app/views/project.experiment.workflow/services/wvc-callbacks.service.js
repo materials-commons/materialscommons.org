@@ -23,6 +23,10 @@ class WvcCallbacksService {
     handleSelectFiles(process) {
         return this.callbacks['handleSelectFiles'](process);
     }
+
+    handleSelectSamples(process) {
+        return this.callbacks['handleSelectSamples'](process);
+    }
 }
 
 angular.module('materialscommons').service('wvcCallbacks', WvcCallbacksService);

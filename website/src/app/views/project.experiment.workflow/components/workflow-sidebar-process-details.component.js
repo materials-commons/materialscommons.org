@@ -40,8 +40,11 @@ class MCWorkflowSidebarProcessDetailsComponentController {
     }
 
     handleSelectFiles(process) {
-        console.log('handleSelectFiles', process);
         this.wvcCallbacks.handleSelectFiles(process);
+    }
+
+    handleSelectSamples(process) {
+        this.wvcCallbacks.handleSelectSamples(process);
     }
 }
 

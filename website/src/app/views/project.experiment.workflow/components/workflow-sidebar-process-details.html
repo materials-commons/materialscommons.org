@@ -18,5 +18,6 @@
     <md-button class="md-primary md-raised" ng-click="$ctrl.save()">save changes</md-button>
 
     <mc-process-editor process="$ctrl.state.process"
+                       on-select-samples="$ctrl.handleSelectSamples(process)"
                        on-select-files="$ctrl.handleSelectFiles(process)"></mc-process-editor>
 </div>

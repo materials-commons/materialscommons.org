@@ -25,7 +25,7 @@ class MCProcessEditorComponentController {
     }
 
     selectSamples() {
-        this.onSelectSamples();
+        this.onSelectSamples({process: this.state.process});
     }
 
     remove() {

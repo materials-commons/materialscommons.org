@@ -27,6 +27,7 @@ class MCExperimentWorkflowViewContainerComponentController {
         this.templates.getServerTemplates().then(t => this.state.templates = t);
         this.wvcCallbacks.registerCallback('handleUpdateProcess', (processId, attrs) => this.handleUpdateProcess(processId, attrs));
         this.wvcCallbacks.registerCallback('handleSelectFiles', process => this.handleSelectFiles(process));
+        this.wvcCallbacks.registerCallback('handleSelectSamples', process => this.handleSelectSamples(process));
     }
 
     // An experiment has a list of samples a list of processes and a relationships.process2sample array
@@ -57,10 +58,13 @@ class MCExperimentWorkflowViewContainerComponentController {
     }
 
     handleSelectFiles(process) {
-        console.log('container', process);
         this.wvcService.selectFiles(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(
             () => null,
         );
+    }
+
+    handleSelectSamples(process) {
+        this.wvcService.selectSamples(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(() => null);
     }
 }
 
