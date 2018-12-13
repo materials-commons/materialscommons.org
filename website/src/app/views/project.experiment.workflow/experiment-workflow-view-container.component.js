@@ -58,13 +58,14 @@ class MCExperimentWorkflowViewContainerComponentController {
     }
 
     handleSelectFiles(process) {
-        this.wvcService.selectFiles(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(
-            () => null,
-        );
+        this.wvcService.selectFiles(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(() => null);
     }
 
     handleSelectSamples(process) {
-        this.wvcService.selectSamples(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(() => null);
+        this.wvcService.selectSamples(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(
+            () => null,
+            () => this.toast.error('Unable to update process')
+        );
     }
 }
 
