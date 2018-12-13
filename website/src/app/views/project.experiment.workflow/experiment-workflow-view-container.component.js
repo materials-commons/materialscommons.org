@@ -63,7 +63,7 @@ class MCExperimentWorkflowViewContainerComponentController {
 
     handleSelectSamples(process) {
         this.wvcService.selectSamples(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(
-            () => null,
+            (samples) => this.mcStateStore.fire('EDGE$ADD', samples),
             () => this.toast.error('Unable to update process')
         );
     }

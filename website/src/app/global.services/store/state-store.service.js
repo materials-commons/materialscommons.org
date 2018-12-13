@@ -13,8 +13,8 @@ class StateStoreService {
         this.bus.fireEvent(key, val);
     }
 
-    fire(key) {
-        this.bus.fireEvent(key);
+    fire(key, val = null) {
+        this.bus.fireEvent(key, val);
     }
 
     getState(key) {
