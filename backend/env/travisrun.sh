@@ -44,3 +44,45 @@ fi
 export MCAPID_COMMAND="start.sh mcapid-${SERVERTYPE}"
 export MCAPID_PORT=5028
 export REDIS_PORT=5031
+
+# normally these would be in /etc/materialscommons/org - but included here
+# except for the values of usernames and passwords,
+# for documentaion and completeness
+
+## General - base Materials commons links
+export MC_BASE_API_LINK=http://mctest.localhost/#
+export MCPUB_BASE_API_LINK=http://mcpub.localhost/#
+
+# see above --
+# export MCDIR=${HOME}/working/MaterialsCommons/mcdir:${HOME}/working/MaterialsCommons/mcdir
+# export MCDB_CONNECTION="localhost:30815"
+# export MCDB_TYPE="rethinkdb" # - this is default in code
+# export MCDB_NAME="materialscommons" # - this is default in code
+# export MCDB_DUMPS=${HOME}/working/MaterialsCommons/rethinkdb_dumps
+# export MCDB_FILE=$MCDB_DUMPS/target.tar.gz
+
+## Email - these should not, normally be involved in tests.
+# export MC_VERIFY_EMAIL=''
+# export MC_VERIFY_PASS=''
+# export MC_VERIFY_LINK=http://mctest.localhost/#/validate
+# export MCPUB_VERIFY_LINK=http://mcpub.localhost/#/validate
+# export MC_SMTP_HOST=''
+
+## DOI - doi tests are normally disabled (e.g. skipped)
+# Remote DOI service URLs
+export MC_DOI_SERVICE_URL=https://ezid.lib.purdue.edu/
+export MC_DOI_SERVICE_URL=https://ez.test.datacite.org/
+export MC_DOI_USER_INTERFACE_URL=https://search.test.datacite.org/works
+# Publisher label
+export MC_DOI_PUBLISHER='Materials Commons'
+# Dataset Publication (call back) line
+export MC_DOI_PUBLICATION_BASE=http://mcpub.localhost/#/data/dataset/
+# DOI Identification
+export MC_DOI_NAMESPACE='doi:10.33587'
+export MC_DOI_USER=''
+export MC_DOI_PW=''
+
+## Globus - globus tests are normally disabled (e.g. skipped)
+export MC_CONFIDENTIAL_CLIENT_USER=''
+export MC_CONFIDENTIAL_CLIENT_PW=''
+export MC_CONFIDENTIAL_CLIENT_ENDPOINT=''
