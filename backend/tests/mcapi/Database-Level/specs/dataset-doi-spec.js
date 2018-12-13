@@ -11,6 +11,8 @@ const r = require('rethinkdbdash')({
     port: process.env.MCDB_PORT || 30815
 });
 
+const SKIP = true
+
 const request = require('request-promise');
 
 const backend_base = '../../../..';
@@ -48,6 +50,11 @@ let random_name = function(){
 
 before(function*() {
     console.log("before dataset-doi-spec");
+    if (SKIP) {
+        // see also, "describe function(s) below
+        console.log("Skipping this these tests - to prevent minting test DOI entries needlessly")
+        return
+    }
     console.log("NOTE: all doi tests are skipped to prevent Minting of test DOI's during routine testing")
     this.timeout(80000); // test setup can take up to 8 seconds
 
