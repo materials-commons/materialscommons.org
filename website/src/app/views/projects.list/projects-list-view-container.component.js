@@ -1,6 +1,6 @@
 class MCProjectsListViewContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams, projectsAPI, $mdDialog, User, blockUI, demoProjectService, toast) {
+    constructor($stateParams, projectsAPI, $mdDialog, User, blockUI, demoProjectService, toast, mcprojstore) {
         this.$stateParams = $stateParams;
         this.projectsAPI = projectsAPI;
         this.$mdDialog = $mdDialog;
@@ -8,6 +8,7 @@ class MCProjectsListViewContainerComponentController {
         this.blockUI = blockUI;
         this.demoProjectService = demoProjectService;
         this.toast = toast;
+        this.mcprojstore = mcprojstore;
         this.state = {
             user: this.User.attr(),
             projects: []
@@ -20,7 +21,10 @@ class MCProjectsListViewContainerComponentController {
 
     _getProjectsForUser() {
         this.projectsAPI.getProjectsForUser().then(
-            projects => this.state.projects = angular.copy(projects),
+            projects => {
+                this.state.projects = angular.copy(projects);
+                this.mcprojstore.ready().then(() => this.mcprojstore.addProjects(...this.state.projects));
+            },
             () => this.toast.error('Unable to retrieve your projects')
         );
     }
