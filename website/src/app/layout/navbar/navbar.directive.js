@@ -97,6 +97,7 @@ class NavbarComponentController {
         this.isAuthenticated = this.User.isAuthenticated();
         this.$state.go('data.home.top');
         this.mcprojstore.reset();
+        this.mcprojstore.remove();
     }
 
     loginOrRegister() {
