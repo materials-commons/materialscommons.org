@@ -72,8 +72,10 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.projectUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
             const currentExperiment = this.mcprojstore.currentExperiment;
-            this.processes = _.values(currentExperiment.processes);
-            this.allProcessesGraph();
+            if (currentExperiment !== null) {
+                this.processes = _.values(currentExperiment.processes);
+                this.allProcessesGraph();
+            }
         });
 
         this.procUpdateUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, process => {
@@ -253,9 +255,9 @@ class MCProcessesWorkflowGraphComponentController {
 
     findSourceProcess(sample) {
         for (let process of this.processes) {
-            if (process.output_samples) {
+            if (process.output_samples && process.output_samples.length) {
                 for (let s of process.output_samples) {
-                    if (s.id === sample.id && s.property_set_id === sample.property_set_id) {
+                    if (s.sample_id === sample.id && s.property_set_id === sample.property_set_id) {
                         return process;
                     }
                 }
