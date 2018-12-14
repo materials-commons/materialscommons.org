@@ -16,7 +16,7 @@ function* createProject(user, attrs) {
     if (0 < matches.length) {
         return yield getProject(matches[0].id);
     }
-    let description = attrs.description ? attrs.description : "";
+    let description = attrs.description ? attrs.description : '';
     let project_doc = new model.Project(name, description, owner);
     let project_result = yield r.table('projects').insert(project_doc);
     let project_id = project_result.generated_keys[0];
@@ -58,7 +58,7 @@ function* createShortcutDir(dir) {
 
 function* getProject(projectId) {
     let rql = r.table('projects').get(projectId)
-        .merge(function (project) {
+        .merge(function(project) {
             return {
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
             };
@@ -68,7 +68,6 @@ function* getProject(projectId) {
     let project = yield run(rql);
     return {val: project};
 }
-
 
 // all returns all the projects in the database. It only returns the
 // project entries in the projects table. It doesn't attempt to
@@ -90,11 +89,11 @@ function* forUserSimple(user) {
 }
 
 function addCounts(rql) {
-    rql = rql.merge(function (project) {
+    rql = rql.merge(function(project) {
         return {
             users: r.table('access')
                 .getAll(project('id'), {index: 'project_id'})
-                .map(function (entry) {
+                .map(function(entry) {
                     return entry.merge({
                         'user': entry('user_id'),
                         'details': r.table('users').get(entry('user_id')).pluck('fullname')
@@ -115,7 +114,7 @@ function addCounts(rql) {
 // the case where a user is an administrator.
 function* forUser(user) {
     let userProjectsRql = r.table('projects').getAll(user.id, {index: 'owner'})
-        .merge(function (project) {
+        .merge(function(project) {
             return {
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
             };
@@ -140,7 +139,7 @@ function* forUser(user) {
 // transformDates removes the rethinkdb specific date
 // fields
 function transformDates(rql) {
-    rql = rql.merge(function (project) {
+    rql = rql.merge(function(project) {
         return {
             mtime: project('mtime').toEpochTime(),
             birthtime: project('birthtime').toEpochTime()
@@ -152,7 +151,7 @@ function transformDates(rql) {
 // addComputed adds additional attributes to the rql that
 // that are computed from other tables.
 function addComputed(rql, fullExperiment) {
-    rql = rql.merge(function (project) {
+    rql = rql.merge(function(project) {
         return {
             users: r.table('access').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('user_id', r.table('users')).without({
@@ -198,7 +197,6 @@ function addComputed(rql, fullExperiment) {
 
     return rql;
 }
-
 
 function* update(projectID, attrs) {
     const pattrs = {};
@@ -264,22 +262,27 @@ function* update(projectID, attrs) {
 }
 
 function* getExcelFilePaths(projectID) {
-    let fileList = yield r.table("project2datafile")
-        .getAll(projectID, {index: "project_id"})
-        .eqJoin([r.row("datafile_id"), "Spreadsheet"],
-		        r.table("datafiles"), {index: "id_mediatype_description"}).zip()
+    let fileList = yield r.table('project2datafile')
+        .getAll(projectID, {index: 'project_id'})
+        .eqJoin([r.row('datafile_id'), 'Spreadsheet'],
+            r.table('datafiles'), {index: 'id_mediatype_description'}).zip().filter({current: true})
         .merge(function(df) {
             return {
-                dir: r.table("datadir2datafile").getAll(df("id"), {index: "datafile_id"})
-                        .eqJoin("datadir_id", r.db("materialscommons")
-                        .table("datadirs")).zip().coerceTo("array")
-            }
+                dir: r.table('datadir2datafile').getAll(df('id'), {index: 'datafile_id'})
+                    .eqJoin('datadir_id', r.db('materialscommons').table('datadirs'))
+                    .zip().coerceTo('array')
+            };
         });
-    pathList = [];
+    let pathList = [];
     for (let i = 0; i < fileList.length; i++) {
         let path = fileList[i].dir[0].name;
         // remove project name from path (Project1/allInOne -> /allInOne)
-        path = path.slice(path.indexOf('/'));
+        let index = path.indexOf('/');
+        if (index === -1) {
+            path = '';
+        } else {
+            path = path.slice(path.indexOf('/'));
+        }
         fileList[i].dir = path;
         // add file name to path
         path = path + '/' + fileList[i].name;
@@ -290,13 +293,13 @@ function* getExcelFilePaths(projectID) {
 
 function* renameTopDirectory(projectID, oldName, newName) {
     let dirsList = yield r.table('project2datadir').getAll(projectID, {index: 'project_id'})
-        .eqJoin('datadir_id',r.table('datadirs')).zip()
-        .filter({'name':oldName}).coerceTo('array');
+        .eqJoin('datadir_id', r.table('datadirs')).zip()
+        .filter({'name': oldName}).coerceTo('array');
     if (dirsList.length !== 1) {
         if (dirsList.length > 1) {
-            throw new ReferenceError("Multiple top level directories for project, " + projectID);
+            throw new ReferenceError('Multiple top level directories for project, ' + projectID);
         } else {
-            throw new ReferenceError("Missing top level directory for project, " + projectID);
+            throw new ReferenceError('Missing top level directory for project, ' + projectID);
         }
     }
     let directoryID = dirsList[0].id;
@@ -304,18 +307,18 @@ function* renameTopDirectory(projectID, oldName, newName) {
 }
 
 function differenceByField(from, others, field) {
-    let elementsFrom = from.map(function (entry) {
+    let elementsFrom = from.map(function(entry) {
         return entry[field];
     });
 
-    let elementsOthers = others.map(function (entry) {
+    let elementsOthers = others.map(function(entry) {
         return entry[field];
     });
 
     let diff = _.difference(elementsFrom, elementsOthers);
 
-    return from.filter(function (entry) {
-        return _.findIndex(diff, function (e) {
+    return from.filter(function(entry) {
+        return _.findIndex(diff, function(e) {
             return e === entry[field];
         }) !== -1;
     });
@@ -332,17 +335,17 @@ function* getUserAccessForProject(projectId) {
 }
 
 function* updateUserAccessForProject(projectId, attrs) {
-    let results = {error: "Bad action request - updateUserAccessForProject - " + attrs.action};
+    let results = {error: 'Bad action request - updateUserAccessForProject - ' + attrs.action};
     if (attrs.action === 'add') {
         let user_id = attrs.user_id;
         let exists = yield r.table('users').get(user_id);
         if (!exists) {
-            results = {error: "Bad request for add - updateUserAccessForProject - invalid: " + user_id};
+            results = {error: 'Bad request for add - updateUserAccessForProject - invalid: ' + user_id};
         } else {
-            let duplicate = yield r.table("access").getAll(projectId, {index: 'project_id'})
+            let duplicate = yield r.table('access').getAll(projectId, {index: 'project_id'})
                 .filter({user_id: user_id});
             if (duplicate.length === 0) {
-                let name_entry = yield r.table("projects").get(projectId).pluck('name');
+                let name_entry = yield r.table('projects').get(projectId).pluck('name');
                 let access_doc = new model.Access(name_entry['name'], projectId, user_id);
                 yield r.table('access').insert(access_doc);
             }
@@ -351,23 +354,22 @@ function* updateUserAccessForProject(projectId, attrs) {
     }
     if (attrs.action === 'delete') {
         let user_id = attrs.user_id;
-        let hit = yield r.table("access").getAll(projectId, {index: 'project_id'})
+        let hit = yield r.table('access').getAll(projectId, {index: 'project_id'})
             .filter({user_id: user_id});
         if (hit.length !== 0) {
-            yield r.table("access").get(hit[0].id).delete();
+            yield r.table('access').get(hit[0].id).delete();
         }
         results = {val: user_id};
     }
     return results;
 }
 
-
 module.exports = {
     all,
     createProject,
     forUser,
     forUserSimple,
-    get: function (id, index) {
+    get: function(id, index) {
         return getSingle(r, 'projects', id, index);
     },
     getExcelFilePaths,
