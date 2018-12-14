@@ -38,6 +38,7 @@ class MCExperimentWorkflowViewContainer2ComponentController {
     // that maps samples/property_set_id/direction to a process. The workflow graph examples that each
     // process will have an input_samples and output_samples list. Here we create those lists.
     buildProcessRelationships(experiment) {
+        let samplesById = _.indexBy(experiment.samples, 'id');
         experiment.processes.forEach(p => {
             let inputSamples = experiment.relationships.process2sample
                 .filter(entry => entry.direction === 'in' && entry.process_id === p.id);
@@ -45,8 +46,16 @@ class MCExperimentWorkflowViewContainer2ComponentController {
                 .filter(entry => entry.direction === 'out' && entry.process_id === p.id);
 
             // Workflow code assumes an id field for samples, but we only have a sample_id field. So add in the id field.
-            inputSamples.forEach(s => s.id = s.sample_id);
-            outputSamples.forEach(s => s.id = s.sample_id);
+            // Additionally the inputSamples and outputSamples are built off of the relationships which don't have a name
+            // field so also add that in
+            inputSamples.forEach(s => {
+                s.id = s.sample_id;
+                s.name = samplesById[s.id].name;
+            });
+            outputSamples.forEach(s => {
+                s.id = s.sample_id;
+                s.name = samplesById[s.id].name;
+            });
             p.input_samples = inputSamples;
             p.output_samples = outputSamples;
         });
