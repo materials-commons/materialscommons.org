@@ -43,6 +43,8 @@ class MCExperimentWorkflowViewContainer2ComponentController {
                 .filter(entry => entry.direction === 'in' && entry.process_id === p.id);
             let outputSamples = experiment.relationships.process2sample
                 .filter(entry => entry.direction === 'out' && entry.process_id === p.id);
+            inputSamples.forEach(s => s.id = s.sample_id);
+            outputSamples.forEach(s => s.id = s.sample_id);
             p.input_samples = inputSamples;
             p.output_samples = outputSamples;
         });
