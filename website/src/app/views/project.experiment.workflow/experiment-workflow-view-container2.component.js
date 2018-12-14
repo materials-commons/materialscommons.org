@@ -16,6 +16,17 @@ class MCExperimentWorkflowViewContainer2ComponentController {
             this.state.experiment = this.buildProcessRelationships(changes.experiment.currentValue);
             this.state.processes = this.state.experiment.processes;
             this.mcStateStore.updateState('experiment', this.state.experiment);
+            this.mcprojstore.ready().then(
+                () => {
+                    return this.mcprojstore.updateCurrentProject((project, transformers) => {
+                        let e = angular.copy(this.state.experiment);
+                        project.experiments[this.state.experiment.id] = transformers.transformExperiment(e);
+                        return project;
+                    }).then(
+                        () => this.mcprojstore.getExperiment(this.$stateParams.experiment_id)
+                    );
+                }
+            );
         }
     }
 
