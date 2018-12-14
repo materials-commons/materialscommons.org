@@ -72,7 +72,7 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.projectUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
             const currentExperiment = this.mcprojstore.currentExperiment;
-            if (currentExperiment !== null) {
+            if (currentExperiment && currentExperiment.processes !== null) {
                 this.processes = _.values(currentExperiment.processes);
                 this.allProcessesGraph();
             }
