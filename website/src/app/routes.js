@@ -155,11 +155,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.workflow', {
             url: '/workflow',
-            template: '<mc-experiment-workflow-view-container experiment="$resolve.experiment"></mc-experiment-workflow-view-container>'
-            // template: '<mc-processes-workflow processes="$resolve.processes"></mc-processes-workflow>',
-            // resolve: {
-            //     processes: ['experiment', (experiment) => _.values(experiment.processes)]
-            // }
+            template: '<mc-experiment-workflow-view-container2 experiment="$resolve.experiment"></mc-experiment-workflow-view-container2>'
         })
         .state('project.experiment.samples', {
             url: '/samples',
