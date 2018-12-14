@@ -1,14 +1,10 @@
 class MCExperimentWorkflowViewContainer2ComponentController {
     /*@ngInject*/
-    constructor(templates, mcStateStore, experimentsAPI, processesAPI, wvcCallbacks, wvcService, toast, $stateParams) {
+    constructor(templates, mcStateStore, mcprojstore, $stateParams) {
         this.templates = templates;
         this.mcStateStore = mcStateStore;
-        this.experimentsAPI = experimentsAPI;
-        this.processesAPI = processesAPI;
-        this.wvcCallbacks = wvcCallbacks;
-        this.wvcService = wvcService;
+        this.mcprojstore = mcprojstore;
         this.$stateParams = $stateParams;
-        this.toast = toast;
         this.state = {
             experiment: null,
             templates: null,
@@ -25,9 +21,6 @@ class MCExperimentWorkflowViewContainer2ComponentController {
 
     $onInit() {
         this.templates.getServerTemplates().then(t => this.state.templates = t);
-        this.wvcCallbacks.registerCallback('handleUpdateProcess', (processId, attrs) => this.handleUpdateProcess(processId, attrs));
-        this.wvcCallbacks.registerCallback('handleSelectFiles', process => this.handleSelectFiles(process));
-        this.wvcCallbacks.registerCallback('handleSelectSamples', process => this.handleSelectSamples(process));
     }
 
     // An experiment has a list of samples a list of processes and a relationships.process2sample array
@@ -44,28 +37,6 @@ class MCExperimentWorkflowViewContainer2ComponentController {
         });
 
         return experiment;
-    }
-
-    handleLoadProcessDetails(processId) {
-        return this.experimentsAPI.getProcessForExperiment(this.$stateParams.project_id, this.$stateParams.experiment_id, processId);
-    }
-
-    handleUpdateProcess(processId, attrs) {
-        this.processesAPI.updateProcess(this.$stateParams.project_id, processId, attrs).then(
-            () => null,
-            () => this.toast.error('Unable to update process')
-        );
-    }
-
-    handleSelectFiles(process) {
-        this.wvcService.selectFiles(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(() => null);
-    }
-
-    handleSelectSamples(process) {
-        this.wvcService.selectSamples(this.$stateParams.project_id, this.$stateParams.experiment_id, process).then(
-            (samples) => this.mcStateStore.fire('EDGE$ADD', samples),
-            () => this.toast.error('Unable to update process')
-        );
     }
 }
 
