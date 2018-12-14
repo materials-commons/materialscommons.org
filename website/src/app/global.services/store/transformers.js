@@ -19,7 +19,7 @@ function transformExperiment(experiment) {
 
     e.cy = null;
 
-    _transformTasks(e.tasks);
+    // _transformTasks(e.tasks);
 
     return e;
 }
