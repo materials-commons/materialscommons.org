@@ -1,8 +1,9 @@
 class MCWorkflowGraphComponentController {
     /*@ngInject*/
-    constructor(processGraph, cyGraph) {
+    constructor(processGraph, cyGraph, mcWorkflowGraphEvents) {
         this.processGraph = processGraph;
         this.cyGraph = cyGraph;
+        this.mcWorkflowGraphEvents = mcWorkflowGraphEvents;
         this.state = {
             processes: [],
             samples: [],
@@ -17,11 +18,98 @@ class MCWorkflowGraphComponentController {
             this.drawWorkflow();
         }
 
-        if (changes.samplesAdded) {
-            if (this.state.currentProcess) {
-                this.addEdge(changes.samplesAdded.currentValue, this.state.currentProcess);
-            }
+        if (changes.processAdded) {
+            this.addProcessToWorkflow(changes.processAdded.currentValue);
         }
+    }
+
+
+    $onInit() {
+        this.mcWorkflowGraphEvents.subscribe('PROCESS$ADD', (process) => {
+            let node = this.processGraph.createProcessNode(process);
+            this.state.cy.add(node);
+            let edges = this.processGraph.createConnectingEdges(process, this.state.processes);
+            if (edges.length) {
+                this.state.cy.add(edges);
+            }
+            this.state.processes.push(angular.copy(process));
+            this.state.cy.layout({name: 'dagre', fit: true});
+            this.cyGraph.setupQTips(this.cy);
+            if (!this.tooltips) {
+                this.cyGraph.disableQTips(this.cy);
+            }
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('PROCESS$DELETE', (processId) => {
+            let nodeToRemove = this.state.cy.filter(`node[id = "${processId}"]`);
+            this.state.cy.remove(nodeToRemove);
+            let i = _.findIndex(this.state.processes, {id: processId});
+            if (i !== -1) {
+                this.state.processes.splice(i, 1);
+            }
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('PROCESS$CHANGE', process => {
+            this.state.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
+                let name = (' ' + process.name).slice(1);
+                ele.data('name', name);
+            });
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('EDGE$ADD', ({samples, process}) => this.addEdge(samples, process));
+        this.mcWorkflowGraphEvents.subscribe('WORKFLOW$HIDEOTHERS', processes => {
+            this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.state.cy, processes));
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('WORKFLOW$SEARCH', (search) => {
+            if (search === '') {
+                if (this.removedNodes !== null) {
+                    this.removedNodes.restore();
+                    this.state.cy.layout({name: 'dagre', fit: true});
+                }
+                return;
+            }
+            this.removedNodes = this.cyGraph.searchProcessesInGraph(this.cy, search, this.processes);
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('WORKFLOW$RESTOREHIDDEN', () => {
+            if (this.hiddenNodes.length) {
+                this.hiddenNodes.restore();
+                this.hiddenNodes = [];
+                this.state.cy.layout({name: 'dagre', fit: true});
+            }
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('WORKFLOW$RESET', () => {
+            this.drawWorkflow();
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('WORKFLOW$NAVIGATOR', () => {
+            if (this.navigator === null) {
+                this.navigator = this.state.cy.navigator();
+            } else {
+                this.navigator.destroy();
+                this.navigator = null;
+            }
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('WORKFLOW$FILTER$BYSAMPLES', (samples) => {
+            this.removedNodes = this.cyGraph.filterBySamples(this.state.cy, samples, this.state.processes);
+        });
+
+        this.mcWorkflowGraphEvents.subscribe('WORKFLOW$TOOLTIPS', (tooltipsEnabled) => {
+            this.tooltips = tooltipsEnabled;
+            if (tooltipsEnabled) {
+                this.cyGraph.enableQTips(this.cy);
+            } else {
+                this.cyGraph.disableQTips(this.cy);
+            }
+        });
+
+    }
+
+    $onDestroy() {
+        this.mcWorkflowGraphEvents.leave();
     }
 
     drawWorkflow() {
