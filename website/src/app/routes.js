@@ -104,12 +104,18 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/project/:project_id',
             template: '<mc-project-view-container class="height-100" flex="100" layout="column"></mc-project-view-container>',
             resolve: {
-                _project: ['projectsAPI', '$stateParams', 'mcStateStore', function(projectsAPI, $stateParams, mcStateStore) {
-                    return projectsAPI.getProjectOverview($stateParams.project_id).then(p => {
-                        mcStateStore.updateState('project', p);
-                        return p;
-                    });
-                }]
+                _projstore: ['mcprojstore', (mcprojstore) => mcprojstore.ready()],
+                
+                _ignore: ['mcprojstore', '$stateParams', '_projstore',
+                    (mcprojstore, $stateParams) => mcprojstore.getProject($stateParams.project_id)],
+
+                _project: ['projectsAPI', '$stateParams', 'mcStateStore',
+                    function(projectsAPI, $stateParams, mcStateStore) {
+                        return projectsAPI.getProjectOverview($stateParams.project_id).then(p => {
+                            mcStateStore.updateState('project', p);
+                            return p;
+                        });
+                    }]
             }
         })
         .state('project.home', {
