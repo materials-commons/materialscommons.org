@@ -34,6 +34,10 @@ class MCExperimentWorkflowViewContainer2ComponentController {
         this.templates.getServerTemplates().then(t => this.state.templates = t);
     }
 
+    $onDestroy() {
+        this.mcprojstore.removeCurrentExperiment();
+    }
+
     // An experiment has a list of samples a list of processes and a relationships.process2sample array
     // that maps samples/property_set_id/direction to a process. The workflow graph examples that each
     // process will have an input_samples and output_samples list. Here we create those lists.
