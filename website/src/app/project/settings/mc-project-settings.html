@@ -2,7 +2,7 @@
     <form layout="column">
         <md-input-container class="md-block">
             <label>Project Name</label>
-            <input ng-model="$ctrl.projectName">
+            <input ng-model="$ctrl.projectName" on-enter="$ctrl.update()">
         </md-input-container>
         <div layout="row">
             <md-button class="md-primary md-raised" ng-click="$ctrl.update()">Change Name</md-button>
