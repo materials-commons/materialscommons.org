@@ -2,24 +2,20 @@ import { Experiment } from '../../models/experiment.model';
 
 class MCProjectHomeComponentController {
     /*@ngInject*/
-    constructor(User, $scope, experimentsAPI, toast, $state,
-                $stateParams, editorOpts, $mdDialog,
-                mcprojstore, mcprojectstore2, projectsAPI, etlServerAPI) {
-        this.experimentsAPI = experimentsAPI;
+    constructor(User, $scope, toast, $state,
+                editorOpts, $mdDialog,
+                mcprojstore, projectsAPI, mcStateStore) {
         this.toast = toast;
-        this.$stateParams = $stateParams;
         this.$state = $state;
         this.$mdDialog = $mdDialog;
         this.experimentType = 'active';
-        this.experiments = [];
         this.mergingExperiments = false;
         this.deletingExperiments = false;
         this.selectingExperiments = false;
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
-        this.mcprojectstore2 = mcprojectstore2;
         this.projectsAPI = projectsAPI;
-        this.etlServerAPI = etlServerAPI;
+        this.mcStateStore = mcStateStore;
         this.etlStatusAvailable = false;
         this.etlInProgress = false;
         this.etlStatusRecordId = null;
@@ -33,14 +29,9 @@ class MCProjectHomeComponentController {
         $scope.editorOptions = editorOpts({height: 65, width: 50});
     }
 
-    $onChanges(changes) {
-        if (changes.project) {
-            this.project = angular.copy(changes.project.currentValue);
-        }
-    }
-
     $onInit() {
-
+        console.log('mcprojecthome $onInit');
+        this._reloadComponentState();
     }
 
     $onDestroy() {
@@ -66,7 +57,7 @@ class MCProjectHomeComponentController {
     }
 
     finishExperimentsMerge() {
-        let selected = this.experiments.filter(e => e.selected);
+        let selected = this.project.experiments.filter(e => e.selected);
         if (selected.length < 2) {
             return;
         }
@@ -89,8 +80,9 @@ class MCProjectHomeComponentController {
 
     cancelMerge() {
         this.mergingExperiments = false;
-        this.experiments.forEach(e => e.selected = false);
+        this.project.experiments.forEach(e => e.selected = false);
         this.selectingExperiments = false;
+        this._reloadComponentState();
     }
 
     startExperimentsDelete() {
@@ -99,7 +91,7 @@ class MCProjectHomeComponentController {
     }
 
     finishExperimentsDelete() {
-        let selected = this.experiments.filter(e => e.selected);
+        let selected = this.project.experiments.filter(e => e.selected);
         if (!selected.length) {
             return;
         }
@@ -125,8 +117,9 @@ class MCProjectHomeComponentController {
 
     clearDelete() {
         this.deletingExperiments = false;
-        this.experiments.forEach(e => e.selected = false);
+        this.project.experiments.forEach(e => e.selected = false);
         this.selectingExperiments = false;
+        this._reloadComponentState();
     }
 
     gotoWorkflow(e) {
@@ -204,11 +197,19 @@ class MCProjectHomeComponentController {
                 this._reloadComponentState();
             });
     }
+
+    _reloadComponentState() {
+        this.project = this.mcStateStore.getState('project');
+        let experimentsList = _.values(this.project.experiments);
+        this.activeExperimentsCount = experimentsList.filter(e => e.status === 'active').length;
+        this.onholdExperimentsCount = experimentsList.filter(e => e.status === 'on-hold').length;
+        this.doneExperimentsCount = experimentsList.filter(e => e.status === 'done').length;
+    }
 }
 
 class CreateNewExperimentDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsAPI, $stateParams, toast, mcprojstore) {
+    constructor($mdDialog, experimentsAPI, $stateParams, toast, mcprojstore, mcStateStore) {
         this.$mdDialog = $mdDialog;
         this.name = '';
         this.description = '';
@@ -216,6 +217,7 @@ class CreateNewExperimentDialogController {
         this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.mcprojstore = mcprojstore;
+        this.mcStateStore = mcStateStore;
     }
 
     submit() {
@@ -228,13 +230,17 @@ class CreateNewExperimentDialogController {
         this.experimentsAPI.createForProject(this.projectID, e)
             .then(
                 (createdExperiment) => {
-                    this.mcprojstore.addExperiment(createdExperiment).then(
-                        () => {
-                            this.mcprojstore.currentExperiment = createdExperiment;
-                            this.$mdDialog.hide(createdExperiment);
-                        }
-                    );
+                    this.mcStateStore.fire('sync:project');
+                    this.$mdDialog.hide(createdExperiment);
                 },
+                // (createdExperiment) => {
+                //     this.mcprojstore.addExperiment(createdExperiment).then(
+                //         () => {
+                //             this.mcprojstore.currentExperiment = createdExperiment;
+                //             this.$mdDialog.hide(createdExperiment);
+                //         }
+                //     );
+                // },
                 () => this.toast.error('create experiment failed')
             );
     }
@@ -246,10 +252,11 @@ class CreateNewExperimentDialogController {
 
 class MergeExperimentsDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsAPI, mcprojstore) {
+    constructor($mdDialog, experimentsAPI, mcprojstore, mcStateStore) {
         this.$mdDialog = $mdDialog;
         this.experimentsAPI = experimentsAPI;
         this.mcprojstore = mcprojstore;
+        this.mcStateStore = mcStateStore;
         this.experimentName = '';
         this.experimentDescription = '';
     }
@@ -261,6 +268,7 @@ class MergeExperimentsDialogController {
             description: this.experimentDescription
         }).then(
             (e) => {
+                this.mcStateStore.fire('sync:project');
                 this.mcprojstore.addExperiment(e).then(
                     () => this.$mdDialog.hide(e)
                 );
@@ -276,7 +284,7 @@ class MergeExperimentsDialogController {
 
 class DeleteExperimentsDialogController {
     /*@ngInject*/
-    constructor($mdDialog, experimentsAPI, mcprojstore, toast, User) {
+    constructor($mdDialog, experimentsAPI, mcprojstore, toast, User, mcStateStore) {
         this.$mdDialog = $mdDialog;
         this.experimentsAPI = experimentsAPI;
         this.experimentName = '';
@@ -284,6 +292,7 @@ class DeleteExperimentsDialogController {
         this.mcprojstore = mcprojstore;
         this.toast = toast;
         this.user = User.u();
+        this.mcStateStore = mcStateStore;
     }
 
     done() {
@@ -291,6 +300,7 @@ class DeleteExperimentsDialogController {
             let experimentIds = this.experiments.map(e => e.id);
             this.experimentsAPI.deleteExperiments(this.project.id, experimentIds).then(
                 () => {
+                    this.mcStateStore.fire('sync:project');
                     this.mcprojstore.removeExperiments(...this.experiments).then(
                         () => this.$mdDialog.hide()
                     );
@@ -504,7 +514,4 @@ class EtlMessageDialogController {
 angular.module('materialscommons').component('mcProjectHome', {
     template: require('./mc-project-home.html'),
     controller: MCProjectHomeComponentController,
-    bindings: {
-        project: '<',
-    }
 });

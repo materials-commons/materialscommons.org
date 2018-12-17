@@ -120,7 +120,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.home', {
             url: '/home',
-            template: '<md-content layout="column" className="height-100"><mc-project-home project="$resolve._project" class="height-100"></mc-project-home></md-content>'
+            template: '<md-content layout="column" className="height-100"><mc-project-home class="height-100"></mc-project-home></md-content>'
         })
         .state('project.details', {
             url: '/details',
