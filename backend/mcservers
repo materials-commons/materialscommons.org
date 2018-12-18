@@ -18,8 +18,6 @@ function build_mcstored() {
 function move_log() {
     if [[ ${MC_LOG_DIR} != "" ]]; then
         mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
-        echo ${MC_LOG_DIR}
-        (cd ${MC_LOG_DIR}; echo cp ${1}.* archive/${1}.${LOGSTAMP}.out.${SERVERTYPE})
         (cd ${MC_LOG_DIR}; cp ${1}.* archive/${1}.${LOGSTAMP}.out.${SERVERTYPE})
     fi
 }
