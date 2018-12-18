@@ -40,6 +40,7 @@
                     Cancel Delete
                 </md-button>
                 <md-button class="md-raised md-primary" ng-click="$ctrl.etlStart()"
+                           ng-disabled="$ctrl.mergingExperiments || $ctrl.deletingExperiments"
                            ng-if="$ctrl.isBetaUser">
                     New Experiment using ETL
                 </md-button>
