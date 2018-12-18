@@ -25,7 +25,9 @@ class MCProjectsListViewContainerComponentController {
                 this.state.projects = angular.copy(projects);
                 this.mcprojstore.ready().then(() => this.mcprojstore.addProjects(...this.state.projects));
             },
-            () => this.toast.error('Unable to retrieve your projects')
+            () => {
+                this.toast.error('Unable to retrieve your projects');
+            }
         );
     }
 
