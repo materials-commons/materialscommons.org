@@ -30,12 +30,12 @@ class MCProjectHomeComponentController {
     }
 
     $onInit() {
-        console.log('mcprojecthome $onInit');
         this._reloadComponentState();
+        this.unsubscribeProject = this.mcStateStore.subscribe('project', () => this._reloadComponentState());
     }
 
     $onDestroy() {
-        // this.unsubscribe();
+        this.unsubscribeProject();
     }
 
     startNewExperiment() {
@@ -149,7 +149,7 @@ class MCProjectHomeComponentController {
                     }
                 }).then(
                     () => {
-                        this.toast.success('ETL Done; click \'Sync\'');
+                        this.mcStateStore.fire('sync:project');
                     },
                     () => {}
                 );
