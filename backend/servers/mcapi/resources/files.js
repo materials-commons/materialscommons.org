@@ -10,7 +10,7 @@ function* downloadFile(next) {
     let mediatype = '';
     let found = false;
 
-    const filePaths = fileUtils.datafilePathsFromFile(file, this.params.original);
+    const filePaths = fileUtils.datafilePathsFromFile(file, this.query.original);
     for (let i = 0; i < filePaths.length; i++) {
         let filePath = filePaths[i];
         if (yield fsExtra.pathExists(filePath)) {
