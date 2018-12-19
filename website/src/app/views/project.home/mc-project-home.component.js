@@ -232,14 +232,6 @@ class CreateNewExperimentDialogController {
                     this.mcStateStore.fire('sync:project');
                     this.$mdDialog.hide(createdExperiment);
                 },
-                // (createdExperiment) => {
-                //     this.mcprojstore.addExperiment(createdExperiment).then(
-                //         () => {
-                //             this.mcprojstore.currentExperiment = createdExperiment;
-                //             this.$mdDialog.hide(createdExperiment);
-                //         }
-                //     );
-                // },
                 () => this.toast.error('create experiment failed')
             );
     }
