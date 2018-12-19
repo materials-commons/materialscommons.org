@@ -135,7 +135,6 @@ class MCProjectHomeComponentController {
                 this.excelFileList = results.file_list;
             },
             () => {
-                this.toast.error('Project contains no ETL files');
                 this.excelFileList = [];
             }
         ).then(() => {
