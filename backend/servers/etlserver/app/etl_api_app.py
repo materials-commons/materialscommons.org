@@ -12,6 +12,7 @@ from servers.etlserver.user.api_key import apikey
 from servers.etlserver.utils.ConfClientHelper import ConfClientHelper
 from servers.etlserver.common.GlobusInfo import GlobusInfo
 from servers.etlserver.app.AppHelper import AppHelper
+from servers.etlserver.utils.UploadUtility import UploadUtility
 
 log = logging.getLogger(__name__)
 
@@ -105,6 +106,43 @@ def project_based_etl():
         message = "{}".format(e)
         log.exception(e, message)
         return message, status.HTTP_400_BAD_REQUEST
+
+
+@app.route('/upload', methods=['POST'])
+@apikey
+def etl_only_upload_file():
+    log.info("etl-only; no data file upload - starting")
+    api_key = request.args.get('apikey', default="no_such_key")
+    name = request.form.get('name')
+    project_id = request.form.get("project_id")
+    description = request.form.get("description")
+    log.info(api_key)
+    log.info(name)
+    log.info(project_id)
+    log.info(description)
+    if not name:
+        message = "etl file upload - experiment name missing, required"
+        log.info(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    if not project_id:
+        message = "etl file upload - project_id missing, required"
+        log.info(message)
+        return message, status.HTTP_400_BAD_REQUEST
+    # noinspection PyBroadException
+    try:
+        log.info("etl file upload - getting file")
+        uploader = UploadUtility()
+        (message_or_ret, http_status) = uploader.get_file()
+        if http_status:
+            return message_or_ret, http_status
+        file_path = message_or_ret
+        log.info("etl file upload - file saved to " + file_path)
+        AppHelper(api_key).run_excel_file_only_etl(project_id, file_path, name, description)
+        return format_as_json_return({"project_id": project_id})
+    except Exception as e:
+        log.info("Unexpected exception...", exc_info=True)
+        message = str(e)
+        return message, status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
 @app.route('/globus/transfer/download', methods=['POST'])

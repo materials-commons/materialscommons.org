@@ -53,8 +53,9 @@ class BuildProjectExperiment:
         self._set_etl_source_date_from_path(self.project, spread_sheet_path)
 
         self.metadata.set_input_information(spread_sheet_path, data_dir_path)
-        self.data_directory = self._get_project_directory_from_path(data_dir_path)
-        self.log.debug("  data directory name = {}".format(self.data_directory.name))
+        if data_dir_path:
+            self.data_directory = self._get_project_directory_from_path(data_dir_path)
+            self.log.debug("  data directory name = {}".format(self.data_directory.name))
 
         self.suppress_data_upload = not self.data_directory
 

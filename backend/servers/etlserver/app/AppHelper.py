@@ -56,18 +56,36 @@ class AppHelper:
         self.log.info("done")
         return {"status": "ok"}
 
+    def run_excel_file_only_etl(self, project_id, external_file_path, name, desc):
+        self.log.info("name = {}, description = {}".format(name, desc))
+        internal_file = self.move_file_to_project(project_id, external_file_path)
+        excel_file_path = "/" + internal_file.name
+        self.log.info("excel_file_path = {}".format(excel_file_path))
+        builder = BuildProjectExperiment(self.apikey)
+        builder.build(excel_file_path, None, project_id, name, desc)
+        self.log.info("done")
+        return {"status": "ok"}
+
     def get_project_globus_upload_status(self, user_id, project_id):
         self.log.info("request for globus upload status: user = {}, project = {}"
                       .format(user_id, project_id))
         return_value = DatabaseInterface().get_status_records(user_id, project_id)
         for record in return_value:
-            record["birthtime"] = self.convertDatetime(record["birthtime"])
-            record["mtime"] = self.convertDatetime(record["mtime"])
+            record["birthtime"] = self.convert_datetime(record["birthtime"])
+            record["mtime"] = self.convert_datetime(record["mtime"])
         self.log.info("return_value = {}".format(return_value))
         return return_value
 
-    def convertDatetime(self, in_dt):
+    def convert_datetime(self, in_dt):
         return in_dt.timestamp()
+
+    def move_file_to_project(self, project_id, external_path):
+        project = get_project_by_id(project_id, apikey=self.apikey)
+        top_dir = project.get_top_directory()
+        file_name = os_path.basename(external_path)
+        self.log.info("external_path = {}, file_name = {}".format(external_path, file_name))
+        file = top_dir.add_file(file_name, external_path)
+        return file
 
 
 # used in "main" for interactive testing
