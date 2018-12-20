@@ -25,7 +25,7 @@ function* downloadFile(next) {
             }
 
             if (mediatype === 'application/pdf' && !this.query.original) {
-                this.set('Content-Disposition', `inline; filename="filename.pdf"`)
+                this.set('Content-Disposition', `inline; filename="${file.name}.pdf"`);
             }
 
             this.set('Content-Type', mediatype);
