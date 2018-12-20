@@ -3,10 +3,10 @@ const run = require('./run');
 
 async function getProject(projectId) {
     let rql = r.table('projects').get(projectId)
-        .merge(function (project) {
+        .merge(function(project) {
             return {
                 owner_details: r.table('users').get(project('owner')).pluck('fullname')
-            }
+            };
         });
     rql = transformDates(rql);
     rql = addComputed(rql);
@@ -14,15 +14,48 @@ async function getProject(projectId) {
 }
 
 async function getAll() {
-    let rql= r.table('projects');
+    let rql = r.table('projects');
     rql = transformDates(rql);
+    return await run(rql);
+}
+
+async function getProjectExperiment(projectId, experimentId) {
+    let rql = r.table('project2experiment').getAll([projectId, experimentId], {index: 'project_experiment'})
+        .eqJoin('experiment_id', r.table('experiments')).zip()
+        .merge(e => {
+            return {
+                mtime: e('mtime').toEpochTime(),
+                birthtime: e('birthtime').toEpochTime()
+            };
+        })
+        .merge(() => {
+            return {
+                processes: transformDates(r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'})
+                    .eqJoin('process_id', r.table('processes')).zip())
+                    .merge(process => {
+                        return {
+                            files_count: r.table('process2file').getAll(process('id'), {index: 'process_id'}).count(),
+                            files: [],
+                            filesLoaded: false
+                        };
+                    })
+                    .coerceTo('array'),
+                samples: transformDates(r.table('experiment2sample').getAll(experimentId, {index: 'experiment_id'})
+                    .eqJoin('sample_id', r.table('samples')).zip()).coerceTo('array'),
+                relationships: {
+                    process2sample: r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'})
+                        .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'}).zip()
+                        .pluck('sample_id', 'property_set_id', 'process_id', 'direction').coerceTo('array')
+                }
+            };
+        });
     return await run(rql);
 }
 
 // transformDates removes the rethinkdb specific date
 // fields
 function transformDates(rql) {
-    rql = rql.merge(function (project) {
+    rql = rql.merge(function(project) {
         return {
             mtime: project('mtime').toEpochTime(),
             birthtime: project('birthtime').toEpochTime()
@@ -34,7 +67,7 @@ function transformDates(rql) {
 // addComputed adds additional attributes to the rql that
 // that are computed from other tables.
 function addComputed(rql) {
-    rql = rql.merge(function (project) {
+    rql = rql.merge(function(project) {
         return {
             users: transformDates(r.table('access').getAll(project('id'), {index: 'project_id'})
                 .eqJoin('user_id', r.table('users')).without({
@@ -80,9 +113,8 @@ function addComputed(rql) {
     return rql;
 }
 
-
-
 module.exports = {
     getProject,
     getAll,
+    getProjectExperiment,
 };

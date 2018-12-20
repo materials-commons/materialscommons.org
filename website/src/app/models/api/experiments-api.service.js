@@ -1,11 +1,23 @@
 class ExperimentsAPIService {
     /*@ngInject*/
-    constructor(projectsAPIRoute) {
+    constructor(Restangular, projectsAPIRoute) {
+        this.Restangular = Restangular;
         this.projectsAPIRoute = projectsAPIRoute;
     }
 
     getAllForProject(projectID) {
         return this.projectsAPIRoute(projectID).one('experiments').getList().then(experiments => experiments.plain());
+    }
+
+    getExperimentForProject(projectId, experimentId) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).customGET().then(e => e.plain());
+    }
+
+    getExperimentForProject2(projectId, experimentId) {
+        return this.Restangular.one('v3').one('getProjectExperiment').customPOST({
+            project_id: projectId,
+            experiment_id: experimentId
+        }).then(e => e.plain().data);
     }
 
     createForProject(projectID, experiment) {
@@ -38,35 +50,6 @@ class ExperimentsAPIService {
         return this.projectsAPIRoute(projectID).one('experiments', experimentID).customGET().then(e => e.plain());
     }
 
-    createTask(projectID, experimentID, experimentTask) {
-        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('tasks')
-            .customPOST(experimentTask).then(t => t.plain());
-    }
-
-    updateTask(projectID, experimentID, taskID, task) {
-        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('tasks', taskID)
-            .customPUT(task).then(t => t.plain());
-    }
-
-    addTemplateToTask(projectID, experimentID, taskID, templateID) {
-        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('tasks', taskID)
-            .one('template', templateID).customPOST({}).then(t => t.plain());
-    }
-
-    updateTaskTemplateProperties(projectID, experimentID, taskID, updateArgs) {
-        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('tasks', taskID)
-            .one('template').customPUT(updateArgs).then(t => t.plain());
-    }
-
-    updateTaskTemplateFiles(projectId, experimentId, taskId, updateFilesArgs) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('tasks', taskId)
-            .one('template').customPUT(updateFilesArgs).then(t => t.plain());
-    }
-
-    updateTaskTemplateSamples(projectId, experimentId, taskId, updateSamplesArgs) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('tasks', taskId)
-            .one('template').customPUT(updateSamplesArgs).then(v => v.plain());
-    }
 
     updateProcess(projectId, experimentId, processId, updateArgs) {
         return this.projectsAPIRoute(projectId)
@@ -75,9 +58,6 @@ class ExperimentsAPIService {
             .then((process) => this.convertDatePropertyAttributes(process.plain()));
     }
 
-    deleteTask(projectID, experimentID, taskID) {
-        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('tasks', taskID).customDELETE();
-    }
 
     getSamplesForExperiment(projectId, experimentId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('samples')
@@ -86,7 +66,7 @@ class ExperimentsAPIService {
 
     getProcessesForExperiment(projectId, experimentId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId)
-            .customGET("processes").then(processes => processes.plain());
+            .customGET('processes').then(processes => processes.plain());
     }
 
     getProcessForExperiment(projectId, experimentId, processId) {
@@ -109,16 +89,6 @@ class ExperimentsAPIService {
     cloneProcess(projectId, experimentId, processId, cloneArgs) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('processes', processId).one('clone')
             .customPOST(cloneArgs).then(p => p.plain());
-    }
-
-    createNote(projectID, experimentID, note) {
-        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('notes')
-            .customPOST(note).then(n => n.plain());
-    }
-
-    updateNote(projectID, experimentID, noteID, noteArgs) {
-        return this.projectsAPIRoute(projectID).one('experiments', experimentID).one('notes', noteID)
-            .customPUT(noteArgs).then(n => n.plain());
     }
 
     convertDatePropertyAttributes(process) {
@@ -146,7 +116,7 @@ class ExperimentsAPIService {
         angular.forEach(process.setup, (s) => s.properties.filter(p => p.otype === 'date')
             .forEach(p => {
                 if (p.value) {
-                    p.value = this.convertDateValueFromTransport(p.value)
+                    p.value = this.convertDateValueFromTransport(p.value);
                 }
             }));
     }

@@ -24,7 +24,8 @@ class LoggingHelper:
             probe = self.get_logging_level(env_logging_level)
             if probe:
                 self.logging_level = probe
-        self.root.setLevel(self.logging_level)
+        # self.root.setLevel(self.logging_level)
+        self.root.setLevel(logging.INFO)
 
         log_handler = logging.StreamHandler(sys.stdout)
         formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(name)s:%(lineno)d - %(message)s')

@@ -31,7 +31,8 @@ import './natural-sort.service';
 import './store/mcprojstore.service';
 import './store/dsstore.service';
 import './store/projectstore.service';
-import './project-shortcuts.service';
+import './store/state-store.service';
 import './mc-route-state.service';
-
-
+import './process-edit.service';
+import './sample-linker.service';
+import './globus-endpoint-saver.service';

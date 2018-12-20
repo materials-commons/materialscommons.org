@@ -6,13 +6,15 @@ class McdirHelper:
 
     def get_upload_dir(self):
         return self._get_base_dir('__upload_staging')
-        pass
 
     def get_download_dir(self):
         return self._get_base_dir('__download_staging')
 
     def base_dir(self):
         return self._get_base_dir(None)
+
+    def get_excel_file_link_dir(self):
+        return self._get_base_dir('__excel_file_staging')
 
     @staticmethod
     def _get_base_dir(child):

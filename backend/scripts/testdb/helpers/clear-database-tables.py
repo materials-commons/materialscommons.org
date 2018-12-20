@@ -27,6 +27,7 @@ def clear_mcpub_tables():
 def clear_table(db, table):
     # table names are returned in unicode - but need string for call
     table = table.encode('utf-8')
+    print("Clearing table {}.{}".format(db, table))
     run(r.db(db).table(table).delete())
 
 

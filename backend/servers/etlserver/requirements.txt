@@ -1,7 +1,6 @@
 configparser
 httplib2
 flask-api
-faktory
 rethinkdb
 argparse
 six

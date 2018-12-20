@@ -433,8 +433,8 @@ function validateDoiMintingArgs(processArgs) {
     return null;
 }
 
-function* getDoiServerLink(next) {
-    let rv = yield experimentDatasetsDoi.doiGetServerLink(this.params.dataset_id);
+function* getDoiUserInterfaceLink(next) {
+    let rv = yield experimentDatasetsDoi.doiGetUserInterfaceLink(this.params.dataset_id);
     if (rv.error) {
         this.status = status.UNAUTHORIZED;
         this.body = rv;
@@ -519,7 +519,7 @@ function createResource() {
     router.post('/:dataset_id/doi', createAndAddNewDoi);
     router.get('/:dataset_id/doi', validateHasDoi, getDoiMetadata);
     // router.put('/:dataset_id/doi', updateDoiMetadata);
-    router.get('/:dataset_id/doi/link', validateHasDoi, getDoiServerLink);
+    router.get('/:dataset_id/doi/link', validateHasDoi, getDoiUserInterfaceLink);
 
     router.get('/:dataset_id/doiserverstatus', doiServerStatus);
 

@@ -1,15 +1,15 @@
 class MCProjectDetailsComponentControler {
     /*@ngInject*/
-    constructor(projectsAPI, mcprojstore, toast, $state) {
+    constructor(projectsAPI, toast, mcStateStore, $state) {
         this.projectsAPI = projectsAPI;
-        this.mcprojstore = mcprojstore;
         this.toast = toast;
+        this.mcStateStore = mcStateStore;
         this.$state = $state;
         this.projectDescription = "";
     }
 
     $onInit() {
-        this.project = this.mcprojstore.currentProject;
+        this.project = this.mcStateStore.getState('project');
         this.projectDescription = this.project.description;
     }
 
@@ -19,12 +19,8 @@ class MCProjectDetailsComponentControler {
         };
         this.projectsAPI.updateProject(this.project.id, update).then(
             () => {
-                this.mcprojstore.updateCurrentProject(currentProj => {
-                    currentProj.description = this.projectDescription;
-                    return currentProj;
-                }).then(
-                    () => this.$state.go('project.home')
-                );
+                this.mcStateStore.fire('sync:project');
+                this.$state.go('project.home');
             },
             () => this.toast.error('Unable to update project')
         );
@@ -37,5 +33,8 @@ class MCProjectDetailsComponentControler {
 
 angular.module('materialscommons').component('mcProjectDetails', {
     template: require('./mc-project-details.html'),
-    controller: MCProjectDetailsComponentControler
+    controller: MCProjectDetailsComponentControler,
+    bindings: {
+        project: '<',
+    }
 });

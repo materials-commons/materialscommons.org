@@ -30,9 +30,7 @@ class WorkflowService {
             .then(
                 (process) => {
                     let p = this.templates.loadTemplateFromProcess(process.template_name, process);
-                    this.mcprojstore.addProcess(p).then(
-                        () => this.mcbus.send('PROCESS$ADD', p)
-                    )
+                    this.mcprojstore.addProcess(p).then(() => this.mcbus.send('PROCESS$ADD', p));
                 }
             );
     }
@@ -93,6 +91,7 @@ class WorkflowService {
                         samples: samplesToAdd,
                         process_id: process.id
                     };
+                    this.mcprojstore.addProcess(p);
 
                     this.experimentsAPI.updateProcess(projectId, experimentId, process.id, samplesArgs).then(
                         (pUpdated) => {
@@ -108,13 +107,13 @@ class WorkflowService {
                                 }
                             }).then(
                                 () => this.sendProcessChangeEvent(projectId, experimentId)
-                            )
+                            );
                         }
-                    )
+                    );
 
                 },
                 () => this.toast.error('Unable to create child process')
-            )
+            );
     }
 
     cloneProcess(projectId, experimentId, process) {
@@ -134,9 +133,13 @@ class WorkflowService {
         }).then(
             (cloneArgs) => {
                 return this.experimentsAPI.cloneProcess(projectId, experimentId, p.id, cloneArgs).then(
-                    (p) => this.mcbus.send('PROCESS$ADD', p),
+                    (process) => {
+                        let p = this.templates.loadTemplateFromProcess(process.template_name, process);
+                        p.name = cloneArgs.name;
+                        this.mcprojstore.addProcess(p).then(() => this.mcbus.send('PROCESS$ADD', p));
+                    },
                     () => this.toast.error('Error cloning process')
-                )
+                );
             }
         );
     }
@@ -167,8 +170,8 @@ class WorkflowService {
     confirmAndDeleteProcess(projectId, experimentId, process) {
         let processName = process.name;
         let numberOfSamples = process.output_samples.length;
-        let samples = " output sample" + ((numberOfSamples !== 1) ? "s" : "");
-        let processInfo = processName + " - has " + numberOfSamples + samples + ".";
+        let samples = ' output sample' + ((numberOfSamples !== 1) ? 's' : '');
+        let processInfo = processName + ' - has ' + numberOfSamples + samples + '.';
         let confirm = this.$mdDialog.confirm()
             .title('This process has output samples: Delete node and Samples?')
             .textContent(processInfo)

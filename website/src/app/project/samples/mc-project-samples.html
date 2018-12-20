@@ -17,17 +17,6 @@
                 <i class="fa fa-fw fa-th" style="margin-bottom: 15px"></i>
             </a>
         </div>
-        <div layout="row" layout-align="space-between center"
-             style="color: black;background-color:#f4f5f7; padding-left:8px;padding-right:8px">
-            <h3 class="md-title" style="color:black">SAMPLES</h3>
-            <!--<md-button ng-if="$ctrl.experimentId" class="md-primary md-raised" ng-click="$ctrl.newSamples()">-->
-            <!--<i class="fa fa-fw fa-plus"></i> New Samples-->
-            <!--</md-button>-->
-        </div>
     </md-toolbar>
-    <div layout="row" layout-align="center stretch">
-        <md-content flex layout="column">
-            <mc-project-samples-table samples="$ctrl.samples" filter-by="$ctrl.query"></mc-project-samples-table>
-        </md-content>
-    </div>
+    <mc-project-samples-table samples="$ctrl.samples" filter-by="$ctrl.query" flex layout="column"></mc-project-samples-table>
 </div>

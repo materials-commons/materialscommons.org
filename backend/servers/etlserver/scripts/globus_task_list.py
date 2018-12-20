@@ -1,18 +1,20 @@
 #!/usr/bin/env python
 
-import os
-from ..utils.LoggingHelper import LoggingHelper
-from ..common.GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
-from globus_sdk import TransferAPIError
-import logging
-import time
 import datetime
-import rethinkdb as r
-import urllib
-import pathlib
+import logging
+import os
 import shutil
+import time
+import urllib
 
-BASEDIR = "/home/gtarcea/mcdir/mcfs/users"
+import rethinkdb as r
+from globus_sdk import TransferAPIError
+
+from ..download.GlobusAccess import GlobusAccess, CONFIDENTIAL_CLIENT_APP_AUTH
+from ..utils.LoggingHelper import LoggingHelper
+
+# BASEDIR = "/home/gtarcea/mcdir/mcfs/users"
+BASEDIR = "/home/gtarcea/mcdir/mcfs/data/test/__upload_staging"
 
 
 def load_file(conn, filepath, project):
@@ -157,7 +159,7 @@ if __name__ == '__main__':
 
     loop = True
     while loop:
-        yesterday = datetime.date.today() - datetime.timedelta(1)
+        yesterday = datetime.date.today() - datetime.timedelta(10)
         tasks = cc_transfer_client.endpoint_manager_task_list(num_results=None,
                                                               filter_endpoint=target_endpoint,
                                                               filter_completion_time=yesterday.isoformat(),
@@ -186,11 +188,13 @@ if __name__ == '__main__':
                     pieces = p.split('/')
                     id = pieces[2]
                     print(" id = {}".format(id))
-                    items = list(r.table("globus_uploads").get_all(id).eq_join("project_id", r.table("projects")).zip().run(conn))
+                    items = list(
+                        r.table("globus_uploads").get_all(id).eq_join("project_id", r.table("projects")).zip().run(
+                            conn))
                     project = items[0]
                 load_file(conn, p, project)
             if last_dest_path:
                 delete_processed_task_files(p)
             # load_files(conn, task['owner_string'])
             count = count + 1
-        time.sleep(10)
+        time.sleep(3)

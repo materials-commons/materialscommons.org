@@ -121,5 +121,5 @@ def reset_apikey(user):
 @app.route('/users', methods=['GET'])
 @jsonp
 def list_users():
-    selection = list(r.table('users').pluck('email', 'id', 'fullname').run(g.conn))
+    selection = list(r.table('users').pluck('id', 'fullname').run(g.conn))
     return json.dumps(selection)

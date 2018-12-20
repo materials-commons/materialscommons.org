@@ -9,7 +9,7 @@ from globus_sdk import TransferAPIError
 class VerifySetup:
     def __init__(self, mc_globus_service, project_id,
                  globus_source_endpoint, globus_source_path,
-                 globus_destination_path, base_path, dir_file_list=[]):
+                 globus_destination_path, base_path, dir_file_list=None):
         self.log = logging.getLogger(__name__ + "." + self.__class__.__name__)
         self.mc_globus_service = mc_globus_service
         self.project_id = project_id
@@ -17,7 +17,7 @@ class VerifySetup:
         self.globus_source_path = globus_source_path
         self.globus_destination_path = globus_destination_path
         self.base_path = base_path
-        self.dir_file_list = dir_file_list
+        self.dir_file_list = dir_file_list or []
         self.log.info("VerifySetup init: ")
         self.log.info("  project_id = {}".format(project_id))
         self.log.info("  globus_source_endpoint = {}".format(globus_source_endpoint))
@@ -38,7 +38,6 @@ class VerifySetup:
             self.check_env_variables()
             if not self.error_status:
                 self.check_project_exists()
-                self.check_target_directory()
                 self.check_globus_clients()
                 self.check_users_source_paths()
                 self.check_acl_rule()
@@ -84,15 +83,6 @@ class VerifySetup:
         else:
             self.log.info("found project '{}'".format(proj['name']))
         self.log.info("Completed check_project_exists")
-
-    def check_target_directory(self):
-        if os.path.isdir(self.base_path):
-            message = "transfer server directory: already exists - " + self.base_path
-            self.log.info(message)
-            self.error_status["target_directory"] = message
-        else:
-            self.log.info("transfer server directory ok: {}".format(self.base_path))
-        self.log.info("Completed check_target_directory")
 
     def check_globus_clients(self):
         try:

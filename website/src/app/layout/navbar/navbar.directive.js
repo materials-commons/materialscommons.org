@@ -97,22 +97,24 @@ class NavbarComponentController {
         this.isAuthenticated = this.User.isAuthenticated();
         this.$state.go('data.home.top');
         this.mcprojstore.reset();
+        this.mcprojstore.remove();
     }
 
     loginOrRegister() {
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/login-dialog.html',
-            controller: MCLoginDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true
-        }).then(
-            () => {
-                this.user = this.User.attr().fullname;
-                this.isAdmin = this.User.attr().admin;
-                this.isBetaUser = this.User.isBetaUser();
-                this.isAuthenticated = this.User.isAuthenticated();
-            }
-        )
+        this.$state.go('login');
+        // this.$mdDialog.show({
+        //     templateUrl: 'app/modals/login-dialog.html',
+        //     controller: MCLoginDialogController,
+        //     controllerAs: '$ctrl',
+        //     bindToController: true
+        // }).then(
+        //     () => {
+        //         this.user = this.User.attr().fullname;
+        //         this.isAdmin = this.User.attr().admin;
+        //         this.isBetaUser = this.User.isBetaUser();
+        //         this.isAuthenticated = this.User.isAuthenticated();
+        //     }
+        // )
     }
 
     projectSiteActive() {
@@ -159,49 +161,49 @@ class MCSwitchUserDialogController {
     }
 }
 
-class MCLoginDialogController {
-    /*@ngInject*/
-    constructor(User, $mdDialog, toast, mcapi, Restangular, templates, $state, mcprojstore) {
-        this.User = User;
-        this.$mdDialog = $mdDialog;
-        this.toast = toast;
-        this.mcapi = mcapi;
-        this.Restangular = Restangular;
-        this.templates = templates;
-        this.$state = $state;
-        this.email = '';
-        this.password = '';
-        this.mcprojstore = mcprojstore;
-    }
-
-    login() {
-        this.mcapi('/user/%/apikey', this.email, this.password)
-            .success((u) => {
-                this.User.setAuthenticated(true, u);
-                this.Restangular.setDefaultRequestParams({apikey: this.User.apikey()});
-                this.templates.getServerTemplates().then((t) => this.templates.set(t));
-                this.mcprojstore.reset().then(() => this.$mdDialog.hide());
-                // if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
-                //     this.$state.go('project.experiment.workflow', {
-                //         project_id: u.default_project,
-                //         experiment_id: u.default_experiment
-                //     });
-                // } else if (u.default_project && u.default_project !== '') {
-                //     this.$state.go('project.home', {project_id: u.default_project});
-                // } else {
-                //     this.$state.go('projects.list');
-                // }
-            })
-            .error((reason) => {
-                this.message = "Incorrect Username or Password.";
-                this.toast.error(reason.error);
-            }).put({password: this.password});
-    }
-
-    cancel() {
-        this.$mdDialog.cancel();
-    }
-}
+// class MCLoginDialogController {
+//     /*@ngInject*/
+//     constructor(User, $mdDialog, toast, mcapi, Restangular, templates, $state, mcprojstore) {
+//         this.User = User;
+//         this.$mdDialog = $mdDialog;
+//         this.toast = toast;
+//         this.mcapi = mcapi;
+//         this.Restangular = Restangular;
+//         this.templates = templates;
+//         this.$state = $state;
+//         this.email = '';
+//         this.password = '';
+//         this.mcprojstore = mcprojstore;
+//     }
+//
+//     login() {
+//         this.mcapi('/user/%/apikey', this.email, this.password)
+//             .success((u) => {
+//                 this.User.setAuthenticated(true, u);
+//                 this.Restangular.setDefaultRequestParams({apikey: this.User.apikey()});
+//                 this.templates.getServerTemplates().then((t) => this.templates.set(t));
+//                 this.mcprojstore.reset().then(() => this.$mdDialog.hide());
+//                 // if (u.default_project && u.default_project !== '' && u.default_experiment && u.default_experiment !== '') {
+//                 //     this.$state.go('project.experiment.workflow', {
+//                 //         project_id: u.default_project,
+//                 //         experiment_id: u.default_experiment
+//                 //     });
+//                 // } else if (u.default_project && u.default_project !== '') {
+//                 //     this.$state.go('project.home', {project_id: u.default_project});
+//                 // } else {
+//                 //     this.$state.go('projects.list');
+//                 // }
+//             })
+//             .error((reason) => {
+//                 this.message = "Incorrect Username or Password.";
+//                 this.toast.error(reason.error);
+//             }).put({password: this.password});
+//     }
+//
+//     cancel() {
+//         this.$mdDialog.cancel();
+//     }
+// }
 
 angular.module('materialscommons').component('navbar', {
     template: require('./navbar.html'),

@@ -19,8 +19,8 @@ function* getProcess(dbr, processID) {
 }
 
 function mergeTemplateIntoProcess(template, process) {
-    for (pindex = 0; pindex < process.setup.length; pindex++) {
-        setup = process.setup[pindex];
+    for (let pindex = 0; pindex < process.setup.length; pindex++) {
+        let setup = process.setup[pindex];
         if (setup.attribute === 'instrument') {
             setup.properties.forEach(function(property) {
                 let i = _.findIndex(template.setup[0].properties, (tprop) => tprop.attribute === property.attribute);
@@ -39,7 +39,7 @@ function mergeTemplateIntoProcess(template, process) {
                     // default other in the choices will update the value and the user will lose what
                     // they set.
                     if (property.otype === 'selection') {
-                        if (property.value.name === 'Other') {
+                        if (property.value && (property.value.name === 'Other')) {
                             let otherChoicesIndex = _.findIndex(template.setup[0].properties[i].choices, (c) => c.name === 'Other');
                             if (otherChoicesIndex !== -1) {
                                 template.setup[0].properties[i].choices[otherChoicesIndex].value = property.value.value;

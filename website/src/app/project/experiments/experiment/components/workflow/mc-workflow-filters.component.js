@@ -1,8 +1,8 @@
 class MCWorkflowFiltersComponentController {
     /*@ngInject*/
-    constructor(experimentsAPI, mcprojstore, $stateParams) {
+    constructor(experimentsAPI, mcStateStore, $stateParams) {
         this.experimentsAPI = experimentsAPI;
-        this.mcprojstore = mcprojstore;
+        this.mcStateStore = mcStateStore;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.showSamplesFilter = false;
@@ -14,7 +14,8 @@ class MCWorkflowFiltersComponentController {
     }
 
     activateProcessesFilter() {
-        this.processes = _.values(this.mcprojstore.currentExperiment.processes);
+        let e = this.mcStateStore.getState('experiment');
+        this.processes = _.values(e.processes);
         this.showProcessesFilter = true;
         this.showSamplesFilter = false;
         // this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId).then(

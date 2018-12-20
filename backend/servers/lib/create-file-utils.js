@@ -32,7 +32,11 @@ function getTmpUploadDir() {
 // note filesId must be the file record usesid, if this is set
 // otherwise, it is the file record id
 function* removeFileInStore(fileId) {
-    return yield fs.unlinkAsync(datafilePath(fileId));
+    try {
+        return yield fs.unlinkAsync(datafilePath(fileId));
+    } catch (e) {
+        return true;
+    }
 }
 
 function* removeFileByPath(path) {

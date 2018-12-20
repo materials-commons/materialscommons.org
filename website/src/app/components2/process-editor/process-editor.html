@@ -1,0 +1,97 @@
+<md-tabs md-selected="$ctrl.currentTab" md-dynamic-height md-border-bottom>
+    <md-tab>
+        <md-tab-label>Setup</md-tab-label>
+        <md-tab-body>
+            <div layout="column">
+                <div ng-repeat="setup in $ctrl.state.process.setup | orderBy:'name'" class="margin-top-10">
+                    <process-settings2 settings="setup.properties"
+                                       attribute="setup.attribute"
+                                       template-id="$ctrl.state.process.template_id"
+                                       name="setup.name"
+                                       process-id="$ctrl.state.process.id">
+                    </process-settings2>
+                </div>
+            </div>
+        </md-tab-body>
+    </md-tab>
+
+    <md-tab ng-if="$ctrl.state.process.process_type !== 'create'">
+        <md-tab-label>Samples ({{$ctrl.state.process.input_samples.length}}/{{$ctrl.state.process.output_samples.length}})
+        </md-tab-label>
+        <md-tab-body>
+            <md-button class="md-primary" ng-click="$ctrl.selectSamples()">
+                <i class="fa fa-fw fa-plus"></i>
+                samples
+            </md-button>
+            <mc-process-template-samples-list process="$ctrl.state.process"></mc-process-template-samples-list>
+        </md-tab-body>
+    </md-tab>
+
+    <md-tab ng-if="$ctrl.state.process.process_type === 'create'">
+        <md-tab-label>Samples ({{$ctrl.state.process.output_samples.length}})</md-tab-label>
+        <md-tab-body>
+            <div layout="column">
+                <div layout="column" layout-align="start start">
+                    <h4 class="md-title">
+                        Samples ({{$ctrl.state.process.output_samples.length}})
+                    </h4>
+                    <div>
+                        <md-button class="md-primary" ng-click="$ctrl.addSample()">add sample</md-button>
+                        <md-button class="md-primary" ng-click="$ctrl.addMultipleSamples()">Add Multiple Samples
+                        </md-button>
+                    </div>
+                </div>
+                <p>
+                    The names of the samples you are creating will appear below. All samples will share the same setup
+                    properties.
+                </p>
+                <div ng-repeat="sample in $ctrl.state.process.output_samples">
+                    <div layout="row">
+                        <label>{{$index+1}}.</label>
+                        <input type="text" class="mc-input-as-line"
+                               flex="85" ng-model="sample.name"
+                               ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
+                               ng-change="$ctrl.updateSampleName(sample)"
+                               on-enter="$ctrl.addSample()"
+                               placeholder="Untitled Sample..." id="{{::sample.id}}">
+                        <a class="mc-error-color margin-top-10" ng-click="$ctrl.remove($index)">
+                            <i class="fa fa-fw fa-remove"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <mc-process-template-samples-list process="$ctrl.state.process"></mc-process-template-samples-list>
+        </md-tab-body>
+    </md-tab>
+
+    <md-tab>
+        <md-tab-label>Files ({{$ctrl.process.files.length}})</md-tab-label>
+        <md-tab-body>
+            <md-button class="md-primary" ng-click="$ctrl.selectFiles()">
+                <i class="fa fa-fw fa-plus"></i>
+                files
+            </md-button>
+            <mc-process-template-files-list process="$ctrl.process"></mc-process-template-files-list>
+        </md-tab-body>
+    </md-tab>
+
+    <md-tab>
+        <md-tab-label>Measurements</md-tab-label>
+        <md-tab-body>
+            <div layout="column" class="margin-top-10">
+                <process-measurements measurements="$ctrl.process.measurements"
+                                      ng-if="$ctrl.process.process_type === 'create'"
+                                      samples="$ctrl.process.output_samples"
+                                      process-id="$ctrl.process.id"
+                                      template="$ctrl.process">
+                </process-measurements>
+                <process-measurements measurements="$ctrl.process.measurements"
+                                      ng-if="$ctrl.process.process_type !== 'create'"
+                                      samples="$ctrl.process.input_samples"
+                                      process-id="$ctrl.process.id"
+                                      template="$ctrl.process">
+                </process-measurements>
+            </div>
+        </md-tab-body>
+    </md-tab>
+</md-tabs>

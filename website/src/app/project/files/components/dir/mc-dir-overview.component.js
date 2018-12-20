@@ -19,6 +19,22 @@ class MCDirOverviewComponentController {
         this.files = this.allFiles.files;
     }
 
+    $onChanges(changes) {
+        if (changes.dir) {
+            this.dir = changes.dir.currentValue;
+            this.allFiles = {
+                files: this._allFiles()
+            };
+
+            this.fileFilter = {
+                name: ''
+            };
+
+            this.selectedCount = 0;
+            this.files = this.allFiles.files;
+        }
+    }
+
     _allFiles() {
         return this.dir.children.filter(f => f.data.otype === 'file' && f.data.id).map(f => {
             f.data.selected = false;
@@ -27,7 +43,7 @@ class MCDirOverviewComponentController {
     }
 
     viewFiles(selected) {
-        this.files = selected.files.map(function (f) {
+        this.files = selected.files.map(function(f) {
             f.selected = false;
             return f;
         });
@@ -46,7 +62,7 @@ class MCDirOverviewComponentController {
 
     selectAllFiles() {
         const filesToSelect = this.$filter('filter')(this.files, this.fileFilter);
-        filesToSelect.forEach(function (f) {
+        filesToSelect.forEach(function(f) {
             f.selected = true;
         });
         this.selectedCount = this.files.length;

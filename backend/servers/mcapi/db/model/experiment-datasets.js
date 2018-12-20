@@ -43,6 +43,20 @@ function* getDataset(datasetId) {
     return {val: dataset};
 }
 
+function* getDatasetSimple(datasetId) {
+    let dataset = yield r.table('datasets').get(datasetId);
+    if (dataset.doi !== '') {
+        dataset.doi_url = `${doiUrl}id/${dataset.doi}`;
+    }
+
+    if (!dataset.published) {
+        let publishedState = yield canPublishDataset(datasetId);
+        dataset.status = publishedState.val;
+    }
+
+    return {val: dataset};
+}
+
 function* createDatasetForExperiment(experimentId, userId, datasetArgs) {
     let dataset = new model.Dataset(datasetArgs.title, userId);
     dataset.description = datasetArgs.description;
@@ -70,7 +84,6 @@ function* deleteDataset(datasetId) {
     yield r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
     yield r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'}).delete();
     yield r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'}).delete();
-    yield r.table('dataset2experimentnote').getAll(datasetId, {index: 'dataset_id'}).delete();
     return {val: true};
 }
 
@@ -204,7 +217,7 @@ function* updateProcessesInDataset(datasetId, processesToAdd, processesToDelete)
 
 function* updateDataset(datasetId, datasetArgs) {
     yield r.table('datasets').get(datasetId).update(datasetArgs);
-    return yield getDataset(datasetId);
+    return yield getDatasetSimple(datasetId);
 }
 
 function* publishDataset(datasetId) {

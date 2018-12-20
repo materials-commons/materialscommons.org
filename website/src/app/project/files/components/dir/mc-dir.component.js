@@ -5,13 +5,17 @@ class MCDirComponentController {
         this.selected = false;
         this.selectedFiles = [];
         this.moveFiles = false;
-//        this.globusUpload = "none";
-//        this.globusUpload = "pending";
-//        this.globusUpload = "complete";
     }
 
     $onInit() {
         this.isNotRoot = this.dir.data.path.indexOf('/') !== -1;
+    }
+
+    $onChanges(changes) {
+        if (changes.dir) {
+            this.dir = changes.dir.currentValue;
+            this.isNotRoot = this.dir.data.path.indexOf('/') !== -1;
+        }
     }
 
     onSelected(selected) {
@@ -20,11 +24,11 @@ class MCDirComponentController {
     }
 
     renameDirectory() {
-        this.mcFileOpsDialogs.renameDirectory(this.dir.data.name).then(name => this.onRenameDir({newDirName: name}));
+        this.mcFileOpsDialogs.renameDirectory(this.dir.data.name).then(name => this.onRenameDir({dir: this.dir, newDirName: name}));
     }
 
     createDirectory() {
-        this.mcFileOpsDialogs.createDirectory(this.dir.data.name).then(name => this.onCreateDir({createDirName: name}));
+        this.mcFileOpsDialogs.createDirectory(this.dir.data.name).then(name => this.onCreateDir({parent: this.dir, createDirName: name}));
     }
 
     deleteDir() {
@@ -32,29 +36,6 @@ class MCDirComponentController {
             () => this.onDelete({items: [this.dir.data]})
         );
     }
-
-//    globusUploadPending(){
-//        let ret = this.globusUpload === "pending";
-//        console.log('globusUploadPending',ret);
-//        return ret;
-//    }
-
-//    globusUploadComplete(){
-//        let ret = this.globusUpload === "complete";
-//        console.log('globusUploadComplete',ret);
-//        return ret;
-//    }
-
-//    globusDownloadEndpoint() {
-//        console.log("Globus endpoint enabled"); return true;
-//    }
-
-//    useGlobusForDownload(){
-//        console.log("useGlobusForDownload - fake path 'Demo Project/EPMA_Analysis'");
-//        this.mcFileOpsDialogs.downloadUsingGlobus("Demo Project/EPMA_Analysis").then((g_user) => {
-//            console.log("Would download using Globus", g_user, "Demo Project/EPMA_Analysis");
-//        });
-//    }
 
     uploadFiles() {
         this.onUploadFiles();
@@ -71,12 +52,12 @@ class MCDirComponentController {
     }
 
     handleMove(item) {
-        return this.onMove({item: item});
+        return this.onMove({dir: this.dir, file: item});
     }
 
     handleDelete() {
         this.mcFileOpsDialogs.deleteFiles(this.selectedFiles).then(
-            () => this.onDelete({items: this.selectedFiles})
+            () => this.onDelete({dir: this.dir, files: this.selectedFiles})
         );
     }
 }

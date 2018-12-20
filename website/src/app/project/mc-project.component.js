@@ -1,7 +1,11 @@
 class MCProjectComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(mcRouteState) {
+        this.mcRouteState = mcRouteState;
+    }
 
+    getRoute() {
+        return this.mcRouteState.getRouteName();
     }
 }
 

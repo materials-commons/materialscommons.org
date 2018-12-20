@@ -7,6 +7,16 @@ class MCAttributeSelectionComponentController {
         this.experimentId = $stateParams.experiment_id;
     }
 
+    $onInit() {
+        //console.log('$ctrl.setting', this.setting);
+    }
+
+    $onChanges(changes) {
+        if (changes.setting) {
+            this.setting = changes.setting.currentValue;
+        }
+    }
+
     updateSelectionSettingProperty(property) {
 
         if (!property.value) {

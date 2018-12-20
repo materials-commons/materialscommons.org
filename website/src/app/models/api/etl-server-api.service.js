@@ -3,6 +3,47 @@ class EtlServerAPIService {
     constructor(etlAPIRoute) {
         this.etlAPIRoute = etlAPIRoute;
     }
+
+    createExperimentFromEtl(projectId, excelFilePath, experiment_name, experiment_desc) {
+        let route = this.etlAPIRoute('project').one('etl');
+        let data = {
+            project_id: projectId,
+            file_path: excelFilePath,
+            experiment_name: experiment_name,
+            experiment_desc: experiment_desc
+        };
+        return route.customPOST(data).then(
+            n => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = n.plain();
+                return results;
+            },
+            (e) => {
+                console.log("etl returns error", e);
+                return e;
+            });
+    }
+
+    getGlobusUplaodStatus(projectId) {
+        let route = this.etlAPIRoute('globus').one('upload').one('status');
+        let data = {
+            project_id: projectId
+        };
+        return route.customPOST(data).then(
+            r => {
+                // noinspection UnnecessaryLocalVariableJS
+                let results = r.plain();
+                return results;
+            },
+            e => {
+                let message =
+                    "Status server not available or internal server error occurred: " + e.status;
+                return {'error': message};
+            }
+        );
+    }
+
+    // deprecated!
     startBackgroundEtlUpload(data) {
         let route = this.etlAPIRoute('globus').one('stage');
         return route.customPOST(data).then(
@@ -16,6 +57,7 @@ class EtlServerAPIService {
             });
     }
 
+    // deprecated!
     getEtlStatus(statusRecordId) {
         let route = this.etlAPIRoute('globus').one('monitor');
         let data = {
@@ -33,6 +75,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     getEtlStatusForProject(projectId) {
         let route = this.etlAPIRoute('project').one('status');
         let data = {
@@ -86,6 +129,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // noinspection JSMethodCanBeStatic
     getRecentGlobusStatus(projectId){
         let route = this.etlAPIRoute('globus').one('transfer').one('status');
@@ -101,6 +145,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getSystemGlobusInformation(){
         let route = this.etlAPIRoute('globus').one('transfer').one('info');
@@ -113,6 +158,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getGlobusTransferAdminInfo() {
         let route = this.etlAPIRoute('globus').one('transfer').one('admin').one('info');
@@ -126,6 +172,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getGlobusTransferAdminStatus(){
         let route = this.etlAPIRoute('globus').one('transfer').one('admin').one('status');
@@ -139,6 +186,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     // -- /globus/transfer/admin/cctasks
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
     getGlobusConfidentialClientTaskList(){
@@ -153,6 +201,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     getGlobusAuthStatus() {
         let route = this.etlAPIRoute('globus').one('auth').one('status');
         let data = {};
@@ -165,6 +214,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     globusLogin() {
         let route = this.etlAPIRoute('globus').one('auth').one('login');
         let data = {};
@@ -177,6 +227,7 @@ class EtlServerAPIService {
         );
     }
 
+    // deprecated!
     globusLogout() {
         let route = this.etlAPIRoute('globus').one('auth').one('logout');
         let data = {};

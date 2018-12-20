@@ -27,7 +27,7 @@
     "localforage": true,
     "P": true,
     "require": true,
-    "introJs": true,
+    "introJs": true
   },
   "rules": {
     "angular/log": 0,

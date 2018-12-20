@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcProjectCollaborators', {
 });
 
 /*@ngInject*/
-function MCProjectCollaboratorsComponentController(mcapi, User, toast, mcprojstore) {
+function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsAPI, mcStateStore) {
     const ctrl = this;
     ctrl.isOwner = isOwner;
     ctrl.deleteUser = deleteUser;
@@ -14,71 +14,59 @@ function MCProjectCollaboratorsComponentController(mcapi, User, toast, mcprojsto
 
     ctrl.filterUsersBy = '';
 
-    ctrl.project = mcprojstore.currentProject;
+    ctrl.project = mcStateStore.getState('project');
 
     ctrl.signedInUser = User.u();
 
-    let projectUsers = _.indexBy(ctrl.project.users, 'user_id');
-
-    mcapi('/users').success(function (users) {
-        allUsers = users;
-        ctrl.usersAvailable = usersNotInProject();
-    }).jsonp();
+    loadUsers();
 
     ///////////////////////////////////////
 
+    function loadUsers() {
+        projectsAPI.getProjectAccessEntries(ctrl.project.id).then(
+            users => {
+                ctrl.users = users;
+                ctrl.projectUsers = _.indexBy(ctrl.users, 'user_id');
+                mcapi('/users').success(function(users) {
+                    allUsers = users;
+                    ctrl.usersAvailable = usersNotInProject();
+                }).jsonp();
+            }
+        );
+    }
+
     function deleteUser(id) {
         mcapi('/access/%/remove', id)
-            .success(function () {
-                const i = _.indexOf(ctrl.project.users, function (item) {
+            .success(function() {
+                const i = _.indexOf(ctrl.users, function(item) {
                     return (item.id === id);
                 });
+
                 if (i !== -1) {
-                    mcprojstore.updateCurrentProject((currentProject => {
-                        currentProject.users.splice(i, 1);
-                        return currentProject;
-                    })).then(
-                        () => {
-                            ctrl.project = mcprojstore.currentProject;
-                            projectUsers = _.indexBy(ctrl.project.users, 'user_id');
-                            ctrl.usersAvailable = usersNotInProject();
-                        }
-                    );
+                    loadUsers();
+                    mcStateStore.fire('sync:project');
                 }
             }).delete();
     }
 
     function usersNotInProject() {
-        return allUsers.filter(u => (!(u.id in projectUsers)));
+        return allUsers.filter(u => (!(u.id in ctrl.projectUsers)));
     }
 
     function addUser(userToAdd) {
-        const i = _.indexOf(ctrl.project.users, function (projectUser) {
+        const i = _.indexOf(ctrl.users, function(projectUser) {
             return (userToAdd.id === projectUser.user_id);
         });
         if (i === -1) {
             let accessArgs = {
-                user_id: userToAdd.email,
+                user_id: userToAdd.id,
                 project_id: ctrl.project.id,
                 project_name: ctrl.project.name
             };
             mcapi('/access/new')
-                .success(function (data) {
-                    mcprojstore.updateCurrentProject(currentProject => {
-                        currentProject.users.push({
-                            'id': data.id,
-                            'user_id': userToAdd.email,
-                            'fullname': userToAdd.fullname,
-                            'project_id': ctrl.project.id,
-                            'project_name': ctrl.project.name
-                        });
-                        return currentProject;
-                    }).then(() => {
-                        ctrl.project = mcprojstore.currentProject;
-                        userToAdd.selected = false;
-                        projectUsers = _.indexBy(ctrl.project.users, 'user_id');
-                        ctrl.usersAvailable = usersNotInProject();
-                    });
+                .success(function() {
+                    loadUsers();
+                    mcStateStore.fire('sync:project');
                 })
                 .error((e) => toast.error(e.error)).post(accessArgs);
         }

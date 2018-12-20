@@ -9,7 +9,6 @@ const samples = require('./samples');
 const files = require('./files');
 const directories = require('./directories');
 const processes = require('./processes');
-const shares = require('./shares');
 const experiments = require('./experiments');
 const activityFeed = require('../../db/model/activity-feed');
 const shortcuts = require('./shortcuts');
@@ -17,6 +16,7 @@ const shortcuts = require('./shortcuts');
 const schema = require('../../schema');
 const experimentDatasets = require('../../db/model/experiment-datasets');
 const experimentDatasetsDoi = require('../../db/model/experiment-datasets-doi');
+const _ = require('lodash');
 
 
 function* create(next) {
@@ -107,6 +107,11 @@ function* updateUserAccessForProject(next) {
 
 function* getProjectActivityFeed(next) {
     this.body = yield activityFeed.getActivityFeedForProject(this.params.project_id);
+    yield next;
+}
+
+function * getExcelFilePathsInProject(next) {
+    this.body = yield projects.getExcelFilePaths(this.params.project_id);
     yield next;
 }
 
@@ -272,6 +277,7 @@ function createResource() {
     router.put('/:project_id/access', ra.validateProjectOwner, updateUserAccessForProject);
 
     router.get('/:project_id/activity_feed', getProjectActivityFeed);
+    router.get('/:project_id/excel_files', getExcelFilePathsInProject);
 
     let samplesResource = samples.createResource();
     router.use('/:project_id/samples', samplesResource.routes(), samplesResource.allowedMethods());
@@ -284,9 +290,6 @@ function createResource() {
 
     let processesResource = processes.createResource();
     router.use('/:project_id/processes', processesResource.routes(), processesResource.allowedMethods());
-
-    let sharesResource = shares.createResource();
-    router.use('/:project_id/shares', sharesResource.routes(), sharesResource.allowedMethods());
 
     let experimentsResource = experiments.createResource();
     router.use('/:project_id/experiments', experimentsResource.routes(), experimentsResource.allowedMethods());

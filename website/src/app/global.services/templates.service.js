@@ -60,7 +60,7 @@ function templatesService(Restangular, $log) {
         getTemplate: getTemplate,
 
         getServerTemplates() {
-            return Restangular.one('v2').one('/templates').get();
+            return Restangular.one('v2').one('/templates').get().then(t => t.plain());
         }
     };
 }

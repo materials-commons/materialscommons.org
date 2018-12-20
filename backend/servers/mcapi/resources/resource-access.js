@@ -181,16 +181,6 @@ function* validateFileInProject(next) {
     yield next;
 }
 
-function* validateTaskInExperiment(next) {
-    let isInExperiment = yield check.taskInExperiment(this.params.experiment_id, this.params.task_id);
-    if (!isInExperiment) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such task in experiment ${this.params.task_id}`};
-        return this.status;
-    }
-    yield next;
-}
-
 function* validateTemplateExists(next) {
     let templateExists = yield check.templateExists(this.params.template_id);
     if (!templateExists) {
@@ -230,16 +220,6 @@ function* validateCommentAccess(next) {
         this.status = httpStatus.UNAUTHORIZED;
         this.body = {error: `user does not have access to this comment, ${this.params.comment_id}`};
         return this.status
-    }
-    yield next;
-}
-
-function* validateNoteInExperiment(next) {
-    let isInExperiment = yield check.noteInExperiment(this.params.experiment_id, this.params.note_id);
-    if (!isInExperiment) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such note in experiment ${this.params.note_id}`};
-        return this.status;
     }
     yield next;
 }
@@ -305,12 +285,10 @@ module.exports = {
     validateDirectoryInProject,
     validateProcessInProject,
     validateFileInProject,
-    validateTaskInExperiment,
     validateTemplateAccess,
     validateTemplateExists,
     validateCommentAccess,
     validateCommentExists,
-    validateNoteInExperiment,
     validateFileAccess,
     checkProjectAccess,
 };

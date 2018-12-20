@@ -2,19 +2,20 @@ class MCProjectSettingsComponentController {
     /*@ngInject*/
 
     /*@ngInject*/
-    constructor(projectsAPI, mcprojstore, toast, $mdDialog, $state, User) {
+    constructor(projectsAPI, mcprojstore, mcStateStore, toast, $mdDialog, $state, User) {
         this.projectsAPI = projectsAPI;
         this.mcprojstore = mcprojstore;
+        this.mcStateStore = mcStateStore;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
         this.$state = $state;
-        this.projectName = "";
+        this.projectName = '';
         this.user = User.u();
 
     }
 
     $onInit() {
-        this.project = this.mcprojstore.currentProject;
+        this.project = this.mcStateStore.getState('project');
         this.projectName = this.project.name;
     }
 
@@ -24,12 +25,8 @@ class MCProjectSettingsComponentController {
         };
         this.projectsAPI.updateProject(this.project.id, update).then(
             () => {
-                this.mcprojstore.updateCurrentProject(currentProj => {
-                    currentProj.name = this.projectName;
-                    return currentProj;
-                }).then(
-                    () => this.$state.go('project.home')
-                );
+                this.mcStateStore.fire('sync:project');
+                this.$state.go('project.home');
             },
             () => this.toast.error('Unable to update project')
         );
@@ -37,7 +34,7 @@ class MCProjectSettingsComponentController {
 
     deleteProject() {
         if (this.user !== this.project.owner) {
-            this.toast.error('Only the owner of a project can delete the project.')
+            this.toast.error('Only the owner of a project can delete the project.');
         } else {
             let deleteDialog = this.$mdDialog.confirm()
                 .title(`Delete project: ${this.project.name}`)
@@ -51,7 +48,7 @@ class MCProjectSettingsComponentController {
                     this.projectsAPI.deleteProject(this.project.id).then(
                         () => this.mcprojstore.removeCurrentProject().then(() => this.$state.go('projects.list')),
                         () => this.toast.error('Failed to delete project')
-                    )
+                    );
                 }
             );
         }

@@ -3,7 +3,8 @@ angular.module('materialscommons').component('processSettings2', {
         settings: '<',
         templateId: '<',
         attribute: '<',
-        processId: '<'
+        processId: '<',
+        name: '<',
     },
     template: require('./process-settings2.html')
 });

@@ -1,8 +1,8 @@
 <div layout="column">
-    <h4 class="md-title">Setup</h4>
+    <h4 class="md-title">{{$ctrl.name}} Setup</h4>
     <md-content layout-padding>
         <form name="processSettingsForm">
-            <div ng-repeat="setting in $ctrl.settings">
+            <div ng-repeat="setting in $ctrl.settings | orderBy:'name'">
                 <div ng-switch="::setting.otype">
                     <!--------- number --------->
                     <div ng-switch-when="number">

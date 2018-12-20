@@ -1,11 +1,20 @@
 <div layout="column">
+    <h3>Globus User Name</h3>
+    <div layout="row" layout-align="start center">
+        <md-input-container class="md-block" flex="30">
+            <input type="text" ng-model="$ctrl.globusUserName" alt="Globus User Name">
+        </md-input-container>
+        <md-button class="md-primary" ng-click="$ctrl.updateGlobusUserName()">Update Globus User Name</md-button>
+    </div>
+
     <h3>Name</h3>
     <div layout="row" layout-align="start center">
         <md-input-container class="md-block" flex="30">
-            <input type="text" ng-model="$ctrl.fullname">
+            <input type="text" ng-model="$ctrl.fullname" alt="Full Name">
         </md-input-container>
         <md-button class="md-primary" ng-click="$ctrl.updateFullname()">Update Name</md-button>
     </div>
+
     <h3>Affiliation</h3>
     <div layout="row" layout-align="start start">
         <textarea md-whiteframe ng-model="$ctrl.affiliation" flex="30"></textarea>

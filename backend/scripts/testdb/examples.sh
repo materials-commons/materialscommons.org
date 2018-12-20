@@ -44,7 +44,7 @@ set -e
 # export GREP_PATTERN="find project in all projects"
 # scripts/testdb/run-given-tests.sh
 
-## Scrap - what every you want
+## Scrap - whatever you want
 export SERVERTYPE=dev
 export TEST_PATTERN="tests/mcapi/Database-Level/specs/experiments-delete-datasets-spec.js"
 # export TEST_TARGET="servers/mcapi/db/model/project-delete.js"

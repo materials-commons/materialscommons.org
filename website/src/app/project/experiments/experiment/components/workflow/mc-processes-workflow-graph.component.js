@@ -30,7 +30,7 @@ class MCProcessesWorkflowGraphComponentController {
         // functions lexically scope, so this in the arrow function is the this for
         // MCProcessesWorkflowGraphComponentController
         let cb = (processes) => {
-            this.processes = processes;
+            this.processes = angular.copy(processes);
             this.allProcessesGraph();
         };
 
@@ -47,7 +47,7 @@ class MCProcessesWorkflowGraphComponentController {
             if (edges.length) {
                 this.cy.add(edges);
             }
-            this.processes.push(process);
+            this.processes.push(angular.copy(process));
             this.cy.layout({name: 'dagre', fit: true});
             this.cyGraph.setupQTips(this.cy);
             if (!this.tooltips) {
@@ -65,19 +65,23 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcbus.subscribe('PROCESS$CHANGE', this.myName, process => {
             this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
-                ele.data('name', process.name);
+                let name = (' ' + process.name).slice(1);
+                ele.data('name', name);
             });
         });
 
         this.projectUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROJECT, this.mcprojstore.EVUPDATE, () => {
             const currentExperiment = this.mcprojstore.currentExperiment;
-            this.processes = _.values(currentExperiment.processes);
-            this.allProcessesGraph();
+            if (currentExperiment && currentExperiment.processes !== null) {
+                this.processes = _.values(currentExperiment.processes);
+                this.allProcessesGraph();
+            }
         });
 
         this.procUpdateUnsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVUPDATE, process => {
             this.cy.filter(`node[id="${process.id}"]`).forEach((ele) => {
-                ele.data('name', process.name);
+                let name = (' ' + process.name).slice(1);
+                ele.data('name', name);
             });
         });
 
@@ -153,12 +157,16 @@ class MCProcessesWorkflowGraphComponentController {
         if (this.navigator) {
             this.navigator.destroy();
         }
+
+        if (this.cMenu) {
+            this.cMenu.destroy();
+        }
     }
 
     // This method will be called implicitly when the component is loaded.
     $onChanges(changes) {
         if (changes.processes) {
-            this.processes = changes.processes.currentValue;
+            this.processes = angular.copy(changes.processes.currentValue);
         }
         if (changes.highlightProcesses) {
             this.highlightProcesses = changes.highlightProcesses.currentValue;
@@ -247,9 +255,9 @@ class MCProcessesWorkflowGraphComponentController {
 
     findSourceProcess(sample) {
         for (let process of this.processes) {
-            if (process.output_samples) {
+            if (process.output_samples && process.output_samples.length) {
                 for (let s of process.output_samples) {
-                    if (s.id === sample.id && s.property_set_id === sample.property_set_id) {
+                    if (s.sample_id === sample.id && s.property_set_id === sample.property_set_id) {
                         return process;
                     }
                 }
@@ -322,7 +330,7 @@ class MCProcessesWorkflowGraphComponentController {
                 }
             ]
         };
-        this.cy.contextMenus(options);
+        this.cMenu = this.cy.contextMenus(options);
     }
 
     _showDetails(event) {

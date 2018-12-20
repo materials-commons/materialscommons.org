@@ -1,7 +1,7 @@
 /*@ngInject*/
-function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI, mcprojstore, gridFiles) {
+function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI, mcStateStore, gridFiles) {
     const ctrl = this,
-        proj = mcprojstore.currentProject;
+        proj = mcStateStore.getState('project');
     ctrl.projectID = proj.id;
 
     projectFileTreeAPI.getProjectRoot(proj.id).then((files) => {
@@ -9,6 +9,7 @@ function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
         ctrl.files = proj.files;
         ctrl.files[0].data.childrenLoaded = true;
         ctrl.files[0].expand = true;
+        mcStateStore.updateState('project', proj);
 
         if ($stateParams.dir_id && !$stateParams.file_id) {
             const entry = gridFiles.findEntry(ctrl.files[0], $stateParams.dir_id);
@@ -21,10 +22,12 @@ function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
             }
             const file = entry.model;
             projectFileTreeAPI.getDirectory(ctrl.projectID, $stateParams.dir_id).then(function (files) {
+                console.log('projectFileTreeAPI.getDirectory', files);
                 file.children = files;
                 file.active = true;
                 file.data.childrenLoaded = true;
                 file.expand = !file.expand;
+                mcStateStore.updateState('project', proj);
                 $state.go('project.files.dir', {dir_id: file.data.id});
             });
         } else if (!$stateParams.file_id) {
@@ -40,12 +43,13 @@ function MCFileTreeComponentController($state, $stateParams, projectFileTreeAPI,
     };
 
     function clearActiveStateInAllNodes() {
-        const proj = mcprojstore.currentProject;
+        const proj = mcStateStore.getState('project');
         const treeModel = new TreeModel(),
             root = treeModel.parse(proj.files[0]);
         root.walk(function (treeNode) {
             treeNode.model.active = false;
         });
+        mcStateStore.updateState('project', proj);
     }
 }
 
@@ -76,9 +80,9 @@ function mcFileTreeDirDirective(RecursionHelper) {
 angular.module('materialscommons').directive('mcFileTreeDir', mcFileTreeDirDirective);
 
 /*@ngInject*/
-function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $state) {
+function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcStateStore, $state) {
     const ctrl = this;
-    let proj = mcprojstore.currentProject;
+    let proj = mcStateStore.getState('project');
     ctrl.projectID = proj.id;
     ctrl.files = ctrl.file.children;
     ctrl.setActive = setActive;
@@ -97,6 +101,7 @@ function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $stat
                     file.active = true;
                     file.data.childrenLoaded = true;
                     file.expand = !file.expand;
+                    //mcStateStore.updateState('project', proj);
                     $state.go('project.files.dir', {dir_id: file.data.id});
                 });
             } else {
@@ -108,7 +113,7 @@ function MCFileTreeDirDirectiveController(projectFileTreeAPI, mcprojstore, $stat
     }
 
     function clearActiveStateInAllNodes() {
-        const proj = mcprojstore.currentProject;
+        const proj = mcStateStore.getState('project');
         const treeModel = new TreeModel(),
             root = treeModel.parse(proj.files[0]);
         root.walk(function (treeNode) {
