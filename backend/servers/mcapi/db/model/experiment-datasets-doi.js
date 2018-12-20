@@ -22,8 +22,8 @@ function* doiServerStatusIsOK() {
         resolveWithFullResponse: true
     };
     let response = yield request(options);
-    return ((response.statusCode === "200")
-    && (response.body === "success: API is up"));
+    return ((response.statusCode == 200)
+        && (response.body.indexOf("success") > -1));
 }
 
 function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
