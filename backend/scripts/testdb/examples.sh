@@ -46,7 +46,7 @@ set -e
 
 ## Scrap - whatever you want
 export SERVERTYPE=dev
-export TEST_PATTERN="tests/mcapi/Database-Level/specs/experiments-delete-*-spec.js"
+export TEST_PATTERN="tests/mcapi/Database-Level/specs/experiments-delete-complex-delete-processes-spec.js"
 export TEST_TARGET="servers/mcapi/db/model/project-delete.js"
 export TEST_CONTINUOUS=${TEST_TARGET}:${TEST_PATTERN}
 # export GREP_PATTERN="supports a dry run mode"
