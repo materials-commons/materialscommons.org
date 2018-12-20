@@ -1,12 +1,16 @@
 'use strict';
-require('mocha');
-const it = require('mocha').it;
+const mocha = require('mocha');
+const it = mocha.it;
 require('co-mocha');
+// noinspection JSUnusedLocalSymbols
 const _ = require('lodash');
 const chai = require('chai');
+// noinspection JSUnresolvedVariable
 const assert = chai.assert;
+// noinspection JSUnusedLocalSymbols
 const should = chai.should();
 
+// noinspection JSUnresolvedVariable, JSUnusedLocalSymbols
 const r = require('rethinkdbdash')({
     db: process.env.MCDB || 'materialscommons',
     port: process.env.MCDB_PORT || 30815
@@ -17,12 +21,17 @@ const build_project_base = mcapi_base + "/build-demo";
 
 const dbModelUsers = require(backend_base + '/users');
 const projects = require(backend_base + '/projects');
+// noinspection JSUnusedLocalSymbols
 const directories = require(backend_base + '/directories');
+// noinspection JSUnusedLocalSymbols
 const experiments = require(backend_base + '/experiments');
+// noinspection JSUnusedLocalSymbols
 const processes = require(backend_base + '/processes');
 const experimentDatasets = require(backend_base + '/experiment-datasets');
 
+// noinspection JSUnusedLocalSymbols
 const helper = require(build_project_base + '/build-demo-project-helper');
+// noinspection JSUnusedLocalSymbols
 const demoProjectConf = require(build_project_base + '/build-demo-project-conf');
 const buildDemoProject = require(build_project_base + '/build-demo-project');
 
@@ -41,6 +50,7 @@ let process_list = null;
 let sample_list = null;
 let file_list = null;
 
+// noinspection SpellCheckingInspection
 before(function* () {
     console.log("before experiments-delete-datasets-spec.js");
     this.timeout(80000); // this test suite can take up to 8 seconds
@@ -76,6 +86,10 @@ before(function* () {
     assert.equal(updated_project.id, project_id);
     project = updated_project;
 
+    console.log("done before experiments-delete-datasets-spec.js");
+});
+
+function* buildTestDatasets () {
     let processesToAdd = [
         {id: process_list[0].id}
     ];
@@ -87,7 +101,7 @@ before(function* () {
         description: "Dataset for testing"
     };
 
-    let result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
+    let result = yield experimentDatasets.createDatasetForExperiment(experiment.id, userId, datasetArgs);
     let dataset = result.val;
     assert.isOk(dataset);
 
@@ -98,18 +112,18 @@ before(function* () {
         description: "Dataset for testing"
     };
 
-    result = yield experimentDatasets.createDatasetForExperiment(experiment_id, userId, datasetArgs);
+    result = yield experimentDatasets.createDatasetForExperiment(experiment.id, userId, datasetArgs);
     dataset = result.val;
     assert.isOk(dataset);
 
-    yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete)
+    yield experimentDatasets.updateProcessesInDataset(dataset.id, processesToAdd, processesToDelete);
 
-    results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
-    let dataset_list = results.val;
+    result = yield experimentDatasets.getDatasetsForExperiment(experiment.id);
+    let dataset_list = result.val;
     assert.isOk(dataset_list);
     assert.equal(dataset_list.length, 2);
-    console.log("done before experiments-delete-datasets-spec.js");
-});
+    return dataset_list;
+}
 
 describe('Feature - Experiments: ', function () {
     describe('Delete Experiment - in parts: ', function () {
@@ -119,8 +133,7 @@ describe('Feature - Experiments: ', function () {
             let experiment_id = experiment.id;
             assert.isOk(experiment_id);
 
-            let results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
-            let dataset_list = results.val;
+            let dataset_list = yield buildTestDatasets();
             assert.isOk(dataset_list);
             assert.equal(dataset_list.length, 2);
 
@@ -138,8 +151,8 @@ describe('Feature - Experiments: ', function () {
                 yield experimentDatasets.deleteDataset(dataset.id);
             }
 
-            results = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
-            dataset_list = results.val;
+            let result = yield experimentDatasets.getDatasetsForExperiment(experiment_id);
+            dataset_list = result.val;
             assert.isOk(dataset_list);
             assert.equal(dataset_list.length, 0);
 
