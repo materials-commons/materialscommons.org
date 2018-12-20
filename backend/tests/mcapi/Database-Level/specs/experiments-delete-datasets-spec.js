@@ -149,34 +149,5 @@ describe('Feature - Experiments: ', function () {
             assert.equal(dataset_list.length, 0);
 
         });
-
-        it('deletes all processes', function* () {
-            this.timeout(60000); // this test suite can take up to 6 seconds
-            let valOrError = yield buildDemoProject.findOrBuildAllParts(user, process.cwd() + '/');
-            assert.isUndefined(valOrError.error, "Unexpected error from createDemoProjectForUser: " + valOrError.error);
-            let results = valOrError.val;
-            let project = results.project;
-            let experiment = results.experiment;
-            let process_list = results.processes;
-            let sample_list = results.samples;
-            let file_list = results.files;
-
-            let project_id = project.id;
-            let experiment_id = experiment.id;
-
-            let name = random_name();
-            let description = "Changed the name of the demo project to " + name;
-            let updateData = {
-                name: name,
-                description: description
-            };
-            let updated_project = yield projects.update(project.id, updateData);
-            assert.equal(updated_project.otype, "project");
-            assert.equal(updated_project.owner, userId);
-            assert.equal(updated_project.name, name);
-            assert.equal(updated_project.description, description);
-            assert.equal(updated_project.id, project_id);
-            project = updated_project;
-        });
     });
 });
