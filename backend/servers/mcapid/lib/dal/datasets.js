@@ -155,8 +155,7 @@ async function getFileCountsForProcessesAndSamples(datsetId, processIds, sampleI
 }
 
 async function getSamplesCountForDataset(datasetId) {
-    let sampleIds = await r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'})
-        .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'}).zip().pluck('sample_id').distinct();
+    let sampleIds = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).pluck('sample_id').distinct();
     return sampleIds.length;
 }
 
