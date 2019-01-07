@@ -1,29 +1,35 @@
 class ProjectDatasetsViewService {
     /*@ngInject*/
-    constructor($mdDialog, datasetsAPI, toast) {
+    constructor($mdDialog, datasetsAPI, projectsAPI, toast) {
         this.$mdDialog = $mdDialog;
         this.datasetsAPI = datasetsAPI;
+        this.projectsAPI = projectsAPI;
         this.toast = toast;
     }
 
     createNewDataset(projectId) {
-        return this.$mdDialog.show({
-            templateUrl: 'app/modals/create-new-dataset-dialog.html',
-            controller: CreateNewDatasetDialogController,
-            controllerAs: '$ctrl',
-            bindToController: true,
-        }).then(ds => {
-            let samples = ds.samples.map(s => s.id);
-            return this.datasetsAPI.createDatasetForProject(projectId, ds.title, samples).then(
-                dataset => {
-                    ds.id = dataset.id;
-                    return ds;
-                },
-                () => {
-                    this.toast.error('Unable to create dataset')
+        return this.projectsAPI.getProjectSamples(projectId).then(
+            (samples) => this.$mdDialog.show({
+                templateUrl: 'app/modals/create-new-dataset-dialog.html',
+                controller: CreateNewDatasetDialogController,
+                controllerAs: '$ctrl',
+                bindToController: true,
+                locals: {
+                    samples: samples,
                 }
-            );
-        });
+            }).then(ds => {
+                let samples = ds.samples.map(s => s.id);
+                return this.datasetsAPI.createDatasetForProject(projectId, ds.title, samples).then(
+                    dataset => {
+                        ds.id = dataset.id;
+                        return ds;
+                    },
+                    () => {
+                        this.toast.error('Unable to create dataset');
+                    }
+                );
+            })
+        );
     }
 }
 
@@ -31,14 +37,15 @@ angular.module('materialscommons').service('projectDatasetsViewService', Project
 
 class CreateNewDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, createDatasetDialogState, mcprojectstore2) {
+    constructor($mdDialog, createDatasetDialogState, mcStateStore) {
         this.$mdDialog = $mdDialog;
         this.createDatasetDialogState = createDatasetDialogState;
-        this.mcprojectstore = mcprojectstore2;
+        this.mcStateStore = mcStateStore;
         this.state = {
-            project: this.mcprojectstore.getCurrentProject(),
-            datasetTitle: "",
+            project: this.mcStateStore.getState('project'),
+            datasetTitle: '',
         };
+        this.state.project.samples = this.samples;
         this.createDatasetDialogState.computeExperimentsForSamples(this.state.project);
     }
 
@@ -101,7 +108,20 @@ class CreateDatasetDialogStateService {
     computeExperimentsForSamples(project) {
         let experimentLookupTable = {};
         project.experiments.forEach(e => {
-            experimentLookupTable[e.id] = _.indexBy(e.samples, 'id');
+            e.samples = [];
+            experimentLookupTable[e.id] = {};
+        });
+        project.samples.forEach(s => {
+            s.experiments.forEach(e => {
+                if (e.id in experimentLookupTable) {
+                    if (!(s.id in experimentLookupTable[e.id])) {
+                        experimentLookupTable[e.id][s.id] = s;
+                        let i = _.findIndex(project.experiments, exp => exp.id == e.id);
+                        let exp = project.experiments[i];
+                        exp.samples.push(s);
+                    }
+                }
+            });
         });
         project.samples.forEach(s => {
             s.experiments = [];
@@ -110,7 +130,7 @@ class CreateDatasetDialogStateService {
                     s.experiments.push({experiment_id: e.id, name: e.name});
                 }
             });
-            s.experimentNames = s.experiments.map(e => e.name).join(", ")
+            s.experimentNames = s.experiments.map(e => e.name).join(', ');
         });
     }
 }

@@ -1,11 +1,11 @@
 class MCProjectDatasetViewContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams, $state, mcdsstore, datasetsAPI, mcprojectstore2, toast) {
+    constructor($stateParams, $state, mcdsstore, datasetsAPI, mcStateStore, toast) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.mcdsstore = mcdsstore;
         this.datasetsAPI = datasetsAPI;
-        this.mcprojectstore = mcprojectstore2;
+        this.mcStateStore = mcStateStore;
         this.toast = toast;
         this.state = {
             dataset: null
@@ -112,7 +112,7 @@ class MCProjectDatasetViewContainerComponentController {
     handleLoadSamples() {
         this.datasetsAPI.getProjectDatasetSamplesAndProcesses(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
             (dataset) => {
-                let project = this.mcprojectstore.getCurrentProject();
+                let project = this.mcStateStore.getState('project');
                 let transformedDS = this.mcdsstore.transformDataset(dataset, project);
                 this.state.dataset.samples = transformedDS.samples;
                 this.state.dataset.processes = transformedDS.processes;
