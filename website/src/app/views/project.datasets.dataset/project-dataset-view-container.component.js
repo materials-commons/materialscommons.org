@@ -1,14 +1,16 @@
 class MCProjectDatasetViewContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams, $state, mcdsstore, datasetsAPI, mcStateStore, toast) {
+    constructor($stateParams, $state, mcdsstore, datasetsAPI, projectsAPI, mcStateStore, toast) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.mcdsstore = mcdsstore;
         this.datasetsAPI = datasetsAPI;
+        this.projectsAPI = projectsAPI;
         this.mcStateStore = mcStateStore;
         this.toast = toast;
         this.state = {
-            dataset: null
+            dataset: null,
+            project: mcStateStore.getState('project'),
         };
     }
 
@@ -23,6 +25,12 @@ class MCProjectDatasetViewContainerComponentController {
                 this.state.dataset = angular.copy(dataset);
             }
         );
+
+        this.projectsAPI.getProjectSamples(this.state.project.id).then(
+            (samples) => {
+                this.state.project.samples = samples;
+            }
+        )
     }
 
     handleDeleteFiles(filesToDelete) {
@@ -112,8 +120,8 @@ class MCProjectDatasetViewContainerComponentController {
     handleLoadSamples() {
         this.datasetsAPI.getProjectDatasetSamplesAndProcesses(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
             (dataset) => {
-                let project = this.mcStateStore.getState('project');
-                let transformedDS = this.mcdsstore.transformDataset(dataset, project);
+                console.log('handleLoadSamples', dataset);
+                let transformedDS = this.mcdsstore.transformDataset(dataset, this.state.project);
                 this.state.dataset.samples = transformedDS.samples;
                 this.state.dataset.processes = transformedDS.processes;
                 this.state.dataset.samplesLoaded = true;
