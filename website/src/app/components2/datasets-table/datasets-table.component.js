@@ -9,6 +9,9 @@ class MCDatasetsTableComponentController {
     $onChanges(changes) {
         if (changes.datasets) {
             this.state.datasets = angular.copy(changes.datasets.currentValue);
+            this.state.datasets.forEach(d => {
+                d.experiment_names = d.experiments.map(e => e.name).join(', ');
+            });
         }
     }
 }

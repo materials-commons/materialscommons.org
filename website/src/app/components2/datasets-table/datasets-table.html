@@ -14,7 +14,7 @@
         <tr md-row class="md-row-hover pointer" ng-repeat="dataset in $ctrl.state.datasets | orderBy:'title'">
             <td md-cell><a ui-sref="project.datasets.dataset({dataset_id: dataset.id})">{{dataset.title}}</a></td>
             <td md-cell>{{dataset.owner}}</td>
-            <td md-cell>{{dataset.experiments.join(',')}}</td>
+            <td md-cell>{{dataset.experiment_names}}</td>
             <td md-cell>{{dataset.files_count ? dataset.file_count : dataset.files.length}}</td>
             <td md-cell>{{dataset.samples_count ? dataset.samples_count : dataset.samples.length}}</td>
             <td md-cell>{{dataset.published ? "Yes" : "No"}}</td>

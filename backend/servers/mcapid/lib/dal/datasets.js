@@ -60,6 +60,11 @@ async function getDatasetsForProject(projectId) {
         .eqJoin('dataset_id', r.table('datasets')).zip()
         .merge((ds) => {
             return {
+                experiments: r.table('dataset2sample')
+                    .getAll(ds('id'), {index: 'dataset_id'})
+                    .eqJoin('sample_id', r.table('experiment2sample'), {index: 'sample_id'}).zip()
+                    .eqJoin('experiment_id', r.table('experiments')).zip().pluck('name')
+                    .distinct().coerceTo('array'),
                 samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'})
                     .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
                 processes: r.table('dataset2process').getAll(ds('id'), {index: 'dataset_id'})
