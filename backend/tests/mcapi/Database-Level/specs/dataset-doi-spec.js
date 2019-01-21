@@ -11,7 +11,8 @@ const r = require('rethinkdbdash')({
     port: process.env.MCDB_PORT || 30815
 });
 
-const SKIP = true
+const SKIP = process.env.SKIP_DOI_TESTS || 'skip';
+console.log("VALUE OF SKIP is", SKIP);
 
 const request = require('request-promise');
 
@@ -50,12 +51,11 @@ let random_name = function(){
 
 before(function*() {
     console.log("before dataset-doi-spec");
-    if (SKIP) {
+    if (SKIP == 'skip') {
         // see also, "describe function(s) below
         console.log("Skipping this these tests - to prevent minting test DOI entries needlessly")
         return
     }
-    console.log("NOTE: all doi tests are skipped to prevent Minting of test DOI's during routine testing")
     this.timeout(80000); // test setup can take up to 8 seconds
 
     // check for all env variables
@@ -106,127 +106,131 @@ before(function*() {
 });
 
 // noinspection ES6ModulesDependencies
-describe.skip('Feature - Dataset: ', function () {
-    describe('DOI Request - ', function () {
-        it('checks DOI server status - raw', function*() {
 
-            let url = doiServiceUrl + "status";
-            let options = {
-                method: 'GET',
-                uri: url,
-                resolveWithFullResponse: true
-            };
-            let response = yield request(options);
-            assert.isOk(response);
-            assert.isOk(response.statusCode);
-            assert.equal(response.statusCode, "200");
-            assert.isOk(response.body);
-            assert.equal(response.body, "success: API is up");
-        });
-        it('calls function to get DOI server status', function*() {
-            let ok = yield datasetDoi.doiServerStatusIsOK();
-            assert.isOk(ok);
-            assert(ok);
-        });
-        it('creates a test DOI - raw', function*() {
+if (SKIP == 'skip') {
+    console.log("NOTE: all doi tests are skipped to prevent Minting of test DOI's during routine testing")
+} else {
+    describe('Feature - Dataset: ', function () {
+        describe('DOI Request - ', function () {
+            it('checks DOI server status - raw', function*() {
 
-            this.timeout(60000); // test can take up to 6 seconds
+                let url = doiServiceUrl + "status";
+                let options = {
+                    method: 'GET',
+                    uri: url,
+                    resolveWithFullResponse: true
+                };
+                let response = yield request(options);
+                assert.isOk(response);
+                assert.isOk(response.statusCode);
+                assert.equal(response.statusCode, 200);
+                assert.isOk(response.body);
+                assert.equal(response.body, "success: API is up");
+            });
+            it('calls function to get DOI server status', function*() {
+                let ok = yield datasetDoi.doiServerStatusIsOK();
+                assert.isOk(ok);
+            });
+            it('creates a test DOI - raw', function*() {
 
-            assert.isOk(doiNamespace);
-            assert.isOk(doiUser);
-            assert.isOk(doiPassword);
-            assert.isOk(publicationURLBase);
-            assert.isOk(doiServiceUrl);
+                this.timeout(60000); // test can take up to 6 seconds
 
-            assert.isOk(dataset1);
-            assert.isOk(dataset1.id);
+                assert.isOk(doiNamespace);
+                assert.isOk(doiUser);
+                assert.isOk(doiPassword);
+                assert.isOk(publicationURLBase);
+                assert.isOk(doiServiceUrl);
 
-            let createCall = "shoulder/" + doiNamespace;
-            let url = doiServiceUrl + createCall;
+                assert.isOk(dataset1);
+                assert.isOk(dataset1.id);
 
-            let publisher = doiPublisher;
-            let targetUrl = publicationURLBase + dataset1.id;
-            let creator = "Test Author";
-            let title = "Test Title - Project: " + project.name;
-            let publicationYear = "2017";
-            let description = "This is a test project in Materials commons used for " +
-                "testing the the Mint command in the DOI API (REST) suite.";
+                let createCall = "shoulder/" + doiNamespace;
+                let url = doiServiceUrl + createCall;
 
-            let body = "_target: " + targetUrl + "\n"
-                + "datacite.creator: " + creator + "\n"
-                + "datacite.title: " + title + "\n"
-                + "datacite.publisher: " + publisher + "\n"
-                + "datacite.publicationyear: " + publicationYear + "\n"
-                + "datacite.description:" + description + "\n"
-                + "datacite.resourcetype: Dataset";
+                let publisher = doiPublisher;
+                let targetUrl = publicationURLBase + dataset1.id;
+                let creator = "Test Author";
+                let title = "Test Title - Project: " + project.name;
+                let publicationYear = "2017";
+                let description = "This is a test project in Materials commons used for " +
+                    "testing the the Mint command in the DOI API (REST) suite.";
 
-            let options = {
-                method: 'POST', // POST = Mint operation
-                body: body,
-                uri: url,
-                auth: {
-                    user: doiUser,
-                    pass: doiPassword,
-                    sendImmediately: false
-                },
-                headers: {'Content-Type': 'text/plain'}
-            };
+                let body = "_target: " + targetUrl + "\n"
+                    + "datacite.creator: " + creator + "\n"
+                    + "datacite.title: " + title + "\n"
+                    + "datacite.publisher: " + publisher + "\n"
+                    + "datacite.publicationyear: " + publicationYear + "\n"
+                    + "datacite.description:" + description + "\n"
+                    + "datacite.resourcetype: Dataset";
 
-            let response = yield request(options);
+                let options = {
+                    method: 'POST', // POST = Mint operation
+                    body: body,
+                    uri: url,
+                    auth: {
+                        user: doiUser,
+                        pass: doiPassword,
+                        sendImmediately: false
+                    },
+                    headers: {'Content-Type': 'text/plain'}
+                };
 
-            assert.isOk(response);
+                let response = yield request(options);
 
-            let matches = response.match(/doi:\S*/i);
-            let doi = matches[0];
+                assert.isOk(response);
 
-            // noinspection JSUnresolvedFunction
-            let status = yield r.table('datasets').get(dataset1.id).update({doi: doi});
-            // noinspection JSUnresolvedVariable
-            assert.equal(status.replaced, 1);
+                let matches = response.match(/doi:\S*/i);
+                let doi = matches[0];
 
-            let valOrError = yield datasets.getDataset(dataset1.id);
-            assert.isOk(valOrError);
-            assert.isOk(valOrError.val);
-            let dataset = valOrError.val;
-            assert.equal(dataset.doi, doi);
-        });
-        it("mints a new DOI and puts into dataset record", function*() {
+                // noinspection JSUnresolvedFunction
+                let status = yield r.table('datasets').get(dataset1.id).update({doi: doi});
+                // noinspection JSUnresolvedVariable
+                assert.equal(status.replaced, 1);
 
-            this.timeout(60000); // test can take up to 6 seconds
+                let valOrError = yield datasets.getDataset(dataset1.id);
+                assert.isOk(valOrError);
+                assert.isOk(valOrError.val);
+                let dataset = valOrError.val;
+                assert.equal(dataset.doi, doi);
+            });
+            it("mints a new DOI and puts into dataset record", function*() {
 
-            let creator = "Test Author";
-            let title = "Test Title - With Project: " + project.name;
-            let publicationYear = "2017";
-            let description = "This is a test project in Materials commons used for " +
-                "testing the the Mint command in the DOI API (REST) suite.";
+                this.timeout(60000); // test can take up to 6 seconds
 
-            let optionalArgs = {
-                description: description
-            };
+                let creator = "Test Author";
+                let title = "Test Title - With Project: " + project.name;
+                let publicationYear = "2017";
+                let description = "This is a test project in Materials commons used for " +
+                    "testing the the Mint command in the DOI API (REST) suite.";
 
-            let valOrError =
-                yield datasetDoi.doiMint(dataset2.id, title, creator, publicationYear, optionalArgs);
-            assert.isOk(valOrError);
-            assert.isOk(valOrError.val);
-            let dataset = valOrError.val;
-            assert.isOk(dataset.doi);
-            let doi = dataset.doi;
-            assert.isTrue(doi.startsWith(doiNamespace));
+                let optionalArgs = {
+                    description: description
+                };
 
-            // https://doi.test.datacite.org/clients/UMICH.MC/dois/10.33587%2Fcgsv-cj17
-            let link = yield datasetDoi.doiGetUserInterfaceLink(dataset2.id);
-            console.log(link);
-            let expectedLink = doiUserInterfaceUrl + doi.substring("doi:".length);
-            assert.equal(link, expectedLink);
+                let valOrError =
+                    yield datasetDoi.doiMint(dataset2.id, title, creator, publicationYear, optionalArgs);
+                assert.isOk(valOrError);
+                assert.isOk(valOrError.val);
+                let dataset = valOrError.val;
+                assert.isOk(dataset.doi);
+                let doi = dataset.doi;
+                assert.isTrue(doi.startsWith(doiNamespace));
 
-            let metadata = yield datasetDoi.doiGetMetadata(dataset2.id);
-            assert.isOk(metadata);
-            assert.isOk(metadata.success);
-            assert.equal(metadata.success, doi);
+                // https://doi.test.datacite.org/clients/UMICH.MC/dois/10.33587%2Fcgsv-cj17
+                let link = yield datasetDoi.doiGetUserInterfaceLink(dataset2.id);
+                console.log(link);
+                let expectedLink = doiUserInterfaceUrl + doi.substring("doi:".length);
+                assert.equal(link, expectedLink);
 
-            let target = metadata['_target'];
-            let expected_target = publicationURLBase + dataset2.id;
-            assert.equal(target, expected_target);
+                let metadata = yield datasetDoi.doiGetMetadata(dataset2.id);
+                assert.isOk(metadata);
+                assert.isOk(metadata.success);
+                assert.equal(metadata.success, doi);
+
+                let target = metadata['_target'];
+                let expected_target = publicationURLBase + dataset2.id;
+                assert.equal(target, expected_target);
+            });
         });
     });
-});
+}
