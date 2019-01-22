@@ -3,7 +3,7 @@
 set_locations() {
     BASE="$HOME/workspace/src/github.com/materials-commons/materialscommons.org/backend/scripts"
     BACKEND="$HOME/workspace/src/github.com/materials-commons/materialscommons.org/backend"
-    PYTHON_API_DIR="$HOME/workspace/src/github.com/materials-commons/mcapi/python"
+    PYTHON_API_DIR="$HOME/workspace/src/github.com/materials-commons/mcapi/"
 }
 
 update_python_api() {
