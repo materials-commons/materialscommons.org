@@ -6,6 +6,7 @@ const program = require('commander');
 const Promise = require("bluebird");
 const fsa = Promise.promisifyAll(require("fs"));
 const achiver = require('archiver');
+const fs = require('fs');
 
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const zipFileUtils = require('../servers/lib/zipFileUtils.js');
@@ -98,6 +99,11 @@ function* publishDatasetZipFile(r, datasetId) {
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
         console.log("full path and filename: ", fillPathAndFilename);
+        if (fs.existsSync()) {
+            return new Promise(function(resolve) {
+                resolve();
+            });
+        }
 
         let ds2dfEntries = yield r.db('materialscommons').table('dataset2datafile')
             .getAll(datasetId, {index: 'dataset_id'}).coerceTo('array');
