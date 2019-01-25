@@ -44,7 +44,7 @@
             <a class="always-white"
                href="https://github.com/materials-commons/materialscommons.org/wiki/Help"
                target="_blank">
-                <i class="fa fa-fw fa-question-circle"></i>
+                Help
             </a>
         </div>
         <span flex="5"></span>
@@ -54,7 +54,7 @@
                 <md-button ng-click="$ctrl.loginOrRegister()">
                     Login/Register
                 </md-button>
-                <md-menu-content style="min-height: 350px" />  <!-- empty content suppresses error message in log-->
+                <md-menu-content style="min-height: 350px"/>  <!-- empty content suppresses error message in log-->
             </md-menu>
             <md-menu ng-if="$ctrl.isAuthenticated">
                 <md-button ng-click="$mdMenu.open($event)">
