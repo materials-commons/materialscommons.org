@@ -1,5 +1,8 @@
 # Release Notes
 
+## Jan 2019
+- :start: **Improvement:** Issue #1310 Make ? To "HELP" in Navbar
+
 ## Nov 2018
 - :star: **Beta:** Globus for Upload/Download without login.
 - :star: **Beta:** ETL modified to work from files already uploaded to Project.
