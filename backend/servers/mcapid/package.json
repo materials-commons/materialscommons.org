@@ -1,30 +1,26 @@
 {
   "author": "YOU <YOU@example.com>",
   "name": "mcapid",
-  "description": "API server for materials commons",
+  "description": "API server for MaterialsCommons",
   "version": "0.1.0",
   "engines": {
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "actionhero": "18.1.2",
-    "fakeredis": "latest",
+    "actionhero": "19.1.1",
+    "ws": "latest",
     "ioredis": "latest",
-    "joi": "^13.1.2",
-    "ws": "latest"
+    "winston": "latest"
   },
   "devDependencies": {
-    "cross-env": "latest",
-    "chai": "latest",
-    "dirty-chai": "latest",
-    "mocha": "latest",
+    "jest": "latest",
     "standard": "latest"
   },
   "scripts": {
     "start": "actionhero start",
     "actionhero": "actionhero",
     "pretest": "standard",
-    "test": "cross-env NODE_ENV=test mocha"
+    "test": "jest"
   },
   "standard": {
     "ignore": [
@@ -32,12 +28,15 @@
     ],
     "globals": [
       "describe",
-      "before",
+      "test",
+      "beforeAll",
       "beforeEach",
-      "after",
+      "afterAll",
       "afterEach",
-      "it",
       "expect"
     ]
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
