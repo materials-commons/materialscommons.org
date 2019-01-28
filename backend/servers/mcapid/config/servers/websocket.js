@@ -21,17 +21,17 @@ exports['default'] = {
 
         // websocket Server Options:
         server: {
-          // authorization: null,
-          // pathname:      '/primus',
-          // parser:        'JSON',
-          // transformer:   'websockets',
-          // plugin:        {},
-          // timeout:       35000,
-          // origins:       '*',
-          // methods:       ['GET','HEAD','PUT','POST','DELETE','OPTIONS'],
-          // credentials:   true,
-          // maxAge:        '30 days',
-          // exposed:       false,
+          authorization: null,
+          pathname:      '/ws',
+          parser:        'JSON',
+          transformer:   'websockets',
+          plugin:        {},
+          timeout:       35000,
+          origins:       '*',
+          methods:       ['GET','HEAD','PUT','POST','DELETE','OPTIONS'],
+          credentials:   true,
+          maxAge:        '30 days',
+          exposed:       false,
         },
 
         // websocket Client Options:
