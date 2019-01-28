@@ -1,18 +1,15 @@
-const {Action, api} = require('actionhero');
+const {Action} = require('actionhero');
 const templates = require('../lib/dal/templates');
 
-
-module.exports.allTemplatesPublic = class TopViewedPublishedDatasetsAction extends Action {
+module.exports.GetAllPublicTemplatesAction = class GetAllPublicTemplatesAction extends Action {
     constructor() {
         super();
-        this.name = 'allTemplatesPublic';
-        this.description = 'Returns all public templages';
+        this.name = 'getAllPublicTemplates';
+        this.description = 'Returns all public templates';
         this.do_not_authenticate = true;
     }
 
     async run({response}) {
-        api.log("Call to get all templates",'info');
         response.data = await templates.getAllTemplates();
-        api.log("Results of get all templates",'info',response.data.length);
     }
 };
