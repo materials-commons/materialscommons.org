@@ -20,7 +20,7 @@
     "start": "actionhero start",
     "actionhero": "actionhero",
     "pretest": "standard",
-    "test": "jest"
+    "jtest": "jest"
   },
   "standard": {
     "ignore": [
