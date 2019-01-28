@@ -26,7 +26,7 @@ exports['default'] = {
           parser:        'JSON',
           transformer:   'websockets',
           plugin:        {},
-          timeout:       35000,
+            // timeout:       35000,
           origins:       '*',
           methods:       ['GET','HEAD','PUT','POST','DELETE','OPTIONS'],
           credentials:   true,
