@@ -6,6 +6,7 @@
 - :star: **Improvement:** Issue #1313 Show a single list of projects (rather than 2 lists depending on owner/member)
 - :star: **Improvement:** Issue #1281 Cleaned up help on login page to reference materials commons rather than the projects site
 - :star: **Improvement:** Issue #1280 Allow users to choose which page to login to (projects or published data)
+- :star: **Improvement:** Issue #1284 Allow clicking outside of dialog to close it
 
 ## Nov 2018
 - :star: **Beta:** Globus for Upload/Download without login.
