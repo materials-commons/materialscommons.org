@@ -21,6 +21,7 @@ class MCFilesTableComponentController {
             controller: ShowFileDialogController,
             multiple: true,
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 file: file
             }

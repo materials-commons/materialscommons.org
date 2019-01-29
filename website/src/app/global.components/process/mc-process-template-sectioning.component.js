@@ -67,7 +67,7 @@ class MCProcessTemplateSectioningComponentController {
                             this.process.input_samples = selected.samples;
                             this.mcprojstore.updateCurrentProcess(() => this.process).then(
                                 () => this.mcbus.send('EDGE$ADD', {samples: samples, process: this.process})
-                            )
+                            );
                             this.navbarOnChange.fireChange();
                             if (this.onChange) {
                                 this.onChange();
@@ -130,6 +130,7 @@ class MCProcessTemplateSectioningComponentController {
             controller: AddMultipleSectionsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 projectId: this.projectId,
                 experimentId: this.experimentId,
@@ -137,7 +138,7 @@ class MCProcessTemplateSectioningComponentController {
             }
         }).then(
             (samples) => this.process.output_samples = this.process.output_samples.concat(samples)
-        )
+        );
     }
 
     filterOutputSamples() {
@@ -161,7 +162,7 @@ class AddMultipleSectionsDialogController {
         this.$mdDialog = $mdDialog;
         this.samplesAPI = samplesAPI;
         this.toast = toast;
-        this.nameTemplate = "";
+        this.nameTemplate = '';
         this.count = 2;
     }
 
@@ -173,7 +174,7 @@ class AddMultipleSectionsDialogController {
 
         let samplesToAdd = [];
         for (let i = 0; i < this.count; i++) {
-            let name = this.nameTemplate.replace("$INDEX", "" + (i + 1));
+            let name = this.nameTemplate.replace('$INDEX', '' + (i + 1));
             samplesToAdd.push({name: name});
         }
 

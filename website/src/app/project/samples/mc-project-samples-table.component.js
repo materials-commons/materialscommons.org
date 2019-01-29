@@ -52,6 +52,7 @@ function MCProjectSamplesTableComponentController($mdDialog) {
             controller: ShowSampleDialogController,
             bindToController: true,
             multiple: true,
+            clickOutsideToClose: true,
             locals: {
                 sample: sample
             }

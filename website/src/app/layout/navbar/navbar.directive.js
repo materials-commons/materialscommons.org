@@ -43,7 +43,7 @@ class NavbarComponentController {
                             if (d.published) {
                                 this.published++;
                             }
-                        })
+                        });
                     }
                 });
         });
@@ -65,7 +65,7 @@ class NavbarComponentController {
     }
 
     buildDemoProject() {
-        this.blockUI.start("Building demo project (this may take a few seconds)...");
+        this.blockUI.start('Building demo project (this may take a few seconds)...');
         this.demoProjectService.buildDemoProject(this.User.attr().email).then(
             (p) => {
                 this.mcprojstore.addProject(p);
@@ -91,7 +91,7 @@ class NavbarComponentController {
 
     logout() {
         this.User.setAuthenticated(false);
-        this.user = "";
+        this.user = '';
         this.isAdmin = false;
         this.isBetaUser = false;
         this.isAuthenticated = this.User.isAuthenticated();
@@ -130,7 +130,8 @@ class NavbarComponentController {
             templateUrl: 'app/modals/switch-user-dialog.html',
             controller: MCSwitchUserDialogController,
             controllerAs: '$ctrl',
-            bindToController: true
+            bindToController: true,
+            clickOutsideToClose: true,
         });
     }
 }
@@ -142,7 +143,7 @@ class MCSwitchUserDialogController {
         this.$mdDialog = $mdDialog;
         this.toast = toast;
         this.mcprojstore = mcprojstore;
-        this.email = "";
+        this.email = '';
     }
 
     done() {

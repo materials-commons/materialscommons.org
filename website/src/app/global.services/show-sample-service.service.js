@@ -10,6 +10,7 @@ class ShowSampleService {
             controllerAs: '$ctrl',
             controller: ShowSampleDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 sample: sample
             }

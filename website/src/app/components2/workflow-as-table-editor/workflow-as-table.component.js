@@ -7,7 +7,7 @@ class MCWorkflowAsTableComponentController {
             headers: [],
             editTable: false,
             samplesMarked: false,
-        }
+        };
     }
 
     $onInit() {
@@ -20,6 +20,7 @@ class MCWorkflowAsTableComponentController {
             controller: EditSampleDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 sample: sample
             }
@@ -71,6 +72,7 @@ class MCWorkflowAsTableComponentController {
             controller: EditSampleProcessDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 sample: sample,
                 process: process
@@ -109,13 +111,13 @@ class EditSampleDialogController {
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
         this.headers = [
-            "Heat Treatment",
-            "SEM",
-            "Low Cycle Fatigue",
-            "EBSD",
-            "TEM",
-            "Cogging",
-            "TEM",
+            'Heat Treatment',
+            'SEM',
+            'Low Cycle Fatigue',
+            'EBSD',
+            'TEM',
+            'Cogging',
+            'TEM',
         ];
 
         this.files = [

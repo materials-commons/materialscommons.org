@@ -18,6 +18,7 @@ class SidenavGlobusService {
                 controller: GlobusDownloadDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
+            clickOutsideToClose: true,
                 locals: {
                     project: project,
                 }
@@ -36,6 +37,7 @@ class SidenavGlobusService {
                 controller: GlobusUploadDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
+            clickOutsideToClose: true,
                 locals: {
                     project: project,
                 }
@@ -47,7 +49,8 @@ class SidenavGlobusService {
         return this.$mdDialog.show({
             templateUrl: 'app/modals/globus_id_missing.html',
             controller: NoGlobusIdDialogController,
-            controllerAs: '$ctrl'
+            controllerAs: '$ctrl',
+            clickOutsideToClose: true,
         });
     }
 
@@ -58,6 +61,7 @@ class SidenavGlobusService {
                 controller: GlobusUploadStatusDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
+            clickOutsideToClose: true,
                 locals: {
                     project: project,
                 }

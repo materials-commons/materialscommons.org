@@ -38,7 +38,8 @@ class MCExperimentDatasetsComponentController {
             templateUrl: 'app/modals/new-dataset-dialog.html',
             controller: NewExperimentDatasetDialogController,
             controllerAs: '$ctrl',
-            bindingToController: true
+            bindingToController: true,
+            clickOutsideToClose: true,
         }).then(
             (dataset) => {
                 this.datasetsAPI.getDatasetsForExperiment(this.projectId, this.experimentId)

@@ -16,6 +16,7 @@ class SampleLinkerService {
             controller: LinkFilesToSampleController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: true,
             locals: {
                 sample: sample,
@@ -30,6 +31,7 @@ class SampleLinkerService {
             controller: LinkSamplesToFileController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: true,
             locals: {
                 samples: samples,

@@ -11,6 +11,7 @@ class MCShowService {
             controllerAs: '$ctrl',
             controller: CommonDoneDismissDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: multiple,
             locals: {
                 sample: sample
@@ -24,6 +25,7 @@ class MCShowService {
             controller: MCProcessDetailsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: multiple,
             locals: {
                 process: process
@@ -37,6 +39,7 @@ class MCShowService {
             controller: CommonDoneDismissDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: multiple,
             locals: {
                 process: process
@@ -50,6 +53,7 @@ class MCShowService {
             controller: CommonDoneDismissDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: multiple,
             locals: {
                 project: project
@@ -63,6 +67,7 @@ class MCShowService {
             controllerAs: '$ctrl',
             controller: CommonDoneDismissDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: multiple,
             locals: {
                 file: file
@@ -99,6 +104,7 @@ class MCShowService {
             controller: ChooseExistingSamplesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 samples: existingSamples
             }
@@ -131,7 +137,7 @@ class MCProcessDetailsDialogController {
     }
 
     deleteProcess() {
-        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.process.id)
+        this.workflowService.deleteNodeAndProcess(this.projectId, this.experimentId, this.process.id);
     }
 }
 
@@ -141,7 +147,7 @@ class ChooseExistingSamplesDialogController {
         this.$mdDialog = $mdDialog;
         this.state = {
             samples: angular.copy(this.samples)
-        }
+        };
     }
 
     done() {

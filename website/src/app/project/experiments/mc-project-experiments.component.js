@@ -17,6 +17,7 @@ function MCProjectExperimentsComponentController($mdDialog, $state) {
             templateUrl: 'app/modals/create-experiment-dialog.html',
             controller: CreateNewExperimentDialogController,
             controllerAs: 'ctrl',
+            clickOutsideToClose: true,
             bindToController: true
         }).then(
             (e) => {
@@ -46,7 +47,7 @@ class CreateNewExperimentDialogController {
         e.description = this.description;
         this.experimentsAPI.createForProject(this.projectID, e).then(
             (createdExperiment) => {
-                this.$mdDialog.hide(createdExperiment)
+                this.$mdDialog.hide(createdExperiment);
             },
             () => {
                 this.toast.error('Create experiment failed');

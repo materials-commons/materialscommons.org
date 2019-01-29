@@ -14,6 +14,7 @@ class SelectItemsService {
             controller: controller,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: true,
             locals: locals
         });
@@ -221,7 +222,7 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
             // list of files. Also reset the selected flag so the next time
             // the popup for files is used it doesn't show previously selected
             // items.
-            root.walk({strategy: 'pre'}, function (node) {
+            root.walk({strategy: 'pre'}, function(node) {
                 if (node.model.data.selected) {
                     node.model.data.selected = false;
                     if (node.model.data.otype === 'file') {

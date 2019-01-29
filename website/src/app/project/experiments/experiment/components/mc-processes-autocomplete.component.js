@@ -54,6 +54,7 @@ function MCProcessesAutocompleteComponentController(templates, $filter, $mdDialo
             controller: CreateProcessDialogController,
             controllerAs: 'ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             fullscreen: true
         }).then((p) => {
             ctrl.projectTemplates.push(p);

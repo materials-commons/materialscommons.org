@@ -55,6 +55,7 @@ class MCCommentsListComponentController {
             controller: AddEditDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
         });
     }
 
@@ -64,6 +65,7 @@ class MCCommentsListComponentController {
             controller: AddEditDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 text: previousText,
             }
