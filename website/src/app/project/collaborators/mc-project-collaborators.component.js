@@ -26,8 +26,24 @@ function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsA
         projectsAPI.getProjectAccessEntries(ctrl.project.id).then(
             users => {
                 ctrl.users = users;
+                ctrl.users.forEach(u => {
+                    let names = u.fullname.split(' ');
+                    if (!names.length) {
+                        u.lastName = '';
+                    } else {
+                        u.lastName = names[names.length - 1];
+                    }
+                });
                 ctrl.projectUsers = _.indexBy(ctrl.users, 'user_id');
                 mcapi('/users').success(function(users) {
+                    users.forEach(u => {
+                        let names = u.fullname.split(' ');
+                        if (!names.length) {
+                            u.lastName = '';
+                        } else {
+                            u.lastName = names[names.length - 1];
+                        }
+                    });
                     allUsers = users;
                     ctrl.usersAvailable = usersNotInProject();
                 }).jsonp();
