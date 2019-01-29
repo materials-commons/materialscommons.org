@@ -1,7 +1,8 @@
 # Release Notes
 
 ## Jan 2019
-- :start: **Improvement:** Issue #1310 Make ? To "HELP" in Navbar
+- :star: **Improvement:** Issue #1310 Change ? To "HELP" in Navbar
+- :star: **Improvement:** Issue #1299 Show Project Id on project description page
 
 ## Nov 2018
 - :star: **Beta:** Globus for Upload/Download without login.
