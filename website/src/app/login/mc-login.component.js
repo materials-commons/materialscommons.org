@@ -13,6 +13,7 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templ
     ctrl.password = "";
     ctrl.cancel = cancel;
     ctrl.login = login;
+    ctrl.whichSite = 'published';
 
     ////////////////////
 
@@ -22,11 +23,12 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templ
                 User.setAuthenticated(true, u);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
                 templates.getServerTemplates().then((t) => templates.set(t));
-                mcprojstore.reset().then(() => $state.go('data.home.top'));
+                let route = ctrl.whichSite == 'published' ? 'data.home.top' : 'projects.list';
+                mcprojstore.reset().then(() => $state.go(route));
                 mcbus.send('USER$LOGIN');
             })
             .error((reason) => {
-                ctrl.message = 'Incorrect Password orUsername!';
+                ctrl.message = 'Incorrect Password or Username!';
                 toast.error(reason.error);
             }).put({password: ctrl.password});
     }
