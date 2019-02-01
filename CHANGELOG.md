@@ -2,6 +2,7 @@
 
 ## Feb 2019
 - :star: **Improvement:** Issue #1315 Add sort to all columns in samples table, except experiment and modification time (We already group by experiment)
+- :boom: **Fixed:** Issue #1302 When creating a project level note for the first time the note wouldn't show up without doing a refresh
 
 ## Jan 2019
 - :star: **Improvement:** Issue #1310 Change ? To "HELP" in Navbar
