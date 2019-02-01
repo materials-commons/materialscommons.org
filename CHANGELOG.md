@@ -1,5 +1,8 @@
 # Release Notes
 
+## Feb 2019
+- :star: **Improvement:** Issue #1315 Add sort to all columns in samples table, except experiment and modification time (We already group by experiment)
+
 ## Jan 2019
 - :star: **Improvement:** Issue #1310 Change ? To "HELP" in Navbar
 - :star: **Improvement:** Issue #1299 Show Project Id on project description page
