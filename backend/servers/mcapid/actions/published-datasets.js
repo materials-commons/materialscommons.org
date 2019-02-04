@@ -206,3 +206,22 @@ module.exports.GetPopularTagsForPublishedDatasetsAction = class GetPopularTagsFo
         response.data = tags;
     }
 };
+
+module.exports.DownloadDatasetZipfileAction = class DownloadDatasetZipFileAction extends Action {
+    constructor() {
+        super();
+        this.name = 'downloadDatasetZipfile';
+        this.description = 'Returns the zipfile and updates the downloads count';
+        this.inputs = {
+            dataset_id: {
+                required: true
+            }
+        };
+    }
+
+    async run(data) {
+        const filepath = await dal.tryCatch(async() => await datasets.updataDownloadCountAndReturnFilePath(data.params.dataset_id));
+        data.connection.sendFile(filepath);
+        data.toRender = false;
+    }
+};

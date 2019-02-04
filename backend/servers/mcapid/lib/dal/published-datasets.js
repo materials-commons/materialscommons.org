@@ -2,6 +2,7 @@ const r = require('../../../shared/r');
 const run = require('./run');
 const commonQueries = require('../../../lib/common-queries');
 const processCommon = require('../common/process-common');
+const zipFileUtils = require('../../../lib/zipFileUtils');
 
 const getDataset = async(datasetId) => {
     let processesRql = commonQueries.processDetailsRql(r.db('mcpub').table('dataset2process')
@@ -178,6 +179,13 @@ const getMostPopularTagsForDatasets = async() => {
         .limit(20);
 };
 
+const updataDownloadCountAndReturnFilePath = async(datasetId) => {
+    let ds = await r.db('materialscommons').table('datasets').get(datasetId);
+    await r.db('materialscommons').table('datasets').get(datasetId)
+        .update({download_count: r.row('download_count').add(1).default(1)});
+    return zipFileUtils.fullPathAndFilename(ds);
+};
+
 module.exports = {
     getDataset,
     getTopViewedDatasets,
@@ -188,5 +196,6 @@ module.exports = {
     incrementViewForDataset,
     markDatasetAsUseful,
     unmarkDatasetAsUseful,
-    getMostPopularTagsForDatasets
+    getMostPopularTagsForDatasets,
+    updataDownloadCountAndReturnFilePath,
 };
