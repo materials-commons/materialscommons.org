@@ -125,7 +125,7 @@ module.exports.IncrementPublishedDatasetViewsAction = class IncrementPublishedDa
     constructor() {
         super();
         this.name = 'incrementPublishedDatasetViews';
-        this.description = 'Increments the published datasets view count';
+        this.description = 'Increments the published datasets view count and returns dataset';
         this.do_not_authenticate = true;
         this.inputs = {
             dataset_id: {
@@ -140,11 +140,11 @@ module.exports.IncrementPublishedDatasetViewsAction = class IncrementPublishedDa
 
     async run({response, params, request}) {
         let userId = params.user_id ? params.user_id : request.remoteIP;
-        const view = await dal.tryCatch(async() => await datasets.incrementViewForDataset(params.dataset_id, userId));
-        if (!view) {
+        const dataset = await dal.tryCatch(async() => await datasets.incrementViewForDataset(params.dataset_id, userId));
+        if (!dataset) {
             throw new Error(`Unable to update dataset ${params.dataset_id} view count`);
         }
-        response.data = view;
+        response.data = dataset;
     }
 };
 
@@ -173,20 +173,20 @@ module.exports.UpdatePublishedDatasetUsefulCountAction = class UpdatePublishedDa
     }
 
     async run({response, params}) {
-        let item;
+        let ds;
 
-        if (params.action == 'add') {
-            item = await dal.tryCatch(async() => datasets.markDatasetAsUseful(params.dataset_id, params.user_id));
+        if (params.action === 'add') {
+            ds = await dal.tryCatch(async() => datasets.markDatasetAsUseful(params.dataset_id, params.user_id));
         } else {
-            // params.action == 'delete'
-            item = await dal.tryCatch(async() => datasets.unmarkDatasetAsUseful(params.dataset_id, params.user_id));
+            // params.action === 'delete'
+            ds = await dal.tryCatch(async() => datasets.unmarkDatasetAsUseful(params.dataset_id, params.user_id));
         }
 
-        if (!item) {
-            throw new Error(`Unable to ${params.action == 'add' ? 'mark' : 'unmark'} dataset ${params.dataset_id} for user ${params.user_id}`);
+        if (!ds) {
+            throw new Error(`Unable to ${params.action === 'add' ? 'mark' : 'unmark'} dataset ${params.dataset_id} for user ${params.user_id}`);
         }
 
-        response.data = item;
+        response.data = ds;
     }
 };
 

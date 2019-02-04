@@ -139,19 +139,16 @@ function View(user_id, item_type, item_id) {
 
 const incrementViewForDataset = async(datasetId, userId) => {
     let views = await r.db('mcpub').table('view2item').getAll([userId, datasetId], {index: 'user_item'});
-    let view;
     if (views.length) {
         // Already an existing view
         let count = views[0].count + 1;
-        let result = await r.db('mcpub').table('view2item').get(views[0].id).update({count: count}, {returnChanges: 'always'});
-        view = result.changes[0].new_val;
+        await r.db('mcpub').table('view2item').get(views[0].id).update({count: count});
     } else {
         // New view, so create it
         let createView = new View(userId, 'dataset', datasetId);
-        let result = await r.db('mcpub').table('view2item').insert(createView, {returnChanges: 'always'});
-        view = result.changes[0].new_val;
+        await r.db('mcpub').table('view2item').insert(createView);
     }
-    return view;
+    return await getDataset(datasetId);
 };
 
 function Useful(user_id, item_type, item_id) {
@@ -164,14 +161,14 @@ function Useful(user_id, item_type, item_id) {
 }
 
 const markDatasetAsUseful = async(datasetId, userId) => {
-    let create = new Useful(userId, 'dataset', datasetId);
-    let result = await r.db('mcpub').table('useful2item').insert(create, {returnChanges: 'always'});
-    return result.changes[0].new_val;
+    let useful = new Useful(userId, 'dataset', datasetId);
+    await r.db('mcpub').table('useful2item').insert(useful);
+    return await getDataset(datasetId);
 };
 
 const unmarkDatasetAsUseful = async(datasetId, userId) => {
-    let result = await r.db('mcpub').table('useful2item').getAll([userId, dataset_id], {index: 'user_item'}).delete({returnChanges: 'always'});
-    return result.changes[0].old_val;
+    await r.db('mcpub').table('useful2item').getAll([userId, dataset_id], {index: 'user_item'}).delete();
+    return await getDataset(datasetId);
 };
 
 const getMostPopularTagsForDatasets = async() => {
