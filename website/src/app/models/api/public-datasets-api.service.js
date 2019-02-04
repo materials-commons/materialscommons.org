@@ -1,7 +1,6 @@
 class PublicDatasetsAPIService {
     /*@ngInject*/
-    constructor(publicAPIRoute, Restangular) {
-        this.publicAPIRoute = publicAPIRoute;
+    constructor(Restangular) {
         this.Restangular = Restangular;
     }
 
