@@ -5,6 +5,7 @@
 - :boom: **Fixed:** Issue #1302 When creating a project level note for the first time the note wouldn't show up without doing a refresh
 - :boom: **Fixed:** Issue #1360 Files added directly to a dataset were not showing up
 - :boom: **Fixed:** Issue #1361 The view button in the workflow for a published dataset was not doing anything
+- :boom: **Fixed:** Issue #1362 Published datasets not showing file count
 
 ## Jan 2019
 - :star: **Improvement:** Issue #1310 Change ? To "HELP" in Navbar
