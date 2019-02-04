@@ -144,7 +144,13 @@ async function getFilesCountForDataset(datasetId) {
 
     let sampleProcessIds = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).pluck('sample_id');
     let sampleIds = sampleProcessIds.map(d => d.sample_id);
-    return await getFileCountsForProcessesAndSamples(datasetId, processIds, sampleIds);
+    let samplesAndProcessesFilesCount = await getFileCountsForProcessesAndSamples(datasetId, processIds, sampleIds);
+    if (samplesAndProcessesFilesCount == 0) {
+        let files = await getDatasetFiles(datasetId);
+        return files.length;
+    }
+
+    return samplesAndProcessesFilesCount;
 }
 
 async function getFileCountsForProcessesAndSamples(datsetId, processIds, sampleIds) {
