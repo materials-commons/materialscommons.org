@@ -172,7 +172,7 @@ const unmarkDatasetAsUseful = async(datasetId, userId) => {
 };
 
 const getMostPopularTagsForDatasets = async() => {
-    return await r.table('tags').eqJoin('id', r.table('tag2dataset'), {index: 'tag'}).zip()
+    return await r.db('mcpub').table('tags').eqJoin('id', r.db('mcpub').table('tag2dataset'), {index: 'tag'}).zip()
         .group(r.row('tag')).count().ungroup().orderBy(r.desc('reduction'))
         .map((doc) => ({tag: doc('group'), count: doc('reduction')}))
         .limit(20);
