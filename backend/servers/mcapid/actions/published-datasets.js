@@ -1,6 +1,7 @@
-const {Action} = require('actionhero');
+const {Action, api} = require('actionhero');
 const datasets = require('../lib/dal/published-datasets');
 const dal = require('../lib/dal');
+const fs = require('fs');
 
 module.exports.GetTopViewedPublishedDatasetsAction = class GetTopViewedPublishedDatasetsAction extends Action {
     constructor() {
@@ -221,7 +222,13 @@ module.exports.DownloadDatasetZipfileAction = class DownloadDatasetZipFileAction
 
     async run(data) {
         const filepath = await dal.tryCatch(async() => await datasets.updataDownloadCountAndReturnFilePath(data.params.dataset_id));
-        data.connection.sendFile(filepath);
+        if (!filepath) {
+            throw new Error(`Unable to retrieve zip file for dataset ${data.params.dataset_id}`);
+        }
+
+        let fstream = fs.createReadStream(filepath);
+        data.connection.rawConnection.responseHeaders.push(['Content-Disposition', 'attachment; filename=dataset.zip']);
+        api.servers.servers.web.sendFile(data.connection, null, fstream, 'application/zip');
         data.toRender = false;
     }
 };

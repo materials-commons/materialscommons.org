@@ -11,9 +11,8 @@ class MCDatasetPropertyFilesComponentController {
     }
 
     urlForDownload() {
-        const datasetId = this.dataset.id;
-        const baseURL = `${this.$window.location.protocol}//${this.$window.location.hostname}:${this.$window.location.port}/api`;
-        return `${baseURL}/pub/datasets/download/${datasetId}?apikey=${this.apikey}`;
+        const baseURL = `${this.$window.location.protocol}//${this.$window.location.hostname}:${this.$window.location.port}/api/v3`;
+        return `${baseURL}/downloadDatasetZipfile?apikey=${this.apikey}&dataset_id=${this.dataset.id}`;
     }
 
     filenameForDownload() {
