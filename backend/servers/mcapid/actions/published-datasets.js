@@ -176,10 +176,10 @@ module.exports.UpdatePublishedDatasetUsefulCountAction = class UpdatePublishedDa
         let ds;
 
         if (params.action === 'add') {
-            ds = await dal.tryCatch(async() => datasets.markDatasetAsUseful(params.dataset_id, params.user_id));
+            ds = await dal.tryCatch(async() => await datasets.markDatasetAsUseful(params.dataset_id, params.user_id));
         } else {
             // params.action === 'delete'
-            ds = await dal.tryCatch(async() => datasets.unmarkDatasetAsUseful(params.dataset_id, params.user_id));
+            ds = await dal.tryCatch(async() => await datasets.unmarkDatasetAsUseful(params.dataset_id, params.user_id));
         }
 
         if (!ds) {
@@ -199,7 +199,7 @@ module.exports.GetPopularTagsForPublishedDatasetsAction = class GetPopularTagsFo
     }
 
     async run({response}) {
-        const tags = dal.tryCatch(async() => datasets.getMostPopularTagsForDatasets());
+        const tags = await dal.tryCatch(async() => await datasets.getMostPopularTagsForDatasets());
         if (!tags) {
             throw new Error(`Unable to retrieve most popular tags for published datasets`);
         }
