@@ -1,11 +1,11 @@
 class PublicTagsAPIService {
-    constructor(publicAPIRoute) {
-        this.publicAPIRoute = publicAPIRoute;
+    constructor(Restangular) {
+        this.Restangular = Restangular;
     }
 
     getPopularTags() {
-        return this.publicAPIRoute('tags').one('popular').getList().then(
-            (tags) => tags.plain()
+        return this.Restangular.one('v3').one('getPopularTagsForPublishedDatasets').customPOST().then(
+            (tags) => tags.plain().data
         );
     }
 }
