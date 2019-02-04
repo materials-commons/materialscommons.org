@@ -1,6 +1,6 @@
 class MCDatasetWorkflowToolbarComponentController {
     /*@ngInject*/
-    constructor(mcbus, mcstate, publicDatasetsAPI, mcshow, $timeout) {
+    constructor(mcbus, mcstate, publicDatasetsAPI, mcshow, $timeout, $stateParams) {
         this.mcbus = mcbus;
         this.mcstate = mcstate;
         this.publicDatasetsAPI = publicDatasetsAPI;
@@ -9,6 +9,7 @@ class MCDatasetWorkflowToolbarComponentController {
         this.showingWorkflowGraph = true;
         this.myName = 'MCDatasetWorkflowToolbar';
         this.isMaximized = false;
+        this.$stateParams = $stateParams;
     }
 
     $onInit() {
@@ -24,7 +25,7 @@ class MCDatasetWorkflowToolbarComponentController {
     }
 
     showSelectedProcess() {
-        this.publicDatasetsAPI.getDatasetProcess(this.dataset.id, this.selectedProcess.id).then(
+        this.publicDatasetsAPI.getDatasetProcess(this.$stateParams.dataset_id, this.selectedProcess.id).then(
             p => this.mcshow.processDetailsDialogRO(p, false)
         );
     }
