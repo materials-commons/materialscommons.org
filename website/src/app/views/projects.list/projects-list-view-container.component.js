@@ -36,7 +36,8 @@ class MCProjectsListViewContainerComponentController {
             templateUrl: 'app/modals/create-project-dialog.html',
             controller: CreateNewProjectDialogController,
             controllerAs: '$ctrl',
-            bindToController: true
+            bindToController: true,
+            clickOutsideToClose: true,
         }).then(
             () => this._getProjectsForUser()
         );

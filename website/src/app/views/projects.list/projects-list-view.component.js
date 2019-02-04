@@ -4,8 +4,7 @@ class MCProjectsListViewComponentController {
         this.state = {
             query: '',
             user: null,
-            myProjects: [],
-            joinedProjects: [],
+            projects: [],
         };
     }
 
@@ -15,9 +14,7 @@ class MCProjectsListViewComponentController {
         }
 
         if (changes.projects) {
-            let projects = changes.projects.currentValue;
-            this.state.myProjects = projects.filter(p => p.owner === this.state.user.email);
-            this.state.joinedProjects = projects.filter(p => p.owner !== this.state.user.email);
+            this.state.projects = angular.copy(changes.projects.currentValue);
         }
     }
 

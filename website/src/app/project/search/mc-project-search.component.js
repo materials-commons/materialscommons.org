@@ -73,6 +73,7 @@ function MCProjectSearchComponentController(mcapi, $stateParams, mcfile, $state,
             controllerAs: '$ctrl',
             controller: ShowSampleDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 sample: sample
             }

@@ -46,6 +46,7 @@ class TemplateUnitsService {
             controllerAs: '$ctrl',
             bindToController: true,
             multiple: true,
+            clickOutsideToClose: true,
             locals: {
                 unitTypes: this.unitTypes
             }

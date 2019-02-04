@@ -33,6 +33,7 @@ class MCDatasetOverviewComponentController {
             controller: ShowUsefulOtherDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 dataset: dataset
             }

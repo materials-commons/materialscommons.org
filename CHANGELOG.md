@@ -1,7 +1,17 @@
 # Release Notes
 
+## Feb 2019
+- :star: **Improvement:** Issue #1315 Add sort to all columns in samples table, except experiment and modification time (We already group by experiment)
+- :boom: **Fixed:** Issue #1302 When creating a project level note for the first time the note wouldn't show up without doing a refresh
+
 ## Jan 2019
-- :start: **Improvement:** Issue #1310 Make ? To "HELP" in Navbar
+- :star: **Improvement:** Issue #1310 Change ? To "HELP" in Navbar
+- :star: **Improvement:** Issue #1299 Show Project Id on project description page
+- :star: **Improvement:** Issue #1313 Show a single list of projects (rather than 2 lists depending on owner/member)
+- :star: **Improvement:** Issue #1281 Cleaned up help on login page to reference materials commons rather than the projects site
+- :star: **Improvement:** Issue #1280 Allow users to choose which page to login to (projects or published data)
+- :star: **Improvement:** Issue #1284 Allow clicking outside of dialog to close it
+- :star: **Improvement:** Issue #1301 Sort users on collaborators page by last name
 
 ## Nov 2018
 - :star: **Beta:** Globus for Upload/Download without login.

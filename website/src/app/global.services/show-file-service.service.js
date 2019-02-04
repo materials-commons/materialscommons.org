@@ -10,6 +10,7 @@ class ShowFileService {
             controllerAs: '$ctrl',
             controller: ShowFileDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: multiple,
             locals: {
                 file: file

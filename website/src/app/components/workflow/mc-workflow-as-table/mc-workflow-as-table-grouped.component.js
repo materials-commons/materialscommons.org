@@ -4,46 +4,46 @@ class MCWorkflowAsTableGroupedComponentController {
         this.$mdDialog = $mdDialog;
 
         this.headers = [
-            "Heat Treatment",
-            "Heat Treatment",
-            "SEM",
-            "SEM",
-            "Low Cycle Fatigue",
-            "EBSD",
-            "EBSD",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "TEM",
-            "TEM",
-            "Cogging",
-            "Cogging",
-            "Cogging",
-            "Tension",
-            "EBSD",
-            "TEM",
-            "Cogging",
-            "Tension",
-            "EBSD",
-            "TEM",
+            'Heat Treatment',
+            'Heat Treatment',
+            'SEM',
+            'SEM',
+            'Low Cycle Fatigue',
+            'EBSD',
+            'EBSD',
+            'Tension',
+            'EBSD',
+            'TEM',
+            'TEM',
+            'TEM',
+            'Cogging',
+            'Cogging',
+            'Cogging',
+            'Tension',
+            'EBSD',
+            'TEM',
+            'Cogging',
+            'Tension',
+            'EBSD',
+            'TEM',
         ];
 
         this.samples = [
             {
                 selected: false,
-                name: "Sample_1, Sample_2, ...",
+                name: 'Sample_1, Sample_2, ...',
                 processes: this.fillRandomProcesses(this.headers.length)
             },
 
             {
                 selected: false,
-                name: "Sample_8, Sample_ab, ...",
+                name: 'Sample_8, Sample_ab, ...',
                 processes: this.fillRandomProcesses(this.headers.length)
             },
 
             {
                 selected: false,
-                name: "EX1, EZ3, ...",
+                name: 'EX1, EZ3, ...',
                 processes: this.fillRandomProcesses(this.headers.length)
             },
         ];
@@ -68,6 +68,7 @@ class MCWorkflowAsTableGroupedComponentController {
             controller: EditGroupedSampleProcessDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 process: process
             }

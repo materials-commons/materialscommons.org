@@ -10,6 +10,7 @@ class ModifyProjectShortcutsService {
             controller: ModifyProjectShortcutsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 project: project,
             }

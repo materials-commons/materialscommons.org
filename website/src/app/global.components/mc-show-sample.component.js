@@ -5,7 +5,7 @@ class MCShowSampleComponentController {
         this.samplesAPI = samplesAPI;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
-        this.viewHeight = this.viewHeight ? this.viewHeight : "40vh";
+        this.viewHeight = this.viewHeight ? this.viewHeight : '40vh';
     }
 
     $onInit() {
@@ -13,7 +13,7 @@ class MCShowSampleComponentController {
             .then(
                 (sample) => this.processSample(sample),
                 () => this.toast.error('Unable to retrieve sample')
-            )
+            );
     }
 
     showProcess(process) {
@@ -23,6 +23,7 @@ class MCShowSampleComponentController {
             controller: ShowProcessDialogController,
             bindToController: true,
             multiple: true,
+            clickOutsideToClose: true,
             locals: {
                 process: process
             }

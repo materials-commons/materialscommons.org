@@ -24,7 +24,8 @@ class MCProjectsComponentController {
             templateUrl: 'app/modals/create-project-dialog.html',
             controller: CreateNewProjectDialogController,
             controllerAs: '$ctrl',
-            bindToController: true
+            bindToController: true,
+            clickOutsideToClose: true,
         }).then(
             (p) => this.mcprojstore.addProject(this.ProjectModel.fromJSON(p))
         );

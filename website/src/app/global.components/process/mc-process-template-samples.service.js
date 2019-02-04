@@ -37,9 +37,9 @@ class MCProcessTemplateSamplesService {
 
     updateSampleName(sample) {
         this.samplesAPI.updateSampleInExperiment(this.projectId, this.experimentId, this.process.id, {
-                id: sample.id,
-                name: sample.name
-            })
+            id: sample.id,
+            name: sample.name
+        })
             .then(
                 () => null,
                 () => this.toast.error('Unable to update sample name')
@@ -52,6 +52,7 @@ class MCProcessTemplateSamplesService {
             controller: AddMultipleSamplesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 projectId: this.projectId,
                 experimentId: this.experimentId,
@@ -59,7 +60,7 @@ class MCProcessTemplateSamplesService {
             }
         }).then(
             (samples) => this.process.output_samples = this.process.output_samples.concat(samples)
-        )
+        );
     }
 }
 

@@ -31,13 +31,8 @@
             </div>
             <div layout="column" flex>
                 <div layout-margin>
-                    <h3 class="md-title">My Projects ({{$ctrl.state.myProjects.length}}):</h3>
-                    <mc-projects-list projects="$ctrl.state.myProjects" query="$ctrl.state.query" style="margin:0"></mc-projects-list>
-                </div>
-                <div layout-margin>
-                    <h3 class="md-title">Projects I'm a member of ({{$ctrl.state.joinedProjects.length}}):</h3>
-                    <mc-projects-list projects="$ctrl.state.joinedProjects" query="$ctrl.state.query"
-                                      style="margin:0"></mc-projects-list>
+                    <h3 class="md-title">Projects ({{$ctrl.state.projects.length}}):</h3>
+                    <mc-projects-list projects="$ctrl.state.projects" query="$ctrl.state.query" style="margin:0"></mc-projects-list>
                 </div>
                 <div style="margin-bottom: 20px"><br/></div>
             </div>

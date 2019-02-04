@@ -6,6 +6,7 @@
             </div>
             <div class="row">
                 <div class="login-splash">
+                    <h3>Login</h3>
                     <div class="row">
                         <input ng-model="$ctrl.userLogin" name="email" required="" class="form-control"
                                placeholder="Email..."
@@ -23,7 +24,18 @@
                     <p style="color:red;" ng-if="$ctrl.message !== ''">
                         <b>{{$ctrl.message}}</b>
                     </p>
-                    <br>
+
+                    <h5><b>Goto Site:</b></h5>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label>
+                            <input type="radio" name="options" id="option1" ng-model="$ctrl.whichSite" value="published">
+                            Published Data
+                        </label>
+                        <label>
+                            <input type="radio" name="options" id="option2" ng-model="$ctrl.whichSite" value="projects">
+                            My Projects
+                        </label>
+                    </div>
 
                     <div class="row">
                         <button class="btn btn-primary btn-lg" style="width: 100%;" ng-click="$ctrl.login()">
@@ -46,11 +58,11 @@
                         </a>
                     </div>
                     <div class="row margin-top-10">
-                        <span>An <a href="https://github.com/materials-commons/materialscommons.org/wiki/Overview"
-                              target="_blank">overview</a> of the Materials Commons sites</span> <br />
-                        <span>and
+                        <span>See an <a href="https://github.com/materials-commons/materialscommons.org/wiki/Overview"
+                                        target="_blank">overview</a> of Materials Commons</span> <br/>
+                        <span>and view
                         <a href="https://github.com/materials-commons/materialscommons.org/wiki/Help"
-                           target="_blank">help</a> on (this) the project site.</span>
+                           target="_blank">help</a> about the site.</span>
                     </div>
                 </div>
             </div>

@@ -85,6 +85,7 @@ class MCDatasetDetails2ComponentController {
             controllerAs: '$ctrl',
             controller: SetDatasetDoiDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 dataset: this.state.dataset
             }
@@ -102,6 +103,7 @@ class MCDatasetDetails2ComponentController {
             controllerAs: '$ctrl',
             controller: PublishDatasetDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 dataset: this.state.dataset
             }
@@ -114,6 +116,7 @@ class MCDatasetDetails2ComponentController {
             controllerAs: '$ctrl',
             controller: UnpublishDatasetDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 dataset: this.state.dataset
             }

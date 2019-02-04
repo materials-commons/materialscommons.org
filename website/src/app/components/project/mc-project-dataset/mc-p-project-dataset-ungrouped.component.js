@@ -57,6 +57,7 @@ class MCPProjectDatasetUngroupedComponentController {
             controller: EditSampleDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 sample: sample
             }
@@ -69,6 +70,7 @@ class MCPProjectDatasetUngroupedComponentController {
             controller: EditSampleProcessDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 sample: sample,
                 process: process

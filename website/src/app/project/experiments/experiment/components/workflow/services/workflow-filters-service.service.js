@@ -14,6 +14,7 @@ class WorkflowFiltersService {
                     controller: FitlerBySamplesDialogController,
                     controllerAs: '$ctrl',
                     bindToController: true,
+                    clickOutsideToClose: true,
                     locals: {
                         samples: samples
                     }
@@ -30,7 +31,7 @@ class FitlerBySamplesDialogController {
     constructor($mdDialog, mcshow) {
         this.$mdDialog = $mdDialog;
         this.mcshow = mcshow;
-        this.filterSamplesListBy = "";
+        this.filterSamplesListBy = '';
         this.selectedSamples = [];
         this.allSamples = angular.copy(this.samples);
     }

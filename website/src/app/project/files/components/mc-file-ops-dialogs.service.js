@@ -10,6 +10,7 @@ class MCFileOpsDialogsService {
             controller: RenameDirDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 dirName: dirName
             }
@@ -22,6 +23,7 @@ class MCFileOpsDialogsService {
             controller: CreateDirDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 parentDirName: parentDirName
             }
@@ -55,6 +57,7 @@ class MCFileOpsDialogsService {
             controller: UploadUsingGlobusDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 path: path,
             }
@@ -68,6 +71,7 @@ class MCFileOpsDialogsService {
             controller: DownloadUsingGlobusDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 path: path,
             }

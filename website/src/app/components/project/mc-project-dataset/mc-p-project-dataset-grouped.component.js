@@ -68,6 +68,7 @@ class MCPProjectDatasetGroupedComponentController {
             controller: EditGroupedSampleProcessDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 process: process
             }

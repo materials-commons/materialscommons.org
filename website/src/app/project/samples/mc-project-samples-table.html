@@ -1,18 +1,18 @@
 <div>
     <md-table-container>
         <table md-table>
-            <thead md-head style="margin-bottom: 40px; margin-top: 40px">
+            <thead md-head style="margin-bottom: 40px; margin-top: 40px" md-order="$ctrl.sortOrder">
             <tr md-row>
-                <th md-column>Sample</th>
+                <th md-column md-order-by="name">Sample</th>
                 <th md-column>Experiment</th>
                 <th md-column>Modified</th>
-                <th md-column># Files</th>
-                <th md-column># Processes</th>
+                <th md-column md-order-by="files_count"># Files</th>
+                <th md-column md-order-by="processes_count"># Processes</th>
             </tr>
             </thead>
             <tbody md-body style="margin-top: 20px">
             <tr md-row class="md-row-hover pointer"
-                ng-repeat="sample in $ctrl.allSamples | filter:$ctrl.filterBy | orderBy:['experiment', 'name']">
+                ng-repeat="sample in $ctrl.allSamples | filter:$ctrl.filterBy | orderBy:['experiment', $ctrl.sortOrder]">
                 <td md-cell>
                     <a class="md-primary" ng-click="$ctrl.showSample(sample)">{{sample.name}}</a>
                 </td>

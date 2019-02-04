@@ -73,6 +73,7 @@ class MCTemplateBuilderComponentController {
             controller: ViewTemplateDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: true,
             locals: {
                 template: template
@@ -101,6 +102,7 @@ class MCTemplateBuilderComponentController {
                 controllerAs: '$ctrl',
                 bindToController: true,
                 multiple: true,
+                clickOutsideToClose: true,
                 locals: {
                     templates: templates
                 }

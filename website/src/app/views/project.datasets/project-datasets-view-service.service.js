@@ -14,6 +14,7 @@ class ProjectDatasetsViewService {
                 controller: CreateNewDatasetDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
+                clickOutsideToClose: true,
                 locals: {
                     samples: samples,
                 }

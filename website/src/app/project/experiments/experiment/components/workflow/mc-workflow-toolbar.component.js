@@ -2,7 +2,7 @@ class MCWorkflowToolbarComponentController {
     /*@ngInject*/
     constructor(workflowService, workflowFiltersService, $timeout, $mdDialog, $stateParams, mcstate, mcbus,
                 mcshow, mcprojstore) {
-        this.myName = "mcWorkflowToolbar";
+        this.myName = 'mcWorkflowToolbar';
         this.workflowService = workflowService;
         this.workflowFiltersService = workflowFiltersService;
         this.$timeout = $timeout;
@@ -20,7 +20,6 @@ class MCWorkflowToolbarComponentController {
         this.tooltipsEnabled = true;
     }
 
-
     $onInit() {
         this.unsubscribe = this.mcprojstore.subscribe(this.mcprojstore.OTPROCESS, this.mcprojstore.EVSET, (process) => {
             this.selectedProcess = process;
@@ -36,23 +35,23 @@ class MCWorkflowToolbarComponentController {
     }
 
     startIntro() {
-        console.log('element', document.getElementById("wf-step-1"));
+        console.log('element', document.getElementById('wf-step-1'));
         introJs().addSteps([
             {
-                element: document.getElementById("wf-step-1"),
-                intro: "The build tab is where you will choose process templates to build out your workflow.",
+                element: document.getElementById('wf-step-1'),
+                intro: 'The build tab is where you will choose process templates to build out your workflow.',
             },
             {
-                element: document.getElementById("wf-step-2"),
-                intro: "The details tab allows you to add and view information about a process node. You can also add samples if your node is a create samples node."
+                element: document.getElementById('wf-step-2'),
+                intro: 'The details tab allows you to add and view information about a process node. You can also add samples if your node is a create samples node.'
             },
             {
-                element: document.getElementById("wf-step-3"),
-                intro: "You can apply filters to your graph to temporarily remove nodes.",
+                element: document.getElementById('wf-step-3'),
+                intro: 'You can apply filters to your graph to temporarily remove nodes.',
             },
             {
-                element: document.getElementById("processesGraph"),
-                intro: "Your workflow graph will appear here. You can right-click on nodes in the graph to bring up a menu of actions."
+                element: document.getElementById('processesGraph'),
+                intro: 'Your workflow graph will appear here. You can right-click on nodes in the graph to bring up a menu of actions.'
             },
         ]).start();
     }
@@ -63,6 +62,7 @@ class MCWorkflowToolbarComponentController {
             controller: SelectProcessTemplateDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: true
         });
     }
@@ -133,7 +133,7 @@ class SelectProcessTemplateDialogController {
     }
 
     addSelectedProcessTemplate(templateId) {
-        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId, this.keepOpen)
+        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId, this.keepOpen);
     }
 
     done() {

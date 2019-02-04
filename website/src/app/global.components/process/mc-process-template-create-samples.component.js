@@ -76,9 +76,9 @@ class MCProcessTemplateCreateSamplesComponentController {
 
     updateSampleName(sample) {
         this.samplesAPI.updateSampleInExperiment(this.projectId, this.experimentId, this.process.id, {
-                id: sample.id,
-                name: sample.name
-            })
+            id: sample.id,
+            name: sample.name
+        })
             .then(
                 () => null,
                 () => this.toast.error('Unable to update sample name')
@@ -91,6 +91,7 @@ class MCProcessTemplateCreateSamplesComponentController {
             controller: AddMultipleSamplesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 projectId: this.projectId,
                 experimentId: this.experimentId,
@@ -98,7 +99,7 @@ class MCProcessTemplateCreateSamplesComponentController {
             }
         }).then(
             (samples) => this.process.output_samples = this.process.output_samples.concat(samples)
-        )
+        );
     }
 }
 
@@ -117,7 +118,7 @@ class AddMultipleSamplesDialogController {
         this.$mdDialog = $mdDialog;
         this.samplesAPI = samplesAPI;
         this.toast = toast;
-        this.nameTemplate = "";
+        this.nameTemplate = '';
         this.count = 2;
     }
 
@@ -129,7 +130,7 @@ class AddMultipleSamplesDialogController {
 
         let samplesToAdd = [];
         for (let i = 0; i < this.count; i++) {
-            let name = this.nameTemplate.replace("$INDEX", "" + (i + 1));
+            let name = this.nameTemplate.replace('$INDEX', '' + (i + 1));
             samplesToAdd.push({name: name});
         }
 

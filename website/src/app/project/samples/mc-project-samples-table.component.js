@@ -11,7 +11,7 @@ angular.module('materialscommons').component('mcProjectSamplesTable', {
 function MCProjectSamplesTableComponentController($mdDialog) {
     const ctrl = this;
     ctrl.showSample = showSample;
-    ctrl.sortOrder = 'experiment';
+    ctrl.sortOrder = 'name';
 
     ctrl.samplesByExperiment = {};
 
@@ -52,6 +52,7 @@ function MCProjectSamplesTableComponentController($mdDialog) {
             controller: ShowSampleDialogController,
             bindToController: true,
             multiple: true,
+            clickOutsideToClose: true,
             locals: {
                 sample: sample
             }

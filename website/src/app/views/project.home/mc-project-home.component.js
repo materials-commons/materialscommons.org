@@ -43,7 +43,8 @@ class MCProjectHomeComponentController {
             templateUrl: 'app/modals/create-experiment-dialog.html',
             controller: CreateNewExperimentDialogController,
             controllerAs: 'ctrl',
-            bindToController: true
+            bindToController: true,
+            clickOutsideToClose: true,
         }).then(
             (e) => {
                 this.$state.go('project.experiment.details', {experiment_id: e.id});
@@ -66,6 +67,7 @@ class MCProjectHomeComponentController {
             controller: MergeExperimentsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 experiments: selected,
                 projectId: this.project.id
@@ -101,6 +103,7 @@ class MCProjectHomeComponentController {
             controller: DeleteExperimentsDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 experiments: selected,
                 project: this.project
@@ -143,6 +146,7 @@ class MCProjectHomeComponentController {
                     controller: EtlDialogController,
                     controllerAs: '$ctrl',
                     bindToController: true,
+                    clickOutsideToClose: true,
                     locals: {
                         project: this.project,
                         excel_files: this.excelFileList
@@ -163,6 +167,7 @@ class MCProjectHomeComponentController {
             controller: EtlMessageDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 status: status,
                 message_text: '',
@@ -181,6 +186,7 @@ class MCProjectHomeComponentController {
             controller: EtlStatusDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 status: status
             }

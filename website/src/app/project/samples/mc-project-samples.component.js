@@ -21,6 +21,7 @@ class MCProjectSamplesComponentController {
                         controllerAs: '$ctrl',
                         controller: NewSamplesDialogController,
                         bindToController: true,
+                        clickOutsideToClose: true,
                         locals: {
                             process: p
                         }

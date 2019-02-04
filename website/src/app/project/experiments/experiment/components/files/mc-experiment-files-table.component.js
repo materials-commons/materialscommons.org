@@ -43,6 +43,7 @@ function MCExperimentFilesTableComponentController($mdDialog, mcfile, isImage) {
             controller: ShowProcessesDialogController,
             controllerAs: 'ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             fullscreen: true
         });
     }
@@ -69,7 +70,7 @@ function MCExperimentFilesTableComponentController($mdDialog, mcfile, isImage) {
             },
             controller: ShowSampleDialogController,
             controllerAs: 'ctrl',
-            bindToController: true
+            bindToController: true,
         });
     }
 }

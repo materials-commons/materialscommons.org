@@ -1,4 +1,5 @@
 angular.module('materialscommons').directive('selectItemsSamples', selectItemsSamplesDirective);
+
 function selectItemsSamplesDirective() {
     return {
         restrict: 'E',
@@ -10,7 +11,7 @@ function selectItemsSamplesDirective() {
         controllerAs: 'ctrl',
         bindToController: true,
         template: require('./select-items-samples.html')
-    }
+    };
 }
 
 /*@ngInject*/
@@ -73,6 +74,7 @@ function SelectItemsSamplesDirectiveController($mdDialog, mcstate) {
             controllerAs: '$ctrl',
             controller: ShowProcessDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: true,
             locals: {
                 process: process,

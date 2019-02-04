@@ -88,7 +88,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.subscribe('EDGE$ADD', this.myName, ({samples, process}) => this.addEdge(samples, process));
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
         this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
-            this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes))
+            this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes));
         });
 
         this.mcstate.subscribe('WORKFLOW$SEARCH', this.myName, (search) => {
@@ -113,7 +113,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => {
             const currentExperiment = this.mcprojstore.currentExperiment;
             this.processes = _.values(currentExperiment.processes);
-            this.allProcessesGraph()
+            this.allProcessesGraph();
         });
         this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
             if (this.navigator === null) {
@@ -371,6 +371,7 @@ class MCProcessesWorkflowGraphComponentController {
             controller: SelectProcessTemplateDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: true,
             locals: {
                 parentProcess: process
@@ -400,7 +401,7 @@ class SelectProcessTemplateDialogController {
 
     addSelectedProcessTemplate(templateId) {
         this.workflowService.addChildProcessFromTemplate(templateId, this.projectId, this.experimentId,
-            this.parentProcess, this.keepOpen)
+            this.parentProcess, this.keepOpen);
     }
 
     done() {

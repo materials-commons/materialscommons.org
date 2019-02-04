@@ -16,6 +16,7 @@ class WorkflowService {
             controllerAs: '$ctrl',
             controller: ChooseSamplesFromSourceDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             multiple: true,
             locals: {
                 source: source
@@ -45,6 +46,7 @@ class WorkflowService {
                         controllerAs: '$ctrl',
                         controller: NewProcessDialogController,
                         bindToController: true,
+                        clickOutsideToClose: true,
                         multiple: multiple,
                         locals: {
                             process: p
@@ -101,6 +103,7 @@ class WorkflowService {
                                 controllerAs: '$ctrl',
                                 controller: NewProcessDialogController,
                                 bindToController: true,
+                                clickOutsideToClose: true,
                                 multiple: multiple,
                                 locals: {
                                     process: p
@@ -126,6 +129,7 @@ class WorkflowService {
             controllerAs: '$ctrl',
             controller: CloneProcessDialogController,
             bindToController: true,
+            clickOutsideToClose: true,
             locals: {
                 process: p,
                 projectId: projectId
