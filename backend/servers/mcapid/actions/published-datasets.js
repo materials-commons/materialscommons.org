@@ -1,7 +1,6 @@
 const {Action} = require('actionhero');
 const datasets = require('../lib/dal/published-datasets');
 const dal = require('../lib/dal');
-const get_ip = require('ipware')().get_ip;
 
 module.exports.GetTopViewedPublishedDatasetsAction = class GetTopViewedPublishedDatasetsAction extends Action {
     constructor() {

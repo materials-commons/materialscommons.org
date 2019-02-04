@@ -1,40 +1,47 @@
 class PublicDatasetsAPIService {
     /*@ngInject*/
-    constructor(publicAPIRoute) {
+    constructor(publicAPIRoute, Restangular) {
         this.publicAPIRoute = publicAPIRoute;
+        this.Restangular = Restangular;
     }
 
     getTopViewed() {
-        return this.publicAPIRoute('datasets').one('filter').one('views').getList().then(
-            (datasets) => {
-                datasets = datasets.plain();
+        return this.Restangular.one('v3').one('getTopViewedPublishedDatasets').customPOST().then(
+            (ds) => {
+                let datasets = ds.plain().data;
                 datasets = this.augmentDatasets(datasets);
                 return datasets;
             }
-        );
+        )
     }
 
     getRecent() {
-        return this.publicAPIRoute('datasets').one('filter').one('recent').getList().then(
-            (datasets) => {
-                for (let ds of datasets) {
-                    ds.birthtime = new Date(ds.birthtime);
+        return this.Restangular.one('v3').one('getRecentlyPublishedDatasets').customPOST().then(
+            (ds) => {
+                let datasets = ds.plain().data;
+                for (let dataset of datasets) {
+                    dataset.birthtime = new Date(ds.birthtime);
                 }
-                datasets = datasets.plain();
                 datasets = this.augmentDatasets(datasets);
                 return datasets;
             }
-        );
+        )
     }
 
     getDataset(datasetId) {
-        return this.publicAPIRoute('datasets', datasetId).get().then(
-            (dataset) => {
-                dataset = dataset.plain();
-                dataset = this.augmentDataset(dataset);
-                return dataset;
+        // return this.publicAPIRoute('datasets', datasetId).get().then(
+        //     (dataset) => {
+        //         dataset = dataset.plain();
+        //         dataset = this.augmentDataset(dataset);
+        //         return dataset;
+        //     }
+        // );
+        return this.Restangular.one('v3').one('getPublishedDataset').customPOST({dataset_id: datasetId}).then(
+            (ds) => {
+                let dataset = ds.plain().data;
+                return this.augmentDataset(dataset);
             }
-        );
+        )
     }
 
     getDatasetProcess(datasetId, processId) {

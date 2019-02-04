@@ -197,7 +197,7 @@ function processDetailsRql(rql, r) {
                 .eqJoin('measurement_id', r.table('measurements')).zip()
                 .merge(p2m => {
                     return {
-                        is_best_measure: r.db('materialscommons').table('best_measure_history')
+                        is_best_measure: r.table('best_measure_history')
                             .getAll(p2m('measurement_id'), {index: 'measurement_id'}).count()
                     };
                 })
