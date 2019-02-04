@@ -12,7 +12,7 @@ class PublicDatasetsAPIService {
                 datasets = this.augmentDatasets(datasets);
                 return datasets;
             }
-        )
+        );
     }
 
     getRecent() {
@@ -25,28 +25,24 @@ class PublicDatasetsAPIService {
                 datasets = this.augmentDatasets(datasets);
                 return datasets;
             }
-        )
+        );
     }
 
     getDataset(datasetId) {
-        // return this.publicAPIRoute('datasets', datasetId).get().then(
-        //     (dataset) => {
-        //         dataset = dataset.plain();
-        //         dataset = this.augmentDataset(dataset);
-        //         return dataset;
-        //     }
-        // );
         return this.Restangular.one('v3').one('getPublishedDataset').customPOST({dataset_id: datasetId}).then(
             (ds) => {
                 let dataset = ds.plain().data;
                 return this.augmentDataset(dataset);
             }
-        )
+        );
     }
 
     getDatasetProcess(datasetId, processId) {
-        return this.publicAPIRoute('datasets').one(datasetId).one('processes', processId).get().then(
-            (process) => process.plain()
+        return this.Restangular.one('v3').one('getPublishedDatasetProcess').customPOST({
+            dataset_id: datasetId,
+            process_id: processId
+        }).then(
+            (process) => process.plain().data
         );
     }
 
@@ -72,9 +68,9 @@ class PublicDatasetsAPIService {
                     (dataset) => {
                         return dataset;
                     }
-                )
+                );
             }
-        )
+        );
     }
 
     datasetWasDownloaded(userId, datasetId) {
@@ -82,7 +78,7 @@ class PublicDatasetsAPIService {
             (dataset) => {
                 return dataset;
             }
-        )
+        );
     }
 
     updateUseful(userId, datasetId, isUseful) {
@@ -90,7 +86,7 @@ class PublicDatasetsAPIService {
             item_type: 'dataset',
             item_id: datasetId,
             user_id: userId,
-            action: isUseful?"add":"delete"
+            action: isUseful ? 'add' : 'delete'
         };
         return this.publicAPIRoute('useful').customPOST(usefulParams).then(
             () => {
@@ -98,9 +94,9 @@ class PublicDatasetsAPIService {
                     (dataset) => {
                         return dataset;
                     }
-                )
+                );
             }
-        )
+        );
     }
 
     augmentDataset(dataset) {
