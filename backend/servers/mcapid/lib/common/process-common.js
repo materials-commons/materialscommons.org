@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 function mergeTemplateIntoProcess(template, process) {
     for (let pindex = 0; pindex < process.setup.length; pindex++) {
         let setup = process.setup[pindex];
