@@ -1,14 +1,11 @@
 class PublicCommentsAPIService {
-    constructor(publicAPIRoute) {
-        this.publicAPIRoute = publicAPIRoute;
+    constructor(Restangular) {
+        this.Restangular = Restangular;
     }
 
-    getCommentsListFor(targetId) {
-        return this.publicAPIRoute('comments').get({target: targetId}).then(
-            (rv) => {
-                rv = rv.plain();
-                return rv.val;
-            }
+    getCommentsListFor(datasetId) {
+        return this.Restangular.one('v3').one('getCommentsForPublishedDataset').customPOST({dataset_id: datasetId}).then(
+            (ds) => ds.plain().data
         );
     }
 }
