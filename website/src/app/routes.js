@@ -270,7 +270,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.file', {
             url: '/file/:file_id',
-            template: '<mc-file></mc-file>'
+            template: '<md-content layout="column"><mc-file-container class="height-100"></mc-file-container></md-content>'
         })
         .state('project.sample', {
             url: '/sample/:sample_id',
