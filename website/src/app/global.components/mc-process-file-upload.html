@@ -9,8 +9,8 @@
             </md-option>
         </md-select>
     </md-input-container>
-    <mc-file-uploader project-id="$ctrl.projectId"
-                      directory-id="$ctrl.dir.data.id"
+    <mc-file-uploader project="$ctrl.project"
+                      dir="$ctrl.dir"
                       path="$ctrl.dir.data.name"
                       on-upload-complete="$ctrl.uploadComplete(files)">
     </mc-file-uploader>

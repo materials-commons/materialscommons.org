@@ -10,6 +10,7 @@
 - :boom: **Fixed:** Issue #1362 Published datasets not showing file count
 - :boom: **Fixed:** Issue #1362 Published datasets not showing file count
 - :boom: **Fixed:** Issue #1317 Click on file in "experiment files" wouldn't display the file
+- :boom: **Fixed:** Issue #1359 Couldn't upload files into a project level dataset
 
 ## Jan 2019
 - :star: **Improvement:** Issue #1310 Change ? To "HELP" in Navbar

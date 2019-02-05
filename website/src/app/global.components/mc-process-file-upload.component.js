@@ -4,6 +4,7 @@ class MCProcessFileUploadComponentController {
         this.projectsAPI = projectsAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
+        this.project = null;
     }
 
     $onInit() {
@@ -18,6 +19,12 @@ class MCProcessFileUploadComponentController {
         );
     }
 
+    $onChanges(changes) {
+        if (changes.project) {
+            this.project = angular.copy(changes.project.currentValue);
+        }
+    }
+
     uploadComplete(files) {
         if (files.length) {
             this.onUploadComplete({files: files});
@@ -29,6 +36,7 @@ angular.module('materialscommons').component('mcProcessFileUpload', {
     template: require('./mc-process-file-upload.html'),
     controller: MCProcessFileUploadComponentController,
     bindings: {
-        onUploadComplete: '&'
+        onUploadComplete: '&',
+        project: '<'
     }
 });
