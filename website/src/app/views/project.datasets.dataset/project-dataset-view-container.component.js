@@ -120,7 +120,6 @@ class MCProjectDatasetViewContainerComponentController {
     handleLoadSamples() {
         this.datasetsAPI.getProjectDatasetSamplesAndProcesses(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
             (dataset) => {
-                console.log('handleLoadSamples', dataset);
                 let transformedDS = this.mcdsstore.transformDataset(dataset, this.state.project);
                 this.state.dataset.samples = transformedDS.samples;
                 this.state.dataset.processes = transformedDS.processes;
