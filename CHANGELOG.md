@@ -7,6 +7,8 @@
 - :boom: **Fixed:** Issue #1360 Files added directly to a dataset were not showing up
 - :boom: **Fixed:** Issue #1361 The view button in the workflow for a published dataset was not doing anything
 - :boom: **Fixed:** Issue #1362 Published datasets not showing file count
+- :boom: **Fixed:** Issue #1362 Published datasets not showing file count
+- :boom: **Fixed:** Issue #1317 Click on file in "experiment files" wouldn't display the file
 
 ## Jan 2019
 - :star: **Improvement:** Issue #1310 Change ? To "HELP" in Navbar
