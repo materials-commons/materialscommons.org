@@ -4,12 +4,18 @@ class MCProjectDatasetViewComponentController {
         this.datasetsAPI = datasetsAPI;
         this.state = {
             dataset: null,
+            selectedTab: 'details',
         };
     }
 
     $onChanges(changes) {
         if (changes.dataset) {
             this.state.dataset = angular.copy(changes.dataset.currentValue);
+            if (this.state.selectedTab === 'samples') {
+                this.samplesSelected();
+            } else if (this.state.selectedTab === 'files') {
+                this.filesSelected();
+            }
         }
     }
 
@@ -41,13 +47,19 @@ class MCProjectDatasetViewComponentController {
         this.onCancel();
     }
 
+    detailsSelected() {
+        this.state.selectedTab = 'details';
+    }
+
     samplesSelected() {
+        this.state.selectedTab = 'samples';
         if (!this.state.dataset.samplesLoaded) {
             this.onLoadSamples();
         }
     }
 
     filesSelected() {
+        this.state.selectedTab = 'files';
         if (!this.state.dataset.filesLoaded) {
             this.onLoadFiles();
         }
