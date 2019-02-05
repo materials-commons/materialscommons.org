@@ -1,11 +1,11 @@
 class SelectItemsService {
     /*@ngInject*/
-    constructor($mdDialog, projectsAPI, experimentsAPI, projectFileTreeAPI, mcprojstore) {
+    constructor($mdDialog, projectsAPI, experimentsAPI, projectFileTreeAPI, mcStateStore) {
         this.$mdDialog = $mdDialog;
         this.projectsAPI = projectsAPI;
         this.experimentsAPI = experimentsAPI;
         this.projectFileTreeAPI = projectFileTreeAPI;
-        this.mcprojstore = mcprojstore;
+        this.mcStateStore = mcStateStore;
     }
 
     dialog(locals, controller) {
@@ -21,7 +21,7 @@ class SelectItemsService {
     }
 
     fileTree(uploadFiles = false) {
-        let project = this.mcprojstore.currentProject;
+        let project = this.mcStateStore.getState('project');
         return this.projectFileTreeAPI.getProjectRoot(project.id).then(
             files => {
                 project.files = files;
