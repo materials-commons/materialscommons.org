@@ -33,7 +33,7 @@
                                              aria-label="select"></md-checkbox>
                                 <i class="fa fa-files-o fa-fw file-color margin-left-15"></i>
                                 <a class="md-primary md-subhead" style="margin: 10px;"
-                                   ui-sref="project.files.file({file_id: file.id})"
+                                   ng-click="$ctrl.showFile(file)"
                                    aria-label="view file">
                                     {{file.name}}
                                 </a>

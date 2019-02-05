@@ -1,9 +1,10 @@
 class MCDirOverviewComponentController {
     /*@ngInject*/
-    constructor(mcfile, isImage, $filter) {
+    constructor(mcfile, isImage, $filter, mcshow) {
         this.fileSrc = mcfile.src;
         this.isImage = isImage;
         this.$filter = $filter;
+        this.mcshow = mcshow;
     }
 
     $onInit() {
@@ -77,6 +78,10 @@ class MCDirOverviewComponentController {
         });
         this.selectedCount = 0;
         this.onSelected({selected: []});
+    }
+
+    showFile(file) {
+        this.mcshow.showFile(file);
     }
 }
 
