@@ -1,12 +1,4 @@
 <div layout="column">
-    <h3>Globus User Name</h3>
-    <div layout="row" layout-align="start center">
-        <md-input-container class="md-block" flex="30">
-            <input type="text" ng-model="$ctrl.globusUserName" alt="Globus User Name">
-        </md-input-container>
-        <md-button class="md-primary" ng-click="$ctrl.updateGlobusUserName()">Update Globus User Name</md-button>
-    </div>
-
     <h3>Name</h3>
     <div layout="row" layout-align="start center">
         <md-input-container class="md-block" flex="30">
@@ -19,5 +11,14 @@
     <div layout="row" layout-align="start start">
         <textarea md-whiteframe ng-model="$ctrl.affiliation" flex="30"></textarea>
         <md-button class="md-primary" ng-click="$ctrl.updateAffiliation()">Update Affiliation</md-button>
+    </div>
+
+    <h3>Globus Account</h3>
+    <span>The Globus Account is the email address you use to sign into globus. This is needed to enable globus uploads in MaterialsCommons.</span>
+    <div layout="row" layout-align="start center">
+        <md-input-container class="md-block" flex="30">
+            <input type="text" ng-model="$ctrl.globusUserName" alt="Globus User Name">
+        </md-input-container>
+        <md-button class="md-primary" ng-click="$ctrl.updateGlobusUserName()">Update Globus User Name</md-button>
     </div>
 </div>
