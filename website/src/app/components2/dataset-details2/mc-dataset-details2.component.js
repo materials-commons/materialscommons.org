@@ -1,9 +1,9 @@
 class MCDatasetDetails2ComponentController {
     /*@ngInject*/
-    constructor ($mdDialog, $window) {
+    constructor($window, datasetDetails2Service) {
         this.state = {dataset: {}};
-        this.$mdDialog = $mdDialog;
         this.$window = $window;
+        this.datasetDetails2Service = datasetDetails2Service;
         this.changesMade = false;
         this.licenses = [
             {
@@ -46,12 +46,15 @@ class MCDatasetDetails2ComponentController {
     }
 
     addAuthor () {
-        this.state.dataset.authors.push({
-            lastname: '',
-            firstname: '',
-            affiliation: ''
-        });
-        this.changesMade = true;
+
+        this.datasetDetails2Service.addAuthor(this.state.dataset).then(author => this.onAddAuthor({author: author}));
+
+        // this.state.dataset.authors.push({
+        //     lastname: '',
+        //     firstname: '',
+        //     affiliation: ''
+        // });
+        // this.changesMade = true;
     }
 
     removeAuthor (index) {
@@ -60,14 +63,15 @@ class MCDatasetDetails2ComponentController {
     }
 
     addPaper () {
-        this.state.dataset.papers.push({
-            title: '',
-            abstract: '',
-            link: '',
-            doi: '',
-            authors: ''
-        });
-        this.changesMade = true;
+        this.datasetDetails2Service.addPaper(this.state.dataset).then(paper => this.onAddPaper({paper: paper}));
+        // this.state.dataset.papers.push({
+        //     title: '',
+        //     abstract: '',
+        //     link: '',
+        //     doi: '',
+        //     authors: ''
+        // });
+        // this.changesMade = true;
     }
 
     removePaper (index) {
@@ -80,16 +84,17 @@ class MCDatasetDetails2ComponentController {
     }
 
     addDoi () {
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/set-doi-dialog.html',
-            controllerAs: '$ctrl',
-            controller: SetDatasetDoiDialogController,
-            bindToController: true,
-            clickOutsideToClose: true,
-            locals: {
-                dataset: this.state.dataset
-            }
-        }).then((doiDetails) => this.onAddDoi({doiDetails: doiDetails}));
+        this.datasetDetails2Service.addDoit(this.state.dataset).then(doiDetails => this.onAddDoi({doiDetails: doiDetails}));
+        // this.$mdDialog.show({
+        //     templateUrl: 'app/modals/set-doi-dialog.html',
+        //     controllerAs: '$ctrl',
+        //     controller: SetDatasetDoiDialogController,
+        //     bindToController: true,
+        //     clickOutsideToClose: true,
+        //     locals: {
+        //         dataset: this.state.dataset
+        //     }
+        // }).then((doiDetails) => this.onAddDoi({doiDetails: doiDetails}));
     }
 
     updateDataset () {
@@ -98,30 +103,32 @@ class MCDatasetDetails2ComponentController {
     }
 
     publishDataset () {
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/publish-dataset-dialog.html',
-            controllerAs: '$ctrl',
-            controller: PublishDatasetDialogController,
-            bindToController: true,
-            clickOutsideToClose: true,
-            locals: {
-                dataset: this.state.dataset
-            }
-        }).then(() => this.onPublishDataset());
+        this.datasetDetails2Service.publishDataset(this.state.dataset).then(() => this.onPublishDataset());
+        // this.$mdDialog.show({
+        //     templateUrl: 'app/modals/publish-dataset-dialog.html',
+        //     controllerAs: '$ctrl',
+        //     controller: PublishDatasetDialogController,
+        //     bindToController: true,
+        //     clickOutsideToClose: true,
+        //     locals: {
+        //         dataset: this.state.dataset
+        //     }
+        // }).then(() => this.onPublishDataset());
     }
 
     unpublishDataset () {
-        this.$mdDialog.show({
-            templateUrl: 'app/modals/unpublish-dataset-dialog.html',
-            controllerAs: '$ctrl',
-            controller: UnpublishDatasetDialogController,
-            bindToController: true,
-            clickOutsideToClose: true,
-            locals: {
-                dataset: this.state.dataset
-            }
-        }).then(
-            () => this.onUnpublishDataset());
+        this.datasetDetails2Service.unpublishDataset(this.state.dataset).then(() => this.onUnpublishDataset());
+        // this.$mdDialog.show({
+        //     templateUrl: 'app/modals/unpublish-dataset-dialog.html',
+        //     controllerAs: '$ctrl',
+        //     controller: UnpublishDatasetDialogController,
+        //     bindToController: true,
+        //     clickOutsideToClose: true,
+        //     locals: {
+        //         dataset: this.state.dataset
+        //     }
+        // }).then(
+        //     () => this.onUnpublishDataset());
     }
 
     cancel() {
@@ -137,66 +144,11 @@ angular.module('materialscommons').component('mcDatasetDetails2', {
         dataset: '<',
         onUpdateDataset: '&',
         onPublishDataset: '&',
+        onAddPaper: '&',
+        onAddAuthor: '&',
         onUnpublishDataset: '&',
         onAddDoi: '&',
         onCancel: '&',
     }
 });
 
-class PublishDatasetDialogController {
-    /*@ngInject*/
-    constructor ($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    publish () {
-        this.$mdDialog.hide();
-    }
-
-    cancel () {
-        this.$mdDialog.cancel();
-    }
-}
-
-class UnpublishDatasetDialogController {
-    /*@ngInject*/
-    constructor ($mdDialog) {
-        this.$mdDialog = $mdDialog;
-    }
-
-    unpublish () {
-        this.$mdDialog.hide();
-    }
-
-    cancel () {
-        this.$mdDialog.cancel();
-    }
-}
-
-class SetDatasetDoiDialogController {
-    /*@ngInject*/
-    constructor ($mdDialog) {
-        this.$mdDialog = $mdDialog;
-        let author = '';
-        if (this.dataset.authors.length > 0) {
-            author = this.dataset.authors[0].firstname
-                + ' ' + this.dataset.authors[0].lastname;
-        }
-        this.state = {
-            doi: {
-                title: angular.copy(this.dataset.title),
-                author: author,
-                publicationDate: (new Date()).getFullYear(),
-                description: angular.copy(this.dataset.description),
-            }
-        };
-    }
-
-    setDoi () {
-        this.$mdDialog.hide(this.state.doi);
-    }
-
-    cancel () {
-        this.$mdDialog.cancel();
-    }
-}
