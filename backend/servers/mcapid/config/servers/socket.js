@@ -12,7 +12,7 @@ exports['default'] = {
         // Port or Socket
         port: 5000,
         // Which IP to listen on (use 0.0.0.0 for all)
-        bindIP: '0.0.0.0',
+        bindIP: '127.0.0.1',
         // Enable TCP KeepAlive pings on each connection?
         setKeepAlive: false,
         // Delimiter string for incoming messages
