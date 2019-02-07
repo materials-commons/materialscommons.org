@@ -17,8 +17,8 @@
                                      dataset="$ctrl.dataset"></mc-dataset-property-funding>
         <mc-dataset-property-doi ng-if="$ctrl.dataset.doi" dataset="$ctrl.dataset"></mc-dataset-property-doi>
         <mc-dataset-property-published dataset="$ctrl.dataset"></mc-dataset-property-published>
-        <mc-dataset-property-paper ng-if="$ctrl.dataset.papers.length > 0"
-                                   dataset="$ctrl.dataset"></mc-dataset-property-paper>
+        <mc-dataset-property-papers ng-if="$ctrl.dataset.papers.length > 0"
+                                    dataset="$ctrl.dataset"></mc-dataset-property-papers>
         <mc-dataset-property-license dataset="$ctrl.dataset"></mc-dataset-property-license>
         <mc-dataset-property-keywords dataset="$ctrl.dataset"></mc-dataset-property-keywords>
         <mc-dataset-property-files

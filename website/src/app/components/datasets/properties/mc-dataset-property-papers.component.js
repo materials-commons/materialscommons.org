@@ -8,6 +8,7 @@ angular.module('materialscommons').component('mcDatasetPropertyPapers', {
                     <a ng-if="paper.link" href="{{paper.link}}">
                         <i class="fa fa-fw fa-file-text-o"></i>
                     </a>
+                    <span ng-if="paper.doi"><b>DOI:</b> {{paper.doi}}</span>
                 </div>
             </li>
         </ul>
