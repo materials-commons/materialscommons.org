@@ -1,7 +1,7 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
     constructor(workflowService, workflowFiltersService, $timeout, $mdDialog, $stateParams, mcstate, mcbus,
-                mcshow, mcprojstore) {
+                mcshow, mcprojstore, experimentsAPI) {
         this.myName = 'mcWorkflowToolbar';
         this.workflowService = workflowService;
         this.workflowFiltersService = workflowFiltersService;
@@ -14,6 +14,7 @@ class MCWorkflowToolbarComponentController {
         this.mcbus = mcbus;
         this.mcshow = mcshow;
         this.mcprojstore = mcprojstore;
+        this.experimentsAPI = experimentsAPI;
         this.query = '';
         this.showingWorkflowGraph = true;
         this.isMaximized = false;
@@ -77,7 +78,9 @@ class MCWorkflowToolbarComponentController {
     }
 
     showSelectedProcess() {
-        this.mcshow.processDetailsDialog(this.selectedProcess, false);
+        this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, this.selectedProcess.id).then(
+                p => this.mcshow.processDetailsDialog(p, false)
+            );
     }
 
     search() {
