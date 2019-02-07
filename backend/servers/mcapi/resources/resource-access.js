@@ -232,9 +232,12 @@ function* validateFileAccess(next) {
 
     let accessAllowed = yield fileAccessAllowed(this.params.file_id, this.reqctx.user.id);
     if (!accessAllowed) {
-        this.status = httpStatus.BAD_REQUEST;
-        this.body = {error: `No such file ${this.params.file_id}`};
-        return this.status;
+        let inPublicDataset = yield isInPublishedDataset(this.params.file_id);
+        if (!inPublicDataset) {
+            this.status = httpStatus.BAD_REQUEST;
+            this.body = {error: `No such file ${this.params.file_id}`};
+            return this.status;
+        }
     }
 
     this.reqctx.file = file;

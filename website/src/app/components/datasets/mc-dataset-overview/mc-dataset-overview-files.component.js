@@ -5,6 +5,11 @@ class MCDatasetOverviewFilesComponentController {
         this.isAuthenticated = User.isAuthenticated();
         this.isImage = isImage;
         this.fileSrc = mcfile.src;
+        this.mcfile = mcfile;
+    }
+
+    downloadSrc(file) {
+        return this.mcfile.downloadSrc(file.original_id);
     }
 }
 

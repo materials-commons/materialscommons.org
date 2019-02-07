@@ -11,6 +11,7 @@
                 <th>File Name</th>
                 <th>File Type</th>
                 <th>size</th>
+                <th ng-if="$ctrl.isAuthenticated"></th>
                 </thead>
                 <tbody>
                 <tr ng-show="!$ctrl.isAuthenticated"
@@ -30,6 +31,11 @@
                     <td>{{file.name}}</td>
                     <td>{{file.mediatype.mime}}</td>
                     <td>{{file.size | bytes}}</td>
+                    <td>
+                        <md-button ng-href="{{$ctrl.downloadSrc(file)}}" class="md-primary" download="{{file.name}}">
+                            download
+                        </md-button>
+                    </td>
                 </tr>
                 </tbody>
             </table>
