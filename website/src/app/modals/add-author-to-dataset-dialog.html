@@ -1,0 +1,27 @@
+<md-dialog flex="80">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Add author to dataset {{$ctrl.dataset.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <div style="margin-top:40px">
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Last Name</label>
+                <input ng-model="$ctrl.state.author.lastname">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>First Name</label>
+                <input ng-model="$ctrl.state.author.firstname">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Affiliation</label>
+                <input ng-model="$ctrl.state.author.affiliation">
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.addAuthor()">Add Author</md-button>
+    </md-dialog-actions>
+</md-dialog>

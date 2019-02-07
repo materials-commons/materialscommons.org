@@ -4,6 +4,8 @@
 - :star: **Improvement:** Issue #1315 Add sort to all columns in samples table, except experiment and modification time (We already group by experiment)
 - :star: **Improvement:** Issue #1363 Clicking on file in the details list of a directory brings up a modal displaying the file
 - :star: **Improvement:** Issue #1311 Improvements to the Account Overview page
+- :star: **Improvement:** Issue #1365 Improved adding papers to datasets
+- :star: **Improvement:** Issue #1366 Improved adding authors to datasets
 - :boom: **Fixed:** Issue #1302 When creating a project level note for the first time the note wouldn't show up without doing a refresh
 - :boom: **Fixed:** Issue #1360 Files added directly to a dataset were not showing up
 - :boom: **Fixed:** Issue #1361 The view button in the workflow for a published dataset was not doing anything

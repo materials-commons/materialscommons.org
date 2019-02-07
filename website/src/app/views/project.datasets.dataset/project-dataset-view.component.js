@@ -43,6 +43,14 @@ class MCProjectDatasetViewComponentController {
         this.onAddDoi({doiDetails: doiDetails});
     }
 
+    handleAddAuthor(author) {
+        this.onAddAuthor({author: author});
+    }
+
+    handleAddPaper(paper) {
+        this.onAddPaper({paper: paper});
+    }
+
     handleCancel() {
         this.onCancel();
     }
@@ -76,6 +84,8 @@ angular.module('materialscommons').component('mcProjectDatasetView', {
         onUpdateDataset: '&',
         onPublishDataset: '&',
         onUnpublishDataset: '&',
+        onAddAuthor: '&',
+        onAddPaper: '&',
         onAddDoi: '&',
         onCancel: '&',
         onLoadSamples: '&',

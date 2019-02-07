@@ -15,7 +15,7 @@ class MCProjectDatasetViewContainerComponentController {
     }
 
     $onInit() {
-        this.datasetsAPI.getDatasetForProject(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
+        this.datasetsAPI.getDatasetForProject(this.state.project.id, this.$stateParams.dataset_id).then(
             (dataset) => {
                 dataset.files = [];
                 dataset.filesLoaded = false;
@@ -36,7 +36,7 @@ class MCProjectDatasetViewContainerComponentController {
     handleDeleteFiles(filesToDelete) {
         let filesMap = _.indexBy(filesToDelete, 'id'),
             fileIds = filesToDelete.map(f => f.id);
-        this.datasetsAPI.deleteFilesFromProjectDataset(this.$stateParams.project_id, this.$stateParams.dataset_id, fileIds)
+        this.datasetsAPI.deleteFilesFromProjectDataset(this.state.project.id, this.state.dataset.id, fileIds)
             .then(
                 () => {
                     this.state.dataset.files = this.state.dataset.files.filter(f => (!(f.id in filesMap)));
@@ -49,7 +49,7 @@ class MCProjectDatasetViewContainerComponentController {
         let existingFiles = _.indexBy(this.state.dataset.files, 'id'),
             newFiles = filesToAdd.filter(f => (!(f.id in existingFiles))),
             newFileIds = newFiles.map(f => f.id);
-        this.datasetsAPI.addFilesToProjectDataset(this.$stateParams.project_id, this.$stateParams.dataset_id, newFileIds)
+        this.datasetsAPI.addFilesToProjectDataset(this.state.project.id, this.state.dataset.id, newFileIds)
             .then(
                 (d) => {
                     this.state.dataset = angular.copy(d);
@@ -63,7 +63,7 @@ class MCProjectDatasetViewContainerComponentController {
         delete ds['samples'];
         delete ds['processes'];
         delete ds['comments'];
-        this.datasetsAPI.updateProjectDatasetDetails(this.$stateParams.project_id, dataset.id, ds).then(
+        this.datasetsAPI.updateProjectDatasetDetails(this.state.project.id, dataset.id, ds).then(
             (d) => {
                 // Update doesn't return the full dataset, so we need to construct it
                 // First copy over into returned object, then to trigger events copy
@@ -79,22 +79,32 @@ class MCProjectDatasetViewContainerComponentController {
         );
     }
 
+    handleAddAuthor(author) {
+        this.state.dataset.authors.push(author);
+        this.handleUpdateDataset(this.state.dataset);
+    }
+
+    handleAddPaper(paper) {
+        this.state.dataset.papers.push(paper);
+        this.handleUpdateDataset(this.state.dataset);
+    }
+
     handlePublishDataset() {
-        this.datasetsAPI.publishProjectDataset(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
+        this.datasetsAPI.publishProjectDataset(this.state.project.id, this.state.dataset.id).then(
             (d) => this.state.dataset = angular.copy(d),
             () => this.toast.error('Unable to publish dataset')
         );
     }
 
     handleUnpublishDataset() {
-        this.datasetsAPI.unpublishProjectDataset(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
+        this.datasetsAPI.unpublishProjectDataset(this.state.project.id, this.state.dataset.id).then(
             (d) => this.state.dataset = angular.copy(d),
             () => this.toast.error('Unable to unpublish dataset')
         );
     }
 
     handleAddDOI(doiDetails) {
-        this.datasetsAPI.createDOI(this.$stateParams.project_id, this.$stateParams.dataset_id, doiDetails).then(
+        this.datasetsAPI.createDOI(this.state.project.id, this.state.dataset.id, doiDetails).then(
             (d) => {
                 this.state.dataset.doi = d.doi;
                 this.state.dataset.doi_url = d.doi_url;
@@ -109,7 +119,7 @@ class MCProjectDatasetViewContainerComponentController {
     }
 
     handleLoadFiles() {
-        this.datasetsAPI.getProjectDatasetFiles(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
+        this.datasetsAPI.getProjectDatasetFiles(this.state.project.id, this.state.dataset.id).then(
             (files) => {
                 this.state.dataset.filesLoaded = true;
                 this.state.dataset.files = files;
@@ -118,7 +128,7 @@ class MCProjectDatasetViewContainerComponentController {
     }
 
     handleLoadSamples() {
-        this.datasetsAPI.getProjectDatasetSamplesAndProcesses(this.$stateParams.project_id, this.$stateParams.dataset_id).then(
+        this.datasetsAPI.getProjectDatasetSamplesAndProcesses(this.state.project.id, this.state.dataset.id).then(
             (dataset) => {
                 let transformedDS = this.mcdsstore.transformDataset(dataset, this.state.project);
                 this.state.dataset.samples = transformedDS.samples;
@@ -137,6 +147,8 @@ angular.module('materialscommons').component('mcProjectDatasetViewContainer', {
                                     on-publish-dataset="$ctrl.handlePublishDataset()"
                                     on-unpublish-dataset="$ctrl.handleUnpublishDataset()"
                                     on-add-doi="$ctrl.handleAddDOI(doiDetails)"
+                                    on-add-paper="$ctrl.handleAddPaper(paper)"
+                                    on-add-author="$ctrl.handleAddAuthor(author)"
                                     on-cancel="$ctrl.handleCancel()"
                                     on-load-files="$ctrl.handleLoadFiles()"
                                     on-load-samples="$ctrl.handleLoadSamples()"

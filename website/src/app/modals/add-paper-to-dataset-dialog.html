@@ -1,0 +1,31 @@
+<md-dialog flex="80">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Add paper to dataset {{$ctrl.dataset.name}}
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <div style="margin-top:40px">
+            <md-input-container class="md-block">
+                <label>Title</label>
+                <input ng-model="$ctrl.state.paper.title" class="padding-top-20">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Abstract</label>
+                <textarea ng-model="$ctrl.state.paper.abstract"></textarea>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>Link To Paper</label>
+                <input ng-model="$ctrl.state.paper.link">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>DOI</label>
+                <input ng-model="$ctrl.state.paper.doi">
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.addPaper()">add paper</md-button>
+    </md-dialog-actions>
+</md-dialog>

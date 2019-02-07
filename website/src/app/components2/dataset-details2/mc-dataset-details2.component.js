@@ -46,15 +46,7 @@ class MCDatasetDetails2ComponentController {
     }
 
     addAuthor () {
-
         this.datasetDetails2Service.addAuthor(this.state.dataset).then(author => this.onAddAuthor({author: author}));
-
-        // this.state.dataset.authors.push({
-        //     lastname: '',
-        //     firstname: '',
-        //     affiliation: ''
-        // });
-        // this.changesMade = true;
     }
 
     removeAuthor (index) {
@@ -64,14 +56,6 @@ class MCDatasetDetails2ComponentController {
 
     addPaper () {
         this.datasetDetails2Service.addPaper(this.state.dataset).then(paper => this.onAddPaper({paper: paper}));
-        // this.state.dataset.papers.push({
-        //     title: '',
-        //     abstract: '',
-        //     link: '',
-        //     doi: '',
-        //     authors: ''
-        // });
-        // this.changesMade = true;
     }
 
     removePaper (index) {
@@ -84,17 +68,7 @@ class MCDatasetDetails2ComponentController {
     }
 
     addDoi () {
-        this.datasetDetails2Service.addDoit(this.state.dataset).then(doiDetails => this.onAddDoi({doiDetails: doiDetails}));
-        // this.$mdDialog.show({
-        //     templateUrl: 'app/modals/set-doi-dialog.html',
-        //     controllerAs: '$ctrl',
-        //     controller: SetDatasetDoiDialogController,
-        //     bindToController: true,
-        //     clickOutsideToClose: true,
-        //     locals: {
-        //         dataset: this.state.dataset
-        //     }
-        // }).then((doiDetails) => this.onAddDoi({doiDetails: doiDetails}));
+        this.datasetDetails2Service.addDoi(this.state.dataset).then(doiDetails => this.onAddDoi({doiDetails: doiDetails}));
     }
 
     updateDataset () {
@@ -104,31 +78,10 @@ class MCDatasetDetails2ComponentController {
 
     publishDataset () {
         this.datasetDetails2Service.publishDataset(this.state.dataset).then(() => this.onPublishDataset());
-        // this.$mdDialog.show({
-        //     templateUrl: 'app/modals/publish-dataset-dialog.html',
-        //     controllerAs: '$ctrl',
-        //     controller: PublishDatasetDialogController,
-        //     bindToController: true,
-        //     clickOutsideToClose: true,
-        //     locals: {
-        //         dataset: this.state.dataset
-        //     }
-        // }).then(() => this.onPublishDataset());
     }
 
     unpublishDataset () {
         this.datasetDetails2Service.unpublishDataset(this.state.dataset).then(() => this.onUnpublishDataset());
-        // this.$mdDialog.show({
-        //     templateUrl: 'app/modals/unpublish-dataset-dialog.html',
-        //     controllerAs: '$ctrl',
-        //     controller: UnpublishDatasetDialogController,
-        //     bindToController: true,
-        //     clickOutsideToClose: true,
-        //     locals: {
-        //         dataset: this.state.dataset
-        //     }
-        // }).then(
-        //     () => this.onUnpublishDataset());
     }
 
     cancel() {

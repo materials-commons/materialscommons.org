@@ -33,7 +33,7 @@ class DatasetDetails2Service {
         return this.$mdDialog.show({
             templateUrl: 'app/modals/add-paper-to-dataset-dialog.html',
             controllerAs: '$ctrl',
-            controller: PublishDatasetDialogController, // change
+            controller: AddPaperToDatasetDialogController,
             bindToController: true,
             clickOutsideToClose: true,
             locals: {
@@ -46,7 +46,7 @@ class DatasetDetails2Service {
         return this.$mdDialog.show({
             templateUrl: 'app/modals/add-author-to-dataset-dialog.html',
             controllerAs: '$ctrl',
-            controller: PublishDatasetDialogController, // change
+            controller: AddAuthorToDatasetDialogController,
             bindToController: true,
             clickOutsideToClose: true,
             locals: {
@@ -120,6 +120,52 @@ class SetDatasetDoiDialogController {
 
     setDoi() {
         this.$mdDialog.hide(this.state.doi);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class AddPaperToDatasetDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            paper: {
+                title: '',
+                abstract: '',
+                link: '',
+                doi: '',
+                authors: ''
+            }
+        };
+    }
+
+    addPaper() {
+        this.$mdDialog.hide(this.state.paper);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class AddAuthorToDatasetDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            author: {
+                lastname: '',
+                firstname: '',
+                affiliation: ''
+            }
+        };
+    }
+
+    addAuthor() {
+        this.$mdDialog.hide(this.state.author);
     }
 
     cancel() {
