@@ -30,6 +30,7 @@ class MCProjectDatasetsViewContainerComponentController {
     }
 
     handleNewDataset() {
+        this.mcStateStore.fire('sync:project');
         this.loadDatasets();
     }
 }
