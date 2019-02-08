@@ -120,8 +120,6 @@ describe('Feature - projects: ', function () {
             assert.equal(found_project.owner, userId);
             assert.equal(found_project.users.length, 1);
             assert.equal(found_project.users[0].user_id, userId);
-            assert.isTrue(found_project.hasOwnProperty('events'));
-            assert.equal(found_project.events.length, 0);
             assert.isTrue(found_project.hasOwnProperty('processes'));
             assert.isTrue(found_project.hasOwnProperty('samples'));
             assert.isTrue(found_project.hasOwnProperty('files'));
