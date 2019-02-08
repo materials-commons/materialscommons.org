@@ -19,7 +19,7 @@
 
             <div class="padding-3" ui-sref-active="pst-active">
                 <a class="project-sidenav-tool margin-left-30" ui-sref="project.collaborators">
-                    <i class="fa fa-fw fa-user-circle"></i>Collaborators({{$ctrl.state.project.users_count - 1 | number}})
+                    <i class="fa fa-fw fa-user-circle"></i>Collaborators ({{$ctrl.state.project.users_count - 1 | number}})
                 </a>
             </div>
 
@@ -31,7 +31,7 @@
 
             <div class="padding-3" ng-class="{'pst-active': $ctrl.isProjectDatasetsRoute()}" ng-if="$ctrl.isBetaUser">
                 <a class="project-sidenav-tool margin-left-30" ui-sref="project.datasets.list">
-                    <i class="fa fa-fw fa-database"></i>Datasets({{$ctrl.state.project.datasets_count | number}})
+                    <i class="fa fa-fw fa-database"></i>Datasets ({{$ctrl.state.project.datasets_count | number}})
                     <!--<i class="fa fa-fw fa-database"></i>Datasets-->
                 </a>
             </div>
@@ -39,7 +39,7 @@
             <div class="padding-3">
                 <md-menu class="margin-left-30">
                     <a aria-label="Experiments" style="color:white; text-transform: none" ng-click="$mdMenu.open()">
-                        <i class="fa fa-fw fa-clipboard"></i>Experiments({{$ctrl.state.project.experiments | toSize}})
+                        <i class="fa fa-fw fa-clipboard"></i>Experiments ({{$ctrl.state.project.experiments | toSize}})
                     </a>
                     <md-menu-content width="10">
                         <md-menu-item ng-repeat="experiment in $ctrl.state.project.experiments | orderBy:'name'">
