@@ -176,9 +176,6 @@ function addComputed(rql, fullExperiment) {
                         otype: true
                     }
                 }).zip().coerceTo('array'),
-            events: r.table('events')
-                .getAll(project('id'), {index: 'project_id'})
-                .coerceTo('array'),
             notes: notes.getAllNotesForItemRQL(project('id')).coerceTo('array'),
             experiments: fullExperiment ? experiments.addExperimentComputed(r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                     .eqJoin('experiment_id', r.table('experiments')).zip()).coerceTo('array') :
