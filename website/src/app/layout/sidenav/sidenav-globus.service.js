@@ -8,8 +8,6 @@ class SidenavGlobusService {
     }
 
     globusDownload(project) {
-        // console.log("this.globus_user", this.globus_user);
-        // console.log((this.globus_user === ''));
         if (this.globus_user === '') {
             return this.noGlobusId();
         }
@@ -27,8 +25,6 @@ class SidenavGlobusService {
     }
 
     globusUpload(project) {
-        // console.log("this.globus_user", this.globus_user);
-        // console.log((this.globus_user === ''));
         if (this.globus_user === '') {
             return this.noGlobusId();
         }
@@ -75,16 +71,13 @@ class NoGlobusIdDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
-        console.log('NoGlobusIdDialogController');
     }
 
     dismiss() {
-        console.log('NoGlobusIdDialogController - dismiss');
         this.$mdDialog.cancel();
     }
 
     cancel() {
-        console.log('NoGlobusIdDialogController - cancel');
         this.$mdDialog.cancel();
     }
 }
@@ -97,7 +90,6 @@ class GlobusUploadDialogController {
         this.globusUser = User.attr().globus_user;
         this.url = null;
         this.error = null;
-        console.log('this.globusUser = ', this.globusUser);
         globusInterfaceAPI.setupUploadEndpoint(this.project.id).then(
             results => {
                 if (results.globus_url) {
@@ -130,7 +122,6 @@ class GlobusUploadStatusDialogController {
         this.url = null;
         this.error = null;
         this.status = null;
-        console.log('this.globusUser = ', this.globusUser, this.project.name);
         this.submitRequest();
     }
 
@@ -140,11 +131,9 @@ class GlobusUploadStatusDialogController {
         this.activeCount = 0;
         this.successCount = 0;
         this.finishedCount = 0;
-        console.log('submitting request to update status', this.project.name);
         this.etlServerAPI.getGlobusUplaodStatus(this.project.id).then(
             results => {
                 if (results.value) {
-                    console.log('Results from request to update status', results.value);
                     this.activeCount = 0;
                     this.finishedCount = 0;
                     this.successCount = 0;
@@ -166,7 +155,6 @@ class GlobusUploadStatusDialogController {
                             this.activeCount += 1;
                         }
                     }
-                    console.log('Results converted', record_list);
                     this.status = record_list;
                 } else {
                     this.error = results.error;
@@ -188,12 +176,10 @@ class GlobusUploadStatusDialogController {
     }
 
     reload() {
-        console.log('GlobusUploadStatusDialogController-Reload');
         this.submitRequest();
     }
 
     dismiss() {
-        console.log('GlobusUploadStatusDialogController-Dismiss');
         this.$mdDialog.cancel();
     }
 }
