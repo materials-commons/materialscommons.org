@@ -15,7 +15,9 @@ function* getAllUsersExternal() {
 
 // getAllUsersExternal returns the user; cleaned for external only
 function* getUserExternal(id) {
-    return yield r.table('users').get(id).without('admin', 'isTemplateAdmin', 'apikey', 'password');
+    return yield r.table('users').get(id)
+        .without('admin', 'isTemplateAdmin', 'apikey', 'password',
+            'demo_installed', 'birthtime', 'last_login', 'mtime', 'preferences');
 }
 
 // getUser gets the user by index. If no index is given then it
@@ -80,7 +82,7 @@ function* getUserForPasswordResetFromUuid(uuid) {
     let results = yield r.table('users')
         .getAll(uuid, {index: 'validate_uuid'}).without('apikey', 'password');
     if (!results.length) {
-        return {error: "No validated user record. Please retry."};
+        return {error: 'No validated user record. Please retry.'};
     }
     let user = results[0];
     return {val: user};
@@ -92,7 +94,7 @@ function* createUnverifiedAccount(account) {
     user.validate_uuid = yield r.uuid();
     let u = yield r.table('users').get(account.email);
     if (u) {
-        return {error: "User account already exists: " + account.email};
+        return {error: 'User account already exists: ' + account.email};
     }
     let rv = yield r.table('account_requests').insert(user, {returnChanges: true});
     if (rv.errors) {
@@ -105,7 +107,7 @@ function* createUnverifiedAccount(account) {
 function* getUserRegistrationFromUuid(uuid) {
     let results = yield r.table('account_requests').getAll(uuid, {index: 'validate_uuid'});
     if (!results.length) {
-        return {error: "User validation record does not exists: " + uuid};
+        return {error: 'User validation record does not exists: ' + uuid};
     }
     let registration = results[0];
     delete registration['password'];

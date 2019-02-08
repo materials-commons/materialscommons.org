@@ -20,6 +20,7 @@
 - :boom: **Fixed:** Issue #1327 No scrollbar on long lists of files in published datasets
 - :boom: **Fixed:** Issue #1330 "Show Process Details" menu item now shows all the process details
 - :boom: **Fixed:** Issue #1369 Projects REST API returning deprecated field
+- :boom: **Fixed:** Issue #1368 Reduce the amount of information sent about a user
 
 ## Jan 2019
 - :star: **Improvement:** Issue #1310 Change ? To "HELP" in Navbar
