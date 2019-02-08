@@ -9,6 +9,7 @@
 - :star: **Improvement:** Issue #1324 Show papers related to the dataset
 - :star: **Improvement:** Issue #1325 Allow individual files to be downloaded from a dataset
 - :star: **Improvement:** Issue #1370 Show counts of datasets at project level
+- :star: **Improvement:** Issue #1306 Help user identify what their globus id is
 - :boom: **Fixed:** Issue #1302 When creating a project level note for the first time the note wouldn't show up without doing a refresh
 - :boom: **Fixed:** Issue #1360 Files added directly to a dataset were not showing up
 - :boom: **Fixed:** Issue #1361 The view button in the workflow for a published dataset was not doing anything
