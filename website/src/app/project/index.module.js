@@ -1,4 +1,3 @@
-import './mc-project.component';
 import './components/index.module';
 import './experiments/index.module';
 import './files/index.module';
