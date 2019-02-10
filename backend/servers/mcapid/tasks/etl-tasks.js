@@ -1,9 +1,9 @@
 const {api, Task} = require('actionhero');
 
-module.exports.ETLSpreadsheetProcessorTask = class ETLSpreadsheetProcessorTask extends Task {
+module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Task {
     constructor() {
         super();
-        this.name = 'etlSpreadsheetProcessorTask';
+        this.name = 'processSpreadsheet';
         this.description = 'Performs ETL on a spreadsheet';
         this.frequency = 0;
         this.queue = 'etl';
@@ -11,6 +11,6 @@ module.exports.ETLSpreadsheetProcessorTask = class ETLSpreadsheetProcessorTask e
 
     async run(data) {
         api.log('data = ', 'info', data);
-        api.log(`etlSpreadsheetProcessTask ${data.arg}`);
+        api.log(`ProcessSpreadsheetTask ${data.arg}`);
     }
 };
