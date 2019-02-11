@@ -27,7 +27,8 @@
     "localforage": true,
     "P": true,
     "require": true,
-    "introJs": true
+    "introJs": true,
+    "ActionheroWebsocketClient": true
   },
   "rules": {
     "angular/log": 0,
