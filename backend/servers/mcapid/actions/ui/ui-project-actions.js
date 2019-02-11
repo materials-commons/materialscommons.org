@@ -10,7 +10,6 @@ module.exports.GetProjectsForUserAction = class GetProjectsForUserAction extends
     }
 
     async run({response, user}) {
-        console.log('user =', user);
         const usersProjects = await dal.tryCatch(async() => await projects.ui.getProjectsForUser(user.id));
         if (usersProjects === null) {
             throw new Error(`No such user`);
