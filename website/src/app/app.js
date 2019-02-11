@@ -43,9 +43,9 @@ function appConfig($stateProvider, $urlRouterProvider, $mdThemingProvider, $aria
 }
 
 appRun.$inject = ['$rootScope', 'User', 'Restangular', '$state', 'mcglobals',
-    'searchQueryText', "templates", "mcprojstore", 'mcRouteState'];
+    'searchQueryText', 'templates', 'mcprojstore', 'mcRouteState', 'mcws'];
 
-function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, templates, mcprojstore, mcRouteState) {
+function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryText, templates, mcprojstore, mcRouteState, mcws) {
     Restangular.setBaseUrl(mcglobals.apihost);
 
     // appRun will run when the application starts up and before any controllers have run.
@@ -58,6 +58,11 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
         Restangular.setDefaultRequestParams({apikey: User.apikey()});
         templates.getServerTemplates().then(
             (t) => templates.set(t)
+        );
+
+        mcws.start().then(
+            () => console.log('mcws connected'),
+            (err) => console.log('unable to connect to ws', err)
         );
     }
 
