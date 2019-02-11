@@ -113,8 +113,75 @@ function addComputed(rql) {
     return rql;
 }
 
+async function getProjectsForUser(userId) {
+    let userProjectsRql = transformDates(r.table('projects').getAll(userId, {index: 'owner'}).merge(projectDetailCounts));
+    let memberProjectsRql = transformDates(r.table('access').getAll(userId, {index: 'user_id'}).eqJoin('project_id', r.table('projects'))
+        .zip().filter(r.row('owner').ne(userId)).merge(projectDetailCounts));
+    let userProjects = await run(userProjectsRql);
+    let memberProjects = await run(memberProjectsRql);
+    return userProjects.concat(memberProjects);
+}
+
+function projectDetailCounts(p) {
+    return {
+        shortcuts: r.table('datadirs').getAll([p('id'), true], {index: 'datadir_project_shortcut'}).pluck('name', 'id').coerceTo('array'),
+        owner_details: r.table('users').get(p('owner')).pluck('fullname'),
+        users_count: r.table('access').getAll(p('id'), {index: 'project_id'}).count(),
+        samples_count: r.table('project2sample').getAll(p('id'), {index: 'project_id'}).count(),
+        processes_count: r.table('project2process').getAll(p('id'), {index: 'project_id'}).count(),
+        experiments_count: r.table('project2experiment').getAll(p('id'), {index: 'project_id'}).count(),
+        datasets_count: r.table('project2dataset').getAll(p('id'), {index: 'project_id'}).count(),
+        root_dir: r.table('datadirs').getAll([p('id'), p('name')]).coerceTo('array')
+    };
+}
+
+async function getProjectOverview(projectId, userId) {
+    let res = await projectUserRql(projectId, userId).eqJoin('project_id', r.table('projects')).zip()
+        .merge(projectDetailCounts).merge(projectExperiments);
+    return res[0]; // query returns a list of one entry
+}
+
+function projectExperiments(p) {
+    return {
+        experiments: r.table('project2experiment').getAll(p('id'), {index: 'project_id'})
+            .eqJoin('experiment_id', r.table('experiments')).zip().merge(experimentOverview).coerceTo('array')
+    };
+}
+
+function experimentOverview(e) {
+    return {
+        owner_details: r.table('users').get(e('owner')).pluck('fullname'),
+        files_count: r.table('experiment2datafile').getAll(e('id'), {index: 'experiment_id'}).count(),
+        samples_count: r.table('experiment2sample').getAll(e('id'), {index: 'experiment_id'}).count(),
+    };
+}
+
+async function getProjectNotes(projectId, userId) {
+    return await projectUserRql(projectId, userId).eqJoin('project_id', r.table('note2item'), {index: 'item_id'}).zip()
+        .eqJoin('note_id', r.table('notes')).zip();
+}
+
+function projectUserRql(projectId, userId) {
+    return r.table('access').getAll([userId, projectId], {index: 'user_project'});
+}
+
+/*
+res, err := r.Table("access").GetAllByIndex("project_id", id).
+		EqJoin("user_id", r.Table("users")).
+		Without(map[string]interface{}{"right": map[string]interface{}{"id": true}}).Zip().Run(e.Session)
+ */
+// async function getProjectAccessEntries(projectId) {
+//     return await r.table('access').getAll(projectId, {index: 'project_id'}).eqJoin('user_id' r.table('users'))
+// }
+
 module.exports = {
     getProject,
     getAll,
     getProjectExperiment,
+    ui: {
+        getProjectsForUser,
+        getProjectOverview,
+        getProjectNotes,
+        // getProjectAccessEntries,
+    }
 };
