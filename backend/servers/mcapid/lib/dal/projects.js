@@ -1,5 +1,52 @@
 const r = require('../../../shared/r');
 const run = require('./run');
+const model = require('../../../shared/model');
+const db = require('./db');
+
+async function createProject(user, name, description) {
+    let owner = user.id;
+    let matches = await r.table('projects').filter({name: name, owner: owner});
+    if (0 < matches.length) {
+        return await getProject(matches[0].id);
+    }
+    let project = new model.Project(name, description, owner);
+    let result = await r.table('projects').insert(project);
+    let project_id = result.generated_keys[0];
+
+    let directory = new model.Directory(name, owner, project_id, '');
+    let directoryResult = await r.table('datadirs').insert(directory);
+    let directory_id = directoryResult.generated_keys[0];
+
+    let proj2datadir_doc = new model.Project2DataDir(project_id, directory_id);
+    await r.table('project2datadir').insert(proj2datadir_doc);
+
+    await buildDefaultShortcutDirs(name, project_id, owner, directory_id);
+
+    let access = new model.Access(name, project_id, owner);
+    await r.table('access').insert(access);
+
+    return await getProject(project_id);
+}
+
+async function buildDefaultShortcutDirs(projectName, projectId, owner, parentDirId) {
+    let dir = new model.Directory(`${projectName}/Literature`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    await createShortcutDir(dir);
+
+    dir = new model.Directory(`${projectName}/Presentations`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    await createShortcutDir(dir);
+
+    dir = new model.Directory(`${projectName}/Project Documents`, owner, projectId, parentDirId);
+    dir.shortcut = true;
+    await createShortcutDir(dir);
+}
+
+async function createShortcutDir(dir) {
+    let created = await db.insert('datadirs', dir);
+    let proj2dir = new model.Project2DataDir(dir.project, created.id);
+    await db.insert('project2datadir', proj2dir);
+}
 
 async function getProject(projectId) {
     let rql = r.table('projects').get(projectId)
@@ -175,6 +222,7 @@ res, err := r.Table("access").GetAllByIndex("project_id", id).
 // }
 
 module.exports = {
+    createProject,
     getProject,
     getAll,
     getProjectExperiment,

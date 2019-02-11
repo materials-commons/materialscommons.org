@@ -12,23 +12,23 @@ module.exports.ListProjectsAction = class ListProjectsAction extends Action {
     }
 
     async run({response, params}) {
-        console.log("listProjects");
+        console.log('listProjects');
     }
 };
 
 module.exports.ListProjectsForAdminAction = class ListProjectsForAdmin extends Action {
     constructor() {
         super();
-        this.name = "listProjectsForAdmin";
+        this.name = 'listProjectsForAdmin';
         this.description = 'Retrieve a list of projects for Admin Info, without regard to use id';
     }
 
     async run({response, params, user}) {
-        if (! user.isAdmin) {
+        if (!user.isAdmin) {
             throw new Error(`not admin user: ${user.id}`);
         }
-        console.log("At ListProjectsForAdmin", user);
-        const project_list = await dal.tryCatch(async () => await projects.getAll());
+        console.log('At ListProjectsForAdmin', user);
+        const project_list = await dal.tryCatch(async() => await projects.getAll());
         console.log(project_list.length);
         response.data = project_list;
     }
@@ -53,23 +53,23 @@ module.exports.CreateProjectAction = class CreateProjectAction extends Action {
                 }
             },
             description: {
-                default: "",
+                default: '',
                 validator: (param) => {
                     if (!_.isString(param)) {
                         throw new Error(`description must be a string: ${param}`);
                     }
                 },
             }
-        }
+        };
     }
 
     async run({response, params, user}) {
-        // const project = await dal.tryCatch(async () => await projects.createProject(user, params));
-        // if (!project) {
-        //     throw new Error(`Unable to create project`);
-        // }
-        // //api.redis.clients.client.set(project.id, JSON.stringify(project));
-        // response.data = project;
+        const project = await dal.tryCatch(async() => await projects.createProject(user, params));
+        if (!project) {
+            throw new Error(`Unable to create project`);
+        }
+        // api.redis.clients.client.set(project.id, JSON.stringify(project));
+        response.data = project;
     }
 };
 
@@ -84,7 +84,7 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
                 required: true,
                 //validator: async () => false,
             },
-        }
+        };
     }
 
     async run({response, params}) {
@@ -107,7 +107,7 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
         //     project = JSON.parse(project);
         // }
 
-        const project = await dal.tryCatch(async () => await projects.getProject(params.project_id));
+        const project = await dal.tryCatch(async() => await projects.getProject(params.project_id));
         if (!project) {
             throw new Error(`No such project_id ${params.project_id}`);
         }
