@@ -1,6 +1,11 @@
 <md-content layout="column" flex style="width:80vw">
     <div layout="column" layout-fill layout-align="start stretch" layout-margin style="padding-right: 15px">
-        <h3>Dataset: {{$ctrl.state.dataset.title}}</h3>
+        <h3>
+            <div layout="row" layout-align="space-between center">
+                Dataset: {{$ctrl.state.dataset.title}}
+                <a class="md-subhead" ng-click="$ctrl.showJson()">show json</a>
+            </div>
+        </h3>
         <md-tabs md-stretch-tabs md-border-bottom md-dynamic-height>
             <md-tab md-on-select="$ctrl.detailsSelected()">
                 <md-tab-label>Details</md-tab-label>

@@ -29,6 +29,7 @@
                     <div layout="row">
                         <span tooltip="Samples" class="padding-left-10"><i class="fa fa-fw fa-cubes"></i>{{project.samples_count | number}}</span>
                         <span tooltip="Processes" class="padding-left-10"><i class="fa fa-fw fa-code-fork"></i>{{project.processes_count | number}}</span>
+                        <a class="padding-left-10" ng-click="$ctrl.showJson(project)">view json</a>
                     </div>
                     <span>{{project.description}}</span>
                 </div>

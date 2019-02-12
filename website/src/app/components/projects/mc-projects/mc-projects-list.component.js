@@ -8,6 +8,10 @@ class MCProjectsListComponentController {
     showProjectOverview(project) {
         this.mcshow.projectOverviewDialog(project);
     }
+
+    showJson(project) {
+        this.mcshow.showJson(project);
+    }
 }
 
 angular.module('materialscommons').component('mcProjectsList', {

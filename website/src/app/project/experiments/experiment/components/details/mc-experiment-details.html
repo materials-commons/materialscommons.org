@@ -1,7 +1,9 @@
 <div layout="column" layout-fill flex layout-margin>
     <div layout="row" layout-fill>
+
         <md-content flex layout="column" layout-align="start stretch"
                     style="padding-top:8px; margin-right:10px">
+
             <div layout="row" layout-align="space-between center" style="margin-bottom: 20px; margin-top: 15px">
                 <div>
                     <md-radio-group layout="row" class="text-uppercase" ng-change="$ctrl.updateStatus()"
@@ -11,6 +13,7 @@
                         <md-radio-button value="on-hold" class="md-warn">On Hold</md-radio-button>
                     </md-radio-group>
                 </div>
+                <a class="md-subhead" ng-click="$ctrl.showJson()">show json</a>
             </div>
 
             <md-input-container>

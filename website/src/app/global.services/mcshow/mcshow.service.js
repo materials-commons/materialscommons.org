@@ -33,6 +33,19 @@ class MCShowService {
         });
     }
 
+    showJson(object) {
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/show-json.html',
+            controller: CommonDoneDismissDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            clickOutsideToClose: true,
+            locals: {
+                object: object,
+            }
+        });
+    }
+
     processDetailsDialogRO(process, multiple = true) {
         this.$mdDialog.show({
             templateUrl: 'app/modals/process-details-dialog-ro.html',

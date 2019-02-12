@@ -68,6 +68,10 @@ class MCWorkflowToolbarComponentController {
         });
     }
 
+    showWorkflowJson() {
+        this.mcbus.send('WORKFLOW$SHOWJSON');
+    }
+
     cloneProcess() {
         this.workflowService.cloneProcess(this.projectId, this.experimentId, this.selectedProcess);
     }

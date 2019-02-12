@@ -1,0 +1,17 @@
+<md-dialog flex="40">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Show JSON
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-marginx>
+        <md-content>
+            <pre>
+{{$ctrl.object | json}}
+            </pre>
+        </md-content>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.done()">Done</md-button>
+    </md-dialog-actions>
+</md-dialog>

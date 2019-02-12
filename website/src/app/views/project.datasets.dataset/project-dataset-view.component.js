@@ -1,7 +1,8 @@
 class MCProjectDatasetViewComponentController {
     /*@ngInject*/
-    constructor(datasetsAPI) {
+    constructor(datasetsAPI, mcshow) {
         this.datasetsAPI = datasetsAPI;
+        this.mcshow = mcshow;
         this.state = {
             dataset: null,
             selectedTab: 'details',
@@ -17,6 +18,10 @@ class MCProjectDatasetViewComponentController {
                 this.filesSelected();
             }
         }
+    }
+
+    showJson() {
+        this.mcshow.showJson(this.state.dataset);
     }
 
     handleDeleteFiles(filesToDelete) {
