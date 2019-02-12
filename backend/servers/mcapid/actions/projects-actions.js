@@ -4,17 +4,17 @@ const projects = require('../lib/dal/projects');
 const dal = require('../lib/dal');
 const _ = require('lodash');
 
-module.exports.ListProjectsAction = class ListProjectsAction extends Action {
-    constructor() {
-        super();
-        this.name = 'listProjects';
-        this.description = 'Retrieve a list of projects user has access to';
-    }
-
-    async run({response, params}) {
-        console.log('listProjects');
-    }
-};
+// module.exports.ListProjectsAction = class ListProjectsAction extends Action {
+//     constructor() {
+//         super();
+//         this.name = 'listProjects';
+//         this.description = 'Retrieve a list of projects user has access to';
+//     }
+//
+//     async run({response, params}) {
+//         console.log('listProjects');
+//     }
+// };
 
 module.exports.ListProjectsForAdminAction = class ListProjectsForAdmin extends Action {
     constructor() {
@@ -141,62 +141,62 @@ module.exports.GetProjectExperimentAction = class GetProjectExperimentAction ext
     }
 };
 
-module.exports.UpdateProjectAction = class UpdateProjectAction extends Action {
-    constructor() {
-        super();
-        this.name = 'updateProject';
-        this.description = 'Update given project';
-    }
+// module.exports.UpdateProjectAction = class UpdateProjectAction extends Action {
+//     constructor() {
+//         super();
+//         this.name = 'updateProject';
+//         this.description = 'Update given project';
+//     }
+//
+//     async run({response, params}) {
+//
+//     }
+// };
+//
+// module.exports.DeleteProjectAction = class DeleteProjectAction extends Action {
+//     constructor() {
+//         super();
+//         this.name = 'deleteProject';
+//         this.description = 'Delete the given project';
+//     }
+//
+//     async run({response, params}) {
+//
+//     }
+// };
 
-    async run({response, params}) {
+// module.exports.CloneProjectAction = class CloneProjectAction extends Action {
+//     constructor() {
+//         super();
+//         this.name = 'cloneProject';
+//         this.description = 'Create project by cloning from the given project';
+//     }
+//
+//     async run({response, params}) {
+//
+//     }
+// };
+//
+// module.exports.GetProjectViewsAction = class GetProjectViewsAction extends Action {
+//     constructor() {
+//         super();
+//         this.name = 'getProjectViews';
+//         this.description = 'Returns a list of the projects view';
+//     }
+//
+//     async run({response, params}) {
+//
+//     }
+// };
 
-    }
-};
-
-module.exports.DeleteProjectAction = class DeleteProjectAction extends Action {
-    constructor() {
-        super();
-        this.name = 'deleteProject';
-        this.description = 'Delete the given project';
-    }
-
-    async run({response, params}) {
-
-    }
-};
-
-module.exports.CloneProjectAction = class CloneProjectAction extends Action {
-    constructor() {
-        super();
-        this.name = 'cloneProject';
-        this.description = 'Create project by cloning from the given project';
-    }
-
-    async run({response, params}) {
-
-    }
-};
-
-module.exports.GetProjectViewsAction = class GetProjectViewsAction extends Action {
-    constructor() {
-        super();
-        this.name = 'getProjectViews';
-        this.description = 'Returns a list of the projects view';
-    }
-
-    async run({response, params}) {
-
-    }
-};
-
-module.exports.UpdateProjectViewsAction = class UpdateProjectViewsAction extends Action {
-    constructor() {
-        super();
-        this.name = 'updateProjectViews';
-        this.description = 'Update views by adding/deleting views associated with project';
-    }
-
-    async run({response, params}) {
-
-    }
-};
+// module.exports.UpdateProjectViewsAction = class UpdateProjectViewsAction extends Action {
+//     constructor() {
+//         super();
+//         this.name = 'updateProjectViews';
+//         this.description = 'Update views by adding/deleting views associated with project';
+//     }
+//
+//     async run({response, params}) {
+//
+//     }
+// };
