@@ -1,6 +1,10 @@
 <div layout="column">
-    <div layout="row">
-        <h3 class="md-title">Sample: {{$ctrl.sample.name}}</h3>
+    <div layout="row" layout-align="space-between center">
+        <h3 class="md-title">
+            Sample: {{$ctrl.sample.name}}
+
+        </h3>
+        <a class="md-subhead" ng-click="$ctrl.showJson()">show json</a>
     </div>
 
     <div layout="column">

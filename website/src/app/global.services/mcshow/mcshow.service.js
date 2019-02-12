@@ -40,6 +40,7 @@ class MCShowService {
             controllerAs: '$ctrl',
             bindToController: true,
             clickOutsideToClose: true,
+            multiple: true,
             locals: {
                 object: object,
             }

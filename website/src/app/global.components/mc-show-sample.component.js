@@ -1,10 +1,11 @@
 class MCShowSampleComponentController {
     /*@ngInject*/
-    constructor($stateParams, samplesAPI, toast, $mdDialog) {
+    constructor($stateParams, samplesAPI, toast, $mdDialog, mcshow) {
         this.projectId = $stateParams.project_id;
         this.samplesAPI = samplesAPI;
         this.toast = toast;
         this.$mdDialog = $mdDialog;
+        this.mcshow = mcshow;
         this.viewHeight = this.viewHeight ? this.viewHeight : '40vh';
     }
 
@@ -28,6 +29,10 @@ class MCShowSampleComponentController {
                 process: process
             }
         });
+    }
+
+    showJson() {
+        this.mcshow.showJson(this.sample);
     }
 
     processSample(sample) {
