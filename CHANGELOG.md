@@ -12,6 +12,7 @@
 - :star: **Improvement:** Issue #1306 Help user identify what their globus id is
 - :star: **Improvement:** Issue #1286 Help user understand that datasets are for publishing
 - :star: **Improvement:** Issue #1298 Open separate browser tabs without have to login again on each tab
+- :star: **Improvement:** Issue #1335 Add ability to view raw json for various objects in the UI
 - :boom: **Fixed:** Issue #1302 When creating a project level note for the first time the note wouldn't show up without doing a refresh
 - :boom: **Fixed:** Issue #1360 Files added directly to a dataset were not showing up
 - :boom: **Fixed:** Issue #1361 The view button in the workflow for a published dataset was not doing anything
