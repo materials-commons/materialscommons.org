@@ -39,6 +39,14 @@ class MCProcessesWorkflowGraphComponentController {
             this.$timeout(() => this.cy.fit(), 300);
         });
 
+        this.mcbus.subscribe('WORKFLOW$SHOWJSON', this.myName, () => {
+            let workflow = {
+                processes: this.processes,
+                samples: this.samples,
+            };
+            this.mcshow.showJson(workflow);
+        });
+
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
         this.mcbus.subscribe('PROCESS$ADD', this.myName, (process) => {
             let node = this.processGraph.createProcessNode(process);

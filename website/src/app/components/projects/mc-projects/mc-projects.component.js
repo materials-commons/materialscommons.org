@@ -6,6 +6,7 @@ class MCProjectsComponentController {
         this.blockUI = blockUI;
         this.demoProjectService = demoProjectService;
         this.toast = toast;
+        this.mcshow = mcshow;
         this.mcuser = User.attr();
         this.myProjects = [];
         this.joinedProjects = [];

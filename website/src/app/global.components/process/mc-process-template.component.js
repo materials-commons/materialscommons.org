@@ -1,6 +1,6 @@
 class MCProcessTemplateComponentController {
     /*@ngInject*/
-    constructor($scope, editorOpts, processesAPI, toast, $stateParams, mcbus, mcprojstore) {
+    constructor($scope, editorOpts, processesAPI, toast, $stateParams, mcbus, mcprojstore, mcshow) {
         this.processesAPI = processesAPI;
         this.toast = toast;
         this.projectId = $stateParams.project_id;
@@ -8,6 +8,7 @@ class MCProcessTemplateComponentController {
         this.processDescription = this.process.description;
         this.mcbus = mcbus;
         this.mcprojstore = mcprojstore;
+        this.mcshow = mcshow;
     }
 
     $onChanges(changes) {
@@ -26,6 +27,10 @@ class MCProcessTemplateComponentController {
                 }
             );
         }
+    }
+
+    showJson() {
+        this.mcshow.showJson(this.process);
     }
 
     updateProcessName() {

@@ -8,7 +8,7 @@ angular.module('materialscommons').component('mcExperimentDetails', {
 });
 
 /*@ngInject*/
-function MCExperimentDetailsComponentController($stateParams, experimentsAPI, toast, $scope, editorOpts) {
+function MCExperimentDetailsComponentController($stateParams, experimentsAPI, toast, $scope, editorOpts, mcshow) {
     let ctrl = this,
         projectId = $stateParams.project_id,
         experimentId = this.experiment.id;
@@ -50,6 +50,10 @@ function MCExperimentDetailsComponentController($stateParams, experimentsAPI, to
                 () => null,
                 () => toast.error('Failed to update note')
             );
+    };
+
+    ctrl.showJson = () => {
+        mcshow.showJson(ctrl.experiment);
     };
 }
 
