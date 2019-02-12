@@ -1,14 +1,21 @@
 /*@ngInject*/
-function UserService($window, $log, Restangular) {
+function UserService($window, $log, Restangular, $state) {
     const self = this;
-    if ($window.sessionStorage.mcuser) {
+    if ($window.localStorage.mcuser) {
         try {
-            self.mcuser = angular.fromJson($window.sessionStorage.mcuser);
+            self.mcuser = angular.fromJson($window.localStorage.mcuser);
         } catch (err) {
-            $log.log("Error parse mcuser in sessionStorage");
+            $log.log('Error parse mcuser in localStorage');
             self.mcuser = null;
         }
     }
+
+    $window.addEventListener('storage', (e) => {
+        if (e.key === 'mcuser' && e.newValue === 'null') {
+            self.mcuser = null;
+            $state.go('login');
+        }
+    });
 
     return {
         isAuthenticated: function() {
@@ -17,14 +24,14 @@ function UserService($window, $log, Restangular) {
 
         setAuthenticated: function(authenticated, u) {
             if (!authenticated) {
-                $window.sessionStorage.removeItem('mcuser');
-                $window.sessionStorage.mcuser = null;
+                $window.localStorage.removeItem('mcuser');
+                $window.localStorage.mcuser = null;
                 self.mcuser = undefined;
             } else {
                 if (!u.favorites) {
                     u.favorites = {};
                 }
-                $window.sessionStorage.mcuser = angular.toJson(u);
+                $window.localStorage.mcuser = angular.toJson(u);
                 self.mcuser = u;
             }
         },
@@ -60,7 +67,7 @@ function UserService($window, $log, Restangular) {
 
         addToFavorites: function(projectID, templateName) {
             self.mcuser.favorites[projectID].processes.push(templateName);
-            $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
+            $window.localStorage.mcuser = angular.toJson(self.mcuser);
         },
 
         removeFromFavorites: function(projectID, templateName) {
@@ -69,20 +76,20 @@ function UserService($window, $log, Restangular) {
             });
             if (i !== -1) {
                 self.mcuser.favorites[projectID].processes.splice(i, 1);
-                $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
+                $window.localStorage.mcuser = angular.toJson(self.mcuser);
             }
         },
 
         reset_apikey: function(new_key) {
             if (self.mcuser) {
                 self.mcuser.apikey = new_key;
-                $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
+                $window.localStorage.mcuser = angular.toJson(self.mcuser);
             }
         },
 
         save: function() {
             if (self.mcuser) {
-                $window.sessionStorage.mcuser = angular.toJson(self.mcuser);
+                $window.localStorage.mcuser = angular.toJson(self.mcuser);
             }
         },
 
