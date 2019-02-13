@@ -5,12 +5,12 @@ angular.module('materialscommons')
     });
 
 /*@ngInject*/
-function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templates, mcprojstore) {
+function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templates, mcprojstore, mcRouteState) {
     const ctrl = this;
 
-    ctrl.message = "";
-    ctrl.userLogin = "";
-    ctrl.password = "";
+    ctrl.message = '';
+    ctrl.userLogin = '';
+    ctrl.password = '';
     ctrl.cancel = cancel;
     ctrl.login = login;
     ctrl.whichSite = 'published';
@@ -23,8 +23,16 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templ
                 User.setAuthenticated(true, u);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
                 templates.getServerTemplates().then((t) => templates.set(t));
-                let route = ctrl.whichSite == 'published' ? 'data.home.top' : 'projects.list';
-                mcprojstore.reset().then(() => $state.go(route));
+                let routeState = mcRouteState.getRoute();
+                mcprojstore.reset().then(() => {
+                    if (routeState.state !== null) {
+                        $state.go(routeState.state.name, routeState.params);
+                        mcRouteState.setRoute(null, null);
+                    } else {
+                        let route = ctrl.whichSite == 'published' ? 'data.home.top' : 'projects.list';
+                        $state.go(route)
+                    }
+                });
                 mcbus.send('USER$LOGIN');
             })
             .error((reason) => {
@@ -34,8 +42,8 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templ
     }
 
     function cancel() {
-        ctrl.userLogin = "";
-        ctrl.password = "";
+        ctrl.userLogin = '';
+        ctrl.password = '';
     }
 
 }

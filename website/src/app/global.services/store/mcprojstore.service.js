@@ -138,7 +138,11 @@ class MCProjStoreService {
     }
 
     setCurrentExperiment(experimentId) {
-        return this.mcstore.set(this.OTEXPERIMENT, store => store.currentExperimentId = experimentId);
+        return this.mcstore.set(this.OTEXPERIMENT, store => {
+            if (store) {
+                store.currentExperimentId = experimentId;
+            }
+        });
     }
 
     _getCurrentExperiment() {

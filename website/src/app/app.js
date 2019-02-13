@@ -66,7 +66,7 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
         );
     }
 
-    const unregister = $rootScope.$on('$stateChangeStart', function (event, toState) {
+    const unregister = $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
         mcRouteState.setRouteName(toState.name);
         $rootScope.navbarSearchText = toState.name.startsWith('projects') ? 'SEARCH PROJECTS...' : 'SEARCH PROJECT...';
 
@@ -79,6 +79,7 @@ function appRun($rootScope, User, Restangular, $state, mcglobals, searchQueryTex
         if (!User.isAuthenticated() && isStateRequiringALogin(toState.name)) {
             event.preventDefault();
             $state.go('data.home.top');
+            mcRouteState.setRoute(toState, toParams);
         }
 
         if (!toState.name.startsWith('project.search')) {
