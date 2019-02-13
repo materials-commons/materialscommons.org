@@ -15,6 +15,6 @@ class MCProjectProcessesViewContainerComponentController {
 
 angular.module('materialscommons').component('mcProjectProcessesViewContainer', {
     controller: MCProjectProcessesViewContainerComponentController,
-    template: `<mc-project-processes-view processes="$ctrl.state.processes"></mc-project-processes-view>`
+    template: `<mc-processes-table processes="$ctrl.state.processes"></mc-processes-table>`
 });
 

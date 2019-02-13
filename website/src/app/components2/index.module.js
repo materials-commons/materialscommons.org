@@ -7,3 +7,4 @@ import './dataset-files/dataset-files.service';
 import './dataset-details2/dataset-details2.service';
 import './dataset-details2/mc-dataset-details2.component';
 import './process-editor/process-editor.component';
+import './processes-table/processes-table.component';

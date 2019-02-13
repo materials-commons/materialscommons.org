@@ -1,4 +1,4 @@
-class MCProjectProcessesViewComponentController {
+class MCProcessesTableComponentController {
     /*@ngInject*/
     constructor() {
         this.state = {
@@ -19,9 +19,9 @@ class MCProjectProcessesViewComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcProjectProcessesView', {
-    controller: MCProjectProcessesViewComponentController,
-    template: require('./project-processes-view.html'),
+angular.module('materialscommons').component('mcProcessesTable', {
+    controller: MCProcessesTableComponentController,
+    template: require('./processes-table.html'),
     bindings: {
         processes: '<'
     }
