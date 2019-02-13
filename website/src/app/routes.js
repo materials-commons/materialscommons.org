@@ -233,6 +233,13 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                 ]
             }
         })
+        .state('project.processes.process', {
+            url: '/process/:process_id',
+            template: `
+                <md-content layout="column" class="height-100">
+                    <mc-process-view-container></mc-process-view-container>
+                </md-content>`
+        })
         .state('project.samples', {
             url: '/samples',
             template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples" class="height-100"></mc-project-samples></md-content>',
@@ -245,7 +252,11 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.samples.sample', {
             url: '/sample/:sample_id',
-            template: '<mc-sample></mc-sample>'
+            template: `
+            <md-content layout="column" class="height-100">
+                    <mc-sample-view-container></mc-sample-view-container>
+            </md-content>
+            `
         })
         .state('project.files', {
             url: '/files',
