@@ -1,0 +1,35 @@
+<div layout-margin>
+    <md-table-container>
+        <table md-table>
+            <thead md-head style="margin-bottom: 40px; margin-top: 40px" md-order="$ctrl.state.sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Process</th>
+                <th md-column>Modified</th>
+                <th md-column md-order-by="files_count"># Files</th>
+                <th md-column md-order-by="input_samples_count"># Input Samples</th>
+                <th md-column md-order-by="output_samples_count"># Output Samples</th>
+            </tr>
+            </thead>
+            <tbody md-body style="margin-top: 20px">
+            <tr md-row class="md-row-hover pointer"
+                ng-repeat="process in $ctrl.state.processes | filter:$ctrl.state.filterBy | orderBy:$ctrl.state.sortOrder">
+                <td md-cell>
+                    <a class="md-primary" ui-sref="project.process({process_id: process.id})">{{process.name}}</a>
+                </td>
+                <td md-cell>
+                    {{process.mtime | date:'fullDate'}}
+                </td>
+                <td md-cell>
+                    {{process.files_count}}
+                </td>
+                <td md-cell>
+                    {{process.input_samples_count}}
+                </td>
+                <td md-cell>
+                    {{process.output_samples_count}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>

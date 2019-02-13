@@ -105,7 +105,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             template: '<mc-project-view-container class="height-100" flex="100" layout="column"></mc-project-view-container>',
             resolve: {
                 _projstore: ['mcprojstore', (mcprojstore) => mcprojstore.ready()],
-                
+
                 _ignore: ['mcprojstore', '$stateParams', '_projstore',
                     (mcprojstore, $stateParams) => mcprojstore.getProject($stateParams.project_id)],
 
@@ -225,20 +225,18 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.processes', {
             url: '/processes',
-            template: '<mc-project-processes processes="$resolve.processes"></mc-project-processes>',
-            resolve: {
-                processes: ['projectsAPI', '$stateParams',
-                    (projectsAPI, $stateParams) =>
-                        projectsAPI.getProjectProcesses($stateParams.project_id)
-                ]
-            }
-        })
-        .state('project.processes.process', {
-            url: '/process/:process_id',
             template: `
                 <md-content layout="column" class="height-100">
-                    <mc-process-view-container></mc-process-view-container>
-                </md-content>`
+                    <mc-project-processes-view-container class="height-100"></mc-project-processes-view-container>
+                </md-content>`,
+        })
+        .state('project.process', {
+            url: '/process/:process_id',
+            template: `project.process is alive`
+            // template: `
+            //     <md-content layout="column" class="height-100">
+            //         <mc-process-view-container></mc-process-view-container>
+            //     </md-content>`
         })
         .state('project.samples', {
             url: '/samples',

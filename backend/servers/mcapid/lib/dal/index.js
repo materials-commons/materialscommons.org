@@ -4,7 +4,7 @@ module.exports.tryCatch = async function (fn) {
     try {
         return await fn();
     } catch (error) {
-        api.log('Failed API Call', 'info', error);
+        api.log('Failed API Call ', 'info', error);
         return null;
     }
 };
