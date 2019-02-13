@@ -65,36 +65,6 @@ module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction
                                     'setup_id': '64f8e634-9046-4ce5-a0d6-f0f0a338f30e',
                                     'unit': '',
                                     'value': ''
-                                },
-                                {
-                                    'attribute': 'memory_per_processor',
-                                    'description': '',
-                                    'id': 'c5b3844d-3508-4a96-8a03-6ef6cd7a3ec0',
-                                    'name': 'Memory Per Processor',
-                                    'otype': 'number',
-                                    'setup_id': '64f8e634-9046-4ce5-a0d6-f0f0a338f30e',
-                                    'unit': '',
-                                    'value': ''
-                                },
-                                {
-                                    'attribute': 'number_of_processors',
-                                    'description': '',
-                                    'id': 'dfa4de9b-cab2-4cc0-ad53-84e50ca7032c',
-                                    'name': 'Number Of Processors',
-                                    'otype': 'number',
-                                    'setup_id': '64f8e634-9046-4ce5-a0d6-f0f0a338f30e',
-                                    'unit': '',
-                                    'value': ''
-                                },
-                                {
-                                    'attribute': 'submit_script',
-                                    'description': '',
-                                    'id': '9508fab7-bfab-4720-a5ce-3de52292dee5',
-                                    'name': 'Submit Script',
-                                    'otype': 'string',
-                                    'setup_id': '64f8e634-9046-4ce5-a0d6-f0f0a338f30e',
-                                    'unit': '',
-                                    'value': ''
                                 }
                             ],
                             'setup_id': '64f8e634-9046-4ce5-a0d6-f0f0a338f30e'
@@ -154,36 +124,6 @@ module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction
                                     'setup_id': '0ec0094d-7c6f-49fc-9ca2-58d78df0cb07',
                                     'unit': '',
                                     'value': ''
-                                },
-                                {
-                                    'attribute': 'manufacturer',
-                                    'description': '',
-                                    'id': 'cef23308-6add-44db-8eeb-4d88be2f32e8',
-                                    'name': 'Manufacturer',
-                                    'otype': 'string',
-                                    'setup_id': '0ec0094d-7c6f-49fc-9ca2-58d78df0cb07',
-                                    'unit': '',
-                                    'value': ''
-                                },
-                                {
-                                    'attribute': 'supplier',
-                                    'description': '',
-                                    'id': '71d89a5f-c859-4a88-a094-677414664ead',
-                                    'name': 'Supplier',
-                                    'otype': 'string',
-                                    'setup_id': '0ec0094d-7c6f-49fc-9ca2-58d78df0cb07',
-                                    'unit': '',
-                                    'value': ''
-                                },
-                                {
-                                    'attribute': 'production_method',
-                                    'description': '',
-                                    'id': '435e68d1-1a1c-438e-931d-2aaaf8d23a85',
-                                    'name': 'Production Method',
-                                    'otype': 'selection',
-                                    'setup_id': '0ec0094d-7c6f-49fc-9ca2-58d78df0cb07',
-                                    'unit': '',
-                                    'value': ''
                                 }
                             ],
                             'setup_id': '0ec0094d-7c6f-49fc-9ca2-58d78df0cb07'
@@ -235,7 +175,84 @@ module.exports.GetProcessForProjectAction = class GetProcessForProjectAction ext
                 required: true,
             }
         };
-        this.outputExample = {};
+        this.outputExample = {
+            'data': {
+                'birthtime': '2019-02-08T21:14:08.250Z',
+                'category': 'create_sample',
+                'does_transform': true,
+                'files': [],
+                'id': '3b4ed029-15d8-4d78-aba6-b5d9d424e5ea',
+                'measurements': [],
+                'mtime': '2019-02-08T21:14:08.250Z',
+                'name': 'Create Samples',
+                'note': '',
+                'otype': 'process',
+                'owner': 'test@test.mc',
+                'process_id': '3b4ed029-15d8-4d78-aba6-b5d9d424e5ea',
+                'process_type': 'create',
+                'project_id': 'c667f810-6202-4f7f-9460-81029dac0840',
+                'samples': [
+                    {
+                        'birthtime': '2019-02-08T21:14:08.955Z',
+                        'description': '',
+                        'direction': 'out',
+                        'group_size': 0,
+                        'has_group': false,
+                        'id': '39e19d00-955b-4ce4-96fe-01c6037b9fac',
+                        'is_grouped': false,
+                        'mtime': '2019-02-08T21:14:08.955Z',
+                        'name': 'Test Sample 1',
+                        'otype': 'sample',
+                        'owner': 'test@test.mc',
+                        'process_id': '3b4ed029-15d8-4d78-aba6-b5d9d424e5ea',
+                        'property_set_id': '2fa38864-f7be-43df-b6e1-8ec045f12b45',
+                        'sample_id': '39e19d00-955b-4ce4-96fe-01c6037b9fac'
+                    }
+                ],
+                'setup': [
+                    {
+                        'attribute': 'instrument',
+                        'birthtime': '2019-02-08T21:14:08.365Z',
+                        'id': '0ec0094d-7c6f-49fc-9ca2-58d78df0cb07',
+                        'name': 'Instrument',
+                        'otype': 'settings',
+                        'process_id': '3b4ed029-15d8-4d78-aba6-b5d9d424e5ea',
+                        'properties': [
+                            {
+                                'attribute': 'manufacturing_date',
+                                'description': '',
+                                'id': '357c0162-dc7e-4341-8fd6-b5c410f111d0',
+                                'name': 'Manufacturing Date',
+                                'otype': 'date',
+                                'setup_id': '0ec0094d-7c6f-49fc-9ca2-58d78df0cb07',
+                                'unit': '',
+                                'value': ''
+                            }
+                        ],
+                        'setup_id': '0ec0094d-7c6f-49fc-9ca2-58d78df0cb07'
+                    }
+                ],
+                'template_id': 'global_Create Samples',
+                'template_name': 'Create Samples'
+            },
+            'serverInformation': {
+                'serverName': 'mcapid',
+                'apiVersion': '0.1.0',
+                'requestDuration': 5,
+                'currentTime': 1550087302651
+            },
+            'requesterInformation': {
+                'id': 'b5bab012e4c01e99ca17a84cd91b8ee3fe9da853-bd9f9a70-2f34-4a01-b9e7-0a2252e8ae73',
+                'fingerprint': 'b5bab012e4c01e99ca17a84cd91b8ee3fe9da853',
+                'messageId': 'bd9f9a70-2f34-4a01-b9e7-0a2252e8ae73',
+                'remoteIP': '127.0.0.1',
+                'receivedParams': {
+                    'project_id': 'c667f810-6202-4f7f-9460-81029dac0840',
+                    'process_id': '3b4ed029-15d8-4d78-aba6-b5d9d424e5ea',
+                    'action': 'getProcessForProject'
+                }
+            }
+        };
     }
 
     async run({response, params}) {

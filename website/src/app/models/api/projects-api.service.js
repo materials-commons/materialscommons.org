@@ -123,6 +123,13 @@ class ProjectsAPIService {
         );
     }
 
+    getProcessForProject(projectId, processId) {
+        return this.Restangular.one('v3').one('getProcessForProject').customPOST({project_id: projectId, process_id: processId}).then(
+            process => process.plain().data,
+            e => this.toast.error(e.error)
+        );
+    }
+
     getProjectProcess(projectId, processId) {
         return this.projectsAPIRoute(projectId).one('processes', processId).get().then(process => process.plain());
     }

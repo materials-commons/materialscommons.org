@@ -232,11 +232,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.process', {
             url: '/process/:process_id',
-            template: `project.process is alive`
-            // template: `
-            //     <md-content layout="column" class="height-100">
-            //         <mc-process-view-container></mc-process-view-container>
-            //     </md-content>`
+            template: `
+                <md-content layout="column" class="height-100">
+                    <mc-project-process-view-container></mc-project-process-view-container>
+                </md-content>`
         })
         .state('project.samples', {
             url: '/samples',
