@@ -92,6 +92,7 @@ def create_mc_tables():
                           ["process_id", "sample_id", "property_set_id"])
     create_compound_index("process2sample", "process_sample", ["process_id", "sample_id"])
     create_compound_index("process2sample", "sample_property_set", ["sample_id", "property_set_id"])
+    create_compound_index("process2sample", "process_sample_direction", ["process_id", "direction"])
 
     create_mc_table("project2sample", "sample_id", "project_id")
     create_compound_index("project2sample", "project_sample", ["project_id", "sample_id"])
@@ -100,6 +101,7 @@ def create_mc_tables():
 
     create_mc_table("process2file", "process_id", "datafile_id", "_type")
     create_compound_index("process2file", "process_datafile", ["process_id", "datafile_id"])
+    create_compound_index("process2file", "process_datafile_direction", ["process_id", "direction"])
 
     create_mc_table("propertysets", "parent_id")
 
