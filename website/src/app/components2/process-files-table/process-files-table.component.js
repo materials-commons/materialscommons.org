@@ -12,9 +12,9 @@ class MCProcessFilesTableComponentController {
         }
     }
 
-    showFile(file) {
-
-    }
+    // showFile(file) {
+    //
+    // }
 }
 
 angular.module('materialscommons').component('mcProcessFilesTable', {
