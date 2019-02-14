@@ -237,25 +237,23 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     <mc-project-process-view-container></mc-project-process-view-container>
                 </md-content>`
         })
-        .state('project.samples', {
-            url: '/samples',
-            template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples" class="height-100" layout-margin></mc-project-samples></md-content>',
-            resolve: {
-                samples: ['samplesAPI', '$stateParams',
-                    (samplesAPI, $stateParams) =>
-                        samplesAPI.getProjectSamples($stateParams.project_id)
-                ]
-            }
-        })
-
         // .state('project.samples', {
         //     url: '/samples',
-        //     template: `
-        //         <md-content layout="column" class="height-100">
-        //             <mc-project-samples-view-container class="height-100"></mc-project-samples-view-container>
-        //         </md-content>`,
+        //     template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples" class="height-100" layout-margin></mc-project-samples></md-content>',
+        //     resolve: {
+        //         samples: ['samplesAPI', '$stateParams',
+        //             (samplesAPI, $stateParams) =>
+        //                 samplesAPI.getProjectSamples($stateParams.project_id)
+        //         ]
+        //     }
         // })
-
+        .state('project.samples', {
+            url: '/samples',
+            template: `
+                <md-content layout="column" class="height-100">
+                    <mc-project-samples-view-container class="height-100"></mc-project-samples-view-container>
+                </md-content>`,
+        })
         .state('project.sample', {
             url: '/sample/:sample_id',
             template: `
