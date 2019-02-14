@@ -2,6 +2,8 @@ const {Initializer, api} = require('actionhero');
 const r = require('../../shared/r');
 const access = require('../lib/dal/access');
 const projectAccessCache = require('../lib/project-access-cache')(access);
+const {setStatusCode} = require('../lib/connection-helpers');
+const status = require('http-status');
 
 module.exports = class APIKeyInitializer extends Initializer {
     constructor() {
@@ -25,10 +27,12 @@ module.exports = class APIKeyInitializer extends Initializer {
 
                 const project = await projectAccessCache.find(data.params.project_id);
                 if (!project) {
+                    setStatusCode(data.connection, status.BAD_REQUEST);
                     throw new Error(`No such project ${data.params.project_id}`);
                 }
 
                 if (!projectAccessCache.validateAccess(data.params.project_id, data.user)) {
+                    setStatusCode(data.connection, status.UNAUTHORIZED);
                     throw new Error(`No access to project ${data.params.project_id}`);
                 }
 

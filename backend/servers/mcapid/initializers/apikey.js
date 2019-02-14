@@ -1,6 +1,7 @@
 const {Initializer, api} = require('actionhero');
 const apikeyCache = require('../lib/apikey-cache');
 const r = require('../../shared/r');
+const {failAuth} = require('../lib/connection-helpers');
 
 module.exports = class APIKeyInitializer extends Initializer {
     constructor() {
@@ -19,12 +20,12 @@ module.exports = class APIKeyInitializer extends Initializer {
                 }
 
                 if (!data.params.apikey) {
-                    throw new Error('Not authorized');
+                    failAuth(data.connection);
                 }
 
                 let user = await apikeyCache.find(data.params.apikey);
                 if (!user) {
-                    throw new Error('Not authorized');
+                    failAuth(data.connection);
                 }
 
                 data.user = user;
