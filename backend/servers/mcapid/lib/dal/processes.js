@@ -14,10 +14,9 @@ const getProcessForProject = async (projectId, processId) => {
 };
 
 const getProcess = async (userId, processId) => {
-    return await r.db('materialscommons').table('access').getAll(userId, {index: 'user_id'})
-        .eqJoin([r.row('project_id'), processId],
-            r.db('materialscommons').table('project2process'), {index: 'project_process'}).zip().limit(1)
-        .eqJoin('process_id', r.db('materialscommons').table('processes')).zip().nth(0).merge(processDetailsRql);
+    return await r.table('access').getAll(userId, {index: 'user_id'})
+        .eqJoin([r.row('project_id'), processId], r.table('project2process'), {index: 'project_process'}).zip().limit(1)
+        .eqJoin('process_id', r.table('processes')).zip().nth(0).merge(processDetailsRql);
 };
 
 function processDetailsRql(proc) {
