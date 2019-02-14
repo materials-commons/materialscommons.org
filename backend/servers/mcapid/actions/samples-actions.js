@@ -1,4 +1,28 @@
-// const {Action} = require('actionhero');
+const {Action} = require('actionhero');
+const dal = require('../lib/dal');
+
+class GetSampleAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getSample';
+        this.description = 'Returns the given sample';
+        this.inputs = {
+            sample_id: {
+                required: true,
+            }
+        };
+        this.outputExample = {};
+    }
+
+    async run({response, params}) {
+
+    }
+}
+
+module.exports = {
+    GetSampleAction,
+};
+
 //
 // module.exports.ListSamplesAction = class ListSamplesAction extends Action {
 //     constructor() {
