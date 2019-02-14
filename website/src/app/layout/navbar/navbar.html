@@ -13,24 +13,7 @@
             </div>
         </div>
 
-        <md-divider class="md-vertical-divider margin-left-15"
-                    style="border-right-color: #4d4d4d"></md-divider>
-        <div layout="row" hide-md hide-sm layout-align="space-around" flex-gt-md="15" flex="10" ng-if="false">
-            <div ng-show="$ctrl.$stateParams.project_id" layout="column" layout-align="center center">
-                <a ng-if="$ctrl.project.users.length !== 1" class="md-title" style="color:#4caf50"
-                   ui-sref="project.settings">
-                    <b>{{$ctrl.project.users.length}} Users</b>
-                </a>
-                <a ng-if="$ctrl.project.users.length === 1" class="md-title" style="color:#4caf50"
-                   ui-sref="project.settings">
-                    <b>{{$ctrl.project.users.length}} User</b>
-                </a>
-            </div>
-            <div ng-show="$ctrl.$stateParams.project_id" layout="column" layout-align="center center">
-                <span class="md-title" style="color: #ff9800"><b>{{$ctrl.published}}</b></span>
-                <span class="md-subhead" style="color:#ff9800"><i class="fa fa-fw fa-database"></i>Published</span>
-            </div>
-        </div>
+        <md-divider class="md-vertical-divider margin-left-15" style="border-right-color: #4d4d4d"></md-divider>
         <span flex-offset="5"></span>
         <md-input-container ng-show="$ctrl.$stateParams.project_id" md-no-float flex="20" class="md-input-bottom-0">
             <input placeholder="{{$ctrl.navbarSearchText}}" type="text" class="mc-navbar-search-input"
@@ -39,7 +22,7 @@
                    style="color:white; border-bottom-color:white">
         </md-input-container>
         <span flex="20" ng-if="!$ctrl.$stateParams.project_id"></span>
-        <span flex="30"></span>
+        <span flex="20"></span>
         <div>
             <a class="always-white"
                href="https://github.com/materials-commons/materialscommons.org/wiki/Help"
