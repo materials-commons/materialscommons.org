@@ -1,5 +1,28 @@
 const {Action} = require('actionhero');
 const dal = require('../lib/dal');
+const samples = require('../lib/dal/samples');
+
+class GetSamplesForProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getSamplesForProject';
+        this.description = 'Returns all samples in the given project';
+        this.inputs = {
+            project_id: {
+                required: true,
+            }
+        };
+        this.outputExample = sampleExample;
+    }
+
+    async run({response, params}) {
+        let results = await dal.tryCatch(async() => await samples.getSamplesForProject(params.project_id));
+        if (results === null) {
+            throw new Error(`Unable to retrieve samples for project ${params.project_id}`);
+        }
+        response.data = results;
+    }
+}
 
 class GetSampleAction extends Action {
     constructor() {
@@ -20,8 +43,11 @@ class GetSampleAction extends Action {
 }
 
 module.exports = {
+    GetSamplesForProjectAction,
     GetSampleAction,
 };
+
+const sampleExample = {};
 
 //
 // module.exports.ListSamplesAction = class ListSamplesAction extends Action {

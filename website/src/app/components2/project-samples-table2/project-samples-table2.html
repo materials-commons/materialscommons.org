@@ -1,0 +1,33 @@
+<div>
+    <md-table-container>
+        <table md-table>
+            <thead md-head style="margin-bottom: 40px; margin-top: 40px" md-order="$ctrl.state.sortOrder">
+            <tr md-row>
+                <th md-column md-order-by="name">Sample</th>
+                <th md-column>Experiment</th>
+                <th md-column>Modified</th>
+                <th md-column md-order-by="files_count"># Files</th>
+                <th md-column md-order-by="processes_count"># Processes</th>
+            </tr>
+            </thead>
+            <tbody md-body style="margin-top: 20px">
+            <tr md-row class="md-row-hover pointer"
+                ng-repeat="sample in $ctrl.state.samples | orderBy:['experiments_text', $ctrl.state.sortOrder]">
+                <td md-cell>
+                    <a class="md-primary" ui-sref="project.sample({sample_id: sample.id})">{{sample.name}}</a>
+                </td>
+                <td md-cell>{{sample.experiments_text}}</td>
+                <td md-cell>
+                    {{sample.mtime | date:'fullDate'}}
+                </td>
+                <td md-cell>
+                    {{sample.files_count}}
+                </td>
+                <td md-cell>
+                    {{sample.processes_count}}
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+</div>

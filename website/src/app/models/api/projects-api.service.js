@@ -123,6 +123,13 @@ class ProjectsAPIService {
         );
     }
 
+    getSamplesForProject(projectId) {
+        return this.Restangular.one('v3').one('getSamplesForProject').customPOST({project_id: projectId}).then(
+            samples => samples.plain().data,
+            e => this.toast.error(e.error)
+        );
+    }
+
     getProcessForProject(projectId, processId) {
         return this.Restangular.one('v3').one('getProcessForProject').customPOST({project_id: projectId, process_id: processId}).then(
             process => process.plain().data,

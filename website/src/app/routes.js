@@ -237,21 +237,30 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     <mc-project-process-view-container></mc-project-process-view-container>
                 </md-content>`
         })
+        // .state('project.samples', {
+        //     url: '/samples',
+        //     template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples" class="height-100" layout-margin></mc-project-samples></md-content>',
+        //     resolve: {
+        //         samples: ['samplesAPI', '$stateParams',
+        //             (samplesAPI, $stateParams) =>
+        //                 samplesAPI.getProjectSamples($stateParams.project_id)
+        //         ]
+        //     }
+        // })
+
         .state('project.samples', {
             url: '/samples',
-            template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples" class="height-100" layout-margin></mc-project-samples></md-content>',
-            resolve: {
-                samples: ['samplesAPI', '$stateParams',
-                    (samplesAPI, $stateParams) =>
-                        samplesAPI.getProjectSamples($stateParams.project_id)
-                ]
-            }
+            template: `
+                <md-content layout="column" class="height-100">
+                    <mc-project-samples-view-container class="height-100"></mc-project-samples-view-container>
+                </md-content>`,
         })
-        .state('project.samples.sample', {
+
+        .state('project.sample', {
             url: '/sample/:sample_id',
             template: `
             <md-content layout="column" class="height-100">
-                    <mc-sample-view-container></mc-sample-view-container>
+                    <mc-project-sample-view-container></mc-project-sample-view-container>
             </md-content>
             `
         })
@@ -279,10 +288,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.file', {
             url: '/file/:file_id',
             template: '<md-content layout="column"><mc-file-container class="height-100"></mc-file-container></md-content>'
-        })
-        .state('project.sample', {
-            url: '/sample/:sample_id',
-            template: '<mc-sample></mc-sample>'
         })
         .state('project.datasets', {
             url: '/datasets',

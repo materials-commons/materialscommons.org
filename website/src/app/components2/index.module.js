@@ -12,3 +12,4 @@ import './process-setup-table/process-setup-table.component';
 import './process-samples-table/process-samples-table.component';
 import './process-files-table/process-files-table.component';
 import './process-measurements-table/process-measurements-table.component';
+import './project-samples-table2/project-samples-table2.component';

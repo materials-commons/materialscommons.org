@@ -7,4 +7,5 @@ import './project.files/index.module';
 import './project.experiment.workflow/index.module';
 import './project.processes/index.module';
 import './project.process/index.module';
-import './project.samples.sample/index.module';
+import './project.sample/index.module';
+import './project.samples/index.module';
