@@ -424,6 +424,11 @@ a.project-sidenav-tool:visited {
 
 .timeline-badge {
     padding-top: 10px;
+    z-index: 50 !important;
+}
+
+timeline-badge {
+    z-index: 50;
 }
 
 .mc-box {

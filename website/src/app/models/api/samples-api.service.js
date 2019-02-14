@@ -1,11 +1,20 @@
 class SamplesAPIService {
-    constructor(projectsAPIRoute) {
+    constructor(projectsAPIRoute, Restangular, toast) {
         this.projectsAPIRoute = projectsAPIRoute;
+        this.Restangular = Restangular;
+        this.toast = toast;
     }
 
     addSamplesToExperiment(projectId, experimentId, sampleIds) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('samples')
             .customPOST({samples: sampleIds}).then(sampleExperimentIds => sampleExperimentIds.plain());
+    }
+
+    getSample(sampleId) {
+        return this.Restangular.one('v3').one('getSample').customPOST({sample_id: sampleId}).then(
+            sample => sample.plain().data,
+            e => this.toast.error(e.error)
+        );
     }
 
     createSamplesInProjectForProcess(projectId, processId, samples) {
@@ -59,14 +68,14 @@ class SamplesAPIService {
             add_as: addAs,
             property: property,
             measurements: measurements
-        }
+        };
     }
 
     createProperty(name, attribute) {
         return {
             name: name,
             attribute: attribute
-        }
+        };
     }
 
     createMeasurement(otype, property, unit, value) {
@@ -76,7 +85,7 @@ class SamplesAPIService {
             otype: otype,
             unit: unit,
             value: value
-        }
+        };
     }
 
     updateSampleFiles(projectId, sampleId, filesToAdd, filesToDelete) {

@@ -1,0 +1,40 @@
+<div layout="column" layout-margin flex>
+    <div layout="row" flex layout-align="space-between center">
+        <h2>Sample: {{$ctrl.state.sample.name}}</h2>
+        <a class="md-subhead" ng-click="$ctrl.showJson()">show json</a>
+    </div>
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Details</h5>
+        <div layout="row" flex="40" layout-margin>
+            <dl>
+                <dt>Created By</dt>
+                <dd>{{$ctrl.state.sample.owner}}</dd>
+                <dt>Created On</dt>
+                <dd>{{$ctrl.state.sample.birthtime | date:'fullDate'}}</dd>
+                <dt>Last Modified</dt>
+                <dd>{{$ctrl.state.sample.mtime | date:'fullDate'}}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Timeline</h5>
+        <div layout="row" layout-margin>
+            <mc-sample-timeline sample="$ctrl.state.sample" flex="100"></mc-sample-timeline>
+        </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Files</h5>
+        <div layout="row" layout-margin>
+            Sample files here
+        </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Attributes</h5>
+        <div layout="row" layout-margin>
+            Sample attributes here
+        </div>
+    </div>
+</div>

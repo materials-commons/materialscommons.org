@@ -21,7 +21,10 @@ const getSample = async(userId, sampleId) => {
 };
 
 function sampleDetailsRql(s) {
-    return {};
+    return {
+        processes: r.table('process2sample').getAll(s('id'), {index: 'sample_id'})
+            .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+    };
 }
 
 module.exports = {

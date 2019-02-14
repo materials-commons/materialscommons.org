@@ -1,0 +1,16 @@
+<timeline flex="100">
+    <timeline-event ng-repeat="process in $ctrl.state.sample.processesInTimeline"
+                    ui-sref="project.process({process_id: process.id})"
+                    class="pointer">
+        <timeline-badge class="mc-md-primary-bg fa fa-2x fa-code-fork timeline-hidden"
+                        style="padding-top: 10px"
+                        side="right"></timeline-badge>
+        <timeline-panel>
+            <timeline-heading>
+                <h4 class="md-subhead">{{process.name}}</h4>
+                <span class="mc-md-primary-color">{{process.birthtime | date:'fullDate'}}</span>
+                <p>{{process.description}}</p>
+            </timeline-heading>
+        </timeline-panel>
+    </timeline-event>
+</timeline>
