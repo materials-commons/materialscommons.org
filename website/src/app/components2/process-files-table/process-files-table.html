@@ -1,0 +1,23 @@
+<div>
+    <md-table-container ng-if="$ctrl.state.files.length">
+        <table md-table>
+            <thead md-head>
+            <tr md-row>
+                <th md-column>Name</th>
+                <th md-column>Direction</th>
+                <th md-column># Samples</th>
+                <th md-column># Processes</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="file in $ctrl.state.files">
+                <td md-cell><a class="md-primary" ng-click="$ctrl.showFile(file)">{{file.name}}</a></td>
+                <td md-cell>{{file.direction}}</td>
+                <td md-cell>{{file.samples_count}}</td>
+                <td md-cell>{{file.processes_count}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <h3 class="md-subhead" ng-if="$ctrl.state.files.length === 0">No files</h3>
+</div>

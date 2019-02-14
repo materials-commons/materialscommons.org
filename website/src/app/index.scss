@@ -2102,3 +2102,20 @@ md-content.md-default-theme, md-content {
     z-index: 1000;
 }
 
+dt {
+    float: left;
+    clear: left;
+    //width: 100px;
+    text-align: right;
+    font-weight: bold;
+}
+
+dt::after {
+    content: ":  ";
+}
+
+dd {
+    margin: 0 0 0 210px;
+    padding: 0 0 0.5em 5px;
+}
+

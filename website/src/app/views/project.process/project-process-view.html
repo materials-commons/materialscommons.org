@@ -1,3 +1,63 @@
-<div layout="row" layout-margin flex>
-    <a class="md-subhead" ng-click="$ctrl.showJson()">show json</a>
+<div layout="column" layout-margin flex>
+    <div layout="row" flex layout-align="space-between center">
+        <h2>Process: {{$ctrl.state.process.name}}</h2>
+        <a class="md-subhead" ng-click="$ctrl.showJson()">show json</a>
+    </div>
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Details</h5>
+        <div layout="row" layout-margin>
+            <div layout="row" flex="40">
+                <dl>
+                    <dt>Process can transform samples</dt>
+                    <dd>{{$ctrl.state.process.does_transform ? "Yes" : "No"}}</dd>
+                    <dt>Created By</dt>
+                    <dd>{{$ctrl.state.process.owner}}</dd>
+                    <dt>Process Type</dt>
+                    <dd>{{$ctrl.state.process.process_type}}</dd>
+                    <dt>Last Modified</dt>
+                    <dd>{{$ctrl.state.process.mtime | date:'fullDate'}}</dd>
+                </dl>
+
+            </div>
+            <div layout="row" flex="40">
+                <dl>
+                    <dt>Id</dt>
+                    <dd>{{$ctrl.state.process.id}}</dd>
+                    <dt>Templated Used</dt>
+                    <dd>{{$ctrl.state.process.template_name}}</dd>
+                    <dt>Templated Id</dt>
+                    <dd>{{$ctrl.state.process.template_id}}</dd>
+                    <dt>Created On</dt>
+                    <dd>{{$ctrl.state.process.birthtime | date:'fullDate'}}</dd>
+                </dl>
+            </div>
+            <div flex="20"></div>
+        </div>
+    </div>
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Setup</h5>
+        <div layout="row" layout-margin>
+            <mc-process-setup-table setup="$ctrl.state.process.setup" flex="100"></mc-process-setup-table>
+        </div>
+    </div>
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Samples</h5>
+        <div layout="row" layout-margin>
+            <mc-process-samples-table samples="$ctrl.state.process.samples" flex="100"></mc-process-samples-table>
+        </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Files</h5>
+        <div layout="row" layout-margin>
+            <mc-process-files-table files="$ctrl.state.process.files"></mc-process-files-table>
+        </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Measurements</h5>
+        <div layout="row" layout-margin>
+            <mc-process-measurements-table measurements="$ctrl.state.process.measurements"></mc-process-measurements-table>
+        </div>
+    </div>
 </div>

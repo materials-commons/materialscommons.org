@@ -8,3 +8,7 @@ import './dataset-details2/dataset-details2.service';
 import './dataset-details2/mc-dataset-details2.component';
 import './process-editor/process-editor.component';
 import './processes-table/processes-table.component';
+import './process-setup-table/process-setup-table.component';
+import './process-samples-table/process-samples-table.component';
+import './process-files-table/process-files-table.component';
+import './process-measurements-table/process-measurements-table.component';

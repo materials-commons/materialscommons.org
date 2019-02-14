@@ -1,0 +1,25 @@
+<div>
+    <md-table-container ng-if="$ctrl.state.measurements.length">
+        <table md-table>
+            <thead md-head>
+            <tr md-row>
+                <th md-column>Name</th>
+                <th md-column>Attribute</th>
+                <th md-column>Value</th>
+                <th md-column>Unit</th>
+            </tr>
+            </thead>
+            <tbody md-body>
+            <tr md-row ng-repeat="m in $ctrl.state.measurements">
+                <td md-cell>{{m.name}}</td>
+                <td md-cell>{{m.attribute}}</td>
+                <td md-cell>
+                    <pre>{{m.value | json}}</pre>
+                </td>
+                <td md-cell>{{m.unit}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <h3 class="md-subhead" ng-if="$ctrl.state.measurements.length === 0">No measurements</h3>
+</div>
