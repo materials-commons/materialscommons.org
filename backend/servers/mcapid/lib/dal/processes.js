@@ -1,16 +1,23 @@
 const r = require('../../../shared/r');
 
-const getProcessesForProject = async(projectId) => {
+const getProcessesForProject = async (projectId) => {
     return await r.table('project2process').getAll(projectId, {index: 'project_id'})
         .eqJoin('process_id', r.table('processes')).zip().merge(processDetailsRql);
 };
 
-const getProcessForProject = async(projectId, processId) => {
+const getProcessForProject = async (projectId, processId) => {
     let results = await r.table('project2process').getAll([projectId, processId], {index: 'project_process'})
         .eqJoin('process_id', r.table('processes')).zip().merge(processDetailsRql);
 
     // Query will return an array of one item
     return results[0];
+};
+
+const getProcess = async (userId, processId) => {
+    return await r.db('materialscommons').table('access').getAll(userId, {index: 'user_id'})
+        .eqJoin([r.row('project_id'), processId],
+            r.db('materialscommons').table('project2process'), {index: 'project_process'}).zip().limit(1)
+        .eqJoin('process_id', r.db('materialscommons').table('processes')).zip().nth(0).merge(processDetailsRql);
 };
 
 function processDetailsRql(proc) {
@@ -21,7 +28,7 @@ function processDetailsRql(proc) {
             .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
         setup: r.table('process2setup').getAll(proc('id'), {index: 'process_id'})
             .eqJoin('setup_id', r.table('setups')).zip()
-            .merge(function(setup) {
+            .merge(function (setup) {
                 return {
                     properties: r.table('setupproperties')
                         .getAll(setup('setup_id'), {index: 'setup_id'})
@@ -43,4 +50,5 @@ function processDetailsRql(proc) {
 module.exports = {
     getProcessesForProject,
     getProcessForProject,
+    getProcess,
 };
