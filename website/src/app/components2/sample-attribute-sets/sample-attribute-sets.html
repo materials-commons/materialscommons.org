@@ -1,0 +1,37 @@
+<div>
+    <div ng-repeat="as in $ctrl.state.attributeSets">
+        <h3 class="md-subhead">Attribute Set: {{as.id}}</h3>
+        <div>
+            <label>Processes:</label>
+            <a ui-sref="project.process({process_id: process.id})"
+               ng-repeat="process in as.processes" class="margin-left-10">
+                {{process.name}}
+            </a>
+        </div>
+        <label>Attributes</label>
+        <md-table-container ng-if="as.attributes.length">
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column>Name</th>
+                    <th md-column>Attribute</th>
+                    <th md-column>Best Measure</th>
+                    <th md-column>Unit</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="attr in as.attributes">
+                    <td md-cell><a ng-click="$ctrl.showMeasurements(attr)">{{attr.name}}</a></td>
+                    <td md-cell>{{attr.attribute}}</td>
+                    <td md-cell>
+                        <span ng-show="attr.best_measure === 'None'">None</span>
+                        <pre ng-show="attr.best_measure !== 'None'">{{attr.best_measure.value | json}}</pre>
+                    </td>
+                    <td>{{attr.best_measure.unit}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <h3 class="md-subhead" ng-if="as.attributes.length === 0">No attributes</h3>
+    </div>
+</div>
