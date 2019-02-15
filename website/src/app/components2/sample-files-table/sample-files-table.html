@@ -11,7 +11,7 @@
             </thead>
             <tbody md-body>
             <tr md-row ng-repeat="file in $ctrl.state.files">
-                <td md-cell><a class="md-primary" ng-click="$ctrl.showFile(file)">{{file.name}}</a></td>
+                <td md-cell><a class="md-primary" ui-sref="project.file({file_id: file.id})">{{file.name}}</a></td>
                 <td md-cell>{{file.owner}}</td>
                 <td md-cell>{{file.mediatype.mime}}</td>
                 <td md-cell>{{file.size | bytes}}</td>

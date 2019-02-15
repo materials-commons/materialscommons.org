@@ -1,18 +1,25 @@
 class MCProjectSamplesTable2ComponentController {
-    constructor() {
+    constructor(mcshow) {
+        this.mcshow = mcshow;
         this.state = {
             samples: [],
-            sortOrder: 'name'
+            sortOrder: 'name',
+            origSamples: []
         };
     }
 
     $onChanges(changes) {
         if (changes.samples) {
             this.state.samples = angular.copy(changes.samples.currentValue);
+            this.state.origSamples = changes.samples.currentValue;
             this.state.samples.forEach(s => {
                 s.experiments_text = s.experiments.map(e => e.name).join(', ');
             });
         }
+    }
+
+    showJson() {
+        this.mcshow.showJson(this.state.origSamples);
     }
 }
 

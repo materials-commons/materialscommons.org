@@ -1,6 +1,7 @@
 class MCProcessesTableComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(mcshow) {
+        this.mcshow = mcshow;
         this.state = {
             sortOrder: 'name',
             processes: [],
@@ -16,6 +17,10 @@ class MCProcessesTableComponentController {
                 p.output_samples_count = p.samples.filter(s => s.direction === 'out').length;
             });
         }
+    }
+
+    showJson() {
+        this.mcshow.showJson(this.state.processes);
     }
 }
 
