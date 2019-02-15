@@ -2,7 +2,10 @@ const r = require('../../../shared/r');
 
 const getSamplesForProject = async(projectId) => {
     return await r.table('project2sample').getAll(projectId, {index: 'project_id'})
-        .eqJoin('sample_id', r.table('samples')).zip().merge(sampleOverviewRql);
+        .eqJoin('sample_id', r.table('samples')).zip()
+        .without('group_size', 'has_group', 'is_grouped', 'permissions', 'project_id',
+            'project_name', 'sample_id', 'status', 'user_id')
+        .merge(sampleOverviewRql);
 };
 
 function sampleOverviewRql(s) {
