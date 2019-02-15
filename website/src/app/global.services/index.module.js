@@ -36,3 +36,4 @@ import './mc-route-state.service';
 import './process-edit.service';
 import './sample-linker.service';
 import './globus-endpoint-saver.service';
+import './apidocs.service';
