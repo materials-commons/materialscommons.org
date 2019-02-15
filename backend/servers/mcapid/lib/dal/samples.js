@@ -41,7 +41,7 @@ function sampleDetailsRql(s) {
 function sampleAttributeSetsRql(s) {
     return r.table('sample2propertyset').getAll(s('id'), {index: 'sample_id'})
         .eqJoin('property_set_id', r.table('propertysets')).zip()
-        .without('parent_id', 'sample_id', 'version')
+        .without('parent_id', 'sample_id', 'version', 'property_set_id')
         .merge(ps => {
             return {
                 attributes: r.table('propertyset2property').getAll(ps('id'), {index: 'property_set_id'})
@@ -61,24 +61,7 @@ function sampleAttributeSetsRql(s) {
         }).coerceTo('array');
 }
 
-const getSampleAttributeSets = async(sampleId, attributeSetId) => {
-    if (attributeSetId === 'all') {
-        return await getAllSampleAttributeSets(sampleId);
-    }
-
-    return await getSingleSampleAttribute(sampleId, attributeSetId);
-};
-
-const getAllSampleAttributeSets = async(sampleId) => {
-
-};
-
-const getSingleSampleAttribute = async(sampleId, attributeSetId) => {
-
-};
-
 module.exports = {
     getSamplesForProject,
     getSample,
-    getSampleAttributeSets,
 };

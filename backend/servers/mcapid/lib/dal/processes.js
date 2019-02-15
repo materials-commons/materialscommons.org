@@ -23,6 +23,7 @@ function processDetailsRql(proc) {
     return {
         samples: r.table('process2sample').getAll(proc('id'), {index: 'process_id'})
             .eqJoin('sample_id', r.table('samples')).zip()
+            .pluck('name', 'id', 'direction', 'owner')
             .merge(s => {
                 return {
                     files_count: r.table('sample2datafile').getAll(s('id'), {index: 'sample_id'}).count(),
@@ -31,6 +32,7 @@ function processDetailsRql(proc) {
             }).coerceTo('array'),
         files: r.table('process2file').getAll(proc('id'), {index: 'process_id'})
             .eqJoin('datafile_id', r.table('datafiles')).zip()
+            .pluck('id', 'name', 'direction', 'size', 'owner')
             .merge(f => {
                 return {
                     samples_count: r.table('sample2datafile').getAll(f('id'), {index: 'datafile_id'}).count(),
@@ -39,21 +41,18 @@ function processDetailsRql(proc) {
             }).coerceTo('array'),
         setup: r.table('process2setup').getAll(proc('id'), {index: 'process_id'})
             .eqJoin('setup_id', r.table('setups')).zip()
+            .pluck('attribute', 'name', 'id')
             .merge(function(setup) {
                 return {
                     properties: r.table('setupproperties')
-                        .getAll(setup('setup_id'), {index: 'setup_id'})
+                        .getAll(setup('id'), {index: 'setup_id'})
+                        .pluck('name', 'attribute', 'unit', 'value', 'id')
                         .coerceTo('array')
                 };
             }).coerceTo('array'),
         measurements: r.table('process2measurement').getAll(proc('id'), {index: 'process_id'})
             .eqJoin('measurement_id', r.table('measurements')).zip()
-            .merge(p2m => {
-                return {
-                    is_best_measure: r.table('best_measure_history')
-                        .getAll(p2m('measurement_id'), {index: 'measurement_id'}).count()
-                };
-            })
+            .pluck('id', 'name', 'unit', 'value', 'attribute')
             .coerceTo('array'),
     };
 }
