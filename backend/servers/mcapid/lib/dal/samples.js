@@ -24,10 +24,51 @@ function sampleDetailsRql(s) {
     return {
         processes: r.table('process2sample').getAll(s('id'), {index: 'sample_id'})
             .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
+        files: r.table('sample2datafile').getAll(s('id'), {index: 'sample_id'})
+            .eqJoin('datafile_id', r.table('datafiles')).zip().coerceTo('array'),
+        attribute_sets: sampleAttributeSetsRql(s),
     };
 }
+
+function sampleAttributeSetsRql(s) {
+    return r.table('sample2propertyset').getAll(s('id'), {index: 'sample_id'})
+        .eqJoin('property_set_id', r.table('propertysets')).zip().coerceTo('array')
+        .merge(ps => {
+            return {
+                attributes: r.table('propertyset2property').getAll(ps('id'), {index: 'property_set_id'})
+                    .eqJoin('property_id', r.table('properties')).zip().coerceTo('array')
+                    .merge(a => {
+                        return {
+                            best_measure: r.branch(a('best_measure_id').eq(''), 'None',
+                                r.table('best_measure_history').getAll(a('best_measure_id'))
+                                    .eqJoin('measurement_id', r.table('measurements')).zip().pluck('unit', 'value').nth(0)
+                            )
+                        };
+                    }),
+                processes: r.table('process2sample').getAll([s('id'), ps('id')], {index: 'sample_property_set'})
+                    .eqJoin('process_id', r.table('processes')).zip().pluck('id', 'name').coerceTo('array'),
+            };
+        });
+}
+
+const getSampleAttributeSets = async(sampleId, attributeSetId) => {
+    if (attributeSetId === 'all') {
+        return await getAllSampleAttributeSets(sampleId);
+    }
+
+    return await getSingleSampleAttribute(sampleId, attributeSetId);
+};
+
+const getAllSampleAttributeSets = async(sampleId) => {
+
+};
+
+const getSingleSampleAttribute = async(sampleId, attributeSetId) => {
+
+};
 
 module.exports = {
     getSamplesForProject,
     getSample,
+    getSampleAttributeSets,
 };

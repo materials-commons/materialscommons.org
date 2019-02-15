@@ -258,7 +258,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/sample/:sample_id',
             template: `
             <md-content layout="column" class="height-100">
-                    <mc-project-sample-view-container></mc-project-sample-view-container>
+                <mc-project-sample-view-container></mc-project-sample-view-container>
             </md-content>
             `
         })

@@ -15,5 +15,5 @@ class MCProjectSampleViewContainerComponentController {
 
 angular.module('materialscommons').component('mcProjectSampleViewContainer', {
     controller: MCProjectSampleViewContainerComponentController,
-    template: `<mc-project-sample-view sample="$ctrl.state.sample" layout-margin ng-if="$ctrl.state.sample"></mc-project-sample-view>`
+    template: `<mc-project-sample-view sample="$ctrl.state.sample" ng-if="$ctrl.state.sample"></mc-project-sample-view>`
 });

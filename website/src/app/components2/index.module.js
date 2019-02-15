@@ -14,3 +14,4 @@ import './process-files-table/process-files-table.component';
 import './process-measurements-table/process-measurements-table.component';
 import './project-samples-table2/project-samples-table2.component';
 import './sample-timeline/sample-timeline.component';
+import './sample-files-table/sample-files-table.component';
