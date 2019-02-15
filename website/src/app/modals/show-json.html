@@ -4,8 +4,14 @@
             Show JSON
         </div>
     </md-toolbar>
-    <md-dialog-content layout-marginx>
+    <md-dialog-content layout-margin>
         <md-content>
+            <a ng-click="$ctrl.showCurl = !$ctrl.showCurl" ng-show="$ctrl.curlCommand">
+                {{$ctrl.showCurl ? "Hide Curl Command" : "Show Curl Command"}}
+            </a>
+            <pre ng-show="$ctrl.curlCommand && $ctrl.showCurl">
+{{$ctrl.curlCommand}}
+            </pre>
             <pre>
 {{$ctrl.object | json}}
             </pre>

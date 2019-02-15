@@ -33,16 +33,17 @@ class MCShowService {
         });
     }
 
-    showJson(object) {
+    showJson(object, curl) {
         this.$mdDialog.show({
             templateUrl: 'app/modals/show-json.html',
-            controller: CommonDoneDismissDialogController,
+            controller: ShowJsonDismissDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             clickOutsideToClose: true,
             multiple: true,
             locals: {
                 object: object,
+                curl: curl,
             }
         });
     }
@@ -130,6 +131,35 @@ class CommonDoneDismissDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
+    }
+
+    done() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class ShowJsonDismissDialogController {
+    /*@ngInject*/
+    constructor($mdDialog, $document, User) {
+        this.$mdDialog = $mdDialog;
+        this.showCurl = false;
+        this.curlCommand = this.constructCurlCommand(this.curl, $document, User.apikey());
+    }
+
+    constructCurlCommand(curl, $document, apikey) {
+        let curlCommand = null;
+        if (curl) {
+            let origin = $document[0].location.origin;
+            let apiUrl = `'${origin}/api/${this.curl.path}?apikey=${apikey}'`;
+            let additional = '';
+            if (curl.args) {
+                let args = JSON.stringify(curl.args);
+                additional = `-H 'Content-Type: "application/json"' -d '${args}'`;
+            }
+            curlCommand = `curl -XPOST ${additional} ${apiUrl}`;
+        }
+
+        return curlCommand;
     }
 
     done() {
