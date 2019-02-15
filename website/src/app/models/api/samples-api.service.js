@@ -17,7 +17,7 @@ class SamplesAPIService {
         );
     }
 
-    getSamplePath() {return 'v3/getSample';};
+    getSamplePath() {return 'v3/getSample';}
 
     createSamplesInProjectForProcess(projectId, processId, samples) {
         return this.projectsAPIRoute(projectId).one('samples')

@@ -1,6 +1,6 @@
 class MCProcessSamplesTableComponentController {
     /*@ngInject*/
-    constructor($mdDialog) {
+    constructor() {
         this.state = {
             samples: [],
         };

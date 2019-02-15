@@ -18,13 +18,13 @@ class MCAPIDocsService {
             return null;
         }
         let apidoc = this.apidocs[api];
-        let apikey = User.apikey();
+        let apikey = this.User.apikey();
         let origin = this.$document[0].location.origin;
         let apiUrl = `'${origin}/api/${apidoc.path}?apikey=${apikey}'`;
         let additional = '';
         if (args) {
-            let args = JSON.stringify(curl.args);
-            additional = `-H 'Content-Type: "application/json"' -d '${args}'`;
+            let curlargs = JSON.stringify(args);
+            additional = `-H 'Content-Type: "application/json"' -d '${curlargs}'`;
         }
         return `curl -XPOST ${additional} ${apiUrl}`;
     }
