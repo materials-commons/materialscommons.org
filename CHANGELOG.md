@@ -16,6 +16,7 @@
 - :star: **Improvement:** Issue #1287 Explains counts on create dataset popup
 - :star: **Improvement:** Issue #1289 Improve explanation of what can change when publishing a dataset
 - :star: **Improvement:** Issue #1378 Add processes to sidebar and implement a process overview page
+- :star: **Improvement:** Issue #1377 Add a bunch of information to samples and turn into a full page
 - :boom: **Fixed:** Issue #1302 When creating a project level note for the first time the note wouldn't show up without doing a refresh
 - :boom: **Fixed:** Issue #1360 Files added directly to a dataset were not showing up
 - :boom: **Fixed:** Issue #1361 The view button in the workflow for a published dataset was not doing anything
