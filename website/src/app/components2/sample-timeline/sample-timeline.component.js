@@ -19,9 +19,9 @@ class MCSampleTimelineComponentController {
         // id. This means that each process will only appear once. Then we filter the list to keep the order
         // by only returning processes we find that have the same property_set_id (processes that have both an
         // input and output will be associated with a different property_set_id).
-        let processes = _.indexBy(this.state.sample.processes, 'process_id');
+        let processes = _.indexBy(this.state.sample.processes, 'id');
         this.state.sample.processesInTimeline = this.state.sample.processes.filter(
-            (p) => processes[p.process_id].property_set_id === p.property_set_id
+            (p) => processes[p.id].property_set_id === p.property_set_id
         );
     }
 }
