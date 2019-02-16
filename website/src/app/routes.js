@@ -30,20 +30,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/list',
             template: '<mc-projects-list-view-container flex layout="column"></mc-projects-list-view-container>'
         })
-        .state('globus', {
-            url: '/globus',
-            abstract: true,
-            template: '<div ui-view></div>'
-        })
-        .state('globus.auth', {
-            url: '/auth',
-            abstract: true,
-            template: '<div ui-view></div>'
-        })
-        .state('globus.auth.testing', {
-            url: '/testing',
-            template: '<mc-globus-auth-testing></mc-globus-auth-testing>'
-        })
         .state('account', {
             url: '/account',
             abstract: true,

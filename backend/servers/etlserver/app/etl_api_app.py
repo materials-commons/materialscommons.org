@@ -24,6 +24,7 @@ app = Flask(__name__.split('.')[0])
 def format_as_json_return(what):
     return flask_response(json.dumps(what), mimetype="application/json")
 
+
 @app.before_request
 def before_request():
     DbConnection().set_connection()
@@ -34,41 +35,6 @@ def teardown_request(exception):
     DbConnection().close_connection()
     if exception:
         pass
-
-
-@app.route('/')
-def hello_world():
-    return format_as_json_return({"hello": "world"})
-
-
-@app.route('/version')
-def get_version():
-    return format_as_json_return({
-        "python_api_version": pkg_resources.get_distribution("materials_commons").version
-    })
-
-
-@app.route('/project/etlexcelfiles', methods=['POST'])
-@apikey
-def project_excel_files_for_etl():
-    log.info("project_excel_files_for_etl")
-    j = request.get_json(force=True)
-    log.info("project_excel_files_for_etl: data in = {}".format(j))
-    project_id = j['project_id']
-    api_key = request.args.get('apikey', default="no_such_key")
-    user_id = access.get_user()
-    log.info("  project_id = {}".format(project_id))
-    log.info("  api_key = {}".format(api_key))
-    log.info("  user_id = {}".format(user_id))
-    if not project_id:
-        message = "Project-based ETL - project_id missing, required"
-        log.error(message)
-        return message, status.HTTP_400_BAD_REQUEST
-    file_list = AppHelper(api_key).get_project_excel_files(project_id)
-    ret_value = {"file_list": file_list}
-    ret = format_as_json_return(ret_value)
-    log.info("project_excel_files_for_etl: returns {}".format(ret))
-    return ret
 
 
 @app.route('/project/etl', methods=['POST'])

@@ -46,69 +46,6 @@
                     </div>
                 </md-tab-body>
             </md-tab>
-            <md-tab ng-if="False">
-                <md-tab-label>Using Globus</md-tab-label>
-                <md-tab-body>
-                    <div layout="column">
-                        <p> Create an experiment, using Globus to upload an
-                            Excel spreadsheet and its data files. If you do not wish
-                            to use Globus at this time, you can switch to the 'DRAG AND DROP'
-                            tab (above).
-                        </p>
-                        <br />
-                        <p ng-if="!$ctrl.isAuthenticatedToGlobus" ng-style="{color:'red'}">
-                            For this tab, you must be logged into Globus.
-                            See "Globus User Status (Sign In)" on left side bar.
-                        </p>
-                        <br />
-                        <p> To use this form, you will first need a <b>Globus endpoint</b>; usually the endpoint
-                            associated with your <b>Globus Connect Personal</b> app. On that endpoint you
-                            will need a path to a directory, called <b>Base Directory</b> below, that contains both a Excel Spreadsheet for the
-                            ETL processing and a data directory for the files referenced in the the
-                            ETL description (in the Excel Spreadsheet).
-                            Link to install Globus Connect Personal on
-                            <a href="https://docs.globus.org/how-to/globus-connect-personal-mac/">Mac OS X</a>,
-                            <a href="https://docs.globus.org/how-to/globus-connect-personal-windows/">Windows</a>, or
-                            <a href="https://docs.globus.org/how-to/globus-connect-personal-linux/">Linux</a>.
-
-                            Additional <b>help</b> is
-                            <a href="https://github.com/materials-commons/materialscommons.org/wiki/ETL-Using-Globus"
-                               target="_blank" >available</a>.
-                        </p>
-                    </div>
-                    <form ng-if="$ctrl.isAuthenticatedToGlobus" layout="column" class="dialog-form">
-                        <br />
-                        <p>To create new experiment in the project <b>{{$ctrl.project.name}}</b>.
-                            (Note: * indicates required fields)
-                        </p>
-                        <br />
-                        <md-input-container md-no-float>
-                            <label>Experiment Name</label>
-                            <input ng-required="true" ng-model="$ctrl.name" type="text" on-enter="ctrl.submit()">
-                        </md-input-container>
-                        <md-input-container md-no-float>
-                            <label>Experiment Description</label>
-                            <input ng-required="false" ng-model="$ctrl.description" type="text" on-enter="ctrl.submit()">
-                        </md-input-container>
-                        <md-input-container md-no-float>
-                            <label>Globus endpoint UUID (see help, above)</label>
-                            <input ng-required="true" ng-model="$ctrl.ep_uuid" type="text" on-enter="ctrl.submit()">
-                        </md-input-container>
-                        <md-input-container md-no-float>
-                            <label>Base Path: the path on the endpoint that contains both the Spreadsheet and data dir</label>
-                            <input ng-required="true" ng-model="$ctrl.base_path" type="text" on-enter="ctrl.submit()">
-                        </md-input-container>
-                        <md-input-container md-no-float>
-                            <label>The path, relitive to Base Path, of the excel file (for example <em>/project1/input.xlsx</em>)</label>
-                            <input ng-required="true" ng-model="$ctrl.spreadsheet_rel_path" type="text" on-enter="ctrl.submit()">
-                        </md-input-container>
-                        <md-input-container md-no-float>
-                            <label>The path, relitive to Base Path, of the data directory (for example <em>/project1/data</em>)</label>
-                            <input ng-required="true" ng-model="$ctrl.data_dir_rel_path" type="text" on-enter="ctrl.submit()">
-                        </md-input-container>
-                    </form>
-                </md-tab-body>
-            </md-tab>
             <md-tab>
                 <md-tab-label>Drag and Drop</md-tab-label>
                 <md-tab-body>
@@ -154,12 +91,6 @@
         <md-button class="md-primary"
                    ng-disabled="!(($ctrl.files.length > 0) && $ctrl.name)"
                    ng-click="$ctrl.uploadDirect()">Upload</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
-    </md-dialog-actions>
-    <md-dialog-actions  ng-if="$ctrl.currentTab == 2" layout="row">
-        <md-button class="md-primary"
-                   ng-disabled="!$ctrl.globus_upload_ok()"
-                   ng-click="$ctrl.uploadWithGlobus()">Start Upload</md-button>
         <md-button class="md-primary" ng-click="$ctrl.cancel()">Cancel</md-button>
     </md-dialog-actions>
 </md-dialog>

@@ -1,1 +1,0 @@
-import './mc-globus-auth-testing.component.js'
