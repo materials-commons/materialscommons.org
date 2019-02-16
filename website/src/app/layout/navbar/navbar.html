@@ -51,12 +51,6 @@
                             <span class="text-uppercase">Switch To User</span>
                         </md-button>
                     </md-menu-item>
-                    <md-menu-item ng-if="::$ctrl.isAdmin">
-                        <md-button ui-sref="admin.info">
-                            <md-icon md-font-icon="fa-user" class="fa fa-md-icon"></md-icon>
-                            <span class="text-uppercase">Admin Information</span>
-                        </md-button>
-                    </md-menu-item>
                     <md-menu-divider ng-if="::$ctrl.isAdmin"></md-menu-divider>
                     <md-menu-item>
                         <md-button ui-sref="account.settings.profile">
