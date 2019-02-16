@@ -43,55 +43,6 @@ class EtlServerAPIService {
         );
     }
 
-    // deprecated!
-    startBackgroundEtlUpload(data) {
-        let route = this.etlAPIRoute('globus').one('stage');
-        return route.customPOST(data).then(
-            n => {
-                // noinspection UnnecessaryLocalVariableJS
-                let results = n.plain();
-                return results;
-            },
-            () => {
-                return null;
-            });
-    }
-
-    // deprecated!
-    getEtlStatus(statusRecordId) {
-        let route = this.etlAPIRoute('globus').one('monitor');
-        let data = {
-            status_record_id: statusRecordId
-        };
-        return route.customPOST(data).then(
-            r => {
-                // noinspection UnnecessaryLocalVariableJS
-                let results = r.plain();
-                return results;
-            },
-            () => {
-                return null;
-            }
-        );
-    }
-
-    // deprecated!
-    getEtlStatusForProject(projectId) {
-        let route = this.etlAPIRoute('project').one('status');
-        let data = {
-            project_id: projectId
-        };
-        return route.customPOST(data).then(
-            r => {
-                // noinspection UnnecessaryLocalVariableJS
-                let results = r.plain();
-                return results;
-            },
-            () => {
-                return null;
-            }
-        );
-    }
 
     setupGlobusDownloadTransfer(projectId) {
         let route = this.etlAPIRoute('globus').one('transfer').one('download');
@@ -110,53 +61,6 @@ class EtlServerAPIService {
         );
     }
 
-    setupGlobusUploadTransfer(projectId, endpoint, path) {
-        let route = this.etlAPIRoute('globus').one('transfer').one('upload');
-        let data = {
-            project_id: projectId,
-            endpoint: endpoint,
-            path: path
-        };
-        return route.customPOST(data).then(
-            r => {
-                // noinspection UnnecessaryLocalVariableJS
-                let results = r.plain();
-                return results;
-            },
-            () => {
-                return null;
-            }
-        );
-    }
-
-    // deprecated!
-    // noinspection JSMethodCanBeStatic
-    getRecentGlobusStatus(projectId){
-        let route = this.etlAPIRoute('globus').one('transfer').one('status');
-        let data = {
-            project_id: projectId
-        };
-        return route.customPOST(data).then(
-            r => {
-                // noinspection UnnecessaryLocalVariableJS
-                let results = r.plain();
-                return results;
-            }
-        );
-    }
-
-    // deprecated!
-    // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
-    getSystemGlobusInformation(){
-        let route = this.etlAPIRoute('globus').one('transfer').one('info');
-        return route.get().then(
-            r => {
-                // noinspection UnnecessaryLocalVariableJS
-                let results = r.plain();
-                return results;
-            }
-        );
-    }
 
     // deprecated!
     // noinspection JSUnusedGlobalSymbols, JSMethodCanBeStatic
