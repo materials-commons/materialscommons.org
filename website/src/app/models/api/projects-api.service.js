@@ -17,7 +17,7 @@ class ProjectsAPIService {
                 let proj = p.plain().data;
                 proj.shortcuts = proj.shortcuts.map(d => {
                     d.path = d.name;
-                    d.name = d.name.replace(`${p.name}/`, '');
+                    d.name = d.name.replace(`${proj.name}/`, '');
                     return d;
                 });
                 return proj;
