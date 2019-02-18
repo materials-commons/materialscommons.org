@@ -8,14 +8,13 @@ class ProjectsAPIService {
     }
 
     getProjectsForUser() {
-        // return this.Restangular.one('v4').one('ui').one('getProjectsForUser').customPOST().then(projects => projects.plain());
         return this.Restangular.one('v3').one('ui:getProjectsForUser').customPOST().then(projects => projects.plain().data);
     }
 
     getProjectOverview(projectId) {
-        return this.Restangular.one('v4').one('ui').one('getProjectOverview').customPOST({project_id: projectId}).then(
+        return this.Restangular.one('v3').one('ui:getProjectOverview').customPOST({project_id: projectId}).then(
             p => {
-                let proj = p.plain();
+                let proj = p.plain().data;
                 proj.shortcuts = proj.shortcuts.map(d => {
                     d.path = d.name;
                     d.name = d.name.replace(`${p.name}/`, '');
@@ -26,11 +25,11 @@ class ProjectsAPIService {
     }
 
     getProjectNotes(projectId) {
-        return this.Restangular.one('v4').one('ui').one('getProjectNotes').customPOST({project_id: projectId}).then(notes => notes.plain());
+        return this.Restangular.one('v3').one('ui:getProjectNotes').customPOST({project_id: projectId}).then(notes => notes.plain().data);
     }
 
     getProjectAccessEntries(projectId) {
-        return this.Restangular.one('v4').one('ui').one('getProjectAccessEntries').customPOST({project_id: projectId}).then(u => u.plain());
+        return this.Restangular.one('v3').one('ui:getProjectAccessEntries').customPOST({project_id: projectId}).then(u => u.plain().data);
     }
 
     addProjectNote(projectId, note) {
