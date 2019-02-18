@@ -1,7 +1,7 @@
 <md-content layout="column" flex>
     <div layout="row" flex="100" layout-margin>
         <div layout="column" flex>
-            <div layout="row" layout-align="end">
+            <div layout="row" layout-align="end center">
                 <!--<hello-world name="$ctrl.mcuser.fullname"></hello-world>-->
                 <div layout="column" layout-align="stretch" flex="30" ng-show="!$ctrl.state.user.demo_installed">
                     <md-button ng-click="$ctrl.buildDemoProject()"
@@ -21,6 +21,7 @@
                     <i class="fa fa-fw fa-refresh"></i>Sync
                 </md-button>
                 <span flex="5"></span>
+                <mc-show-json object="$ctrl.state.projects"></mc-show-json>
             </div>
             <div layout="row" layout-align="center">
                 <md-button class="md-warn" ng-click="$ctrl.state.query = ''">clear search</md-button>

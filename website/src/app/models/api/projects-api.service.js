@@ -8,7 +8,8 @@ class ProjectsAPIService {
     }
 
     getProjectsForUser() {
-        return this.Restangular.one('v4').one('ui').one('getProjectsForUser').customPOST().then(projects => projects.plain());
+        // return this.Restangular.one('v4').one('ui').one('getProjectsForUser').customPOST().then(projects => projects.plain());
+        return this.Restangular.one('v3').one('ui:getProjectsForUser').customPOST().then(projects => projects.plain().data);
     }
 
     getProjectOverview(projectId) {

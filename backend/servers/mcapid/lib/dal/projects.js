@@ -161,11 +161,11 @@ function addComputed(rql) {
 }
 
 async function getProjectsForUser(userId) {
-    let userProjectsRql = transformDates(r.table('projects').getAll(userId, {index: 'owner'}).merge(projectDetailCounts));
-    let memberProjectsRql = transformDates(r.table('access').getAll(userId, {index: 'user_id'}).eqJoin('project_id', r.table('projects'))
-        .zip().filter(r.row('owner').ne(userId)).merge(projectDetailCounts));
-    let userProjects = await run(userProjectsRql);
-    let memberProjects = await run(memberProjectsRql);
+    let userProjects = await r.table('projects').getAll(userId, {index: 'owner'})
+        .without('flag', 'mediatypes', 'overview', 'reminders', 'status', 'size')
+        .merge(projectDetailCounts);
+    let memberProjects = await r.table('access').getAll(userId, {index: 'user_id'}).eqJoin('project_id', r.table('projects'))
+        .zip().filter(r.row('owner').ne(userId)).merge(projectDetailCounts);
     return userProjects.concat(memberProjects);
 }
 
@@ -178,7 +178,8 @@ function projectDetailCounts(p) {
         processes_count: r.table('project2process').getAll(p('id'), {index: 'project_id'}).count(),
         experiments_count: r.table('project2experiment').getAll(p('id'), {index: 'project_id'}).count(),
         datasets_count: r.table('project2dataset').getAll(p('id'), {index: 'project_id'}).count(),
-        root_dir: r.table('datadirs').getAll([p('id'), p('name')]).coerceTo('array')
+        root_dir: r.table('datadirs').getAll([p('id'), p('name')], {index: 'datadir_project_name'})
+            .nth(0).pluck('id', 'name'),
     };
 }
 

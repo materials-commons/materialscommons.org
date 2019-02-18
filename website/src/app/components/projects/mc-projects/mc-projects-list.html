@@ -18,9 +18,6 @@
             ng-class="{'cell-left-odd': $index%2 !== 0, 'cell-left-even': $index%2 == 0}"
             style='border-left-width: 8px;'
             ng-repeat="project in $ctrl.projects | filter:$ctrl.query | orderBy:$ctrl.sortOrder">
-            <!--<td md-cell>-->
-            <!--<mc-project-status status="project.status"></mc-project-status>-->
-            <!--</td>-->
             <td md-cell>
                 <div layout="column">
                     <a ui-sref="project.home({project_id: project.id})">
@@ -29,16 +26,10 @@
                     <div layout="row">
                         <span tooltip="Samples" class="padding-left-10"><i class="fa fa-fw fa-cubes"></i>{{project.samples_count | number}}</span>
                         <span tooltip="Processes" class="padding-left-10"><i class="fa fa-fw fa-code-fork"></i>{{project.processes_count | number}}</span>
-                        <a class="padding-left-10" ng-click="$ctrl.showJson(project)">view json</a>
                     </div>
                     <span>{{project.description}}</span>
                 </div>
             </td>
-            <!--<td md-cell>-->
-            <!--<a ng-click="$ctrl.showProjectOverview(project)">-->
-            <!--<i class="fa fa-fw fa-info-circle"></i>-->
-            <!--</a>-->
-            <!--</td>-->
             <td md-cell>
                 {{project.owner_details.fullname}}
             </td>
