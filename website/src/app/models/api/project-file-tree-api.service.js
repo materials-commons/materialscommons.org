@@ -1,19 +1,6 @@
 /*@ngInject*/
 function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, User) {
     return {
-
-        getDirectoryForProject: function(projectId, dirId) {
-            return Restangular.one('v4').one('ui').one('getDirectoryForProject')
-                .customPOST({project_id: projectId, directory_id: dirId}).then(dirs => dirs.plain());
-        },
-
-        getFilesForDirectory: function(projectId, dirId) {
-            return Restangular.one('v4').one('ui').one('getFilesForDirectory')
-                .customPOST({project_id: projectId, directory_id: dirId}).then(files => files.plain());
-        },
-
-        //
-
         getDirectory: function (projectID, directoryID) {
             return projectsAPIRoute(projectID).one('directories', directoryID).get()
                 .then(function (files) {
