@@ -34,7 +34,7 @@ function filesAndDirsRql(ddir) {
 }
 
 const getDirectoryByPathForProject = async(path, projectId) => {
-    let dir = await r.table('datadirs').getAll([projectId, path], {index: 'datadir_project_name'}).zip()
+    let dir = await r.table('datadirs').getAll([projectId, path], {index: 'datadir_project_name'})
         .merge(filesAndDirsRql).nth(0);
     return transformDir(dir);
 };
