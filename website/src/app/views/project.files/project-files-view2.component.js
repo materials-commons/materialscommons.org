@@ -13,7 +13,6 @@ class MCProjectFilesView2ComponentController {
     }
 
     handleChangeDir(path) {
-        console.log('project-files-view2 handleChangeDir', path);
         this.onChangeDir({path: path});
     }
 

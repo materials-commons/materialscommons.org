@@ -1,7 +1,6 @@
 class MCProjectFilesView2DirectoryTableComponentController {
     /*@ngInject*/
     constructor() {
-        console.log('MCProjectFilesView2DirectoryTableComponentController ');
         this.state = {
             files: [],
         };

@@ -29,7 +29,6 @@ class MCProjectFilesViewContainerComponentController {
     }
 
     handleChangeDir(path) {
-        console.log('handleChangeDir', path);
         this.projectFileTreeAPI.getDirectoryByPathForProject(path, this.state.project.id).then(
             (dir) => this.$state.go('project.files', {directory_id: dir.id})
         );
@@ -135,7 +134,7 @@ angular.module('materialscommons').component('mcProjectFilesViewContainer', {
     // because there is a recursive directive that needs to be ng-if out/in in order to reload. This allows
     // us to contain that logic in one spot in the container.
     template: `<mc-project-files-view2 
-                        on-change-dir="$ctrl.handleChangeDir(dir)" 
+                        on-change-dir="$ctrl.handleChangeDir(path)" 
                         on-delete-files="$ctrl.handleDeleteFiles(dir, files)"
                         on-download-files="$ctrl.handleDownloadFiles(files)"
                         on-move-file="$ctrl.handleMove(dir, file)"
