@@ -7,7 +7,7 @@ class ProjectFilesView2ControlsComponentController {
 
 angular.module('materialscommons').component('mcProjectFilesView2Controls', {
     controller: ProjectFilesView2ControlsComponentController,
-    template: require('./project-files-view2-controls.component'),
+    template: require('./project-files-view2-controls.html'),
     bindings: {
 
     }

@@ -17,6 +17,20 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, Use
                 });
         },
 
+        getDirectoryForProject(directoryId, projectId) {
+            return Restangular.one('v3').one('getDirectoryForProject').customPOST({
+                project_id: projectId,
+                directory_id: directoryId
+            }).then(results => results.plain().data);
+        },
+
+        getDirectoryByPathForProject(path, projectId) {
+            return Restangular.one('v3').one('getDirectoryByPathForProject').customPOST({
+                project_id: projectId,
+                directory_path: path,
+            }).then(results => results.plain().data);
+        },
+
         createProjectDir: function (projectID, fromDirID, path) {
             return projectsAPIRoute(projectID).one('directories').customPOST({
                 from_dir: fromDirID,

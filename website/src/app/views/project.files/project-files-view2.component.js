@@ -12,8 +12,9 @@ class MCProjectFilesView2ComponentController {
         }
     }
 
-    handleOnLoadDir(dir) {
-        this.onLoadDir({dir: dir});
+    handleChangeDir(path) {
+        console.log('project-files-view2 handleChangeDir', path);
+        this.onChangeDir({path: path});
     }
 
     handleOnShowFile(file) {
@@ -54,7 +55,7 @@ angular.module('materialscommons').component('mcProjectFilesView2', {
     controller: MCProjectFilesView2ComponentController,
     template: require('./project-files-view2.html'),
     bindings: {
-        onLoadDir: '&',
+        onChangeDir: '&',
         activeDir: '<',
         onDownloadFiles: '&',
         onFinishFilesUpload: '&',

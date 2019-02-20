@@ -1,5 +1,8 @@
-<div layout="column" flex layout-fill>
-    <project-files-view2-breadcrumbs></project-files-view2-breadcrumbs>
-    <project-files-view2-controls></project-files-view2-controls>
-    <project-files-view2-directory-table></project-files-view2-directory-table>
+<div layout="column" flex layout-fill layout-margin>
+    <div layout="row" layout-align="space-between center">
+        <mc-project-files-view2-breadcrumbs path="$ctrl.state.activeDir.path" on-change-dir="$ctrl.handleChangeDir(path)"></mc-project-files-view2-breadcrumbs>
+        <mc-show-json object="$ctrl.state.activeDir"></mc-show-json>
+    </div>
+    <mc-project-files-view2-controls></mc-project-files-view2-controls>
+    <mc-project-files-view2-directory-table files="$ctrl.state.activeDir.children"></mc-project-files-view2-directory-table>
 </div>
