@@ -35,13 +35,15 @@ class MCProjectFilesViewContainerComponentController {
     }
 
     handleDownloadFiles(files) {
-        console.log('container files', files);
         if (!files.length) {
-            console.log('returning $q.reject');
             return this.$q.reject('no files');
         }
         const fileIds = files.map(f => f.id);
         return this.projectFileTreeAPI.downloadProjectFiles(fileIds);
+    }
+
+    handleFinishUpload() {
+        this.$onInit();
     }
 
     /////////////////////////////////////
@@ -58,20 +60,6 @@ class MCProjectFilesViewContainerComponentController {
             },
             () => null
         );
-    }
-
-    handleFinishFilesUpload(dir, files) {
-        let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
-        files.forEach(f => {
-            let file = this.gridFiles.createFileEntry(f);
-            dirEntry.children.push(file);
-            dirEntry.model.children.push(file);
-        });
-
-        this.state.fileTree = angular.copy(this.state.fileTree);
-        dirEntry.model.children = _.sortBy(dirEntry.model.children, f => f.data.name);
-        this.state.activeDir = angular.copy(dirEntry.model);
-        this.state.show = !this.state.show;
     }
 
     handleMove(dir, file) {
@@ -124,9 +112,9 @@ angular.module('materialscommons').component('mcProjectFilesViewContainer', {
                         on-change-dir="$ctrl.handleChangeDir(path)" 
                         on-create-dir="$ctrl.handleCreateDir(path)"
                         on-download-files="$ctrl.handleDownloadFiles(files)"
+                        on-finish-upload="$ctrl.handleFinishUpload()"
                         
                         on-delete-files="$ctrl.handleDeleteFiles(dir, files)"
                         on-move-file="$ctrl.handleMove(dir, file)"
-                        on-rename-dir="$ctrl.handleRenameDir(dir, name)"
-                        on-finish-files-upload="$ctrl.handleFinishFilesUpload(dir, files)"></mc-project-files-view2>`
+                        on-rename-dir="$ctrl.handleRenameDir(dir, name)"></mc-project-files-view2>`
 });

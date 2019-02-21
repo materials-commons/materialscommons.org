@@ -25,6 +25,10 @@ class MCProjectFilesView2ComponentController {
         this.state.uploadFiles = true;
     }
 
+    handleFinishUpload() {
+        this.onFinishUpload();
+    }
+
     handleChangeDir(path) {
         this.onChangeDir({path: path});
     }
@@ -71,6 +75,7 @@ angular.module('materialscommons').component('mcProjectFilesView2', {
         project: '<',
         onChangeDir: '&',
         onCreateDir: '&',
-        onDownloadFiles: '&'
+        onDownloadFiles: '&',
+        onFinishUpload: '&',
     }
 });
