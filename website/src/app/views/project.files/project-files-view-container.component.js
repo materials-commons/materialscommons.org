@@ -120,6 +120,7 @@ angular.module('materialscommons').component('mcProjectFilesViewContainer', {
     // us to contain that logic in one spot in the container.
     template: `<mc-project-files-view2 
                         active-dir="$ctrl.state.activeDir"
+                        project="$ctrl.state.project"
                         on-change-dir="$ctrl.handleChangeDir(path)" 
                         on-create-dir="$ctrl.handleCreateDir(path)"
                         on-download-files="$ctrl.handleDownloadFiles(files)"

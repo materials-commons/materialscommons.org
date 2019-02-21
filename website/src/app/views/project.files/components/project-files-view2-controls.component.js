@@ -19,10 +19,6 @@ class ProjectFilesView2ControlsComponentController {
         }
     }
 
-    handleUploadFiles() {
-
-    }
-
     handleCreateDirectory() {
         this.mcFileOpsDialogs.createDirectory(this.state.directory).then(path => this.onCreateDir({path: path}));
     }
@@ -83,6 +79,10 @@ class ProjectFilesView2ControlsComponentController {
         this.state.downloadState = '';
         this.state.downloadUrl = '';
     }
+
+    handleStartUpload() {
+        this.onStartUpload();
+    }
 }
 
 angular.module('materialscommons').component('mcProjectFilesView2Controls', {
@@ -94,5 +94,6 @@ angular.module('materialscommons').component('mcProjectFilesView2Controls', {
         onFilterOn: '&',
         onCreateDir: '&',
         onDownloadFiles: '&',
+        onStartUpload: '&'
     }
 });

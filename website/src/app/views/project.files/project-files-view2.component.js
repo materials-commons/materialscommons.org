@@ -6,6 +6,8 @@ class MCProjectFilesView2ComponentController {
             selectionState: false,
             filterOn: '',
             selectedFiles: {},
+            uploadFiles: false,
+            project: null,
         };
     }
 
@@ -13,6 +15,14 @@ class MCProjectFilesView2ComponentController {
         if (changes.activeDir) {
             this.state.activeDir = angular.copy(changes.activeDir.currentValue);
         }
+
+        if (changes.project) {
+            this.state.project = angular.copy(changes.project.currentValue);
+        }
+    }
+
+    handleStartUpload() {
+        this.state.uploadFiles = true;
     }
 
     handleChangeDir(path) {
@@ -58,6 +68,7 @@ angular.module('materialscommons').component('mcProjectFilesView2', {
     template: require('./project-files-view2.html'),
     bindings: {
         activeDir: '<',
+        project: '<',
         onChangeDir: '&',
         onCreateDir: '&',
         onDownloadFiles: '&'
