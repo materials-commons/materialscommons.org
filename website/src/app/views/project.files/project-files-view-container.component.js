@@ -1,12 +1,8 @@
 class MCProjectFilesViewContainerComponentController {
     /*@ngInject*/
-    constructor(mcStateStore, projectFileTreeAPI, projectFilesViewService, gridFiles, $timeout, toast, $stateParams, $state, $q) {
+    constructor(mcStateStore, projectFileTreeAPI, $stateParams, $state, $q) {
         this.mcStateStore = mcStateStore;
         this.projectFileTreeAPI = projectFileTreeAPI;
-        this.projectFilesViewService = projectFilesViewService;
-        this.gridFiles = gridFiles;
-        this.$timeout = $timeout;
-        this.toast = toast;
         this.$state = $state;
         this.$q = $q;
         this.directoryId = $stateParams.directory_id ? $stateParams.directory_id : 'root';
@@ -14,7 +10,6 @@ class MCProjectFilesViewContainerComponentController {
         this.state = {
             project: this.mcStateStore.getState('project'),
             activeDir: null,
-            show: true,
         };
     }
 
@@ -49,33 +44,33 @@ class MCProjectFilesViewContainerComponentController {
     /////////////////////////////////////
 
     handleDeleteFiles(dir, files) {
-        let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
-        this.projectFilesViewService.deleteFiles(this.state.fileTree, this.state.project.id, dir, files).then(
-            () => {
-                this.$timeout(() => {
-                    this.state.fileTree = angular.copy(this.state.fileTree);
-                    this.state.activeDir = angular.copy(dirEntry.model);
-                    this.state.show = !this.state.show;
-                });
-            },
-            () => null
-        );
+        // let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
+        // this.projectFilesViewService.deleteFiles(this.state.fileTree, this.state.project.id, dir, files).then(
+        //     () => {
+        //         this.$timeout(() => {
+        //             this.state.fileTree = angular.copy(this.state.fileTree);
+        //             this.state.activeDir = angular.copy(dirEntry.model);
+        //             this.state.show = !this.state.show;
+        //         });
+        //     },
+        //     () => null
+        // );
     }
 
     handleMove(dir, file) {
-        if (this.alreadyInDir(dir, file)) {
-            return false;
-        }
-
-        let projectId = this.state.project.id;
-
-        if (file.data.otype === 'file') {
-            this.projectFilesViewService.moveFile(projectId, this.state.fileTree, dir.data.id, file);
-        } else {
-            this.projectFilesViewService.moveDir(projectId, this.state.fileTree, dir.data.id, file);
-        }
-
-        return true;
+        // if (this.alreadyInDir(dir, file)) {
+        //     return false;
+        // }
+        //
+        // let projectId = this.state.project.id;
+        //
+        // if (file.data.otype === 'file') {
+        //     this.projectFilesViewService.moveFile(projectId, this.state.fileTree, dir.data.id, file);
+        // } else {
+        //     this.projectFilesViewService.moveDir(projectId, this.state.fileTree, dir.data.id, file);
+        // }
+        //
+        // return true;
     }
 
     alreadyInDir(dir, itemId) {
@@ -88,16 +83,16 @@ class MCProjectFilesViewContainerComponentController {
     }
 
     handleRenameDir(dir, name) {
-        let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
-        this.projectFileTreeAPI.renameProjectDir(this.state.project.id, dir.data.id, name).then(
-            d => {
-                dirEntry.model.data.name = name;
-                dirEntry.model.data.path = d.path;
-                this.state.fileTree = angular.copy(this.state.fileTree);
-                this.state.activeDir = angular.copy(this.state.activeDir);
-            },
-            () => this.toast.error('Unable to rename directory')
-        );
+        // let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
+        // this.projectFileTreeAPI.renameProjectDir(this.state.project.id, dir.data.id, name).then(
+        //     d => {
+        //         dirEntry.model.data.name = name;
+        //         dirEntry.model.data.path = d.path;
+        //         this.state.fileTree = angular.copy(this.state.fileTree);
+        //         this.state.activeDir = angular.copy(this.state.activeDir);
+        //     },
+        //     () => this.toast.error('Unable to rename directory')
+        // );
     }
 }
 
