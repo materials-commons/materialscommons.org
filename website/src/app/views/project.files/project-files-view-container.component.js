@@ -43,7 +43,8 @@ class MCProjectFilesViewContainerComponentController {
 
     /////////////////////////////////////
 
-    handleDeleteFiles(dir, files) {
+    handleDeleteFiles() {
+        // handleDeleteFiles(dir, files) {
         // let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
         // this.projectFilesViewService.deleteFiles(this.state.fileTree, this.state.project.id, dir, files).then(
         //     () => {
@@ -57,7 +58,8 @@ class MCProjectFilesViewContainerComponentController {
         // );
     }
 
-    handleMove(dir, file) {
+    handleMove() {
+        // handleMove(dir, file) {
         // if (this.alreadyInDir(dir, file)) {
         //     return false;
         // }
@@ -82,7 +84,8 @@ class MCProjectFilesViewContainerComponentController {
         return false;
     }
 
-    handleRenameDir(dir, name) {
+    handleRenameDir() {
+        // handleRenameDir(dir, name) {
         // let dirEntry = this.gridFiles.findEntry(this.state.fileTree[0], dir.data.id);
         // this.projectFileTreeAPI.renameProjectDir(this.state.project.id, dir.data.id, name).then(
         //     d => {
