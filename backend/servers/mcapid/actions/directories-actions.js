@@ -1,6 +1,7 @@
 const {Action} = require('actionhero');
 const directories = require('../lib/dal/directories');
 const dal = require('../lib/dal');
+const _ = require('lodash');
 
 //
 // module.exports.ListDirectoriesAction = class ListDirectoriesAction extends Action {
@@ -112,6 +113,66 @@ module.exports.GetDirectoryByPathForProjectAction = class GetDirectoryByPathForP
         }
 
         response.data = dir;
+    }
+};
+
+module.exports.DeleteFilesFromDirectoryActions = class DeleteFilesFromDirectoryAction extends Action {
+    constructor() {
+        super();
+        this.name = 'deleteFilesFromDirectory';
+        this.description = 'delete files and directory from target directory';
+        this.inputs = {
+            directory_id: {
+                required: true,
+            },
+
+            project_id: {
+                required: true,
+            },
+
+            files: {
+                required: true,
+                validator: (files) => {
+                    let errorMsg = `files param must be an array of objects with format {id: 'an-id', otype: 'directory || file'}`;
+                    if (!_.isArray(files)) {
+                        throw new Error(errorMsg);
+                    }
+                    files.forEach(f => {
+                        if (!_.isObject(f)) {
+                            throw new Error(errorMsg);
+                        }
+
+                        if (!_.conformsTo(f, {id: (val) => _.isString(val), otype: (val) => (val === 'file' || val === 'directory')})) {
+                            throw new Error(errorMsg);
+                        }
+
+                        let keys = _.keys(f);
+                        if (keys.length !== 2) {
+                            throw new Error(errorMsg);
+                        }
+
+                        if (!_.contains(keys, 'id')) {
+                            throw new Error(errorMsg);
+                        }
+
+                        if (!_.contains(keys, 'otype')) {
+                            throw new Error(errorMsg);
+                        }
+                    });
+
+                    return true;
+                }
+            }
+        };
+    }
+
+    async run({response, params}) {
+        let results = await dal.tryCatch(async() => await directories.deleteFilesFromDirectoryInProject(params.files, params.directory_id, params.project_id));
+        if (results === null) {
+            throw new Error(`Unable to delete files in directory ${params.directory_id} for project ${params.project_id}`);
+        }
+
+        response.data = results;
     }
 };
 

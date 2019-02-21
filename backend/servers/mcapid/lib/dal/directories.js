@@ -92,8 +92,13 @@ const createDirectoryInProject = async(path, projectId, parentDirId, returnParen
     return dirs;
 };
 
+const deleteFilesFromDirectoryInProject = async(files, dirId, projectId) => {
+
+};
+
 module.exports = {
     getDirectoryForProject,
     getDirectoryByPathForProject,
     createDirectoryInProject,
+    deleteFilesFromDirectoryInProject,
 };
