@@ -3,6 +3,13 @@
         <mc-project-files-view2-breadcrumbs path="$ctrl.state.activeDir.path" on-change-dir="$ctrl.handleChangeDir(path)"></mc-project-files-view2-breadcrumbs>
         <mc-show-json object="$ctrl.state.activeDir"></mc-show-json>
     </div>
-    <mc-project-files-view2-controls></mc-project-files-view2-controls>
-    <mc-project-files-view2-directory-table files="$ctrl.state.activeDir.children"></mc-project-files-view2-directory-table>
+    <mc-project-files-view2-controls
+            directory="$ctrl.state.activeDir.path"
+            on-create-dir="$ctrl.handleCreateDir(path)"
+            on-selection-state-change="$ctrl.handleSelectionStateChange(state)"
+            on-filter-on="$ctrl.handleFilterOn(filterOn)"></mc-project-files-view2-controls>
+    <mc-project-files-view2-directory-table
+            files="$ctrl.state.activeDir.children"
+            selection-state="$ctrl.state.selectionState"
+            filter-on="$ctrl.state.filterOn"></mc-project-files-view2-directory-table>
 </div>

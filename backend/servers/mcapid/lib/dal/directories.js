@@ -1,5 +1,6 @@
 const r = require('../../../shared/r');
 const path = require('path');
+const createDirsFromParent = require('./create-dir').createDirsFromParent;
 
 const getDirectoryForProject = async(dirId, projectId) => {
     if (dirId === 'root') {
@@ -82,7 +83,17 @@ function transformDir(directory) {
     return dir;
 }
 
+const createDirectoryInProject = async(path, projectId, parentDirId, returnParent) => {
+    let dirs = await createDirsFromParent(path, parentDirId, projectId);
+    if (returnParent) {
+        return await getDirectoryForProject(parentDirId, projectId);
+    }
+
+    return dirs;
+};
+
 module.exports = {
     getDirectoryForProject,
     getDirectoryByPathForProject,
+    createDirectoryInProject,
 };

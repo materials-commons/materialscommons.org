@@ -1,29 +1,40 @@
 <div layout="row" layout-align="center center">
-    <md-button class="md-primary" ng-click="$ctrl.mcDir.uploadFiles()">
-        <md-tooltip>Upload files</md-tooltip>
+    <div layout="row" layout-align="center" class="padding-right-30" flex="30">
+        <md-button class="md-warn" ng-click="$ctrl.handleClearFilter()">clear filter</md-button>
+        <input ng-model="$ctrl.state.query" ng-model-options="{debounce:200}"
+               ng-change="$ctrl.handleFilterOn()"
+               flex="40"
+               placeholder="Filter files..." type="text"
+               class="mc-input-as-line margin-left-15 md-subhead">
+    </div>
+    <md-button class="md-primary" ng-show="!$ctrl.state.selectionOn"
+               ng-click="$ctrl.handleUploadFiles()">
         <i class="fa fa-fw fa-upload"></i> Upload Files
     </md-button>
-    <md-button class="md-primary" ng-click="$ctrl.mcDir.createDirectory()">
-        <md-tooltip>Create Directory</md-tooltip>
+    <md-button class="md-primary" ng-show="!$ctrl.state.selectionOn"
+               ng-click="$ctrl.handleCreateDirectory()">
         <i class="fa fa-fw fa-plus-square"></i>New Directory
     </md-button>
-    <md-button class="md-primary" ng-disabled="!$ctrl.mcDir.selected"
-               ng-click="$ctrl.mcDir.handleDownloadFiles()">
-        <md-tooltip>Download selected files</md-tooltip>
-        <i class="fa fa-fw fa-download"></i> Download Files
+    <md-button class="md-primary" ng-show="!$ctrl.state.selectionOn"
+               ng-click="$ctrl.handleSelectFilesToDownload()">
+        <i class="fa fa-fw fa-download"></i> Select Files to Download
     </md-button>
-    <md-button class="md-warn" ng-disabled="!$ctrl.mcDir.selected"
-               ng-click="$ctrl.mcDir.handleDelete()">
-        <md-tooltip>Delete selected files</md-tooltip>
-        <i class="fa fa-fw fa-trash"></i> Delete Files
+    <md-button class="md-warn" ng-show="!$ctrl.state.selectionOn"
+               ng-click="$ctrl.handleSelectFilesToDelete()">
+        <i class="fa fa-fw fa-trash"></i> Select Files to Delete
     </md-button>
-    <md-button class="md-primary" ng-click="$ctrl.mcDir.moveFiles=true" ng-show="!$ctrl.mcDir.moveFiles">
-        <md-tooltip>Move files/directories into this directory</md-tooltip>
-        <i class="fa fa-fw fa-arrow-circle-right"></i> Move files
+    <md-button class="md-primary" ng-show="!$ctrl.state.selectionOn"
+               ng-click="$ctrl.handleSelectFilesToMove()">
+        <i class="fa fa-fw fa-arrow-circle-right"></i> Select Files to Move
     </md-button>
-    <md-button class="md-warn md-raised" ng-click="$ctrl.mcDir.moveFiles=false" ng-show="$ctrl.mcDir.moveFiles">
-        <md-tooltip>Done moving files/directories</md-tooltip>
-        <i class="fa fa-fw fa-check-circle"></i>
+
+    <md-button class="md-primary" ng-show="$ctrl.state.selectionOn"
+               ng-click="$ctrl.handleSelectionDone()">
+        Done
+    </md-button>
+    <md-button class="md-warn" ng-show="$ctrl.state.selectionOn"
+               ng-click="$ctrl.handleCancelSelection()">
+        Cancel
     </md-button>
 </div>
 <div layout="row" layout-align="center center">

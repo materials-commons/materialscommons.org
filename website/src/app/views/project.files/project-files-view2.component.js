@@ -3,6 +3,8 @@ class MCProjectFilesView2ComponentController {
     constructor() {
         this.state = {
             activeDir: null,
+            selectionState: false,
+            filterOn: '',
         };
     }
 
@@ -16,37 +18,16 @@ class MCProjectFilesView2ComponentController {
         this.onChangeDir({path: path});
     }
 
-    handleOnShowFile(file) {
-        this.state.active = file;
+    handleSelectionStateChange(state) {
+        this.state.selectionState = state;
     }
 
-    handleDownloadFiles(files) {
-        return this.onDownloadFiles({files: files});
+    handleFilterOn(filterOn) {
+        this.state.filterOn = filterOn;
     }
 
-    handleUploadFiles() {
-        this.state.uploadStarted = true;
-    }
-
-    handleFinishUpload(dir, files) {
-        this.state.uploadStarted = false;
-        this.onFinishFilesUpload({dir: dir, files: files});
-    }
-
-    handleCreateDir(parent, createDirName) {
-        this.onCreateDir({parent: parent, name: createDirName});
-    }
-
-    handleMove(dir, file) {
-        return this.onMoveFile({dir: dir, file: file});
-    }
-
-    handleDelete(dir, files) {
-        this.onDeleteFiles({dir: dir, files: files});
-    }
-
-    handleRenameDir(dir, newDirName) {
-        this.onRenameDir({dir: dir, name: newDirName});
+    handleCreateDir(path) {
+        this.onCreateDir({path: path});
     }
 }
 
@@ -54,13 +35,8 @@ angular.module('materialscommons').component('mcProjectFilesView2', {
     controller: MCProjectFilesView2ComponentController,
     template: require('./project-files-view2.html'),
     bindings: {
-        onChangeDir: '&',
         activeDir: '<',
-        onDownloadFiles: '&',
-        onFinishFilesUpload: '&',
+        onChangeDir: '&',
         onCreateDir: '&',
-        onMoveFile: '&',
-        onDeleteFiles: '&',
-        onRenameDir: '&',
     }
 });

@@ -15,18 +15,53 @@ const dal = require('../lib/dal');
 //     }
 // };
 //
-// module.exports.CreateDirectoryAction = class CreateDirectoryAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'createDirectory';
-//         this.description = 'Creates a directory';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
+
+/*
+parent_directory_id: parentId,
+                path: path,
+                return_parent: true,
+ */
+
+module.exports.CreateDirectoryInProjectAction = class CreateDirectoryInProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'createDirectoryInProject';
+        this.description = 'Creates a directory in the project';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            parent_directory_id: {
+                required: true,
+            },
+
+            path: {
+                required: true,
+            },
+
+            return_parent: {
+                default: false,
+                validator: (param) => {
+                    if (typeof param !== 'boolean') {
+                        throw new Error(`Invalid value ${param} for parameter 'return_parent', must be true or false`);
+                    }
+                },
+            }
+        };
+    }
+
+    async run({response, params}) {
+        let dir = await dal.tryCatch(async() => await directories.createDirectoryInProject(params.path, params.project_id,
+            params.parent_directory_id, params.return_parent));
+
+        if (!dir) {
+            throw new Error(`Unable to create directory ${params.path} in project ${params.project_id} with parent directory ${params.parent_directory_id}`);
+        }
+
+        response.data = dir;
+    }
+};
 
 module.exports.GetDirectoryForProjectAction = class GetDirectoryForProjectAction extends Action {
     constructor() {
