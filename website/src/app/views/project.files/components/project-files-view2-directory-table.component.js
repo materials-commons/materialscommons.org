@@ -21,6 +21,14 @@ class MCProjectFilesView2DirectoryTableComponentController {
             this.state.filterOn = changes.filterOn.currentValue;
         }
     }
+
+    handleSelectionChange(file) {
+        if (file.selected) {
+            this.onAddSelection({file: file});
+        } else {
+            this.onRemoveSelection({file: file});
+        }
+    }
 }
 
 angular.module('materialscommons').component('mcProjectFilesView2DirectoryTable', {
@@ -29,6 +37,8 @@ angular.module('materialscommons').component('mcProjectFilesView2DirectoryTable'
     bindings: {
         files: '<',
         selectionState: '<',
-        filterOn: '<'
+        filterOn: '<',
+        onAddSelection: '&',
+        onRemoveSelection: '&',
     }
 });

@@ -7,9 +7,14 @@
             directory="$ctrl.state.activeDir.path"
             on-create-dir="$ctrl.handleCreateDir(path)"
             on-selection-state-change="$ctrl.handleSelectionStateChange(state)"
+            on-limit-state-change="$ctrl.handleLimitStateChange(limit)"
+            on-download-files="$ctrl.handleDownloadFiles()"
             on-filter-on="$ctrl.handleFilterOn(filterOn)"></mc-project-files-view2-controls>
     <mc-project-files-view2-directory-table
             files="$ctrl.state.activeDir.children"
             selection-state="$ctrl.state.selectionState"
+            limit-to="$ctrl.state.limitTo"
+            on-add-selection="$ctrl.handleAddSelection(file)"
+            on-remove-selection="$ctrl.handleRemoveSelection(file)"
             filter-on="$ctrl.state.filterOn"></mc-project-files-view2-directory-table>
 </div>

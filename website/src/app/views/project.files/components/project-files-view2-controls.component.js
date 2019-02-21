@@ -6,7 +6,10 @@ class ProjectFilesView2ControlsComponentController {
             directory: '',
             selectionOn: false,
             selectionType: '',
-            query: ''
+            query: '',
+            downloadState: '',
+            downloadUrl: '',
+            filesToDownload: [],
         };
     }
 
@@ -37,6 +40,17 @@ class ProjectFilesView2ControlsComponentController {
     }
 
     handleSelectionDone() {
+        if (this.state.selectionType === 'download') {
+            this.state.downloadState = 'preparing';
+            this.onDownloadFiles().then(
+                (url) => {
+                    console.log('url =', url);
+                    this.state.downloadState = 'done';
+                    this.state.downloadUrl = url;
+                },
+                () => this.state.downloadState = ''
+            );
+        }
         this.setSelectionStateOff();
     }
 
@@ -64,6 +78,11 @@ class ProjectFilesView2ControlsComponentController {
         this.state.query = '';
         this.handleFilterOn();
     }
+
+    handleCancelDownload() {
+        this.state.downloadState = '';
+        this.state.downloadUrl = '';
+    }
 }
 
 angular.module('materialscommons').component('mcProjectFilesView2Controls', {
@@ -74,5 +93,6 @@ angular.module('materialscommons').component('mcProjectFilesView2Controls', {
         onSelectionStateChange: '&',
         onFilterOn: '&',
         onCreateDir: '&',
+        onDownloadFiles: '&',
     }
 });

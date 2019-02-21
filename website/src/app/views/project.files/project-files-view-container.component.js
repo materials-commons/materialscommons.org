@@ -1,6 +1,6 @@
 class MCProjectFilesViewContainerComponentController {
     /*@ngInject*/
-    constructor(mcStateStore, projectFileTreeAPI, projectFilesViewService, gridFiles, $timeout, toast, $stateParams, $state) {
+    constructor(mcStateStore, projectFileTreeAPI, projectFilesViewService, gridFiles, $timeout, toast, $stateParams, $state, $q) {
         this.mcStateStore = mcStateStore;
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.projectFilesViewService = projectFilesViewService;
@@ -8,6 +8,7 @@ class MCProjectFilesViewContainerComponentController {
         this.$timeout = $timeout;
         this.toast = toast;
         this.$state = $state;
+        this.$q = $q;
         this.directoryId = $stateParams.directory_id ? $stateParams.directory_id : 'root';
 
         this.state = {
@@ -31,6 +32,16 @@ class MCProjectFilesViewContainerComponentController {
         this.projectFileTreeAPI.createDirectoryInProject(path, this.state.activeDir.id, this.state.project.id).then(
             dirs => this.state.activeDir = angular.copy(dirs)
         );
+    }
+
+    handleDownloadFiles(files) {
+        console.log('container files', files);
+        if (!files.length) {
+            console.log('returning $q.reject');
+            return this.$q.reject('no files');
+        }
+        const fileIds = files.map(f => f.id);
+        return this.projectFileTreeAPI.downloadProjectFiles(fileIds);
     }
 
     /////////////////////////////////////
@@ -61,11 +72,6 @@ class MCProjectFilesViewContainerComponentController {
         dirEntry.model.children = _.sortBy(dirEntry.model.children, f => f.data.name);
         this.state.activeDir = angular.copy(dirEntry.model);
         this.state.show = !this.state.show;
-    }
-
-    handleDownloadFiles(files) {
-        const fileIds = files.map(f => f.id);
-        return this.projectFileTreeAPI.downloadProjectFiles(fileIds);
     }
 
     handleMove(dir, file) {
@@ -116,9 +122,9 @@ angular.module('materialscommons').component('mcProjectFilesViewContainer', {
                         active-dir="$ctrl.state.activeDir"
                         on-change-dir="$ctrl.handleChangeDir(path)" 
                         on-create-dir="$ctrl.handleCreateDir(path)"
+                        on-download-files="$ctrl.handleDownloadFiles(files)"
                         
                         on-delete-files="$ctrl.handleDeleteFiles(dir, files)"
-                        on-download-files="$ctrl.handleDownloadFiles(files)"
                         on-move-file="$ctrl.handleMove(dir, file)"
                         on-rename-dir="$ctrl.handleRenameDir(dir, name)"
                         on-finish-files-upload="$ctrl.handleFinishFilesUpload(dir, files)"></mc-project-files-view2>`

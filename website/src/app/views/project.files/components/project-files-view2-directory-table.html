@@ -12,7 +12,7 @@
             <tbody md-body>
             <tr md-row ng-repeat="file in $ctrl.state.files | filter:$ctrl.state.filterOn | orderBy:'name'">
                 <td md-cell ng-show="$ctrl.state.selectionOn">
-                    <md-checkbox ng-model="file.selected" aria-label="select file"></md-checkbox>
+                    <md-checkbox ng-model="file.selected" aria-label="select file" ng-change="$ctrl.handleSelectionChange(file)"></md-checkbox>
                 </td>
                 <td md-cell ng-show="file.otype === 'file'" style="padding: 0px">
                     <a class="md-primary" ui-sref="project.file({file_id: file.id})">

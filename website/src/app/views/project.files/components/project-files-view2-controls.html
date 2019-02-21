@@ -38,4 +38,12 @@
     </md-button>
 </div>
 <div layout="row" layout-align="center center">
+    <div ng-if="$ctrl.state.downloadState === 'preparing'">
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        Preparing download (this may take some time)...
+    </div>
+    <a ng-href="{{$ctrl.state.downloadUrl}}" ng-click="$ctrl.state.downloadState='none'" ng-show="$ctrl.state.downloadState === 'done'">
+        Preparation done click here to download.
+    </a>
+    <a class="md-warn margin-left-15" ng-click="$ctrl.handleCancelDownload()" ng-show="$ctrl.state.downloadState === 'done'">cancel</a>
 </div>

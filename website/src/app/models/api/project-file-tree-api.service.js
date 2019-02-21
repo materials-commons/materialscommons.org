@@ -34,6 +34,14 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, Use
             );
         },
 
+        downloadProjectFiles: function(fileIds) {
+            return Restangular.one('project2').one('archive').customPOST({
+                file_ids: fileIds
+            }).then(
+                resp => `api/project2/download/archive/${resp.archive_id}.zip?apikey=${User.apikey()}`
+            );
+        },
+
         // ==================================================
 
         getDirectory: function(projectID, directoryID) {
@@ -75,14 +83,6 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, Use
                 name: newFileName
             }).then(f => f.plain());
         },
-
-        downloadProjectFiles: function(fileIds) {
-            return Restangular.one('project2').one('archive').customPOST({
-                file_ids: fileIds
-            }).then(
-                resp => `api/project2/download/archive/${resp.archive_id}.zip?apikey=${User.apikey()}`
-            );
-        }
     };
 }
 
