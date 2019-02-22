@@ -1,5 +1,4 @@
 const {Action, api} = require('actionhero');
-const datasets = require('../lib/dal/published-datasets');
 const dal = require('../lib/dal');
 const fs = require('fs');
 const path = require('path');
@@ -13,7 +12,7 @@ module.exports.GetTopViewedPublishedDatasetsAction = class GetTopViewedPublished
     }
 
     async run({response}) {
-        const topViewedDatasets = await dal.tryCatch(async() => await datasets.getTopViewedDatasets());
+        const topViewedDatasets = await dal.tryCatch(async() => await api.publishedDatasets.getTopViewedDatasets());
         response.data = topViewedDatasets ? topViewedDatasets : [];
     }
 };
@@ -27,7 +26,7 @@ module.exports.GetRecentlyPublishedDatasetsAction = class GetRecentlyPublishedDa
     }
 
     async run({response}) {
-        const recentlyPublishedDatasets = await dal.tryCatch(async() => await datasets.getRecentlyPublishedDatasets());
+        const recentlyPublishedDatasets = await dal.tryCatch(async() => await api.publishedDatasets.getRecentlyPublishedDatasets());
 
         response.data = recentlyPublishedDatasets ? recentlyPublishedDatasets : [];
     }
@@ -47,7 +46,7 @@ module.exports.GetPublishedDatasetAction = class GetPublishedDatasetAction exten
     }
 
     async run({response, params}) {
-        const ds = await dal.tryCatch(async() => await datasets.getDataset(params.dataset_id));
+        const ds = await dal.tryCatch(async() => await api.publishedDatasets.getDataset(params.dataset_id));
         if (!ds) {
             throw new Error(`No such dataset_id ${params.dataset_id}`);
         }
@@ -68,7 +67,7 @@ module.exports.GetPublishedDatasetsForTagAction = class GetPublishedDatasetsForT
     }
 
     async run({response, params}) {
-        const datasetsForTag = await dal.tryCatch(async() => await datasets.getDatasetsForTag(params.tag_id));
+        const datasetsForTag = await dal.tryCatch(async() => await api.publishedDatasets.getDatasetsForTag(params.tag_id));
         if (!datasetsForTag) {
             throw new Error(`No datasets for tag ${params.tag_id}`);
         }
@@ -93,7 +92,7 @@ module.exports.GetPublishedDatasetProcessAction = class GetPublishedDatasetProce
     }
 
     async run({response, params}) {
-        const process = await dal.tryCatch(async() => await datasets.getProcessForDataset(params.dataset_id, params.process_id));
+        const process = await dal.tryCatch(async() => await api.publishedDatasets.getProcessForDataset(params.dataset_id, params.process_id));
         if (!process) {
             throw new Error(`No such process ${params.process_id} and/or dataset ${params.dataset_id}`);
         }
@@ -115,7 +114,7 @@ module.exports.GetCommentsForPublishedDatasetAction = class GetCommentsForPublis
     }
 
     async run({response, params}) {
-        const comments = await dal.tryCatch(async() => await datasets.getCommentsForDataset(params.dataset_id));
+        const comments = await dal.tryCatch(async() => await api.publishedDatasets.getCommentsForDataset(params.dataset_id));
         if (comments == null) {
             throw new Error(`Unknown dataset ${params.dataset_id}`);
         }
@@ -142,7 +141,7 @@ module.exports.IncrementPublishedDatasetViewsAction = class IncrementPublishedDa
 
     async run({response, params, request}) {
         let userId = params.user_id ? params.user_id : request.remoteIP;
-        const dataset = await dal.tryCatch(async() => await datasets.incrementViewForDataset(params.dataset_id, userId));
+        const dataset = await dal.tryCatch(async() => await api.publishedDatasets.incrementViewForDataset(params.dataset_id, userId));
         if (!dataset) {
             throw new Error(`Unable to update dataset ${params.dataset_id} view count`);
         }
@@ -178,10 +177,10 @@ module.exports.UpdatePublishedDatasetUsefulCountAction = class UpdatePublishedDa
         let ds;
 
         if (params.action === 'add') {
-            ds = await dal.tryCatch(async() => await datasets.markDatasetAsUseful(params.dataset_id, params.user_id));
+            ds = await dal.tryCatch(async() => await api.publishedDatasets.markDatasetAsUseful(params.dataset_id, params.user_id));
         } else {
             // params.action === 'delete'
-            ds = await dal.tryCatch(async() => await datasets.unmarkDatasetAsUseful(params.dataset_id, params.user_id));
+            ds = await dal.tryCatch(async() => await api.publishedDatasets.unmarkDatasetAsUseful(params.dataset_id, params.user_id));
         }
 
         if (!ds) {
@@ -201,7 +200,7 @@ module.exports.GetPopularTagsForPublishedDatasetsAction = class GetPopularTagsFo
     }
 
     async run({response}) {
-        const tags = await dal.tryCatch(async() => await datasets.getMostPopularTagsForDatasets());
+        const tags = await dal.tryCatch(async() => await api.publishedDatasets.getMostPopularTagsForDatasets());
         if (!tags) {
             throw new Error(`Unable to retrieve most popular tags for published datasets`);
         }
@@ -222,7 +221,7 @@ module.exports.DownloadDatasetZipfileAction = class DownloadDatasetZipFileAction
     }
 
     async run(data) {
-        const filepath = await dal.tryCatch(async() => await datasets.updataDownloadCountAndReturnFilePath(data.params.dataset_id));
+        const filepath = await dal.tryCatch(async() => await api.publishedDatasets.updataDownloadCountAndReturnFilePath(data.params.dataset_id));
         if (!filepath) {
             throw new Error(`Unable to retrieve zip file for dataset ${data.params.dataset_id}`);
         }
