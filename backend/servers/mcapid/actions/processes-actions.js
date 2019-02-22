@@ -1,6 +1,5 @@
-const {Action} = require('actionhero');
+const {Action, api} = require('actionhero');
 const dal = require('../lib/dal');
-const processes = require('../lib/dal/processes');
 
 module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction extends Action {
     constructor() {
@@ -20,7 +19,7 @@ module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction
     }
 
     async run({response, params}) {
-        const results = await dal.tryCatch(async () => await processes.getProcessesForProject(params.project_id));
+        const results = await dal.tryCatch(async() => await api.processes.getProcessesForProject(params.project_id));
         if (results === null) {
             throw new Error(`Unable to retrieve processes for project ${params.project_id}`);
         }
@@ -46,7 +45,7 @@ module.exports.GetProcessForProjectAction = class GetProcessForProjectAction ext
     }
 
     async run({response, params}) {
-        const results = await dal.tryCatch(async () => await processes.getProcessForProject(params.project_id, params.process_id));
+        const results = await dal.tryCatch(async() => await api.processes.getProcessForProject(params.project_id, params.process_id));
         if (!results) {
             throw new Error(`Unable to retrieve process ${params.process_id} for project ${params.project_id}`);
         }
@@ -68,7 +67,7 @@ module.exports.GetProcessAction = class GetProcessAction extends Action {
     }
 
     async run({response, params, user}) {
-        const results = await dal.tryCatch(async() => await processes.getProcess(user.id, params.process_id));
+        const results = await dal.tryCatch(async() => await api.processes.getProcess(user.id, params.process_id));
         if (!results) {
             throw new Error(`Unable to retrieve process ${params.process_id}`);
         }
@@ -154,87 +153,3 @@ const processExample = {
         }
     }
 };
-
-// module.exports.ListProcessesAction = class ListProcessesAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'listProcesses';
-//         this.description = 'List processes';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.CreateProcessAction = class CreateProcessAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'createProcess';
-//         this.description = 'Create process';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.GetProcessAction = class GetProcessAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'getProcess';
-//         this.description = 'Get process';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.UpdateProcessAction = class UpdateProcessAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'updateProcess';
-//         this.description = 'Update process';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.DeleteProcessAction = class DeleteProcessAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'deleteProcess';
-//         this.description = 'Delete process';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.CloneProcessAction = class CloneProcessAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'CloneProcess';
-//         this.description = 'Clone process';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.GetProcessFilesAction = class GetProcessFilesAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'getProcessFiles';
-//         this.description = 'Get files for process';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
