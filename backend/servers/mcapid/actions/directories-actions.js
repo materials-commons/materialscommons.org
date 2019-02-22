@@ -1,27 +1,6 @@
-const {Action} = require('actionhero');
-const directories = require('../lib/dal/directories');
+const {Action, api} = require('actionhero');
 const dal = require('../lib/dal');
 const _ = require('lodash');
-
-//
-// module.exports.ListDirectoriesAction = class ListDirectoriesAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'listDirectories';
-//         this.description = 'List top level directories for user';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-
-/*
-parent_directory_id: parentId,
-                path: path,
-                return_parent: true,
- */
 
 module.exports.CreateDirectoryInProjectAction = class CreateDirectoryInProjectAction extends Action {
     constructor() {
@@ -53,11 +32,11 @@ module.exports.CreateDirectoryInProjectAction = class CreateDirectoryInProjectAc
     }
 
     async run({response, params}) {
-        let dir = await dal.tryCatch(async() => await directories.createDirectoryInProject(params.path, params.project_id,
-            params.parent_directory_id, params.return_parent));
+        let {path, project_id, parent_directory_id, return_parent} = params;
+        let dir = await dal.tryCatch(async() => await api.directories.createDirectoryInProject(path, project_id, parent_directory_id, return_parent));
 
         if (!dir) {
-            throw new Error(`Unable to create directory ${params.path} in project ${params.project_id} with parent directory ${params.parent_directory_id}`);
+            throw new Error(`Unable to create directory ${path} in project ${project_id} with parent directory ${parent_directory_id}`);
         }
 
         response.data = dir;
@@ -81,7 +60,7 @@ module.exports.GetDirectoryForProjectAction = class GetDirectoryForProjectAction
     }
 
     async run({response, params}) {
-        const dir = await dal.tryCatch(async() => await directories.getDirectoryForProject(params.directory_id, params.project_id));
+        const dir = await dal.tryCatch(async() => await api.directories.getDirectoryForProject(params.directory_id, params.project_id));
         if (dir === null) {
             throw new Error(`Unable retrieve directory ${params.directory_id} in project ${params.project_id}`);
         }
@@ -107,7 +86,7 @@ module.exports.GetDirectoryByPathForProjectAction = class GetDirectoryByPathForP
     }
 
     async run({response, params}) {
-        const dir = await dal.tryCatch(async() => await directories.getDirectoryByPathForProject(params.directory_path, params.project_id));
+        const dir = await dal.tryCatch(async() => await api.directories.getDirectoryByPathForProject(params.directory_path, params.project_id));
         if (dir === null) {
             throw new Error(`Unable retrieve directory ${params.directory_path} in project ${params.project_id}`);
         }
@@ -176,7 +155,7 @@ module.exports.DeleteFilesFromDirectoryInProjectActions = class DeleteFilesFromD
     }
 
     async run({response, params}) {
-        let results = await dal.tryCatch(async() => await directories.deleteFilesFromDirectoryInProject(params.files, params.directory_id, params.project_id));
+        let results = await dal.tryCatch(async() => await api.directories.deleteFilesFromDirectoryInProject(params.files, params.directory_id, params.project_id));
         if (results === null) {
             throw new Error(`Unable to delete files in directory ${params.directory_id} for project ${params.project_id}`);
         }

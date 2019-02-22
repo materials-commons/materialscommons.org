@@ -1,7 +1,6 @@
-const createDirsFromParent = require('./create-dir').createDirsFromParent;
-const deleteDirsAndFilesInDirectoryFromProject = require('./delete').deleteDirsAndFilesInDirectoryFromProject;
-
-module.exports = {
-    createDirsFromParent,
-    deleteDirsAndFilesInDirectoryFromProject
+module.exports = function(r) {
+    return {
+        createDirsFromParent: require('./create-dir')(r),
+        deleteDirsAndFilesInDirectoryFromProject: require('./delete')(r),
+    };
 };
