@@ -1,9 +1,7 @@
-const {Action} = require('actionhero');
+const {Action, api} = require('actionhero');
 const dal = require('../lib/dal');
-const datasets = require('../lib/dal/datasets');
 const _ = require('lodash');
 const validators = require('../lib/validators');
-const check = require('../lib/dal/check');
 
 module.exports.ListDatasetsAction = class ListDatasetsAction extends Action {
     constructor () {
@@ -18,7 +16,7 @@ module.exports.ListDatasetsAction = class ListDatasetsAction extends Action {
     }
 
     async run ({response, params}) {
-        const dsets = await dal.tryCatch(async () => await datasets.getDatasetsForProject(params.project_id));
+        const dsets = await dal.tryCatch(async() => await api.datasets.getDatasetsForProject(params.project_id));
         if (!dsets) {
             throw new Error(`Unable to get datasets for project ${params.project_id}`);
         }
@@ -44,12 +42,12 @@ module.exports.GetDatasetAction = class GetDatasetAction extends Action {
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async () => await datasets.getDataset(params.dataset_id));
+        const ds = await dal.tryCatch(async() => await api.datasets.getDataset(params.dataset_id));
         if (!ds) {
             throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
         }
@@ -75,12 +73,12 @@ module.exports.GetDatasetFilesAction = class GetDatasetFilesAction extends Actio
     }
 
     async run({response, params}) {
-        const inProject = await dal.tryCatch(async() => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async() => await datasets.getDatasetFiles(params.dataset_id));
+        const ds = await dal.tryCatch(async() => await api.datasets.getDatasetFiles(params.dataset_id));
         if (!ds) {
             throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
         }
@@ -106,12 +104,12 @@ module.exports.GetDatasetSamplesAndProcessesAction = class GetDatasetSamplesAndP
     }
 
     async run({response, params}) {
-        const inProject = await dal.tryCatch(async() => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async() => await datasets.getDatasetSamplesAndProcesses(params.dataset_id));
+        const ds = await dal.tryCatch(async() => await api.datasets.getDatasetSamplesAndProcesses(params.dataset_id));
         if (!ds) {
             throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
         }
@@ -167,13 +165,13 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
         };
 
         if (params.samples.length) {
-            const allInProject = await dal.tryCatch(async () => check.allSamplesInProject(params.project_id, params.samples));
+            const allInProject = await dal.tryCatch(async() => await api.check.allSamplesInProject(params.project_id, params.samples));
             if (!allInProject) {
                 throw new Error(`Invalid samples ${params.samples} for project ${params.project_id}`);
             }
         }
 
-        const ds = await dal.tryCatch(async () => await datasets.createDataset(dsParams, user.id, params.project_id));
+        const ds = await dal.tryCatch(async() => await api.datasets.createDataset(dsParams, user.id, params.project_id));
         if (!ds) {
             throw new Error(`Unable to create dataset ${dsParams.title}`);
         }
@@ -199,12 +197,12 @@ module.exports.DeleteDatasetAction = class DeleteDatasetAction extends Action {
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const success = await dal.tryCatch(async () => await datasets.deleteDataset(params.dataset_id));
+        const success = await dal.tryCatch(async() => await api.datasets.deleteDataset(params.dataset_id));
         if (!success) {
             throw new Error(`unable to delete dataset ${params.dataset_id}`);
         }
@@ -237,17 +235,17 @@ module.exports.AddDatasetFilesAction = class AddDatasetFilesAction extends Actio
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const allInProject = await dal.tryCatch(async () => check.allFilesInProject(params.project_id, params.files));
+        const allInProject = await dal.tryCatch(async() => await api.check.allFilesInProject(params.project_id, params.files));
         if (!allInProject) {
             throw new Error(`Invalid files ${params.files} for project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async () => datasets.addFilesToDataset(params.dataset_id, params.files));
+        const ds = await dal.tryCatch(async() => await api.datasets.addFilesToDataset(params.dataset_id, params.files));
         if (!ds) {
             throw new Error(`Unable to add files ${params.files} to dataset ${params.dataset_id}`);
         }
@@ -282,12 +280,12 @@ module.exports.DeleteDatasetFilesAction = class DeleteDatasetFilesAction extends
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async () => datasets.deleteFilesFromDataset(params.dataset_id, params.files));
+        const ds = await dal.tryCatch(async() => await api.datasets.deleteFilesFromDataset(params.dataset_id, params.files));
         if (!ds) {
             throw new Error(`Unable to delete files ${params.files} from dataset ${params.dataset_id}`);
         }
@@ -322,17 +320,17 @@ module.exports.AddDatasetSamplesAction = class AddDatasetSamplesAction extends A
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const allInProject = await dal.tryCatch(async () => check.allSamplesInProject(params.project_id, params.samples));
+        const allInProject = await dal.tryCatch(async() => await api.check.allSamplesInProject(params.project_id, params.samples));
         if (!allInProject) {
             throw new Error(`Invalid samples ${params.samples} for project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async () => datasets.addSamplesToDataset(params.dataset_id, params.samples));
+        const ds = await dal.tryCatch(async() => await api.datasets.addSamplesToDataset(params.dataset_id, params.samples));
         if (!ds) {
             throw new Error(`Unable to add samples ${params.samples} to dataset ${params.dataset_id}`);
         }
@@ -367,12 +365,12 @@ module.exports.DeleteDatasetSamplesAction = class DeleteDatasetSamplesAction ext
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async () => datasets.deleteSamplesFromDataset(params.dataset_id, params.samples));
+        const ds = await dal.tryCatch(async() => await api.datasets.deleteSamplesFromDataset(params.dataset_id, params.samples));
         if (!ds) {
             throw new Error(`Unable to delete samples ${params.samples} from dataset ${params.dataset_id}`);
         }
@@ -407,12 +405,12 @@ module.exports.DeleteProcessesFromDatasetSampleAction = class DeleteProcessesFro
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async () => datasets.deleteProcessesFromDataset(params.dataset_id, params.processes));
+        const ds = await dal.tryCatch(async() => await api.datasets.deleteProcessesFromDataset(params.dataset_id, params.processes));
         if (!ds) {
             throw new Error(`Unable to delete processes ${params.processes} from dataset ${params.dataset_id}`);
         }
@@ -438,12 +436,12 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async () => datasets.publish(params.dataset_id));
+        const ds = await dal.tryCatch(async() => await api.datasets.publish(params.dataset_id));
         if (!ds) {
             throw new Error(`Unable to publish dataset ${params.dataset_id}`);
         }
@@ -469,12 +467,12 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
     }
 
     async run ({response, params}) {
-        const inProject = await dal.tryCatch(async () => await check.datasetInProject(params.dataset_id, params.project_id));
+        const inProject = await dal.tryCatch(async() => await api.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async () => datasets.unpublish(params.dataset_id));
+        const ds = await dal.tryCatch(async() => await api.datasets.unpublish(params.dataset_id));
         if (!ds) {
             throw new Error(`Unable to publish dataset ${params.dataset_id}`);
         }
