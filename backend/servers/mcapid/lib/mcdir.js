@@ -19,7 +19,12 @@ function deleteFile(fileId) {
         return false;
     }
 
-    fs.unlinkSync(filePath);
+    try {
+        fs.unlinkSync(filePath);
+    } catch (e) {
+        console.log('unlink error', e);
+        return false;
+    }
     return true;
 }
 
