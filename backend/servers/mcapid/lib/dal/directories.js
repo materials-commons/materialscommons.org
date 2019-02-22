@@ -1,6 +1,6 @@
 const r = require('../../../shared/r');
 const path = require('path');
-const createDirsFromParent = require('./create-dir').createDirsFromParent;
+const {createDirsFromParent, deleteDirsAndFilesInDirectoryFromProject} = require('./dir-utils');
 
 const getDirectoryForProject = async(dirId, projectId) => {
     if (dirId === 'root') {
@@ -92,8 +92,22 @@ const createDirectoryInProject = async(path, projectId, parentDirId, returnParen
     return dirs;
 };
 
-const deleteFilesFromDirectoryInProject = async(files, dirId, projectId) => {
+const deleteFilesFromDirectoryInProject = async(files, dirId, projectId, returnParent) => {
+    let results = await deleteDirsAndFilesInDirectoryFromProject(files, dirId, projectId);
+    let rv = {
+        delete_results: {
+            files: results.files,
+            directories: results.directories,
+        }
+    };
 
+    if (returnParent) {
+        let parent = await getDirectoryForProject(dirId, projectId);
+        parent.delete_results = rv.delete_results;
+        return parent;
+    }
+
+    return rv;
 };
 
 module.exports = {

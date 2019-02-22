@@ -1,6 +1,6 @@
-const r = require('../../../shared/r');
-const model = require('../../../shared/model');
-const db = require('./db');
+const r = require('../../../../shared/r');
+const model = require('../../../../shared/model');
+const db = require('../db');
 
 const createDirsFromParent = async(path, parentId, projectId) => {
     let parentDir = await getDirByIdAndProjectId(parentId, projectId);

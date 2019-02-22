@@ -116,11 +116,11 @@ module.exports.GetDirectoryByPathForProjectAction = class GetDirectoryByPathForP
     }
 };
 
-module.exports.DeleteFilesFromDirectoryActions = class DeleteFilesFromDirectoryAction extends Action {
+module.exports.DeleteFilesFromDirectoryInProjectActions = class DeleteFilesFromDirectoryInProjectAction extends Action {
     constructor() {
         super();
-        this.name = 'deleteFilesFromDirectory';
-        this.description = 'delete files and directory from target directory';
+        this.name = 'deleteFilesFromDirectoryInProject';
+        this.description = 'Delete files and directories from target directory in project';
         this.inputs = {
             directory_id: {
                 required: true,
@@ -128,6 +128,15 @@ module.exports.DeleteFilesFromDirectoryActions = class DeleteFilesFromDirectoryA
 
             project_id: {
                 required: true,
+            },
+
+            return_parent: {
+                default: false,
+                validator: (param) => {
+                    if (typeof param !== 'boolean') {
+                        throw new Error(`Invalid value ${param} for parameter 'return_parent', must be true or false`);
+                    }
+                },
             },
 
             files: {

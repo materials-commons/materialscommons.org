@@ -43,6 +43,7 @@ def create_mc_tables():
     create_mc_table("datadirs", "name", "project", "parent")
     create_compound_index("datadirs", "datadir_project_name", ['project', 'name'])
     create_compound_index("datadirs", "datadir_project_shortcut", ['project', 'shortcut'])
+    create_compound_index("datadirs", "datadir_parent", ['id', 'parent'])
 
     create_mc_table("project2datadir", "datadir_id", "project_id")
     create_compound_index('project2datadir', 'project_datadir', ['project_id', 'datadir_id'])
