@@ -1,20 +1,6 @@
-// noinspection JSUnusedLocalSymbols
 const {Action, api} = require('actionhero');
-const projects = require('../lib/dal/projects');
 const dal = require('../lib/dal');
 const _ = require('lodash');
-
-// module.exports.ListProjectsAction = class ListProjectsAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'listProjects';
-//         this.description = 'Retrieve a list of projects user has access to';
-//     }
-//
-//     async run({response, params}) {
-//         console.log('listProjects');
-//     }
-// };
 
 module.exports.ListProjectsForAdminAction = class ListProjectsForAdmin extends Action {
     constructor() {
@@ -28,7 +14,7 @@ module.exports.ListProjectsForAdminAction = class ListProjectsForAdmin extends A
             throw new Error(`not admin user: ${user.id}`);
         }
         console.log('At ListProjectsForAdmin', user);
-        const project_list = await dal.tryCatch(async() => await projects.getAll());
+        const project_list = await dal.tryCatch(async() => await api.projects.getAll());
         console.log(project_list.length);
         response.data = project_list;
     }
@@ -64,7 +50,7 @@ module.exports.CreateProjectAction = class CreateProjectAction extends Action {
     }
 
     async run({response, params, user}) {
-        const project = await dal.tryCatch(async() => await projects.createProject(user, params));
+        const project = await dal.tryCatch(async() => await api.projects.createProject(user, params));
         if (!project) {
             throw new Error(`Unable to create project`);
         }
@@ -107,7 +93,7 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
         //     project = JSON.parse(project);
         // }
 
-        const project = await dal.tryCatch(async() => await projects.getProject(params.project_id));
+        const project = await dal.tryCatch(async() => await api.projects.getProject(params.project_id));
         if (!project) {
             throw new Error(`No such project_id ${params.project_id}`);
         }
@@ -132,7 +118,7 @@ module.exports.GetProjectExperimentAction = class GetProjectExperimentAction ext
     }
 
     async run({response, params}) {
-        const experiment = await dal.tryCatch(async() => await projects.getProjectExperiment(params.project_id, params.experiment_id));
+        const experiment = await dal.tryCatch(async() => await api.projects.getProjectExperiment(params.project_id, params.experiment_id));
         if (!experiment) {
             throw new Error(`No such experiment ${params.experiment_id} for given project ${params.project_id}`);
         }
@@ -140,63 +126,3 @@ module.exports.GetProjectExperimentAction = class GetProjectExperimentAction ext
         response.data = experiment[0];
     }
 };
-
-// module.exports.UpdateProjectAction = class UpdateProjectAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'updateProject';
-//         this.description = 'Update given project';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.DeleteProjectAction = class DeleteProjectAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'deleteProject';
-//         this.description = 'Delete the given project';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-
-// module.exports.CloneProjectAction = class CloneProjectAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'cloneProject';
-//         this.description = 'Create project by cloning from the given project';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.GetProjectViewsAction = class GetProjectViewsAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'getProjectViews';
-//         this.description = 'Returns a list of the projects view';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-
-// module.exports.UpdateProjectViewsAction = class UpdateProjectViewsAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'updateProjectViews';
-//         this.description = 'Update views by adding/deleting views associated with project';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };

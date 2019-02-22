@@ -1,5 +1,4 @@
-const {Action} = require('actionhero');
-const projects = require('../../lib/dal/projects');
+const {Action, api} = require('actionhero');
 const dal = require('../../lib/dal');
 
 module.exports.GetProjectsForUserAction = class GetProjectsForUserAction extends Action {
@@ -11,7 +10,7 @@ module.exports.GetProjectsForUserAction = class GetProjectsForUserAction extends
     }
 
     async run({response, user}) {
-        const usersProjects = await dal.tryCatch(async() => await projects.ui.getProjectsForUser(user.id));
+        const usersProjects = await dal.tryCatch(async() => await api.projects.ui.getProjectsForUser(user.id));
         if (usersProjects === null) {
             throw new Error(`No such user`);
         }
@@ -34,7 +33,7 @@ module.exports.GetProjectOverviewAction = class GetProjectOverviewAction extends
     }
 
     async run({response, params}) {
-        const proj = await dal.tryCatch(async() => await projects.ui.getProjectOverview(params.project_id));
+        const proj = await dal.tryCatch(async() => await api.projects.ui.getProjectOverview(params.project_id));
         if (!proj) {
             throw new Error(`Unable to retrieve project ${params.project_id}`);
         }
@@ -68,7 +67,7 @@ module.exports.GetProjectNotesAction = class GetProjectsForUserAction extends Ac
     }
 
     async run({response, params}) {
-        const notes = await dal.tryCatch(async() => await projects.ui.getProjectNotes(params.project_id));
+        const notes = await dal.tryCatch(async() => await api.projects.ui.getProjectNotes(params.project_id));
         if (notes === null) {
             throw new Error(`Unable to retrieve notes for project ${params.project_id}`);
         }
@@ -91,7 +90,7 @@ module.exports.GetProjectAccessEntriesAction = class GetProjectsForUserAction ex
     }
 
     async run({response, params}) {
-        const entries = await dal.tryCatch(async() => await projects.ui.getProjectAccessEntries(params.project_id));
+        const entries = await dal.tryCatch(async() => await api.projects.ui.getProjectAccessEntries(params.project_id));
         if (entries === null) {
             throw new Error(`Unable to retrieve access entries for project ${params.project_id}`);
         }

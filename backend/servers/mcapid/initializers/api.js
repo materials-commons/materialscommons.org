@@ -9,5 +9,6 @@ module.exports = class ApiInitializer extends Initializer {
 
     initialize() {
         api.directories = require('../lib/dal/directories')(r);
+        api.projects = require('../lib/dal/projects')(r);
     }
 };
