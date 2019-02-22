@@ -1,5 +1,4 @@
-const {Action} = require('actionhero');
-const templates = require('../lib/dal/templates');
+const {Action, api} = require('actionhero');
 
 module.exports.GetAllPublicTemplatesAction = class GetAllPublicTemplatesAction extends Action {
     constructor() {
@@ -10,6 +9,6 @@ module.exports.GetAllPublicTemplatesAction = class GetAllPublicTemplatesAction e
     }
 
     async run({response}) {
-        response.data = await templates.getAllTemplates();
+        response.data = await api.templates.getAllTemplates();
     }
 };

@@ -14,5 +14,7 @@ module.exports = class ApiInitializer extends Initializer {
         api.check = require('../lib/dal/check')(r);
         api.processes = require('../lib/dal/processes')(r);
         api.publishedDatasets = require('../lib/dal/published-datasets')(r);
+        api.samples = require('../lib/dal/samples')(r);
+        api.templates = require('../lib/dal/templates')(r);
     }
 };
