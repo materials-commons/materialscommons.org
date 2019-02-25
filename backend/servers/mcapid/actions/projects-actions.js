@@ -2,6 +2,32 @@ const {Action, api} = require('actionhero');
 const dal = require('../lib/dal');
 const _ = require('lodash');
 
+module.export.DeleteProjectAction = class DeleteProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'deleteProject';
+        this.description = 'Delete a project (only the project owner can delete a project)';
+        this.inputs = {
+            project_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        if (!await api.check.isProjectOwner(params.project_id, user.id)) {
+            throw new Error(`User is not owner of project ${params.project_id}`);
+        }
+
+        let deleted = await dal.tryCatch(async() => await api.projects.deleteProject(params.project_id));
+        if (!deleted) {
+            throw new Error(`Unable to delete project ${params.project_id}`);
+        }
+
+        response.data = {success: `Project ${params.project_id} was deleted`};
+    }
+};
+
 module.exports.CreateProjectAction = class CreateProjectAction extends Action {
     constructor() {
         super();

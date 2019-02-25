@@ -5,6 +5,16 @@ module.exports = function(r) {
 
     const db = require('./db')(r);
 
+    async function deleteProject(projectId) {
+        await quickProjectDelete(projectId);
+        return true;
+    }
+
+    async function quickProjectDelete(projectId) {
+        await r.table('projects').get(projectId).update({owner: 'delete@materialscommons.org'});
+        await r.table('access').getAll(projectId, {index: 'project_id'}).delete();
+    }
+
     async function createProject(user, name, description) {
         let owner = user.id;
         let matches = await r.table('projects').filter({name: name, owner: owner});
@@ -220,6 +230,7 @@ module.exports = function(r) {
         getProject,
         getAll,
         getProjectExperiment,
+        deleteProject,
         ui: {
             getProjectsForUser,
             getProjectOverview,

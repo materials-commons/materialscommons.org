@@ -22,10 +22,16 @@ module.exports = function(r) {
         return entry.length !== 0;
     }
 
+    async function isProjectOwner(projectId, userId) {
+        let project = await r.table('projects').get(projectId);
+        return project.owner === userId;
+    }
+
     return {
         allFilesInProject,
         allSamplesInProject,
         datasetInProject,
         directoryInProject,
+        isProjectOwner,
     };
 };
