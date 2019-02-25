@@ -1,7 +1,8 @@
 const model = require('../../../../shared/model');
-const db = require('../db');
 
 module.exports = function(r) {
+    const db = require('../db')(r);
+
     const createDirsFromParent = async(path, parentId, projectId) => {
         let parentDir = await getDirByIdAndProjectId(parentId, projectId);
         return await createDirs(projectId, parentDir, dirSegments(path));

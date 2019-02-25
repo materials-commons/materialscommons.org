@@ -1,8 +1,9 @@
 const run = require('./run');
 const model = require('../../../shared/model');
-const db = require('./db');
 
 module.exports = function(r) {
+
+    const db = require('./db')(r);
 
     async function createProject(user, name, description) {
         let owner = user.id;

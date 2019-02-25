@@ -119,10 +119,3 @@ module.exports = function(r) {
         deleteFilesFromDirectoryInProject,
     };
 };
-
-// module.exports = {
-//     getDirectoryForProject,
-//     getDirectoryByPathForProject,
-//     createDirectoryInProject,
-//     deleteFilesFromDirectoryInProject,
-// };

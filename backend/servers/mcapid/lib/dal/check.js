@@ -17,9 +17,15 @@ module.exports = function(r) {
         return d.length !== 0;
     }
 
+    async function directoryInProject(directoryId, projectId) {
+        let entry = await r.table('project2datadir').getAll([projectId, directoryId], {index: 'project_datadir'});
+        return entry.length !== 0;
+    }
+
     return {
         allFilesInProject,
         allSamplesInProject,
         datasetInProject,
+        directoryInProject,
     };
 };

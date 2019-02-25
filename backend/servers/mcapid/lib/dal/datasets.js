@@ -1,5 +1,4 @@
 const model = require('../../../shared/model');
-const db = require('./db');
 const dbExec = require('./run');
 const commonQueries = require('../../../lib/common-queries');
 const _ = require('lodash');
@@ -8,6 +7,8 @@ const util = require('../../../lib/util');
 const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 
 module.exports = function(r) {
+
+    const db = require('./db')(r);
 
     async function createDataset(ds, owner, projectId) {
         let dataset = new model.Dataset(ds.title, owner);
@@ -86,8 +87,7 @@ module.exports = function(r) {
             dataset.doi_url = `${doiUrl}id/${dataset.doi}`;
         }
         if (!dataset.published) {
-            let publishedState = await canPublishDataset(datasetId);
-            dataset.status = publishedState;
+            dataset.status = await canPublishDataset(datasetId);
             // dataset.status.files_count = dataset.files.length;
             if (dataset.status.files_count && dataset.status.samples_count && dataset.status.processes_count) {
                 dataset.status.can_be_published = true;
@@ -97,7 +97,7 @@ module.exports = function(r) {
     }
 
     async function getDatasetFiles(datasetId) {
-        let files = await r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'})
+        return await r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'})
             .eqJoin('datafile_id', r.table('datafiles')).zip()
             .merge(df => {
                 return {
@@ -105,11 +105,10 @@ module.exports = function(r) {
                         .eqJoin('datadir_id', r.table('datadirs')).zip().pluck('name').nth(0).getField('name')
                 };
             });
-        return files;
     }
 
     async function getDatasetSamplesAndProcesses(datasetId) {
-        let ds = await r.table('datasets').get(datasetId).merge(ds => {
+        return await r.table('datasets').get(datasetId).merge(ds => {
             return {
                 samples: r.table('dataset2sample').getAll(ds('id'), {index: 'dataset_id'})
                     .eqJoin('sample_id', r.table('samples')).zip().coerceTo('array'),
@@ -117,8 +116,6 @@ module.exports = function(r) {
                     .eqJoin('process_id', r.table('processes')).zip(), r).coerceTo('array'),
             };
         });
-
-        return ds;
     }
 
     async function canPublishDataset(datasetId) {
@@ -146,7 +143,7 @@ module.exports = function(r) {
         let sampleProcessIds = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).pluck('sample_id');
         let sampleIds = sampleProcessIds.map(d => d.sample_id);
         let samplesAndProcessesFilesCount = await getFileCountsForProcessesAndSamples(datasetId, processIds, sampleIds);
-        if (samplesAndProcessesFilesCount == 0) {
+        if (samplesAndProcessesFilesCount === 0) {
             let files = await getDatasetFiles(datasetId);
             return files.length;
         }
