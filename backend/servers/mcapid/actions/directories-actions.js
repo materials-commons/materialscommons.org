@@ -95,7 +95,7 @@ module.exports.GetDirectoryByPathForProjectAction = class GetDirectoryByPathForP
     }
 };
 
-module.exports.DeleteFilesFromDirectoryInProjectActions = class DeleteFilesFromDirectoryInProjectAction extends Action {
+module.exports.DeleteFilesFromDirectoryInProjectAction = class DeleteFilesFromDirectoryInProjectAction extends Action {
     constructor() {
         super();
         this.name = 'deleteFilesFromDirectoryInProject';
@@ -163,28 +163,3 @@ module.exports.DeleteFilesFromDirectoryInProjectActions = class DeleteFilesFromD
         response.data = results;
     }
 };
-
-//
-// module.exports.UpdateDirectoryAction = class UpdateDirectoryAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'updateDirectory';
-//         this.description = 'Updates directory metadata and allows files and sub directories to be added/deleted';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
-//
-// module.exports.DeleteDirectoryAction = class DeleteDirectoryAction extends Action {
-//     constructor() {
-//         super();
-//         this.name = 'deleteDirectory';
-//         this.description = 'Deletes a directory - only leaf directory nodes may be deleted';
-//     }
-//
-//     async run({response, params}) {
-//
-//     }
-// };
