@@ -2,7 +2,7 @@ const {Action, api} = require('actionhero');
 const dal = require('../lib/dal');
 const _ = require('lodash');
 
-module.export.DeleteProjectAction = class DeleteProjectAction extends Action {
+module.exports.DeleteProjectAction = class DeleteProjectAction extends Action {
     constructor() {
         super();
         this.name = 'deleteProject';

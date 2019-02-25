@@ -1,7 +1,11 @@
-const projects = require('../../../lib/dal/projects');
+const r = require('../../../../shared/r');
+const projects = require('../../../lib/dal/projects')(r);
 
 describe('project actions', () => {
     let createdProject;
+    afterAll(async() => {
+        await projects.deleteProject(createdProject.id);
+    });
     test('a user can create a project', async() => {
         const user = {
             id: 'test@test.mc'

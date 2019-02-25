@@ -228,7 +228,6 @@ module.exports = function(r) {
     return {
         createProject,
         getProject,
-        getAll,
         getProjectExperiment,
         deleteProject,
         ui: {
