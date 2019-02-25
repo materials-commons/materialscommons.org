@@ -1,6 +1,6 @@
 const path = require('path');
 const fs = require('fs');
-const fsExtra = require('fs');
+const fsExtra = require('fs-extra');
 
 function findFile(fileId) {
     let dirs = getMCDirs();
@@ -29,12 +29,12 @@ function deleteFile(fileId) {
     return true;
 }
 
-async function moveIntoStore(path, fileId) {
+async function moveIntoStore(filePath, fileId) {
     let mcdirs = getMCDirs();
     let fileLocation = constructPathToFileId(mcdirs[0], fileId);
     let dirToFile = path.join(mcdirs[0], constructFileDirSubPathFromFile(fileId));
     await fsExtra.ensureDir(dirToFile);
-    await fsExtra.move(path, fileLocation);
+    await fsExtra.move(filePath, fileLocation);
 }
 
 function getMCDirs() {

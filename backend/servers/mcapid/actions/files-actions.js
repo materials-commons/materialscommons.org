@@ -4,7 +4,7 @@ const dal = require('../lib/dal');
 module.exports.UploadFileToProjectDirectoryAction = class UploadFileToProjectDirectoryAction extends Action {
     constructor() {
         super();
-        this.name = 'uploadFileToProject';
+        this.name = 'uploadFileToProjectDirectory';
         this.description = 'Uploads a file into the given project directory';
         this.inputs = {
             project_id: {
@@ -30,13 +30,13 @@ module.exports.UploadFileToProjectDirectoryAction = class UploadFileToProjectDir
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
         let directoryInProject = await api.check.directoryInProject(params.directory_id, params.project_id);
         if (!directoryInProject) {
             throw new Error(`Directory ${params.directory_id} not found in project ${params.project_id}`);
         }
 
-        let file = await dal.tryCatch(async() => await api.files.uploadFileToProjectDirectory(params.file, params.project_id, params.directory_id));
+        let file = await dal.tryCatch(async() => await api.files.uploadFileToProjectDirectory(params.file, params.project_id, params.directory_id, user.id));
         if (!file) {
             throw new Error(`Unable to upload file ${params.file.name} for project ${params.project_id} into directory ${params.directory_id}`);
         }

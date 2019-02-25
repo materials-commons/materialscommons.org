@@ -10,22 +10,22 @@ module.exports = function(r) {
         let fileEntry = {
             // Create the id for the file being uploaded as this will determine
             // the location of the uploaded file in our object store.
-            id: r.uuid(),
+            id: await r.uuid(),
             name: fileToUpload.name,
             checksum: fileToUpload.hash,
             mediatype: mtype.mediaTypeDescriptionsFromMime(fileToUpload.type),
             size: fileToUpload.size,
-            filepath: fileToUpload.path,
+            path: fileToUpload.path,
             owner: userId,
             parentId: '',
         };
 
-        let file = getFileByNameInDirectory(fileToUpload.name, directoryId);
+        let file = await getFileByNameInDirectory(fileToUpload.name, directoryId);
         if (!file) {
             // There is no existing file with this name in the directory.
             fileEntry.usesid = await findMatchingFileIdByChecksum(fileEntry.checksum);
             return await loadNewFileIntoDirectory(fileEntry, directoryId, projectId);
-        } else if (file.checksum !== fileToUpload.checksum) {
+        } else if (file.checksum !== fileEntry.checksum) {
             // There is an existing file in the directory but it has a different
             // checksum, so we have to do a little book keeping to make this file
             // the current file, set its parent entry back to the existing, as well
@@ -48,7 +48,7 @@ module.exports = function(r) {
     const getFileByNameInDirectory = async(fileName, directoryId) => {
         let file = await r.table('datadir2datafile').getAll(directoryId, {index: 'datadir_id'})
             .eqJoin('datafile_id', r.table('datafiles')).zip()
-            .filter({name: filename, current: true});
+            .filter({name: fileName, current: true});
         if (file) {
             return file[0]; // query returns an array of 1 entry.
         }
@@ -125,6 +125,8 @@ module.exports = function(r) {
 
         await addFileToDirectory(created.id, directoryId);
         await addFileToProject(created.id, projectId);
+
+        return created;
     };
 
     const addFileToDirectory = async(fileId, directoryId) => {

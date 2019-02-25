@@ -1,7 +1,7 @@
 module.exports = function(r) {
     return {
-        createDirsFromParent: require('./create-dir')(r),
-        deleteDirsAndFilesInDirectoryFromProject: require('./delete')(r),
-        addFileToDirectoryInProject: require('./file-upload')(r),
+        createDirsFromParent: require('./create-dir')(r).createDirsFromParent,
+        deleteDirsAndFilesInDirectoryFromProject: require('./delete')(r).deleteDirsAndFilesInDirectoryFromProject,
+        addFileToDirectoryInProject: require('./file-upload')(r).addFileToDirectoryInProject,
     };
 };
