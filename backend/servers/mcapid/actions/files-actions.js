@@ -31,18 +31,18 @@ module.exports.UploadFileToProjectDirectoryAction = class UploadFileToProjectDir
     }
 
     async run({response, params, user}) {
-        let directoryInProject = await api.check.directoryInProject(params.directory_id, params.project_id);
+        let directoryInProject = await api.mc.check.directoryInProject(params.directory_id, params.project_id);
         if (!directoryInProject) {
             throw new Error(`Directory ${params.directory_id} not found in project ${params.project_id}`);
         }
 
-        let file = await dal.tryCatch(async() => await api.files.uploadFileToProjectDirectory(params.file, params.project_id, params.directory_id, user.id));
+        let file = await dal.tryCatch(async() => await api.mc.files.uploadFileToProjectDirectory(params.file, params.project_id, params.directory_id, user.id));
         if (!file) {
             throw new Error(`Unable to upload file ${params.file.name} for project ${params.project_id} into directory ${params.directory_id}`);
         }
 
         if (params.return_directory) {
-            let dir = await api.directories.getDirectoryForProject(params.directory_id, params.project_id);
+            let dir = await api.mc.directories.getDirectoryForProject(params.directory_id, params.project_id);
             if (!dir) {
                 throw new Error(`Unable to retrieve directory for uploaded file`);
             }

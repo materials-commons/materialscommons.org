@@ -8,14 +8,16 @@ module.exports = class ApiInitializer extends Initializer {
     }
 
     initialize() {
-        api.directories = require('../lib/dal/directories')(r);
-        api.projects = require('../lib/dal/projects')(r);
-        api.datasets = require('../lib/dal/datasets')(r);
-        api.check = require('../lib/dal/check')(r);
-        api.processes = require('../lib/dal/processes')(r);
-        api.publishedDatasets = require('../lib/dal/published-datasets')(r);
-        api.samples = require('../lib/dal/samples')(r);
-        api.templates = require('../lib/dal/templates')(r);
-        api.files = require('../lib/dal/files')(r);
+        api.mc = {
+            directories: require('../lib/dal/directories')(r),
+            projects: require('../lib/dal/projects')(r),
+            datasets: require('../lib/dal/datasets')(r),
+            check: require('../lib/dal/check')(r),
+            processes: require('../lib/dal/processes')(r),
+            publishedDatasets: require('../lib/dal/published-datasets')(r),
+            samples: require('../lib/dal/samples')(r),
+            templates: require('../lib/dal/templates')(r),
+            files: require('../lib/dal/files')(r),
+        };
     }
 };

@@ -33,7 +33,7 @@ module.exports.CreateDirectoryInProjectAction = class CreateDirectoryInProjectAc
 
     async run({response, params}) {
         let {path, project_id, parent_directory_id, return_parent} = params;
-        let dir = await dal.tryCatch(async() => await api.directories.createDirectoryInProject(path, project_id, parent_directory_id, return_parent));
+        let dir = await dal.tryCatch(async() => await api.mc.directories.createDirectoryInProject(path, project_id, parent_directory_id, return_parent));
 
         if (!dir) {
             throw new Error(`Unable to create directory ${path} in project ${project_id} with parent directory ${parent_directory_id}`);
@@ -60,7 +60,7 @@ module.exports.GetDirectoryForProjectAction = class GetDirectoryForProjectAction
     }
 
     async run({response, params}) {
-        const dir = await dal.tryCatch(async() => await api.directories.getDirectoryForProject(params.directory_id, params.project_id));
+        const dir = await dal.tryCatch(async() => await api.mc.directories.getDirectoryForProject(params.directory_id, params.project_id));
         if (dir === null) {
             throw new Error(`Unable retrieve directory ${params.directory_id} in project ${params.project_id}`);
         }
@@ -86,7 +86,7 @@ module.exports.GetDirectoryByPathForProjectAction = class GetDirectoryByPathForP
     }
 
     async run({response, params}) {
-        const dir = await dal.tryCatch(async() => await api.directories.getDirectoryByPathForProject(params.directory_path, params.project_id));
+        const dir = await dal.tryCatch(async() => await api.mc.directories.getDirectoryByPathForProject(params.directory_path, params.project_id));
         if (dir === null) {
             throw new Error(`Unable retrieve directory ${params.directory_path} in project ${params.project_id}`);
         }
@@ -155,7 +155,7 @@ module.exports.DeleteFilesFromDirectoryInProjectAction = class DeleteFilesFromDi
     }
 
     async run({response, params}) {
-        let results = await dal.tryCatch(async() => await api.directories.deleteFilesFromDirectoryInProject(params.files, params.directory_id, params.project_id));
+        let results = await dal.tryCatch(async() => await api.mc.directories.deleteFilesFromDirectoryInProject(params.files, params.directory_id, params.project_id));
         if (results === null) {
             throw new Error(`Unable to delete files in directory ${params.directory_id} for project ${params.project_id}`);
         }

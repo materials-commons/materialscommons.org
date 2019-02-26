@@ -15,7 +15,7 @@ module.exports.GetSamplesForProjectAction = class GetSamplesForProjectAction ext
     }
 
     async run({response, params}) {
-        let results = await dal.tryCatch(async() => await api.samples.getSamplesForProject(params.project_id));
+        let results = await dal.tryCatch(async() => await api.mc.samples.getSamplesForProject(params.project_id));
         if (results === null) {
             throw new Error(`Unable to retrieve samples for project ${params.project_id}`);
         }
@@ -37,7 +37,7 @@ module.exports.GetSampleAction = class GetSampleAction extends Action {
     }
 
     async run({response, params, user}) {
-        const results = await dal.tryCatch(async() => await api.samples.getSample(user.id, params.sample_id));
+        const results = await dal.tryCatch(async() => await api.mc.samples.getSample(user.id, params.sample_id));
         if (!results) {
             throw new Error(`Unable to retrieve samples ${params.sample_id}`);
         }

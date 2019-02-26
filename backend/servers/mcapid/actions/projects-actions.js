@@ -15,11 +15,11 @@ module.exports.DeleteProjectAction = class DeleteProjectAction extends Action {
     }
 
     async run({response, params, user}) {
-        if (!await api.check.isProjectOwner(params.project_id, user.id)) {
+        if (!await api.mc.check.isProjectOwner(params.project_id, user.id)) {
             throw new Error(`User is not owner of project ${params.project_id}`);
         }
 
-        let deleted = await dal.tryCatch(async() => await api.projects.deleteProject(params.project_id));
+        let deleted = await dal.tryCatch(async() => await api.mc.projects.deleteProject(params.project_id));
         if (!deleted) {
             throw new Error(`Unable to delete project ${params.project_id}`);
         }
@@ -58,11 +58,11 @@ module.exports.CreateProjectAction = class CreateProjectAction extends Action {
     }
 
     async run({response, params, user}) {
-        const project = await dal.tryCatch(async() => await api.projects.createProject(user, params));
+        const project = await dal.tryCatch(async() => await api.mc.projects.createProject(user, params));
         if (!project) {
             throw new Error(`Unable to create project`);
         }
-        // api.redis.clients.client.set(project.id, JSON.stringify(project));
+        // api.mc.redis.clients.client.set(project.id, JSON.stringify(project));
         response.data = project;
     }
 };
@@ -86,22 +86,22 @@ module.exports.GetProjectAction = class GetProjectAction extends Action {
         // Keep this code so it can be used once we start using redis for a cache
         //**************************
         //
-        //api.log('user', 'info', user);
-        //console.log('api', api.redis);
-        //console.log(api.redis.clients.client.getBuiltinCommands());
-        // let project = await api.redis.clients.client.get(params.project_id);
+        //api.mc.log('user', 'info', user);
+        //console.log('api', api.mc.redis);
+        //console.log(api.mc.redis.clients.client.getBuiltinCommands());
+        // let project = await api.mc.redis.clients.client.get(params.project_id);
         // if (project === null) {
         //     project = await dal.tryCatch(async () => await projects.getProject(params.project_id));
         //     if (!project) {
         //         throw new Error(`No such project_id ${params.project_id}`);
         //     }
         //
-        //     api.redis.clients.client.set(params.project_id, JSON.stringify(project));
+        //     api.mc.redis.clients.client.set(params.project_id, JSON.stringify(project));
         // } else {
         //     project = JSON.parse(project);
         // }
 
-        const project = await dal.tryCatch(async() => await api.projects.getProject(params.project_id));
+        const project = await dal.tryCatch(async() => await api.mc.projects.getProject(params.project_id));
         if (!project) {
             throw new Error(`No such project_id ${params.project_id}`);
         }
@@ -126,7 +126,7 @@ module.exports.GetProjectExperimentAction = class GetProjectExperimentAction ext
     }
 
     async run({response, params}) {
-        const experiment = await dal.tryCatch(async() => await api.projects.getProjectExperiment(params.project_id, params.experiment_id));
+        const experiment = await dal.tryCatch(async() => await api.mc.projects.getProjectExperiment(params.project_id, params.experiment_id));
         if (!experiment) {
             throw new Error(`No such experiment ${params.experiment_id} for given project ${params.project_id}`);
         }

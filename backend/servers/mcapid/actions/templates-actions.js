@@ -9,6 +9,6 @@ module.exports.GetAllPublicTemplatesAction = class GetAllPublicTemplatesAction e
     }
 
     async run({response}) {
-        response.data = await api.templates.getAllTemplates();
+        response.data = await api.mc.templates.getAllTemplates();
     }
 };

@@ -19,7 +19,7 @@ module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction
     }
 
     async run({response, params}) {
-        const results = await dal.tryCatch(async() => await api.processes.getProcessesForProject(params.project_id));
+        const results = await dal.tryCatch(async() => await api.mc.processes.getProcessesForProject(params.project_id));
         if (results === null) {
             throw new Error(`Unable to retrieve processes for project ${params.project_id}`);
         }
@@ -45,7 +45,7 @@ module.exports.GetProcessForProjectAction = class GetProcessForProjectAction ext
     }
 
     async run({response, params}) {
-        const results = await dal.tryCatch(async() => await api.processes.getProcessForProject(params.project_id, params.process_id));
+        const results = await dal.tryCatch(async() => await api.mc.processes.getProcessForProject(params.project_id, params.process_id));
         if (!results) {
             throw new Error(`Unable to retrieve process ${params.process_id} for project ${params.project_id}`);
         }
@@ -67,7 +67,7 @@ module.exports.GetProcessAction = class GetProcessAction extends Action {
     }
 
     async run({response, params, user}) {
-        const results = await dal.tryCatch(async() => await api.processes.getProcess(user.id, params.process_id));
+        const results = await dal.tryCatch(async() => await api.mc.processes.getProcess(user.id, params.process_id));
         if (!results) {
             throw new Error(`Unable to retrieve process ${params.process_id}`);
         }
