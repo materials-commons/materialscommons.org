@@ -1,5 +1,14 @@
 'use strict';
 
+// module-alias is registered here in config because I surmised that
+// config is loaded before any other modules. This allows us to register
+// module aliases early and use them in the rest of the code.
+//
+// The module-alias package allows us to get rid of requires such as
+// const x = require('../../lib/common/x) and replace it with
+// const x = require('@lib/common/x')
+// To see the aliases look in package.json - "_moduleAliases"
+//
 require('module-alias/register');
 
 const os = require('os');
