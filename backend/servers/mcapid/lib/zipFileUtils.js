@@ -1,54 +1,54 @@
 'use strict';
 const sanitize = require('sanitize-filename');
 
-var base;
-var zipDir;
+let base;
+let zipDir;
 
-module.exports.zipDirPath = function(dataset) {
+function zipDirPath(dataset) {
     if (!zipDir) {
-        var base = module.exports.getBase();
+        let base = getBase();
         zipDir = base + 'zipfiles/';
     }
     if (!zipDir.endsWith('/')) {
         zipDir += '/';
     }
     return zipDir + dataset.id + '/';
-};
+}
 
-module.exports.setZipDirPath = function(zipDirPath) {
+function setZipDirPath(zipDirPath) {
     zipDir = zipDirPath;
-};
+}
 
-module.exports.fullPathAndFilename = function(dataset) {
-    var zipFilename = module.exports.zipFilename(dataset);
-    var zipDir = module.exports.zipDirPath(dataset);
+function fullPathAndFilename(dataset) {
+    let zipFilename = zipFilename(dataset);
+    let zipDir = zipDirPath(dataset);
     return zipDir + zipFilename;
-};
+}
 
-module.exports.zipFilename = function(dataset) {
-    var title = dataset.title;
-    var filename = sanitize(title);
+function zipFilename(dataset) {
+    let title = dataset.title;
+    let filename = sanitize(title);
     filename = cleanUpZipfileName(filename);
     return filename + '.zip';
-};
+}
 
-module.exports.zipEntry = function(datafile) {   // sets fileName, filePath, and sourcePath
-    var base = module.exports.getBase();
-    var writeName = sanitize(datafile.name);
-    var readName = datafile.id;
+function zipEntry(datafile) {   // sets fileName, filePath, and sourcePath
+    let base = getBase();
+    let writeName = sanitize(datafile.name);
+    let readName = datafile.id;
     if (datafile.usesid) {
         readName = datafile.usesid;
     }
-    var filePath = datafile.dir[0].name + '/';
-    var parts = readName.split('-');
-    var part = parts[1];
-    var partA = part.substring(0, 2);
-    var partB = part.substring(2);
-    var path = base + '/' + partA + '/' + partB + '/' + readName;
+    let filePath = datafile.dir[0].name + '/';
+    let parts = readName.split('-');
+    let part = parts[1];
+    let partA = part.substring(0, 2);
+    let partB = part.substring(2);
+    let path = base + '/' + partA + '/' + partB + '/' + readName;
     return {fileName: writeName, filePath: filePath, sourcePath: path, checksum: datafile.checksum};
-};
+}
 
-module.exports.getBase = function() {
+function getBase() {
     if (base) return base;
 
     base = process.env.MCDIR;
@@ -62,18 +62,19 @@ module.exports.getBase = function() {
         base += '/';
     }
     return base;
-};
+}
 
-module.exports.setBase = function(baseValue) {
+function setBase(baseValue) {
     base = baseValue;
-};
+}
 
 let cleanUpZipfileNameLengthThreshold = 60;
+
 let cleanUpZipfileName = function(name) {
     // truncate, cleanly if possible
     if (name.length > cleanUpZipfileNameLengthThreshold) {
         // brake at last blank before cleanUpZipfileNameLengthThreshold
-        var pos = name.lastIndexOf(' ', cleanUpZipfileNameLengthThreshold);
+        let pos = name.lastIndexOf(' ', cleanUpZipfileNameLengthThreshold);
         if (pos > 11) {
             name = name.substring(0, pos - 1);
         } else {
@@ -83,5 +84,15 @@ let cleanUpZipfileName = function(name) {
     // remove blanks
     name = name.replace(/ /g, '_');
     return name;
+};
+
+module.exports = {
+    zipDirPath,
+    setZipDirPath,
+    fullPathAndFilename,
+    zipFilename,
+    zipEntry,
+    getBase,
+    setBase,
 };
 
