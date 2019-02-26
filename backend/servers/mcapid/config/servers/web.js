@@ -1,5 +1,7 @@
 'use strict';
 
+require('module-alias/register');
+
 const os = require('os');
 const path = require('path');
 

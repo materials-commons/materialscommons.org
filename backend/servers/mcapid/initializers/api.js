@@ -1,5 +1,5 @@
 const {Initializer, api} = require('actionhero');
-const r = require('../../shared/r');
+const r = require('@lib/r');
 
 module.exports = class ApiInitializer extends Initializer {
     constructor() {
@@ -9,15 +9,15 @@ module.exports = class ApiInitializer extends Initializer {
 
     initialize() {
         api.mc = {
-            directories: require('../lib/dal/directories')(r),
-            projects: require('../lib/dal/projects')(r),
-            datasets: require('../lib/dal/datasets')(r),
-            check: require('../lib/dal/check')(r),
-            processes: require('../lib/dal/processes')(r),
-            publishedDatasets: require('../lib/dal/published-datasets')(r),
-            samples: require('../lib/dal/samples')(r),
-            templates: require('../lib/dal/templates')(r),
-            files: require('../lib/dal/files')(r),
+            directories: require('@dal/directories')(r),
+            projects: require('@dal/projects')(r),
+            datasets: require('@dal/datasets')(r),
+            check: require('@dal/check')(r),
+            processes: require('@dal/processes')(r),
+            publishedDatasets: require('@dal/published-datasets')(r),
+            samples: require('@dal/samples')(r),
+            templates: require('@dal/templates')(r),
+            files: require('@dal/files')(r),
         };
     }
 };
