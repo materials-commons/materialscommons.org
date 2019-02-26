@@ -1,7 +1,7 @@
 const {Action, api} = require('actionhero');
-const dal = require('../lib/dal');
+const dal = require('@dal');
 const _ = require('lodash');
-const validators = require('../lib/validators');
+const validators = require('@lib/validators');
 
 module.exports.ListDatasetsAction = class ListDatasetsAction extends Action {
     constructor () {

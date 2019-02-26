@@ -1,8 +1,8 @@
 const {Initializer, api} = require('actionhero');
-const r = require('../../shared/r');
-const access = require('../lib/dal/access');
-const projectAccessCache = require('../lib/project-access-cache')(access);
-const {setStatusCode} = require('../lib/connection-helpers');
+const r = require('@lib/r');
+const access = require('@dal/access');
+const projectAccessCache = require('@lib/project-access-cache')(access);
+const {setStatusCode} = require('@lib/connection-helpers');
 const status = require('http-status');
 
 module.exports = class APIKeyInitializer extends Initializer {

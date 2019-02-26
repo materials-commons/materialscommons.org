@@ -1,5 +1,5 @@
 const {Action, api} = require('actionhero');
-const dal = require('../lib/dal');
+const dal = require('@dal');
 const fs = require('fs');
 const path = require('path');
 

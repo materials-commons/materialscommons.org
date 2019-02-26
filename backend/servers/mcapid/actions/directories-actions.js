@@ -1,5 +1,5 @@
 const {Action, api} = require('actionhero');
-const dal = require('../lib/dal');
+const dal = require('@dal');
 const _ = require('lodash');
 
 module.exports.CreateDirectoryInProjectAction = class CreateDirectoryInProjectAction extends Action {

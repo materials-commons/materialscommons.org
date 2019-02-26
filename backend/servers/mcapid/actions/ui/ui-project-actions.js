@@ -1,5 +1,5 @@
 const {Action, api} = require('actionhero');
-const dal = require('../../lib/dal');
+const dal = require('@dal');
 
 module.exports.GetProjectsForUserAction = class GetProjectsForUserAction extends Action {
     constructor() {
