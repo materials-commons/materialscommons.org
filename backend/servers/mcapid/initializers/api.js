@@ -9,6 +9,7 @@ module.exports = class ApiInitializer extends Initializer {
 
     initialize() {
         api.mc = {
+            r: r,
             directories: require('@dal/directories')(r),
             projects: require('@dal/projects')(r),
             datasets: require('@dal/datasets')(r),

@@ -1,4 +1,4 @@
-const r = require('../../../shared/r');
+const r = require('@lib/r');
 const _ = require('lodash');
 
 // getUsers returns all the users in the database. Internal use only

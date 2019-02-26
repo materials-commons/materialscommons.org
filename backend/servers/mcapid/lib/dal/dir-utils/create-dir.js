@@ -1,4 +1,4 @@
-const model = require('../../../../shared/model');
+const model = require('@lib/model');
 
 module.exports = function(r) {
     const db = require('../db')(r);

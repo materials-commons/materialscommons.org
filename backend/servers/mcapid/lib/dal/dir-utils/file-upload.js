@@ -1,7 +1,7 @@
-const mtype = require('../../mediatype');
-const model = require('../../../../shared/model');
+const mtype = require('@lib/mediatype');
+const model = require('@lib/model');
 const fs = require('fs');
-const mcdir = require('../../mcdir');
+const mcdir = require('@lib/mcdir');
 
 module.exports = function(r) {
     const db = require('../db')(r);

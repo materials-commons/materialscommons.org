@@ -1,7 +1,7 @@
 // apikey cache caches the user apikeys for quick lookup.
 // It preloads all the users the first time it is called
 const _ = require('lodash');
-const users = require('../lib/dal/users');
+const users = require('@dal/users');
 
 class APIKeyCache {
     constructor() {

@@ -1,7 +1,7 @@
 const run = require('./run');
-const commonQueries = require('../../../lib/common-queries');
-const processCommon = require('../common/process-common');
-const zipFileUtils = require('../../../lib/zipFileUtils');
+const commonQueries = require('@lib/common-queries');
+const processCommon = require('@lib/common/process-common');
+const zipFileUtils = require('@lib/zipFileUtils');
 
 module.exports = function(r) {
     const getDataset = async(datasetId) => {

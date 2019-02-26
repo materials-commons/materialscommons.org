@@ -1,8 +1,8 @@
-const model = require('../../../shared/model');
+const model = require('@lib/model');
 const dbExec = require('./run');
-const commonQueries = require('../../../lib/common-queries');
+const commonQueries = require('@lib/common-queries');
 const _ = require('lodash');
-const util = require('../../../lib/util');
+const util = require('@lib/util');
 
 const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 

@@ -1,4 +1,4 @@
-const mcdir = require('../../mcdir');
+const mcdir = require('@lib/mcdir');
 
 module.exports = function(r) {
     const deleteDirsAndFilesInDirectoryFromProject = async(filesAndDirs, directoryId, projectId) => {

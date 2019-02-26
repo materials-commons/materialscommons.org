@@ -1,5 +1,5 @@
 const run = require('./run');
-const model = require('../../../shared/model');
+const model = require('@lib/model');
 
 module.exports = function(r) {
 
