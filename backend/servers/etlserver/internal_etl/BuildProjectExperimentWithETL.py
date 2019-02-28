@@ -330,6 +330,9 @@ class BuildProjectExperiment:
         if path.startswith('/'):
             path = path[1:]
         self.log.debug("_get_project_directory_from_path: path = {}".format(path))
+        if path == "":
+            # If path blank then file is in root directory so just the root (project) directory
+            return directory
         for part in path.split('/'):
             probe = None
             for child in directory.get_children():
