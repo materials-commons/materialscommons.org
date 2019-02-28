@@ -159,7 +159,9 @@ module.exports = function(r) {
                     experiment2sample: r.table('project2experiment').getAll(project('id'), {index: 'project_id'})
                         .eqJoin('experiment_id', r.table('experiment2sample'), {index: 'experiment_id'}).zip()
                         .pluck('experiment_id', 'sample_id').coerceTo('array')
-                }
+                },
+                root_dir: r.table('datadirs').getAll([project('id'), project('name')], {index: 'datadir_project_name'})
+                    .nth(0).pluck('id', 'name'),
             };
         });
 

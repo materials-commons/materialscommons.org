@@ -119,7 +119,7 @@ module.exports = function(r) {
         file.checksum = fileEntry.checksum;
         file.usesid = fileEntry.usesid;
         file.id = fileEntry.id;
-        file.parent = fileEntry.parentId;
+        file.parent = fileEntry.parentId ? fileEntry.parentId : '';
 
         let created = await db.insert('datafiles', file);
 
@@ -141,5 +141,6 @@ module.exports = function(r) {
 
     return {
         addFileToDirectoryInProject,
+        createFile,
     };
 };

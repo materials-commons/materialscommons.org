@@ -28,24 +28,16 @@ module.exports = function(r) {
     };
 
     const checkAllFilesInDir = async(files, directoryId) => {
-        let indexArgs = files.map(f => [directoryId, file.id]);
-        let count = await r.table('datafiles').getAll(r.args(indexArgs), {index: 'datadir_datafile'}).count();
+        let indexArgs = files.map(f => [directoryId, f.id]);
+        let count = await r.table('datadir2datafile').getAll(r.args(indexArgs), {index: 'datadir_datafile'}).count();
         return count === files.length;
     };
 
     const checkAllDirsInDir = async(dirs, directoryId) => {
-        let indexArgs = files.map(d => [d.id, directoryId]);
+        let indexArgs = dirs.map(d => [d.id, directoryId]);
         let count = await r.table('datadirs').getAll(r.args(indexArgs), {index: 'datadir_parent'}).count();
         return count === dirs.length;
     };
-
-    /*
-    function* allProcessesInDataset(datasetId, processIds) {
-        let indexArgs = processIds.map(id => [datasetId, id]);
-        let processes = yield r.table('dataset2process').getAll(r.args(indexArgs), {index: 'dataset_process'});
-        return processes.length === processIds.length;
-    }
-     */
 
     const deleteFilesFromDirectory = async(files, directoryId) => {
         let fileResults = [];
@@ -56,8 +48,8 @@ module.exports = function(r) {
         return fileResults;
     };
 
-// deleteFileInDirectoryFromProject will delete the file and all the associations. The allowIfUsed
-// flag will allow the file to be deleted if it is used in any samples or processes.
+    // deleteFileInDirectoryFromProject will delete the file and all the associations. The allowIfUsed
+    // flag will allow the file to be deleted if it is used in any samples or processes.
     const deleteFileInDirectory = async(fileId, directoryId, allowIfUsed) => {
         let file = await getFileInDirHandlingErrors(fileId, directoryId);
         if (file === null) {
@@ -76,6 +68,7 @@ module.exports = function(r) {
         await r.table('datafiles').get(fileId).delete();
 
         if (file.current && file.parent !== '') {
+            console.log('file', file);
             // We are deleting the current or leaf version. So set its parent
             // to be the current file so that the file doesn't disappear from
             // the directory structure.
@@ -88,8 +81,8 @@ module.exports = function(r) {
         return {success: `Successfully deleted file ${fileId}`};
     };
 
-// checkFileNotUsed checks if the file is referenced by any processes, samples or datasets
-// and returns an error msg if it is.
+    // checkFileNotUsed checks if the file is referenced by any processes, samples or datasets
+    // and returns an error msg if it is.
     const checkFileNotUsed = async(fileId) => {
         // Files that are used in samples, processes, or datasets won't be deleted
         // unless this flag is set to true. Check to make sure the file isn't referenced
@@ -113,8 +106,8 @@ module.exports = function(r) {
         return null;
     };
 
-// getFileInDirHandlingErrors will attempt to the get file. If there are any errors it will
-// return null.
+    // getFileInDirHandlingErrors will attempt to the get file. If there are any errors it will
+    // return null.
     const getFileInDirHandlingErrors = async(fileId, directoryId) => {
         let file;
         try {
@@ -160,17 +153,34 @@ module.exports = function(r) {
         mcdir.deleteFile(idToUse);
     };
 
-    const deleteDirsFromProject = async(dirs, directoryId, projectId) => {
+    const deleteDirsFromProject = async(dirs, parentId, projectId) => {
         let dirResults = [];
         for (let dir of dirs) {
-            dirResults.push(await deleteDirInDirectoryFromProject(dir.id, directoryId, projectId));
+            dirResults.push(await deleteDirInDirectoryFromProject(dir.id, parentId, projectId));
         }
 
         return dirResults;
     };
 
-    const deleteDirInDirectoryFromProject = async(dirId, directoryId, projectId) => {
+    const deleteDirInDirectoryFromProject = async(dirId, parentId, projectId) => {
+        if (!await dirIsEmpty(dirId)) {
+            return {error: `Directory ${dirId} is not empty`};
+        }
 
+        await r.table('datadirs').get(dirId).delete();
+        await r.table('project2datadir').getAll([projectId, dirId], {index: 'project_datadir'}).delete();
+
+        return {success: `Directory ${dirId} was deleted`};
+    };
+
+    const dirIsEmpty = async(dirId) => {
+        let dirsCount = await r.table('datadirs').getAll(dirId, {index: 'parent'}).count();
+        if (dirsCount !== 0) {
+            return false;
+        }
+
+        let fileCount = await r.table('datadir2datafile').getAll(dirId, {index: 'datadir_id'}).count();
+        return fileCount === 0;
     };
 
     return {
