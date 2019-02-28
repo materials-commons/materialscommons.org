@@ -1,5 +1,5 @@
-const r = require('../../../../shared/r');
-const projects = require('../../../lib/dal/projects')(r);
+const r = require('@lib/r');
+const projects = require('@dal/projects')(r);
 
 describe('project actions', () => {
     let createdProject;
