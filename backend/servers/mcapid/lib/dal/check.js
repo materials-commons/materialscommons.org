@@ -6,6 +6,18 @@ module.exports = function(r) {
         return matches.length === fileIds.length;
     }
 
+    async function allDirectoriesInProject(projectId, directoryIds) {
+        let indexArgs = directoryIds.map(dirId => [projectId, dirId]);
+        let matches = await r.table('project2datadir').getAll(r.args(indexArgs), {index: 'project_datadir'});
+        return matches.length === directoryIds.length;
+    }
+
+    async function allFilesInDirectory(fileIds, directoryId) {
+        let indexArgs = fileIds.map(fid => [directoryId, fid]);
+        let matches = await r.table('datadir2datafile').getAll(r.args(indexArgs), {index: 'datadir_datafile'});
+        return matches.length === fileIds.length;
+    }
+
     async function allSamplesInProject(projectId, sampleIds) {
         let indexArgs = sampleIds.map(sid => [projectId, sid]);
         let matches = await r.table('project2sample').getAll(r.args(indexArgs), {index: 'project_sample'});
@@ -22,6 +34,14 @@ module.exports = function(r) {
         return entry.length !== 0;
     }
 
+    async function fileInProject(fileId, projectId) {
+        return allFilesInProject(projectId, [fileId]);
+    }
+
+    async function fileInDirectory(fileId, directoryId) {
+        return allFilesInDirectory([fileId], directoryId);
+    }
+
     async function isProjectOwner(projectId, userId) {
         let project = await r.table('projects').get(projectId);
         return project.owner === userId;
@@ -29,9 +49,13 @@ module.exports = function(r) {
 
     return {
         allFilesInProject,
+        allDirectoriesInProject,
+        allFilesInDirectory,
         allSamplesInProject,
         datasetInProject,
         directoryInProject,
+        fileInProject,
+        fileInDirectory,
         isProjectOwner,
     };
 };

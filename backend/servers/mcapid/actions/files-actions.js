@@ -52,3 +52,78 @@ module.exports.UploadFileToProjectDirectoryAction = class UploadFileToProjectDir
         }
     }
 };
+
+module.exports.MoveFileAction = class MoveFileAction extends Action {
+    constructor() {
+        super();
+        this.name = 'moveFile';
+        this.description = 'Moves a file into a different directory';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+            to_directory_id: {
+                required: true,
+            },
+            from_directory_id: {
+                required: true,
+            },
+            file_id: {
+                requied: true,
+            }
+        };
+        this.outputExample = {};
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.allDirectoriesInProject(params.project_id, [params.to_directory_id, params.from_directory_id])) {
+            throw new Error(`One or more directories ${params.to_directory_id}, ${params.from_directory_id} not found in project ${params.project_id}`);
+        }
+
+        if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
+            throw new Error(`File ${params.file_id} not found in project ${params.project_id}`);
+        }
+
+        if (!await api.mc.check.fileInDirectory(params.file_id, params.from_directory_id)) {
+            throw new Error(`File ${params.file_id} not found in directory ${params.from_directory_id}`);
+        }
+
+        let file = await dal.tryCatch(async() => await api.mc.files.moveFileToDirectory(params.file_id, params.from_directory_id, params.to_directory_id));
+        if (!file) {
+            throw new Error(`Unable to move file ${params.file_id} from directory ${params.from_directory_id} to directory ${params.to_directory_id} in project ${params.project_id}`);
+        }
+
+        response.data = file;
+    }
+};
+
+module.exports.GetFileInProjectAction = class GetFileInProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getFileInProject';
+        this.description = 'Return the file in the project';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            file_id: {
+                required: true,
+            }
+        };
+        this.outputExample = {};
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
+            throw new Error(`File ${params.file_id} not found in project ${params.project_id}`);
+        }
+
+        let file = await dal.tryCatch(async() => await api.mc.files.getFile(params.file_id));
+        if (!file) {
+            throw new Error(`Unable to retrieve file ${params.file_id} in project ${params.project_id}`);
+        }
+
+        response.data = file;
+    }
+};
