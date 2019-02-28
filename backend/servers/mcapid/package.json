@@ -44,6 +44,11 @@
     ]
   },
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@root(.*)$": "<rootDir>/$1",
+      "@dal(.*)$": "<rootDir>/lib/dal/$1",
+      "@lib(.*)$": "<rootDir>/lib/$1"
+    }
   }
 }
