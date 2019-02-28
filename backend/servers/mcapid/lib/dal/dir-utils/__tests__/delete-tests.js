@@ -6,10 +6,19 @@ describe('Test deleteDirsAndFilesInDirectoryFromProject', () => {
     let project;
     let dir1, dir2;
     let fileInDir1;
+
     beforeAll(async() => {
+        /*
+         * Create projet to run tests against and two directories, both at the root level for testing
+         * purposes. The second directory also contains a file. This setup allows for testing deleting
+         * directories that aren't empty, or trying to delete an existing file but referencing the wrong
+         * directory. Mostly these are ease of testing setup items.
+         */
         project = await tutil.createTestProject();
         dir1 = await createDirsFromParent('dir1', project.root_dir.id, project.id);
         dir2 = await createDirsFromParent('dir2', project.root_dir.id, project.id);
+        // The dir1 and dir2 variables contain arrays of 1 entry. For ease of use just
+        // save the single item.
         dir1 = dir1[0];
         dir2 = dir2[0];
         fileInDir1 = await tutil.createFile('file1.txt', dir1.id, project.id);
