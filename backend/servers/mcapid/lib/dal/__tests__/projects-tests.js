@@ -1,7 +1,7 @@
 const r = require('@lib/r');
 const projects = require('@dal/projects')(r);
 
-describe('project actions', () => {
+describe('Test createProject', () => {
     let createdProject;
     let name;
 
