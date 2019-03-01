@@ -13,7 +13,7 @@ describe('Test moveFileToDirectory', () => {
     });
 
     afterAll(async() => {
-        tutil.deleteProject(project.id);
+        await tutil.deleteProject(project.id);
     });
 
     test('it should throw an error if file directory does not exist', async() => {

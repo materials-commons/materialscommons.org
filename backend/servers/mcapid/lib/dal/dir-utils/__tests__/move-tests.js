@@ -13,7 +13,7 @@ describe('Test moveDir', () => {
     });
 
     afterAll(async() => {
-        tutil.deleteProject(project.id);
+        await tutil.deleteProject(project.id);
     });
 
     test('it should move a single level directory', async() => {
@@ -46,7 +46,7 @@ describe('Test renameDir', () => {
     });
 
     afterAll(async() => {
-        tutil.deleteProject(project.id);
+        await tutil.deleteProject(project.id);
     });
 
     test('it should rename a directory', async() => {

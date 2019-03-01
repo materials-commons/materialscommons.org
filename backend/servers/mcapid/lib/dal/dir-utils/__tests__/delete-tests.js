@@ -21,7 +21,7 @@ describe('Test deleteDirsAndFilesInDirectoryFromProject', () => {
     });
 
     afterAll(async() => {
-        tutil.deleteProject(project.id);
+        await tutil.deleteProject(project.id);
     });
 
     test('it returns zero length results when no files and directories are given', async() => {
