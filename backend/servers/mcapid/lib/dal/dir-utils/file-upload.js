@@ -6,7 +6,7 @@ const mcdir = require('@lib/mcdir');
 module.exports = function(r) {
     const db = require('../db')(r);
 
-    const addFileToDirectoryInProject = async(fileToUpload, directoryId, projectId, userId) => {
+    async function addFileToDirectoryInProject(fileToUpload, directoryId, projectId, userId) {
         let fileEntry = {
             // Create the id for the file being uploaded as this will determine
             // the location of the uploaded file in our object store.
@@ -37,15 +37,15 @@ module.exports = function(r) {
             // and it has the same checksum. In that case there is nothing to load
             // into the database as the user is attempting to upload an existing
             // file (name and checksum match the existing file).
-            await removeFile(fileEntry.path);
+            removeFile(fileEntry.path);
             return file;
         }
-    };
+    }
 
     // getFileByNameInDirectory will return the current file in the directory
     // that matches the filename. This is used to construct multiple versions
     // of a file, with only one version being the current one.
-    const getFileByNameInDirectory = async(fileName, directoryId) => {
+    async function getFileByNameInDirectory(fileName, directoryId) {
         let file = await r.table('datadir2datafile').getAll(directoryId, {index: 'datadir_id'})
             .eqJoin('datafile_id', r.table('datafiles')).zip()
             .filter({name: fileName, current: true});
@@ -54,14 +54,14 @@ module.exports = function(r) {
         }
 
         return null;
-    };
+    }
 
-    const loadNewFileIntoDirectory = async(fileEntry, directoryId, projectId) => {
+    async function loadNewFileIntoDirectory(fileEntry, directoryId, projectId) {
         await addToObjectStore(fileEntry);
         return await createFile(fileEntry, directoryId, projectId);
-    };
+    }
 
-    const loadExistingFileIntoDirectory = async(parent, fileEntry, directoryId, projectId) => {
+    async function loadExistingFileIntoDirectory(parent, fileEntry, directoryId, projectId) {
         await addToObjectStore(fileEntry);
 
         fileEntry.parentId = parent.id;
@@ -71,22 +71,22 @@ module.exports = function(r) {
         await r.table('datafiles').get(parent.id).update({current: false});
 
         return created;
-    };
+    }
 
-    const addToObjectStore = async(fileEntry) => {
+    async function addToObjectStore(fileEntry) {
         if (fileEntry.usesid === '') {
             // This is a brand new file so move into the object store.
             await mcdir.moveIntoStore(fileEntry.path, fileEntry.id);
         } else {
             // There is already a file in the store with the same checksum
             // so delete uploaded file.
-            await removeFile(fileEntry.path);
+            removeFile(fileEntry.path);
         }
-    };
+    }
 
     // findMatchingFileIdByChecksum will return the id of the file that
     // was uploaded with the name checksum or "" if there is no match.
-    const findMatchingFileIdByChecksum = async(checksum) => {
+    async function findMatchingFileIdByChecksum(checksum) {
         let matching = await r.table('datafiles').getAll(checksum, {index: 'checksum'});
         if (matching.length) {
             // Multiple entries have been found that have the same checksum. In the database
@@ -100,17 +100,17 @@ module.exports = function(r) {
 
         // If we are here then there was no match found, so just return "" to signify no match.
         return '';
-    };
+    }
 
-    const removeFile = async(path) => {
+    function removeFile(path) {
         try {
             fs.unlinkSync(path);
         } catch (e) {
             return false;
         }
-    };
+    }
 
-    const createFile = async(fileEntry, directoryId, projectId) => {
+    async function createFile(fileEntry, directoryId, projectId) {
         let file = new model.DataFile(fileEntry.name, fileEntry.owner);
         file.mediatype = fileEntry.mediatype;
         file.size = fileEntry.size;
@@ -126,17 +126,17 @@ module.exports = function(r) {
         await addFileToProject(created.id, projectId);
 
         return created;
-    };
+    }
 
-    const addFileToDirectory = async(fileId, directoryId) => {
+    async function addFileToDirectory(fileId, directoryId) {
         const dd2df = new model.DataDir2DataFile(directoryId, fileId);
         await r.table('datadir2datafile').insert(dd2df);
-    };
+    }
 
-    const addFileToProject = async(fileId, projectId) => {
+    async function addFileToProject(fileId, projectId) {
         let p2df = new model.Project2DataFile(projectId, fileId);
         await r.table('project2datafile').insert(p2df);
-    };
+    }
 
     return {
         addFileToDirectoryInProject,
