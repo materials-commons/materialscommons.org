@@ -80,7 +80,7 @@ describe('Test addFileToDirectoryInProject', () => {
 
     });
 
-    test('it should not do anything when adding an existing file with same checksum', async() => {
+    test('it should return the already uploaded file when adding an existing file with same checksum', async() => {
         // Create file in project
         let project = await tutil.createTestProject();
         let [dir1] = await dirUtils.createDirsFromParent('dir1', project.root_dir.id, project.id);
