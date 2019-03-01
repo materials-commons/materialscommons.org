@@ -106,7 +106,6 @@ module.exports = function(r) {
         try {
             fs.unlinkSync(path);
         } catch (e) {
-            console.log('unlink error', e);
             return false;
         }
     };
