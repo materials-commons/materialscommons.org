@@ -99,5 +99,7 @@ describe('Test addFileToDirectoryInProject', () => {
         expect(uploadedFile.current).toBeTruthy();
         expect(uploadedFile.parent).toBe('');
         expect(mcdir.findFile(uploadedFile.id)).toBeTruthy();
+
+        await tutil.deleteProject(project.id);
     });
 });
