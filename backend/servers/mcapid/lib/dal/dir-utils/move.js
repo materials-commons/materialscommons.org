@@ -32,8 +32,6 @@ module.exports = function(r) {
     // This method will find all the descendents or dir1 and update their
     // names to reflect the new structure above.
     async function moveDirAndDescendents(directoryId, oldPath, newPath) {
-        let dir = await r.table('datadirs').get(directoryId);
-
         // For this part we want to do the updates as efficiently as
         // possible by doing them in one go, rather than making multiple
         // calls to the database. To do this we are going to gather all
@@ -74,9 +72,6 @@ module.exports = function(r) {
 
         // Update database in a single call
         await r.table('datadirs').insert(directoryList, {conflict: 'update'});
-
-        // last step is to set the original directories new parent if newDir is set
-        let parentPath = path.basename(newPath);
     }
 
     async function renameDir(directoryId, newDirectoryName) {
