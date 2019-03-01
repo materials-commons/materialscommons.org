@@ -163,3 +163,86 @@ module.exports.DeleteFilesFromDirectoryInProjectAction = class DeleteFilesFromDi
         response.data = results;
     }
 };
+
+module.exports.MoveDirectoryInProjectAction = class MoveDirectoryInProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'moveDirectoryInProject';
+        this.description = 'Moves a directory into a different directory';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            directory_id: {
+                required: true,
+            },
+
+            to_directory_id: {
+                required: true,
+            }
+        };
+
+        this.outputExample = {};
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.allDirectoriesInProject([params.directory_id, params.to_directory_id], params.project_id)) {
+            throw new Error(`One or more directories ${params.to_directory_id}, ${params.directory_id} not found in project ${params.project_id}`);
+        }
+
+        let dir = await dal.tryCatch(async() => await api.mc.directories.moveDirectory(params.directory_id, params.to_directory_id));
+
+        if (!dir) {
+            throw new Error(`Unable to move directory ${params.directory_id} to directory ${params.to_directory_id} in project ${params.project_id}`);
+        }
+
+        response.data = dir;
+    }
+};
+
+module.exports.RenameDirectoryInProjectAction = class RenameDirectoryInProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'renameDirectoryInProject';
+        this.description = 'Renames a directory in the project';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            directory_id: {
+                required: true,
+            },
+
+            name: {
+                required: true,
+                validator: (param) => {
+                    if (typeof param !== 'string') {
+                        throw new Error(`Invalid value ${param} for parameter 'return_parent', must be a string.`);
+                    }
+
+                    if (param.includes('/')) {
+                        throw new Error(`Invalid name for directory ${name}. Directory names cannot include '/' in them.`);
+                    }
+                },
+            }
+        };
+
+        this.outputExample = {};
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.directoryInProject(params.directory_id, params.project_id)) {
+            throw new Error(`Directory ${params.directory_id} cannot be found in project ${params.project_id}`);
+        }
+
+        let dir = await dal.tryCatch(async() => await api.mc.directories.renameDirectory(params.directory_name, params.name));
+
+        if (!dir) {
+            throw new Error(`Unable rename directory ${params.directory_id} to ${params.name} in project ${params.project_id}`);
+        }
+
+        response.data = dir;
+    }
+};

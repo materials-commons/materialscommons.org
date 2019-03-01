@@ -1,12 +1,12 @@
 module.exports = function(r) {
 
-    async function allFilesInProject(projectId, fileIds) {
+    async function allFilesInProject(fileIds, projectId) {
         let indexArgs = fileIds.map(fid => [projectId, fid]);
         let matches = await r.table('project2datafile').getAll(r.args(indexArgs), {index: 'project_datafile'});
         return matches.length === fileIds.length;
     }
 
-    async function allDirectoriesInProject(projectId, directoryIds) {
+    async function allDirectoriesInProject(directoryIds, projectId) {
         let indexArgs = directoryIds.map(dirId => [projectId, dirId]);
         let matches = await r.table('project2datadir').getAll(r.args(indexArgs), {index: 'project_datadir'});
         return matches.length === directoryIds.length;
@@ -18,7 +18,7 @@ module.exports = function(r) {
         return matches.length === fileIds.length;
     }
 
-    async function allSamplesInProject(projectId, sampleIds) {
+    async function allSamplesInProject(sampleIds, projectId) {
         let indexArgs = sampleIds.map(sid => [projectId, sid]);
         let matches = await r.table('project2sample').getAll(r.args(indexArgs), {index: 'project_sample'});
         return matches.length === sampleIds.length;

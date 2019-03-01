@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = function(r) {
 
-    const {createDirsFromParent, deleteDirsAndFilesInDirectoryFromProject} = require('./dir-utils')(r);
+    const dirUtils = require('./dir-utils')(r);
 
     const getDirectoryForProject = async(dirId, projectId) => {
         if (dirId === 'root') {
@@ -86,7 +86,7 @@ module.exports = function(r) {
     }
 
     const createDirectoryInProject = async(path, projectId, parentDirId, returnParent) => {
-        let dirs = await createDirsFromParent(path, parentDirId, projectId);
+        let dirs = await dirUtils.createDirsFromParent(path, parentDirId, projectId);
         if (returnParent) {
             return await getDirectoryForProject(parentDirId, projectId);
         }
@@ -95,7 +95,7 @@ module.exports = function(r) {
     };
 
     const deleteFilesFromDirectoryInProject = async(files, dirId, projectId, returnParent) => {
-        let results = await deleteDirsAndFilesInDirectoryFromProject(files, dirId, projectId);
+        let results = await dirUtils.deleteDirsAndFilesInDirectoryFromProject(files, dirId, projectId);
         let rv = {
             delete_results: {
                 files: results.files,
@@ -112,10 +112,22 @@ module.exports = function(r) {
         return rv;
     };
 
+    const moveDirectory = async(directoryId, toDirectoryId) => {
+        await dirUtils.moveDir(directoryId, toDirectoryId);
+        return await r.table('datadirs').get(directoryId);
+    };
+
+    const renameDirectory = async(directoryId, newName) => {
+        await dirUtils.renameDir(directoryId, newName);
+        return await r.table('datadirs').get(directoryId);
+    };
+
     return {
         getDirectoryForProject,
         getDirectoryByPathForProject,
         createDirectoryInProject,
         deleteFilesFromDirectoryInProject,
+        moveDirectory,
+        renameDirectory,
     };
 };

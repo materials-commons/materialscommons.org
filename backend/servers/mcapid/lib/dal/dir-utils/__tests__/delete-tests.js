@@ -15,12 +15,8 @@ describe('Test deleteDirsAndFilesInDirectoryFromProject', () => {
          * directory. Mostly these are ease of testing setup items.
          */
         project = await tutil.createTestProject();
-        dir1 = await createDirsFromParent('dir1', project.root_dir.id, project.id);
-        dir2 = await createDirsFromParent('dir2', project.root_dir.id, project.id);
-        // The dir1 and dir2 variables contain arrays of 1 entry. For ease of use just
-        // save the single item.
-        dir1 = dir1[0];
-        dir2 = dir2[0];
+        [dir1] = await createDirsFromParent('dir1', project.root_dir.id, project.id);
+        [dir2] = await createDirsFromParent('dir2', project.root_dir.id, project.id);
         fileInDir1 = await tutil.createFile('file1.txt', dir1.id, project.id);
     });
 
@@ -75,8 +71,7 @@ describe('Test deleteDirsAndFilesInDirectoryFromProject', () => {
     });
 
     test('it returns an error when attempting to delete a directory that contains directories', async() => {
-        let dir21 = await createDirsFromParent('dir2.1', dir2.id, project.id);
-        dir21 = dir21[0];
+        let [dir21] = await createDirsFromParent('dir2.1', dir2.id, project.id);
         let dirsToDelete = [{otype: 'directory', id: dir21.id}];
         let results = await deleteDirsAndFilesInDirectoryFromProject(dirsToDelete, project.root_dir.id, project.id);
         expect(results.files.length).toBe(0);
@@ -93,8 +88,8 @@ describe('Test deleteDirsAndFilesInDirectoryFromProject', () => {
     });
 
     test('it successfully deletes a directory that is empty', async() => {
-        let createdDirsToDelete = await createDirsFromParent('dir3', project.root_dir.id, project.id);
-        let dirsToDelete = [{otype: 'directory', id: createdDirsToDelete[0].id}];
+        let [createdDirsToDelete] = await createDirsFromParent('dir3', project.root_dir.id, project.id);
+        let dirsToDelete = [{otype: 'directory', id: createdDirsToDelete.id}];
         let results = await deleteDirsAndFilesInDirectoryFromProject(dirsToDelete, project.root_dir.id, project.id);
         expect(results.files.length).toBe(0);
         expect(results.directories.length).toBe(1);

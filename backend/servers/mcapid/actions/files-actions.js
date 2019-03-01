@@ -76,7 +76,7 @@ module.exports.MoveFileAction = class MoveFileAction extends Action {
     }
 
     async run({response, params}) {
-        if (!await api.mc.check.allDirectoriesInProject(params.project_id, [params.to_directory_id, params.from_directory_id])) {
+        if (!await api.mc.check.allDirectoriesInProject([params.to_directory_id, params.from_directory_id], params.project_id)) {
             throw new Error(`One or more directories ${params.to_directory_id}, ${params.from_directory_id} not found in project ${params.project_id}`);
         }
 

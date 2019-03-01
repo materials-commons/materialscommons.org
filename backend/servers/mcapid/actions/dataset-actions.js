@@ -165,7 +165,7 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
         };
 
         if (params.samples.length) {
-            const allInProject = await dal.tryCatch(async() => await api.mc.check.allSamplesInProject(params.project_id, params.samples));
+            const allInProject = await dal.tryCatch(async() => await api.mc.check.allSamplesInProject(params.samples, params.project_id));
             if (!allInProject) {
                 throw new Error(`Invalid samples ${params.samples} for project ${params.project_id}`);
             }
@@ -240,7 +240,7 @@ module.exports.AddDatasetFilesAction = class AddDatasetFilesAction extends Actio
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const allInProject = await dal.tryCatch(async() => await api.mc.check.allFilesInProject(params.project_id, params.files));
+        const allInProject = await dal.tryCatch(async() => await api.mc.check.allFilesInProject(params.files, params.project_id));
         if (!allInProject) {
             throw new Error(`Invalid files ${params.files} for project ${params.project_id}`);
         }
@@ -325,7 +325,7 @@ module.exports.AddDatasetSamplesAction = class AddDatasetSamplesAction extends A
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
-        const allInProject = await dal.tryCatch(async() => await api.mc.check.allSamplesInProject(params.project_id, params.samples));
+        const allInProject = await dal.tryCatch(async() => await api.mc.check.allSamplesInProject(params.samples, params.project_id));
         if (!allInProject) {
             throw new Error(`Invalid samples ${params.samples} for project ${params.project_id}`);
         }
