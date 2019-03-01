@@ -9,7 +9,7 @@ describe('Test deleteDirsAndFilesInDirectoryFromProject', () => {
 
     beforeAll(async() => {
         /*
-         * Create projet to run tests against and two directories, both at the root level for testing
+         * Create project to run tests against and two directories, both at the root level for testing
          * purposes. The second directory also contains a file. This setup allows for testing deleting
          * directories that aren't empty, or trying to delete an existing file but referencing the wrong
          * directory. Mostly these are ease of testing setup items.
