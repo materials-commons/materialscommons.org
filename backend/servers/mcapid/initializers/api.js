@@ -1,6 +1,6 @@
 const {Initializer, api} = require('actionhero');
 const r = require('@lib/r');
-const util = require('util');
+// const util = require('util');
 
 module.exports = class ApiInitializer extends Initializer {
     constructor() {
