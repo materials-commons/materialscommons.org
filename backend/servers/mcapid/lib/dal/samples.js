@@ -1,12 +1,12 @@
 module.exports = function(r) {
 
-    const getSamplesForProject = async(projectId) => {
+    async function getSamplesForProject(projectId) {
         return await r.table('project2sample').getAll(projectId, {index: 'project_id'})
             .eqJoin('sample_id', r.table('samples')).zip()
             .without('group_size', 'has_group', 'is_grouped', 'permissions', 'project_id',
                 'project_name', 'sample_id', 'status', 'user_id')
             .merge(sampleOverviewRql);
-    };
+    }
 
     function sampleOverviewRql(s) {
         return {
@@ -17,14 +17,14 @@ module.exports = function(r) {
         };
     }
 
-    const getSample = async(userId, sampleId) => {
+    async function getSample(userId, sampleId) {
         return await r.table('access').getAll(userId, {index: 'user_id'})
             .eqJoin([r.row('project_id'), sampleId], r.table('project2sample'), {index: 'project_sample'}).zip().limit(1)
             .eqJoin('sample_id', r.table('samples')).zip()
             .without('group_size', 'has_group', 'is_grouped', 'permissions', 'project_id',
                 'project_name', 'sample_id', 'status', 'user_id')
             .nth(0).merge(sampleDetailsRql);
-    };
+    }
 
     function sampleDetailsRql(s) {
         return {

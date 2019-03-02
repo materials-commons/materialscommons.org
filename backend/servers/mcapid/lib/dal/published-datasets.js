@@ -4,7 +4,8 @@ const processCommon = require('@lib/common/process-common');
 const zipFileUtils = require('@lib/zipFileUtils');
 
 module.exports = function(r) {
-    const getDataset = async(datasetId) => {
+
+    async function getDataset(datasetId) {
         let processesRql = commonQueries.processDetailsRql(r.db('mcpub').table('dataset2process')
             .getAll(datasetId, {index: 'dataset_id'})
             .eqJoin('process_id', r.db('mcpub').table('processes')).zip(), r.db('mcpub'));
@@ -52,7 +53,7 @@ module.exports = function(r) {
         }
 
         return dataset;
-    };
+    }
 
     const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 
@@ -63,15 +64,15 @@ module.exports = function(r) {
         return `${doiUrl}id/${doi}`;
     }
 
-    const getTopViewedDatasets = async() => {
+    async function getTopViewedDatasets() {
         return await getAllDatasets();
-    };
+    }
 
-    const getRecentlyPublishedDatasets = async() => {
+    async function getRecentlyPublishedDatasets() {
         return await getAllDatasets();
-    };
+    }
 
-    const getAllDatasets = async() => {
+    async function getAllDatasets() {
         return await r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
             return {
                 file_count: r.db('mcpub').table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
@@ -87,9 +88,9 @@ module.exports = function(r) {
                 }
             };
         });
-    };
+    }
 
-    const getDatasetsForTag = async(tagId) => {
+    async function getDatasetsForTag(tagId) {
         return await r.db('mcpub').table('tag2dataset').getAll(tagId, {index: 'tag'})
             .eqJoin('dataset_id', r.db('materialscommons').table('datasets')).zip()
             .merge(function(ds) {
@@ -106,9 +107,9 @@ module.exports = function(r) {
                     }
                 };
             });
-    };
+    }
 
-    const getProcessForDataset = async(datasetId, processId) => {
+    async function getProcessForDataset(datasetId, processId) {
         let processRql = r.db('mcpub').table('dataset2process').getAll([datasetId, processId], {index: 'dataset_process'})
             .eqJoin('process_id', r.db('mcpub').table('processes')).zip();
         let rql = commonQueries.processDetailsRql(processRql, r.db('mcpub'));
@@ -116,9 +117,9 @@ module.exports = function(r) {
         let template = await r.table('templates').get(`global_${process[0].template_name}`);
         process = processCommon.mergeTemplateIntoProcess(template, process[0]);
         return processCommon.convertDatePropertyAttributes(process);
-    };
+    }
 
-    const getCommentsForDataset = async(datasetId) => {
+    async function getCommentsForDataset(datasetId) {
         return await r.table('comments').getAll(datasetId, {index: 'item_id'})
             .merge((comment) => {
                     return {
@@ -126,7 +127,7 @@ module.exports = function(r) {
                     };
                 }
             ).orderBy(r.desc('birthtime'));
-    };
+    }
 
     function View(user_id, item_type, item_id) {
         this.user_id = user_id;
@@ -138,7 +139,7 @@ module.exports = function(r) {
         this.count = 1;
     }
 
-    const incrementViewForDataset = async(datasetId, userId) => {
+    async function incrementViewForDataset(datasetId, userId) {
         let views = await r.db('mcpub').table('view2item').getAll([userId, datasetId], {index: 'user_item'});
         if (views.length) {
             // Already an existing view
@@ -150,7 +151,7 @@ module.exports = function(r) {
             await r.db('mcpub').table('view2item').insert(createView);
         }
         return await getDataset(datasetId);
-    };
+    }
 
     function Useful(user_id, item_type, item_id) {
         this.user_id = user_id;
@@ -161,30 +162,30 @@ module.exports = function(r) {
         this.otype = 'useful';
     }
 
-    const markDatasetAsUseful = async(datasetId, userId) => {
+    async function markDatasetAsUseful(datasetId, userId) {
         let useful = new Useful(userId, 'dataset', datasetId);
         await r.db('mcpub').table('useful2item').insert(useful);
         return await getDataset(datasetId);
-    };
+    }
 
-    const unmarkDatasetAsUseful = async(datasetId, userId) => {
+    async function unmarkDatasetAsUseful(datasetId, userId) {
         await r.db('mcpub').table('useful2item').getAll([userId, dataset_id], {index: 'user_item'}).delete();
         return await getDataset(datasetId);
-    };
+    }
 
-    const getMostPopularTagsForDatasets = async() => {
+    async function getMostPopularTagsForDatasets() {
         return await r.db('mcpub').table('tags').eqJoin('id', r.db('mcpub').table('tag2dataset'), {index: 'tag'}).zip()
             .group(r.row('tag')).count().ungroup().orderBy(r.desc('reduction'))
             .map((doc) => ({tag: doc('group'), count: doc('reduction')}))
             .limit(20);
-    };
+    }
 
-    const updataDownloadCountAndReturnFilePath = async(datasetId) => {
+    async function updataDownloadCountAndReturnFilePath(datasetId) {
         let ds = await r.db('materialscommons').table('datasets').get(datasetId);
         await r.db('materialscommons').table('datasets').get(datasetId)
             .update({download_count: r.row('download_count').add(1).default(1)});
         return zipFileUtils.fullPathAndFilename(ds);
-    };
+    }
 
     return {
         getDataset,

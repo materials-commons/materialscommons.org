@@ -4,27 +4,27 @@ module.exports = function(r) {
 
     const dirUtils = require('./dir-utils')(r);
 
-    const getDirectoryForProject = async(dirId, projectId) => {
+    async function getDirectoryForProject(dirId, projectId) {
         if (dirId === 'root') {
             return await getProjectRoot(projectId);
         }
 
         return await getDirectoryByIdForProject(dirId, projectId);
-    };
+    }
 
-    const getProjectRoot = async(projectId) => {
+    async function getProjectRoot(projectId) {
         let root = await r.table('projects').getAll(projectId)
             .eqJoin([projectId, r.row('name')], r.table('datadirs'), {index: 'datadir_project_name'}).zip()
             .merge(filesAndDirsRql).nth(0);
         return transformDir(root);
-    };
+    }
 
-    const getDirectoryByIdForProject = async(dirId, projectId) => {
+    async function getDirectoryByIdForProject(dirId, projectId) {
         let dir = await r.table('project2datadir').getAll([projectId, dirId], {index: 'project_datadir'})
             .eqJoin('datadir_id', r.table('datadirs')).zip()
             .merge(filesAndDirsRql).nth(0);
         return transformDir(dir);
-    };
+    }
 
     function filesAndDirsRql(ddir) {
         return {
@@ -36,11 +36,11 @@ module.exports = function(r) {
         };
     }
 
-    const getDirectoryByPathForProject = async(path, projectId) => {
+    async function getDirectoryByPathForProject(path, projectId) {
         let dir = await r.table('datadirs').getAll([projectId, path], {index: 'datadir_project_name'})
             .merge(filesAndDirsRql).nth(0);
         return transformDir(dir);
-    };
+    }
 
     function transformDir(directory) {
         let dir = {
@@ -85,16 +85,16 @@ module.exports = function(r) {
         return dir;
     }
 
-    const createDirectoryInProject = async(path, projectId, parentDirId, returnParent) => {
+    async function createDirectoryInProject(path, projectId, parentDirId, returnParent) {
         let dirs = await dirUtils.createDirsFromParent(path, parentDirId, projectId);
         if (returnParent) {
             return await getDirectoryForProject(parentDirId, projectId);
         }
 
         return dirs;
-    };
+    }
 
-    const deleteFilesFromDirectoryInProject = async(files, dirId, projectId, returnParent) => {
+    async function deleteFilesFromDirectoryInProject(files, dirId, projectId, returnParent) {
         let results = await dirUtils.deleteDirsAndFilesInDirectoryFromProject(files, dirId, projectId);
         let rv = {
             delete_results: {
@@ -110,17 +110,17 @@ module.exports = function(r) {
         }
 
         return rv;
-    };
+    }
 
-    const moveDirectory = async(directoryId, toDirectoryId) => {
+    async function moveDirectory(directoryId, toDirectoryId) {
         await dirUtils.moveDir(directoryId, toDirectoryId);
         return await r.table('datadirs').get(directoryId);
-    };
+    }
 
-    const renameDirectory = async(directoryId, newName) => {
+    async function renameDirectory(directoryId, newName) {
         await dirUtils.renameDir(directoryId, newName);
         return await r.table('datadirs').get(directoryId);
-    };
+    }
 
     return {
         getDirectoryForProject,

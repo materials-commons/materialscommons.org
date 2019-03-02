@@ -1,12 +1,12 @@
 module.exports = function(r) {
-    const getProcessesForProject = async(projectId) => {
+    async function getProcessesForProject(projectId) {
         return await r.table('project2process').getAll(projectId, {index: 'project_id'})
             .eqJoin('process_id', r.table('processes')).zip()
             .without('project_id', 'process_id', 'category')
             .merge(processDetailsRql);
-    };
+    }
 
-    const getProcessForProject = async(projectId, processId) => {
+    async function getProcessForProject(projectId, processId) {
         let results = await r.table('project2process').getAll([projectId, processId], {index: 'project_process'})
             .eqJoin('process_id', r.table('processes')).zip()
             .without('project_id', 'process_id', 'category')
@@ -14,15 +14,15 @@ module.exports = function(r) {
 
         // Query will return an array of one item
         return results[0];
-    };
+    }
 
-    const getProcess = async(userId, processId) => {
+    async function getProcess(userId, processId) {
         return await r.table('access').getAll(userId, {index: 'user_id'})
             .eqJoin([r.row('project_id'), processId], r.table('project2process'), {index: 'project_process'}).zip().limit(1)
             .eqJoin('process_id', r.table('processes')).zip().nth(0)
             .without('project_id', 'process_id', 'category')
             .merge(processDetailsRql);
-    };
+    }
 
     function processDetailsRql(proc) {
         return {
