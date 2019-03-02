@@ -3,15 +3,15 @@ const model = require('@lib/model');
 module.exports = function(r) {
     const db = require('../db')(r);
 
-    const createDirsFromParent = async(path, parentId, projectId) => {
+    async function createDirsFromParent(path, parentId, projectId) {
         let parentDir = await getDirByIdAndProjectId(parentId, projectId);
         return await createDirs(projectId, parentDir, dirSegments(path));
-    };
+    }
 
-    const getDirByIdAndProjectId = async(dirId, projectId) => {
+    async function getDirByIdAndProjectId(dirId, projectId) {
         return await r.table('project2datadir').getAll([projectId, dirId], {index: 'project_datadir'})
             .eqJoin('datadir_id', r.table('datadirs')).zip().nth(0);
-    };
+    }
 
     function dirSegments(from) {
         let cleaned = trimStartingSlashes(from);
@@ -25,7 +25,7 @@ module.exports = function(r) {
         return from;
     }
 
-    const createDirs = async(projectId, startingDir, dirSegments) => {
+    async function createDirs(projectId, startingDir, dirSegments) {
         let existing = true;
         let dirPath = startingDir.name;
         let dirEntry = startingDir;
@@ -54,17 +54,17 @@ module.exports = function(r) {
             }
         }
         return createdDirs;
-    };
+    }
 
-    const insertDir = async(projectID, parentID, owner, dirPath) => {
+    async function insertDir(projectID, parentID, owner, dirPath) {
         let dir = new model.Directory(dirPath, owner, projectID, parentID);
         let newDir = await db.insert('datadirs', dir);
         let proj2dir = new model.Project2DataDir(projectID, newDir.id);
         await db.insert('project2datadir', proj2dir);
         return newDir;
-    };
+    }
 
-    const dirByPath = async(projectId, dirPath) => {
+    async function dirByPath(projectId, dirPath) {
         let dirs = await r.table('datadirs').getAll([projectId, dirPath], {index: 'datadir_project_name'});
 
         if (dirs.length) {
@@ -72,7 +72,7 @@ module.exports = function(r) {
         }
 
         return null;
-    };
+    }
 
     return {
         createDirsFromParent,

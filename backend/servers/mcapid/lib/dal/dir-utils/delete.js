@@ -1,7 +1,7 @@
 const mcdir = require('@lib/mcdir');
 
 module.exports = function(r) {
-    const deleteDirsAndFilesInDirectoryFromProject = async(filesAndDirs, directoryId, projectId) => {
+    async function deleteDirsAndFilesInDirectoryFromProject(filesAndDirs, directoryId, projectId) {
         let files = filesAndDirs.filter(e => e.otype === 'file'),
             dirs = filesAndDirs.filter(e => e.otype === 'directory'),
             filesDeletedResults,
@@ -25,32 +25,32 @@ module.exports = function(r) {
             files: filesDeletedResults,
             directories: dirsDeletedResults,
         };
-    };
+    }
 
-    const checkAllFilesInDir = async(files, directoryId) => {
+    async function checkAllFilesInDir(files, directoryId) {
         let indexArgs = files.map(f => [directoryId, f.id]);
         let count = await r.table('datadir2datafile').getAll(r.args(indexArgs), {index: 'datadir_datafile'}).count();
         return count === files.length;
-    };
+    }
 
-    const checkAllDirsInDir = async(dirs, directoryId) => {
+    async function checkAllDirsInDir(dirs, directoryId) {
         let indexArgs = dirs.map(d => [d.id, directoryId]);
         let count = await r.table('datadirs').getAll(r.args(indexArgs), {index: 'datadir_parent'}).count();
         return count === dirs.length;
-    };
+    }
 
-    const deleteFilesFromDirectory = async(files, directoryId) => {
+    async function deleteFilesFromDirectory(files, directoryId) {
         let fileResults = [];
         for (let file of files) {
             fileResults.push(await deleteFileInDirectory(file.id, directoryId, false));
         }
 
         return fileResults;
-    };
+    }
 
     // deleteFileInDirectoryFromProject will delete the file and all the associations. The allowIfUsed
     // flag will allow the file to be deleted if it is used in any samples or processes.
-    const deleteFileInDirectory = async(fileId, directoryId, allowIfUsed) => {
+    async function deleteFileInDirectory(fileId, directoryId, allowIfUsed) {
         let file = await getFileInDirHandlingErrors(fileId, directoryId);
         if (file === null) {
             return {error: `File ${fileId} not in directory ${directoryId}`};
@@ -79,11 +79,11 @@ module.exports = function(r) {
         await deleteOnDiskFileIfNoReferences(file);
 
         return {success: `Successfully deleted file ${fileId}`};
-    };
+    }
 
     // checkFileNotUsed checks if the file is referenced by any processes, samples or datasets
     // and returns an error msg if it is.
-    const checkFileNotUsed = async(fileId) => {
+    async function checkFileNotUsed(fileId) {
         // Files that are used in samples, processes, or datasets won't be deleted
         // unless this flag is set to true. Check to make sure the file isn't referenced
         // by any of these objects.
@@ -104,11 +104,11 @@ module.exports = function(r) {
         }
 
         return null;
-    };
+    }
 
     // getFileInDirHandlingErrors will attempt to the get file. If there are any errors it will
     // return null.
-    const getFileInDirHandlingErrors = async(fileId, directoryId) => {
+    async function getFileInDirHandlingErrors(fileId, directoryId) {
         let file;
         try {
             file = await r.table('datadir2datafile').getAll([directoryId, fileId], {index: 'datadir_datafile'})
@@ -118,9 +118,9 @@ module.exports = function(r) {
         }
 
         return file;
-    };
+    }
 
-    const deleteFileAssociations = async(fileId) => {
+    async function deleteFileAssociations(fileId) {
         // delete associations
         await deleteFileFromJoinTable(fileId, 'datadir2datafile');
         await deleteFileFromJoinTable(fileId, 'dataset2datafile');
@@ -129,13 +129,13 @@ module.exports = function(r) {
         await deleteFileFromJoinTable(fileId, 'project2datafile');
         await deleteFileFromJoinTable(fileId, 'sample2datafile');
         await deleteFileFromJoinTable(fileId, 'process2file');
-    };
+    }
 
-    const deleteFileFromJoinTable = async(fileId, tableName) => {
+    async function deleteFileFromJoinTable(fileId, tableName) {
         await r.table(tableName).getAll(fileId, {index: 'datafile_id'}).delete();
-    };
+    }
 
-    const deleteOnDiskFileIfNoReferences = async(file) => {
+    async function deleteOnDiskFileIfNoReferences(file) {
         let count = await r.table('datafiles').getAll(file.checksum, {index: 'checksum'}).count();
         if (count !== 0) {
             // There are other files with matching checksums so the file cannot be deleted. The
@@ -151,18 +151,18 @@ module.exports = function(r) {
         // as its name its id.
         let idToUse = file.usesid !== '' ? file.usesid : file.id;
         mcdir.deleteFile(idToUse);
-    };
+    }
 
-    const deleteDirsFromProject = async(dirs, parentId, projectId) => {
+    async function deleteDirsFromProject(dirs, parentId, projectId) {
         let dirResults = [];
         for (let dir of dirs) {
             dirResults.push(await deleteDirInDirectoryFromProject(dir.id, parentId, projectId));
         }
 
         return dirResults;
-    };
+    }
 
-    const deleteDirInDirectoryFromProject = async(dirId, parentId, projectId) => {
+    async function deleteDirInDirectoryFromProject(dirId, parentId, projectId) {
         if (!await dirIsEmpty(dirId)) {
             return {error: `Directory ${dirId} is not empty`};
         }
@@ -171,9 +171,9 @@ module.exports = function(r) {
         await r.table('project2datadir').getAll([projectId, dirId], {index: 'project_datadir'}).delete();
 
         return {success: `Directory ${dirId} was deleted`};
-    };
+    }
 
-    const dirIsEmpty = async(dirId) => {
+    async function dirIsEmpty(dirId) {
         let dirsCount = await r.table('datadirs').getAll(dirId, {index: 'parent'}).count();
         if (dirsCount !== 0) {
             return false;
@@ -181,7 +181,7 @@ module.exports = function(r) {
 
         let fileCount = await r.table('datadir2datafile').getAll(dirId, {index: 'datadir_id'}).count();
         return fileCount === 0;
-    };
+    }
 
     return {
         deleteDirsAndFilesInDirectoryFromProject,
