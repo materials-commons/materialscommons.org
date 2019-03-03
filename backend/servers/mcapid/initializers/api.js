@@ -25,9 +25,9 @@ module.exports = class ApiInitializer extends Initializer {
                 notice: (msg, params) => api.log(msg, 'notice', params),
                 warning: (msg, params) => api.log(msg, 'warning', params),
                 error: (msg, params) => api.log(msg, 'error', params),
-                critical: (msg, params) => api.log(msg, 'crit', params),
+                crit: (msg, params) => api.log(msg, 'crit', params),
                 alert: (msg, params) => api.log(msg, 'alert', params),
-                emergency: (msg, params) => api.log(msg, 'emerg', params),
+                emerg: (msg, params) => api.log(msg, 'emerg', params),
             }
         };
     }
