@@ -1,6 +1,4 @@
 const {Initializer, api} = require('actionhero');
-const r = require('@lib/r');
-// const util = require('util');
 
 module.exports = class ApiInitializer extends Initializer {
     constructor() {
@@ -9,6 +7,7 @@ module.exports = class ApiInitializer extends Initializer {
     }
 
     initialize() {
+        const r = require('rethinkdbdash')({db: api.config.db.name, port: api.config.db.port});
         api.mc = {
             r: r,
             directories: require('@dal/directories')(r),
@@ -31,6 +30,5 @@ module.exports = class ApiInitializer extends Initializer {
                 emergency: (msg, params) => api.log(msg, 'emerg', params),
             }
         };
-        // api.mc.log.info(util.inspect(api.config.db, {showHidden: false, depth: null}));
     }
 };

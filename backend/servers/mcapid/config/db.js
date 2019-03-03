@@ -2,26 +2,24 @@ exports['default'] = {
     db: api => {
         return {
             type: 'rethinkdb',
-            connection: () => "default",
-            param: 1,
-        }
+            name: process.env.MCDB || 'materialscommons',
+            port: process.env.MCDB_PORT || 30815,
+        };
     }
 };
 
 exports.test = {
     db: api => {
         return {
-            connection: () => "test",
-            param: 2,
-        }
+            port: process.env.MCDB_PORT || 30815,
+        };
     }
 };
 
 exports.production = {
     db: api => {
         return {
-            connection: () => "production",
-            param: 3,
-        }
+            port: process.env.MCDB_PORT || 28015,
+        };
     }
-}
+};
