@@ -3,8 +3,8 @@
 const _ = require('lodash');
 
 class APIKeyCache {
-    constructor() {
-        this.getUsers = async () => [];
+    constructor(users) {
+        this.users = users;
         this.cache = {};
     }
 
@@ -17,7 +17,7 @@ class APIKeyCache {
             return this.cache[apikey];
         }
 
-        let allUsers = await this.getUsers();
+        let allUsers = await this.users.getUsers();
         this.cache = this._users2map(allUsers);
         return this.cache[apikey];
     }
@@ -28,7 +28,7 @@ class APIKeyCache {
 
     _users2map(users) {
         let map = {};
-        users.forEach(function (user) {
+        users.forEach(function(user) {
             map[user.apikey] = {
                 id: user.id,
                 fullname: user.fullname,
@@ -40,4 +40,12 @@ class APIKeyCache {
     }
 }
 
-module.exports = new APIKeyCache();
+let apiKeyCache = null;
+
+module.exports = function(users) {
+    if (!apiKeyCache) {
+        apiKeyCache = new APIKeyCache(users);
+    }
+
+    return apiKeyCache;
+};
