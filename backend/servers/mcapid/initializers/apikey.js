@@ -7,10 +7,12 @@ module.exports = class APIKeyInitializer extends Initializer {
     constructor() {
         super();
         this.name = 'apikey';
-        this.startPriority = 1000;
+        this.startPriority = 1100;
     }
 
     initialize() {
+        apikeyCache.setGetUsers(api.mc.users.getUsers);
+
         const middleware = {
             name: this.name,
             global: true,
