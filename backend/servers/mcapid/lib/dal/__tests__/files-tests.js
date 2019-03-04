@@ -1,4 +1,4 @@
-const r = require('@lib/r');
+const r = require('@lib/test-utils/r');
 const files = require('@dal/files')(r);
 const tutil = require('@lib/test-utils')(r);
 const dirUtils = require('@dal/dir-utils')(r);

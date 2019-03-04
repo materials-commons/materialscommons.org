@@ -1,4 +1,4 @@
-const r = require('@lib/r');
+const r = require('@lib/test-utils/r');
 const {createDirsFromParent} = require('@dal/dir-utils')(r);
 const projects = require('@dal/projects')(r);
 const path = require('path');

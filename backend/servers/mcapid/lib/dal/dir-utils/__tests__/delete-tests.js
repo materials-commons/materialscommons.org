@@ -1,4 +1,4 @@
-const r = require('@lib/r');
+const r = require('@lib/test-utils/r');
 const tutil = require('@lib/test-utils')(r);
 const {deleteDirsAndFilesInDirectoryFromProject, createDirsFromParent} = require('@dal/dir-utils')(r);
 
