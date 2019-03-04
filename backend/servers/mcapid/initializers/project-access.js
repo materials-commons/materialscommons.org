@@ -10,6 +10,7 @@ module.exports = class APIKeyInitializer extends Initializer {
         super();
         this.name = 'project-access';
         this.startPriority = 1010;
+        this.loadPriority = 1100;
     }
 
     initialize() {

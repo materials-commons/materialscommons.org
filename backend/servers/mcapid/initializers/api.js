@@ -4,6 +4,7 @@ module.exports = class ApiInitializer extends Initializer {
     constructor() {
         super();
         this.name = 'api-initializer';
+        this.loadPriority = 1000;
     }
 
     initialize() {

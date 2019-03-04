@@ -8,6 +8,7 @@ module.exports = class APIKeyInitializer extends Initializer {
         super();
         this.name = 'apikey';
         this.startPriority = 1100;
+        this.loadPriority = 1100;
     }
 
     initialize() {
