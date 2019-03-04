@@ -1,4 +1,3 @@
-const r = require('./r');
 
 function Project(name, description, owner) {
     this.name = name;
@@ -9,7 +8,7 @@ function Project(name, description, owner) {
     this.tags = [];
     this.reminders = [];
     this.owner = owner;
-    this.birthtime = r.now();
+    this.birthtime = new Date();
     this.mtime = this.birthtime;
     this.mediatypes = {};
     this.size = 0;
@@ -21,7 +20,7 @@ function Access(project_name, project_id, user_id) {
     this.project_name = project_name;
     this.project_id = project_id;
     this.user_id = user_id;
-    this.birthtime = r.now();
+    this.birthtime = new Date();
     this.mtime = this.birthtime;
     this.dataset = '';
     this.permissions = '';
@@ -32,7 +31,7 @@ function Sample(name, description, owner) {
     this.name = name;
     this.description = description;
     this.owner = owner;
-    this.birthtime = r.now();
+    this.birthtime = new Date();
     this.mtime = this.birthtime;
     this.is_grouped = false;
     this.has_group = false;
@@ -45,7 +44,7 @@ function Process(name, owner, templateId, transform) {
     this.owner = owner;
     this.template_id = templateId;
     this.process_type = transform ? 'transform' : 'measurement';
-    this.birthtime = r.now();
+    this.birthtime = new Date();
     this.mtime = this.birthtime;
     this.otype = 'process';
     this.note = '';
@@ -86,7 +85,7 @@ function Process2File(processID, fileID, direction) {
 function Setups(name, attribute) {
     this.name = name;
     this.attribute = attribute;
-    this.birthtime = r.now();
+    this.birthtime = new Date();
     this.otype = 'settings';
 }
 
@@ -123,7 +122,7 @@ Measurement.prototype.setFile = function(f) {
 
 function Property(name, attribute) {
     this.parent_id = '';
-    this.birthtime = r.now();
+    this.birthtime = new Date();
     this.otype = 'property';
     this.name = name;
     this.attribute = attribute;
@@ -170,7 +169,7 @@ function PropertySet2Property(attrID, asetID) {
 function BestMeasureHistory(propertyID, mID) {
     this.property_id = propertyID;
     this.measurement_id = mID;
-    this.when = r.now();
+    this.when = new Date();
     this.otype = 'best_measure_history';
 }
 
@@ -180,7 +179,7 @@ function Sample2Datafile(sampleID, datafileID) {
 }
 
 function Note(title, note, owner) {
-    let now = r.now();
+    let now = new Date();
     this.title = title;
     this.note = note;
     this.owner = owner;
@@ -201,7 +200,7 @@ function Tag2Item(tagID, itemID, itemType) {
 }
 
 function Directory(name, owner, project, parent) {
-    let now = r.now();
+    let now = new Date();
     this.otype = 'datadir';
     this.owner = owner;
     this.name = name;
@@ -224,7 +223,7 @@ function Sample2Sample(parentID, childID) {
 }
 
 function Share(projectID, itemID, itemType, itemName) {
-    let now = r.now();
+    let now = new Date();
     this.otype = 'share';
     this.project_id = projectID;
     this.item_id = itemID;
@@ -239,7 +238,7 @@ function User2Share(userID, shareID) {
 }
 
 function User(email, fullname, apikey) {
-    let now = r.now();
+    let now = new Date();
     this.name = email;
     this.fullname = fullname;
     this.email = email;
@@ -262,7 +261,7 @@ function User(email, fullname, apikey) {
 }
 
 function Experiment(name, owner) {
-    let now = r.now();
+    let now = new Date();
     this.name = name;
     this.owner = owner;
     this.otype = 'experiment';
@@ -280,7 +279,7 @@ function Experiment(name, owner) {
 }
 
 function ExperimentTask(name, owner) {
-    let now = r.now();
+    let now = new Date();
     this.name = name;
     this.owner = owner;
     this.index = 0;
@@ -315,7 +314,7 @@ function Project2Experiment(project_id, experiment_id) {
 }
 
 function ExperimentNote(name, note, owner) {
-    let now = r.now();
+    let now = new Date();
     this.name = name;
     this.note = note;
     this.owner = owner;
@@ -344,7 +343,7 @@ function Experiment2Sample(experimentId, sampleId) {
 }
 
 function ExperimentEtlMetadata(experimentId, json, owner) {
-    let now = r.now();
+    let now = new Date();
     this.otype = 'experiment_etl_metadata';
     this.birthtime = now;
     this.mtime = now;
@@ -354,7 +353,7 @@ function ExperimentEtlMetadata(experimentId, json, owner) {
 }
 
 function Dataset(title, owner) {
-    let now = r.now();
+    let now = new Date();
     this.owner = owner;
     this.title = title;
     this.otype = 'dataset';
@@ -408,7 +407,7 @@ function DataFile(name, owner) {
     this.description = '';
     this.parent = '';
     this.usesid = '';
-    let now = r.now();
+    let now = new Date();
     this.birthtime = now;
     this.mtime = now;
     this.atime = now;
@@ -430,7 +429,7 @@ function DataDir2DataFile(dirId, datafileId) {
 
 function Comment(item_id, item_type, owner, text) {
     this.otype = 'comment';
-    let now = r.now();
+    let now = new Date();
     this.birthtime = now;
     this.mtime = now;
     this.atime = now;
