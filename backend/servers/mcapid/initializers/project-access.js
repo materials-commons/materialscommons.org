@@ -1,7 +1,4 @@
 const {Initializer, api} = require('actionhero');
-const r = require('@lib/r');
-const access = require('@dal/access');
-const projectAccessCache = require('@lib/project-access-cache')(access);
 const {setStatusCode} = require('@lib/connection-helpers');
 const status = require('http-status');
 
@@ -14,6 +11,9 @@ module.exports = class APIKeyInitializer extends Initializer {
     }
 
     initialize() {
+        const projectAccessCache = require('@lib/project-access-cache')(api.mc.access);
+        let r = api.mc.r;
+
         const middleware = {
             name: this.name,
             global: true,

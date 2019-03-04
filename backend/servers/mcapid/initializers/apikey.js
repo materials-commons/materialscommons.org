@@ -1,6 +1,4 @@
 const {Initializer, api} = require('actionhero');
-const apikeyCache = require('@lib/apikey-cache');
-const r = require('@lib/r');
 const {failAuth} = require('@lib/connection-helpers');
 
 module.exports = class APIKeyInitializer extends Initializer {
@@ -12,7 +10,8 @@ module.exports = class APIKeyInitializer extends Initializer {
     }
 
     initialize() {
-        apikeyCache.setGetUsers(api.mc.users.getUsers);
+        const apikeyCache = require('@lib/apikey-cache')(api.mc.users);
+        let r = api.mc.r;
 
         const middleware = {
             name: this.name,
