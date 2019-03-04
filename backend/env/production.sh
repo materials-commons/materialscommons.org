@@ -8,7 +8,6 @@ export MC_DEPLOY_DIR=/var/www/html/materialscommons.org
 export MCDB_PORT=28015
 export MCDB_CONNECTION="localhost:$MCDB_PORT"
 export MC_API_SERVICE_PORT=3006
-export MC_PUB_SERVICE_PORT=5014
 export MC_API_GLOBUS_SERVICE_PORT=5046
 export MC_ETL_SERVICE_PORT=5032
 export MCSERV_PORT=5052

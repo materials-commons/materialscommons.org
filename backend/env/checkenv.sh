@@ -47,7 +47,6 @@ show_env() {
     echo "   mcapiserver.py binary:  ./mcapiserver.py"
     echo "   mcstored binary:        ${MCSTOREDBIN}"
     echo "   mcapi.js binary:        servers/mcapi/mcapi.js"
-    echo "   mcpub.js binary:        servers/mcpub/mcpub.js"
     echo
     echo " Commands: "
     echo "   rethinkdb command:      rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon"
@@ -55,7 +54,6 @@ show_env() {
     echo "   mcapiserver.py command: mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&"
     echo "   mcstored command:       ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:$MCDB_PORT --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&"
     echo "   mcapi.js command:       nodemon --watch servers/mcapi --watch servers/lib servers/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&"
-    echo "   mcpub.js command:       nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > /tmp/mcpub.out.${SERVERTYPE} 2>&1&"
     echo "   mcapid command:         start.sh mcapid-${SERVERTYPE}"
     echo
     echo " Environment Files:"

@@ -221,25 +221,6 @@ function stop_mcapi() {
     done
 }
 
-function start_mcpub() {
-    R=$(is_running "servers/mcpub/mcpub.js" "p $MC_PUB_SERVICE_PORT")
-    if [[ "$R" = "" ]]; then
-        echo "Starting mcpub ($SERVERTYPE)..."
-        move_log "mcpub"
-        nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p ${MC_PUB_SERVICE_PORT} > ${MC_LOG_DIR}/mcpub.out.${SERVERTYPE} 2>&1&
-        sleep 1
-    fi
-}
-
-function stop_mcpub() {
-    echo "Stopping mcpub ($SERVERTYPE)..."
-    ps -eo "pid,command" | grep "mcpub.js" | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
-    do
-        kill ${line}
-        echo "  Stopped mcpub with pid ${line}"
-    done
-}
-
 function start_mcmon() {
     R=$(is_running "servers/mcmon/main.js" "servertype $SERVERTYPE")
     if [[ "$R" = "" ]]; then
@@ -342,7 +323,6 @@ function start_servers() {
     start_mcstored
     start_mcserv
     start_mcapi
-    start_mcpub
     start_mcmon
     start_redis
     start_mcapid
@@ -375,7 +355,6 @@ function stop_servers() {
     stop_mcstored
     stop_mcserv
     stop_mcapi
-    stop_mcpub
     stop_mcmon
     stop_mcapid
     stop_rethinkdb
@@ -402,10 +381,6 @@ function stop_named_server() {
 
         mcapi)
             stop_mcapi
-            ;;
-
-        mcpub)
-            stop_mcpub
             ;;
 
         es)
@@ -460,10 +435,6 @@ function restart_named_server() {
 
         mcapi)
             start_mcapi
-            ;;
-
-        mcpub)
-            start_mcpub
             ;;
 
         es)
@@ -538,10 +509,6 @@ function ps_server_env() {
     echo
     echo "MCAPI Node Server (${SERVERTYPE}):"
     ps -ef | grep mcapi.js | grep "p $MC_API_SERVICE_PORT" | grep -v grep
-
-    echo
-    echo "MCPUB Node Server (${SERVERTYPE}):"
-    ps -ef | grep mcpub.js | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep
 
     echo
     echo "MCSTORED Server (${SERVERTYPE}):"
@@ -626,7 +593,6 @@ function show_env() {
     echo "   mcapiserver.py binary:  ./mcapiserver.py"
     echo "   mcstored binary:        ${MCSTOREDBIN}"
     echo "   mcapi.js binary:        servers/mcapi/mcapi.js"
-    echo "   mcpub.js binary:        servers/mcpub/mcpub.js"
     echo
     echo " Commands: "
     echo "   rethinkdb command:      rethinkdb --driver-port $MCDB_PORT --cluster-port $RETHINKDB_CLUSTER_PORT --http-port $RETHINKDB_HTTP_PORT --daemon"
@@ -634,7 +600,6 @@ function show_env() {
     echo "   mcapiserver.py command: mcapiserver.py -p $MC_SERVICE_PORT > ${MC_LOG_DIR}/mcapiserver.out.${SERVERTYPE} 2>&1&"
     echo "   mcstored command:       ${MCSTOREDBIN} --http-port=${MCFS_HTTP_PORT} --mcdir=${MCDIR} --db-connect=localhost:$MCDB_PORT --es-url=${MC_ES_URL} > ${MC_LOG_DIR}/mcstored.out.${SERVERTYPE} 2>&1&"
     echo "   mcapi.js command:       nodemon --watch servers/mcapi --watch servers/lib servers/mcapi/mcapi.js -p $MC_API_SERVICE_PORT > ${MC_LOG_DIR}/mcapi.out.${SERVERTYPE} 2>&1&"
-    echo "   mcpub.js command:       nodemon --watch servers/mcpub --watch servers/lib servers/mcpub/mcpub.js -p $MC_PUB_SERVICE_PORT > /tmp/mcpub.out.${SERVERTYPE} 2>&1&"
     echo
     echo " OS Type"
     echo "   OS Type: $(uname)"
@@ -650,11 +615,11 @@ function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
     touch ${D}/mcapiserver.out.${ST} ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} \
-        ${D}/mcpub.out.${ST} ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} \
+        ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} \
         ${D}/mcapid.out.${ST} ${D}/mcetlserver.out.${ST} \
         ${D}/mcserv.out.${ST}
     tail -f ${D}/mcapiserver.out.${ST} -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} \
-        -f ${D}/mcpub.out.${ST} -f ${D}/mcmon.out.${ST} -f ${D}/redis.out.${ST} \
+        -f ${D}/mcmon.out.${ST} -f ${D}/redis.out.${ST} \
         -f ${D}/mcapid.out.${ST} -f ${D}/mcetlserver.out.${ST} \
         -f ${D}/mcserv.out.${ST}
 }
@@ -796,9 +761,9 @@ function show_help() {
     echo "  help: Displays this help message and exits."
     echo "  start [-d | -t | -p] [-n] [-r] [--ps]: Starts servers. Will only start servers not currently running."
     echo "  stop [-d | -t | -p] [--ps]: Stops all servers."
-    echo "  sr|srestart <server-name>  [-d | -t | -p] [-n]: Restart the named server in the given environment- mcapiserver|mcstored|mcapi|mcpub|es."
-    echo "  ss|sstop <server-name>  [-d | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|mcpub|es."
-    echo "  ss <server-name>  [-d | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|mcpub|es."
+    echo "  sr|srestart <server-name>  [-d | -t | -p] [-n]: Restart the named server in the given environment- mcapiserver|mcstored|mcapi|es."
+    echo "  ss|sstop <server-name>  [-d | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|es."
+    echo "  ss <server-name>  [-d | -t | -p]: Stop the named server in the given environment - mcapiserver|mcstored|mcapi|es."
     echo "  ps: Shows the status for all given services in all the environments."
     echo "  env: Shows the paths, environment variables, and other info for all the environments."
     echo "  tail [-d | -t | -p]: Tails all the logs for all servers for the given environment."
