@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcProjectCollaborators', {
 });
 
 /*@ngInject*/
-function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsAPI, mcStateStore) {
+function MCProjectCollaboratorsComponentController(User, projectsAPI, accessAPI, mcStateStore) {
     const ctrl = this;
     ctrl.isOwner = isOwner;
     ctrl.deleteUser = deleteUser;
@@ -35,34 +35,31 @@ function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsA
                     }
                 });
                 ctrl.projectUsers = _.indexBy(ctrl.users, 'user_id');
-                mcapi('/users').success(function(users) {
-                    users.forEach(u => {
-                        let names = u.fullname.split(' ');
-                        if (!names.length) {
-                            u.lastName = '';
-                        } else {
-                            u.lastName = names[names.length - 1];
-                        }
-                    });
-                    allUsers = users;
-                    ctrl.usersAvailable = usersNotInProject();
-                }).jsonp();
+                accessAPI.getAllUsers().then(
+                    users => {
+                        users.forEach(u => {
+                            let names = u.fullname.split(' ');
+                            if (!names.length) {
+                                u.lastName = '';
+                            } else {
+                                u.lastName = names[names.length - 1];
+                            }
+                        });
+                        allUsers = users;
+                        ctrl.usersAvailable = usersNotInProject();
+                    }
+                );
             }
         );
     }
 
     function deleteUser(id) {
-        mcapi('/access/%/remove', id)
-            .success(function() {
-                const i = _.indexOf(ctrl.users, function(item) {
-                    return (item.id === id);
-                });
-
-                if (i !== -1) {
-                    loadUsers();
-                    mcStateStore.fire('sync:project');
-                }
-            }).delete();
+        accessAPI.removeUserFromProject(id, ctrl.project.id).then(
+            () => {
+                loadUsers();
+                mcStateStore.fire('sync:project');
+            }
+        );
     }
 
     function usersNotInProject() {
@@ -74,17 +71,12 @@ function MCProjectCollaboratorsComponentController(mcapi, User, toast, projectsA
             return (userToAdd.id === projectUser.user_id);
         });
         if (i === -1) {
-            let accessArgs = {
-                user_id: userToAdd.id,
-                project_id: ctrl.project.id,
-                project_name: ctrl.project.name
-            };
-            mcapi('/access/new')
-                .success(function() {
+            accessAPI.addUserToProject(userToAdd.id, ctrl.project.id).then(
+                () => {
                     loadUsers();
                     mcStateStore.fire('sync:project');
-                })
-                .error((e) => toast.error(e.error)).post(accessArgs);
+                }
+            );
         }
     }
 

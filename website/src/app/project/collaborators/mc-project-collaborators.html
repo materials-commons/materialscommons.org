@@ -40,7 +40,7 @@
                                 Owner
                             </div>
                             <div ng-if="$ctrl.signedInUser !== user.user_id">
-                                <md-button ng-click="$ctrl.deleteUser(user.id)" class="md-warn">Remove</md-button>
+                                <md-button ng-click="$ctrl.deleteUser(user.user_id)" class="md-warn">Remove</md-button>
                             </div>
                         </td>
                         <td md-cell ng-if="!$ctrl.isOwner($ctrl.signedInUser)">Not Authorized</td>
