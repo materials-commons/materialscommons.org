@@ -47,6 +47,10 @@ module.exports = function(r) {
         return project.owner === userId;
     }
 
+    async function userExists(userId) {
+        return await r.table('users').getAll(userId).count() === 1;
+    }
+
     return {
         allFilesInProject,
         allDirectoriesInProject,
@@ -57,5 +61,6 @@ module.exports = function(r) {
         fileInProject,
         fileInDirectory,
         isProjectOwner,
+        userExists,
     };
 };
