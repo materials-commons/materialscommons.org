@@ -1,6 +1,8 @@
 const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const {failAuth} = require('@lib/connection-helpers');
+const validator = require('validator');
+const _ = require('lodash');
 
 module.exports.GetAllUsersAction = class GetAllUsersAction extends Action {
     constructor() {
@@ -59,5 +61,50 @@ module.exports.LoginAction = class LoginAction extends Action {
         }
 
         response.data = u;
+    }
+};
+
+module.exports.CreateNewUserAction = class CreateNewUserAction extends Action {
+    constructor() {
+        super();
+        this.name = 'createNewUser';
+        this.description = 'Creates a new user';
+        this.do_not_authenticate = true;
+        this.inputs = {
+            email: {
+                required: true,
+                validator: param => {
+                    if (!validator.isEmail(param)) {
+                        throw new Error(`Field email must be a valid email: ${param}`);
+                    }
+                }
+            },
+
+            fullname: {
+                required: true,
+            },
+
+            password: {
+                required: true,
+                validator: param => {
+                    if (!_.isString(param)) {
+                        throw new Error(`password must be a string`);
+                    }
+
+                    if (param.length < 6) {
+                        throw new Error(`password must be at least 6 characters long`);
+                    }
+                }
+            },
+        };
+    }
+
+    async run({response, params}) {
+        let user = await dal.tryCatch(async() => await api.mc.users.createNewUser(params.email, params.fullname, params.password));
+        if (!user) {
+            throw new Error(`Unable to create create '${params.fullname}' with email ${params.email}`);
+        }
+
+        response.data = user;
     }
 };

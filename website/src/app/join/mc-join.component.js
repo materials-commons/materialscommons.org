@@ -21,17 +21,11 @@ class MCJoinComponentController {
             return;
         }
 
-        this.accountsAPI.createAccount(`${this.firstName} ${this.lastName}`, this.email)
+        this.accountsAPI.createAccount(`${this.firstName} ${this.lastName}`, this.email, this.password)
             .then(
-                (rv) => {
-                    this.accountsAPI.setUserFromRegistrationData(rv.validate_uuid, this.password)
-                        .then(
-                            () => {
-                                this.showSuccessMsg = true;
-                                this.$timeout(() => this.$state.go('login'), 3000);
-                            },
-                            (e) => this.message = `${e.data.error}`
-                        );
+                () => {
+                    this.showSuccessMsg = true;
+                    this.$timeout(() => this.$state.go('login'), 3000);
                 },
                 (e) => this.message = `${e.data.error}`
             );

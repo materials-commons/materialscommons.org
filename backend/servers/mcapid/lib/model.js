@@ -247,6 +247,7 @@ function User(email, fullname, apikey) {
     this.apikey = apikey;
     this.birthtime = now;
     this.demo_installed = false;
+    this.converted = true; // New users have the converted flag set for their passwords being converted from pbkdf2
     this.mtime = now;
     this.avatar = '';
     this.description = '';

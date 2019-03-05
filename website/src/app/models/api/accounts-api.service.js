@@ -1,15 +1,24 @@
 class AccountsAPIService {
     /*@ngInject*/
-    constructor(apiService, Restangular) {
+    constructor(apiService, Restangular, toast) {
         this.apiService = apiService;
         this.Restangular = Restangular;
+        this.toast = toast;
     }
 
-    createAccount(fullname, email) {
-        return this.apiService('accounts').customPOST({
-            fullname: fullname,
-            email: email
-        }).then(a => a.plain());
+    // createAccount(fullname, email) {
+    //     return this.apiService('accounts').customPOST({
+    //         fullname: fullname,
+    //         email: email
+    //     }).then(a => a.plain());
+    // }
+
+    createAccount(name, email, password) {
+        return this.Restangular.one('v3').one('createNewUser').customPOST({
+            email: email,
+            fullname: name,
+            password: password,
+        }).then(u => u.plain().data);
     }
 
     createResetPasswordRequest(email) {
@@ -28,12 +37,12 @@ class AccountsAPIService {
         return this.apiService('users').one('validate', uuid).get();
     }
 
-    getUserForResetPassword(uuid){
-        return this.apiService("users").one('rvalidate',uuid).get();
+    getUserForResetPassword(uuid) {
+        return this.apiService('users').one('rvalidate', uuid).get();
     }
 
-    resetUserPasswordWithValidate(uuid,password) {
-        return this.Restangular.one('user').one('rvalidate',uuid).one('finish').customPOST({
+    resetUserPasswordWithValidate(uuid, password) {
+        return this.Restangular.one('user').one('rvalidate', uuid).one('finish').customPOST({
             password: password
         });
     }
