@@ -19,3 +19,4 @@ import './comments-api.service';
 import './public-comments-api.service';
 import './public-tags-api.service';
 import './public-datasets-api.service';
+import './access-api.service';
