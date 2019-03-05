@@ -1,4 +1,5 @@
 const {Initializer, api} = require('actionhero');
+const util = require('util');
 
 module.exports = class ApiInitializer extends Initializer {
     constructor() {
@@ -9,6 +10,7 @@ module.exports = class ApiInitializer extends Initializer {
 
     initialize() {
         const r = require('rethinkdbdash')({db: api.config.db.name, port: api.config.db.port});
+        const inspect = (data) => (data ? {data: util.inspect(data, {showHidden: false, depth: null})} : null);
         api.mc = {
             r: r,
             directories: require('@dal/directories')(r),
@@ -23,14 +25,14 @@ module.exports = class ApiInitializer extends Initializer {
             users: require('@dal/users')(r),
             access: require('@dal/access')(r),
             log: {
-                debug: (msg, params) => api.log(msg, 'debug', params),
-                info: (msg, params) => api.log(msg, 'info', params),
-                notice: (msg, params) => api.log(msg, 'notice', params),
-                warning: (msg, params) => api.log(msg, 'warning', params),
-                error: (msg, params) => api.log(msg, 'error', params),
-                crit: (msg, params) => api.log(msg, 'crit', params),
-                alert: (msg, params) => api.log(msg, 'alert', params),
-                emerg: (msg, params) => api.log(msg, 'emerg', params),
+                debug: (msg, data) => api.log(msg, 'debug', inspect(data)),
+                info: (msg, data) => api.log(msg, 'info', inspect(data)),
+                notice: (msg, data) => api.log(msg, 'notice', inspect(data)),
+                warning: (msg, data) => api.log(msg, 'warning', inspect(data)),
+                error: (msg, data) => api.log(msg, 'error', inspect(data)),
+                crit: (msg, data) => api.log(msg, 'crit', inspect(data)),
+                alert: (msg, data) => api.log(msg, 'alert', inspect(data)),
+                emerg: (msg, data) => api.log(msg, 'emerg', inspect(data)),
             }
         };
     }
