@@ -1,4 +1,9 @@
+const model = require('@lib/model');
+
 module.exports = function(r) {
+
+    const db = require('./db')(r);
+
     function allByProject() {
         return r.table('access').run().then(function(allAccess) {
             let byProject = {};
@@ -20,10 +25,28 @@ module.exports = function(r) {
         return r.table('users').filter({admin: true}).run();
     }
 
+    async function addUserToProject(userId, projectId) {
+        let userEntry = await r.table('access').getAll([userId, projectId], {index: 'user_project'});
+        if (userEntry.length) {
+            // User already in project
+            return userEntry[0]; // getAll returns an array of items (in this case of 1 item)
+        }
+
+        let accessEntry = new model.Access('', projectId, userId);
+        return await db.insert('access', accessEntry);
+    }
+
+    async function removeUserFromProject(userId, projectId) {
+        let rv = await r.table('access').getAll([userId, projectId], {index: 'user_project'}).delete();
+        return rv.deleted !== 0;
+    }
+
     return {
-        allByProject: allByProject,
-        adminUsers: adminUsers,
-        projectAccessList
+        allByProject,
+        adminUsers,
+        projectAccessList,
+        addUserToProject,
+        removeUserFromProject,
     };
 };
 

@@ -134,3 +134,67 @@ module.exports.GetProjectExperimentAction = class GetProjectExperimentAction ext
         response.data = experiment[0];
     }
 };
+
+module.exports.AddUserToProjectAction = class AddUserToProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'addUserToProject';
+        this.description = 'Adds a user to the project';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            user_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        if (!await api.mc.check.isProjectOwner(params.project_id, user.id)) {
+            throw new Error(`Cannot add user to project, you are not the project owner`);
+        }
+
+        if (!await api.mc.check.userExists(params.user_id)) {
+            throw new Error(`No such user ${params.user_id}`);
+        }
+
+        let entry = await dal.tryCatch(async() => await api.mc.access.addUserToProject(params.user_id, params.project_id));
+        if (!entry) {
+            throw new Error(`Unable to add user ${params.user_id} to project ${params.project_id}`);
+        }
+
+        response.data = entry;
+    }
+};
+
+module.exports.RemoveUserFromProjectAction = class RemoveUserFromProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'removeUserFromProject';
+        this.description = 'Removes user from project';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            user_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        if (!await api.mc.check.isProjectOwner(params.project_id, user.id)) {
+            throw new Error(`Cannot add user to project, you are not the project owner`);
+        }
+
+        let removed = await dal.tryCatch(async() => await api.mc.access.removeUserFromProject(params.user_id, params.project_id));
+        if (!removed) {
+            throw new Error(`Unable to remove user ${params.user_id} from project ${params.project_id}`);
+        }
+
+        response.data = {removed: removed};
+    }
+};
