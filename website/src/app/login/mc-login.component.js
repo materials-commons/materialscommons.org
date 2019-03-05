@@ -5,7 +5,7 @@ angular.module('materialscommons')
     });
 
 /*@ngInject*/
-function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templates, mcprojstore) {
+function MCLoginController($state, User, toast, Restangular, mcbus, templates, mcprojstore) {
     const ctrl = this;
 
     ctrl.message = "";
@@ -18,19 +18,24 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templ
     ////////////////////
 
     function login() {
-        mcapi('/user/%/apikey', ctrl.userLogin, ctrl.password)
-            .success((u) => {
-                User.setAuthenticated(true, u);
+        Restangular.one('v3').one('login').customPOST({
+            user_id: ctrl.userLogin,
+            password: ctrl.password,
+        }).then(
+            u => {
+                let user = u.plain().data;
+                User.setAuthenticated(true, user);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
                 templates.getServerTemplates().then((t) => templates.set(t));
                 let route = ctrl.whichSite == 'published' ? 'data.home.top' : 'projects.list';
                 mcprojstore.reset().then(() => $state.go(route));
                 mcbus.send('USER$LOGIN');
-            })
-            .error((reason) => {
+            },
+            (e) => {
                 ctrl.message = 'Incorrect Password or Username!';
-                toast.error(reason.error);
-            }).put({password: ctrl.password});
+                toast.error(`${e.data.error}: ${ctrl.message}`);
+            }
+        );
     }
 
     function cancel() {
@@ -39,4 +44,3 @@ function MCLoginController($state, User, toast, mcapi, Restangular, mcbus, templ
     }
 
 }
-
