@@ -33,6 +33,13 @@ class AccountsAPIService {
             password: password
         });
     }
+
+    resetApiKey() {
+        return this.Restangular.one('v3').one('resetUserApikey').customPOST().then(
+            data => data.plain().data,
+            e => this.toast.error(e.data.error)
+        );
+    }
 }
 
 angular.module('materialscommons').service('accountsAPI', AccountsAPIService);

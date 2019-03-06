@@ -62,16 +62,6 @@ def reset_password_validate(user, validation_id):
     return jsonify(rv)
 
 
-@app.route('/user/<user>/apikey/reset', methods=['PUT'])
-@apikey
-@crossdomain(origin='*')
-def reset_apikey(user):
-    new_apikey = uuid.uuid1().hex
-    r.table('users').get(user).update({'apikey': new_apikey}).run(g.conn)
-    access.reset()
-    return jsonify({'apikey': new_apikey})
-
-
 @app.route('/users', methods=['GET'])
 @jsonp
 def list_users():

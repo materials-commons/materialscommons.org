@@ -19,8 +19,9 @@ module.exports = function(r) {
 
     async function resetApikey(userId) {
         let newAPIKey = await r.uuid();
-        await r.table('users').get(userId).update({'apikey': newAPIKey.replace(/-/g, '')});
-        return newAPIKey;
+        newAPIKey = newAPIKey.replace(/-/g, '');
+        await r.table('users').get(userId).update({'apikey': newAPIKey});
+        return {apikey: newAPIKey};
     }
 
     const PASSWORD_HASH_ROUNDS = 10;

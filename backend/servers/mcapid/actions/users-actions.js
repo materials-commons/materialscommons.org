@@ -29,7 +29,7 @@ module.exports.ResetUserApikeyAction = class ResetUserApikeyAction extends Actio
     }
 
     async run({response, user}) {
-        let apikey = await dal.tryCatch(async() => await api.mc.user.resetApikey(user.id));
+        let apikey = await dal.tryCatch(async() => await api.mc.users.resetApikey(user.id));
         if (!apikey) {
             throw new Error(`Unable to reset apikey`);
         }

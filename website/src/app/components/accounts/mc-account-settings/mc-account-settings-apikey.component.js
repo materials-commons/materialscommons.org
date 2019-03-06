@@ -4,11 +4,11 @@ angular.module('materialscommons').component('mcAccountSettingsApikey', {
 });
 
 /*@ngInect*/
-function MCAccountSettingsApikeyComponentController(mcapi, User, Restangular) {
+function MCAccountSettingsApikeyComponentController(accountsAPI, User, Restangular) {
     const ctrl = this;
 
     ctrl.showKey = false;
-    ctrl.showHideButtonText = "Show API Key";
+    ctrl.showHideButtonText = 'Show API Key';
     ctrl.apikey = User.apikey();
 
     ctrl.showAPIKey = showAPIKey;
@@ -19,18 +19,19 @@ function MCAccountSettingsApikeyComponentController(mcapi, User, Restangular) {
     function showAPIKey() {
         ctrl.showKey = !ctrl.showKey;
         if (!ctrl.showKey) {
-            ctrl.showHideButtonText = "Show API Key";
+            ctrl.showHideButtonText = 'Show API Key';
         } else {
-            ctrl.showHideButtonText = "Hide API Key";
+            ctrl.showHideButtonText = 'Hide API Key';
         }
     }
 
     function resetAPIKey() {
-        mcapi('/user/%/apikey/reset', User.u())
-            .success(function(data) {
-                User.reset_apikey(data.apikey);
-                ctrl.apikey = data.apikey;
+        accountsAPI.resetApiKey().then(
+            ({apikey}) => {
+                User.reset_apikey(apikey);
+                ctrl.apikey = apikey;
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
-            }).put();
+            }
+        );
     }
 }
