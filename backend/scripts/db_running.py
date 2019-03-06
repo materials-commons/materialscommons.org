@@ -23,7 +23,7 @@ def connect(port):
 if __name__ == "__main__":
     parser = optparse.OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
-    parser.add_option("-r", "--retry", dest="retry", type="int", help="number of retries", default=100)
+    parser.add_option("-r", "--retry", dest="retry", type="int", help="number of retries", default=1000)
     parser.add_option("-s", "--sleep", dest="sleep", type="int", help="sleep time between retries", default="3")
 
     (options, args) = parser.parse_args()
