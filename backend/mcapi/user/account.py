@@ -10,27 +10,6 @@ from .. import error
 from .. import dmutil
 
 
-@app.route('/user/<user>/apikey', methods=['PUT'])
-@crossdomain(origin='*')
-def get_api_key_for_user(user):
-    j = request.get_json()
-    password = dmutil.get_required('password', j)
-    u = r.table('users').get(user).run(g.conn, time_format='raw')
-    if u is None:
-        return error.not_authorized("Bad username or password")
-    dbpw = u['password']
-    if dbpw == '':
-        return error.not_authorized("Bad username")
-    _i1, _i2, _i3, salt, _pwhash = dbpw.split('$')
-    hash = make_salted_password_hash(password, salt)
-    if hash == dbpw:
-        del u['password']
-        r.table('users').get(user).update({'last_login': r.now()}).run(g.conn)
-        return json.dumps(u)
-    else:
-        return error.not_authorized("Bad username or password")
-
-
 @app.route('/user/rvalidate/<validation_id>/finish', methods=['POST'])
 def finish_reset_password(validation_id):
     cursor = r.table("users").get_all(validation_id, index='validate_uuid').run(g.conn)
