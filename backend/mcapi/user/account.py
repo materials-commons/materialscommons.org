@@ -31,31 +31,6 @@ def get_api_key_for_user(user):
         return error.not_authorized("Bad username or password")
 
 
-@app.route('/user/complete/<validation_id>', methods=['POST'])
-def complete_registration(validation_id):
-    cursor = r.table("account_requests").get_all(validation_id, index='validate_uuid').run(g.conn)
-    u = ''
-    for document in cursor:
-        u = document
-    if not u:
-        return error.not_authorized('No record of this registration was found')
-    user_id = u['id']
-    if not user_id:
-        return error.not_authorized('No valid user was found')
-    j = request.get_json()
-    password = dmutil.get_required('password', j)
-    hash = make_password_hash(password)
-    rv = r.table('account_requests').get(user_id).update({'password': hash}, return_changes=True).run(g.conn)
-    user = rv['changes'][0]['new_val']
-    del user['validate_uuid']
-    r.table('account_requests').get(user_id).delete().run(g.conn)
-    r.table('users').insert(user).run(g.conn)
-
-    # Remove password from return
-    del user['password']
-    return json.dumps(j)
-
-
 @app.route('/user/rvalidate/<validation_id>/finish', methods=['POST'])
 def finish_reset_password(validation_id):
     cursor = r.table("users").get_all(validation_id, index='validate_uuid').run(g.conn)
@@ -63,7 +38,7 @@ def finish_reset_password(validation_id):
     for document in cursor:
         u = document
     if not u:
-        return error.not_authorized('There is no validated user record. Please retry');
+        return error.not_authorized('There is no validated user record. Please retry')
     user_id = u['id']
     j = request.get_json()
     password = dmutil.get_required('password', j)

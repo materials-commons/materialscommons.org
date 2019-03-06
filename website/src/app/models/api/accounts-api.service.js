@@ -20,12 +20,6 @@ class AccountsAPIService {
         });
     }
 
-    setUserFromRegistrationData(uuid, password) {
-        return this.Restangular.one('user').one('complete', uuid).customPOST({
-            password: password
-        });
-    }
-
     getUserRegistrationAccount(uuid) {
         return this.apiService('users').one('validate', uuid).get();
     }
