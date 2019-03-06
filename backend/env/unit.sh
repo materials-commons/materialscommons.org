@@ -4,7 +4,6 @@
 # source to set all environment variables for the type of server
 export SERVERTYPE=unit
 
-export MC_SERVICE_PORT=5602
 export MC_API_SERVICE_PORT=5604
 export MC_API_GLOBUS_SERVICE_PORT=5044
 export MC_ETL_SERVICE_PORT=5632

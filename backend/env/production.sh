@@ -7,11 +7,16 @@ export SERVERTYPE=production
 export MC_DEPLOY_DIR=/var/www/html/materialscommons.org
 export MCDB_PORT=28015
 export MCDB_CONNECTION="localhost:$MCDB_PORT"
-export MC_API_SERVICE_PORT=3006
+
+#### Remove these after update ####
+export MC_SERVICE_PORT=5006
+export MC_PUB_SERVICE_PORT=5014
+###################################
+
 export MC_API_GLOBUS_SERVICE_PORT=5046
 export MC_ETL_SERVICE_PORT=5032
+export MC_API_SERVICE_PORT=3006
 export MCSERV_PORT=5052
-export MC_SERVICE_PORT=5006
 export RETHINKDB_HTTP_PORT=8080
 export RETHINKDB_CLUSTER_PORT=29015
 export MCSTOREDBIN=${MC_DEPLOY_DIR}/bin/mcstored

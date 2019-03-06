@@ -4,7 +4,6 @@
 # source to set all environment variables for the type of server
 export SERVERTYPE=dev
 
-export MC_SERVICE_PORT=5002
 export MC_API_SERVICE_PORT=5004
 export MC_API_GLOBUS_SERVICE_PORT=5042
 export MC_ETL_SERVICE_PORT=5032

@@ -5,7 +5,6 @@
 export SERVERTYPE=test
 
 export MC_DEPLOY_DIR=/var/www/test/materialscommons.org
-export MC_SERVICE_PORT=6002
 export MC_API_SERVICE_PORT=6004
 export MC_API_GLOBUS_SERVICE_PORT=6046
 export MC_ETL_SERVICE_PORT=6032
