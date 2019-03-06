@@ -7,7 +7,6 @@ module.exports = function(r) {
 
     const db = require('./db')(r);
 
-
     // getUsers returns all the users in the database. Internal use only.
     async function getUsers() {
         return r.table('users');
@@ -67,6 +66,14 @@ module.exports = function(r) {
         return true;
     }
 
+    async function resetUserPasswordFromUuid(password, validate_uuid) {
+        let u = await r.table('users').getAll(validate_uuid, {index: 'validate_uuid'}).nth(0);
+        let hashed = await bcrypt.hash(password, PASSWORD_HASH_ROUNDS);
+        await r.table('users').get(u.id).update({password: hashed});
+        await r.table('users').get(u.id).replace(r.row.without('reset_password', 'validate_uuid'));
+        return true;
+    }
+
     return {
         getUsers: getUsers,
         getUsersSummary,
@@ -74,5 +81,6 @@ module.exports = function(r) {
         loginUserReturningToken,
         createNewUser,
         changeUserPassword,
+        resetUserPasswordFromUuid,
     };
 };

@@ -130,3 +130,30 @@ module.exports.ChangeUserPasswordAction = class ChangeUserPasswordAction extends
         response.data = {success: `User password changed`};
     }
 };
+
+module.exports.ResetUserPasswordFromUuidAction = class ResetUserPasswordFromUuidAction extends Action {
+    constructor() {
+        super();
+        this.name = 'resetUserPasswordFromUuid';
+        this.description = 'Reset password from a unique uuid';
+        this.do_not_authenticate = true;
+        this.inputs = {
+            validate_uuid: {
+                required: true,
+            },
+
+            password: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        let status = await dal.tryCatch(async() => await api.mc.users.resetUserPasswordFromUuid(params.password, params.validate_uuid));
+        if (!status) {
+            throw new Error(`Unable to reset password for user tied to validate_uuid ${params.validate_uuid}`);
+        }
+
+        response.data = {success: `User password changed`};
+    }
+};

@@ -41,9 +41,12 @@ class AccountsAPIService {
     }
 
     resetUserPasswordWithValidate(uuid, password) {
-        return this.Restangular.one('user').one('rvalidate', uuid).one('finish').customPOST({
-            password: password
-        });
+        return this.Restangular.one('v3').one('resetUserPasswordFromUuid').customPOST({
+            validate_uuid: uuid,
+            password: password,
+        }).then(
+            () => true
+        );
     }
 }
 
