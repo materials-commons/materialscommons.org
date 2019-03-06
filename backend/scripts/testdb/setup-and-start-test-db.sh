@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+set -x
 
 # default args
 CLEAR="lite" # other options are "none", "all"
