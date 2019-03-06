@@ -64,7 +64,7 @@ install:
 
   - node --version
 
-  - pip install rethinkdb
+  - pip install 'rethinkdb===2.3.0.post6'
   - pip install Flask
   - pip install pytest
   - pip install pbkdf2
