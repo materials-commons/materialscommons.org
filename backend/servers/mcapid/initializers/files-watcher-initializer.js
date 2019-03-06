@@ -8,12 +8,12 @@ module.exports = class FileWatcherInitializer extends Initializer {
     }
 
     initialize() {
-        // const r = api.mc.r;
-        //
-        // r.table('datafiles').changes({squash: true}).toStream().on('data', async (file) => await processFile(file));
+        const r = api.mc.r;
+
+        r.table('datafiles').changes({squash: true}).toStream().on('data', async(file) => await processFile(file));
     }
 };
 
-function processFile(file) {
+async function processFile(file) {
     console.log('processFile', file);
 }
