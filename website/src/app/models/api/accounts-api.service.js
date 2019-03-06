@@ -36,10 +36,6 @@ class AccountsAPIService {
         });
     }
 
-    getUserRegistrationAccount(uuid) {
-        return this.apiService('users').one('validate', uuid).get();
-    }
-
     getUserForResetPassword(uuid) {
         return this.apiService('users').one('rvalidate', uuid).get();
     }

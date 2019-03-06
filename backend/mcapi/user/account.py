@@ -1,11 +1,7 @@
 from ..mcapp import app
-from ..decorators import crossdomain, apikey, jsonp
-from .. import access
-import json
 from flask import jsonify, g, request
 import rethinkdb as r
-import uuid
-from ..utils import make_password_hash, make_salted_password_hash
+from ..utils import make_password_hash
 from .. import error
 from .. import dmutil
 
@@ -50,9 +46,3 @@ def reset_password_validate(user, validation_id):
     rv = r.table('users').get(user_id).update({'password': hash}).run(g.conn)
     return jsonify(rv)
 
-
-@app.route('/users', methods=['GET'])
-@jsonp
-def list_users():
-    selection = list(r.table('users').pluck('id', 'fullname').run(g.conn))
-    return json.dumps(selection)
