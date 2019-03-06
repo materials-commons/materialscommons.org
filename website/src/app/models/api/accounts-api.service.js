@@ -6,13 +6,6 @@ class AccountsAPIService {
         this.toast = toast;
     }
 
-    // createAccount(fullname, email) {
-    //     return this.apiService('accounts').customPOST({
-    //         fullname: fullname,
-    //         email: email
-    //     }).then(a => a.plain());
-    // }
-
     createAccount(name, email, password) {
         return this.Restangular.one('v3').one('createNewUser').customPOST({
             email: email,
