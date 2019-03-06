@@ -61,11 +61,18 @@ module.exports = function(r) {
         return _.omit(u, ['password']);
     }
 
+    async function changeUserPassword(userId, password) {
+        let hashed = await bcrypt.hash(password, PASSWORD_HASH_ROUNDS);
+        await r.table('users').get(userId).update({password: hashed});
+        return true;
+    }
+
     return {
         getUsers: getUsers,
         getUsersSummary,
         resetApikey,
         loginUserReturningToken,
         createNewUser,
+        changeUserPassword,
     };
 };

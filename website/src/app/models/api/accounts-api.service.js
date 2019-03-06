@@ -14,6 +14,22 @@ class AccountsAPIService {
         }).then(u => u.plain().data);
     }
 
+    resetApiKey() {
+        return this.Restangular.one('v3').one('resetUserApikey').customPOST().then(
+            data => data.plain().data,
+            e => this.toast.error(e.data.error)
+        );
+    }
+
+    changePassword(newPassword) {
+        return this.Restangular.one('v3').one('changeUserPassword').customPOST({
+            password: newPassword
+        }).then(
+            () => true,
+            e => this.toast.error(e.data.error)
+        );
+    }
+
     createResetPasswordRequest(email) {
         return this.apiService('accounts').one('reset').customPOST({
             email: email
@@ -32,13 +48,6 @@ class AccountsAPIService {
         return this.Restangular.one('user').one('rvalidate', uuid).one('finish').customPOST({
             password: password
         });
-    }
-
-    resetApiKey() {
-        return this.Restangular.one('v3').one('resetUserApikey').customPOST().then(
-            data => data.plain().data,
-            e => this.toast.error(e.data.error)
-        );
     }
 }
 

@@ -32,17 +32,6 @@ def finish_reset_password(validation_id):
     return jsonify({'data': user})
 
 
-@app.route('/user/<user>/password', methods=['PUT'])
-@apikey
-@crossdomain(origin='*')
-def change_password(user):
-    j = request.get_json()
-    newpw = dmutil.get_required('password', j)
-    hash = make_password_hash(newpw)
-    rv = r.table('users').get(user).update({'password': hash}).run(g.conn)
-    return jsonify(rv)
-
-
 @app.route('/user/<user>/validate/<validation_id>/password', methods=['POST'])
 def reset_password_validate(user, validation_id):
     cursor = r.table("account_requests").get_all(validation_id, index='validate_uuid').run(g.conn)

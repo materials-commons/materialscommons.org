@@ -108,3 +108,25 @@ module.exports.CreateNewUserAction = class CreateNewUserAction extends Action {
         response.data = user;
     }
 };
+
+module.exports.ChangeUserPasswordAction = class ChangeUserPasswordAction extends Action {
+    constructor() {
+        super();
+        this.name = 'changeUserPassword';
+        this.description = 'Changes the users password';
+        this.inputs = {
+            password: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        let status = await dal.tryCatch(async() => await api.mc.users.changeUserPassword(user.id, params.password));
+        if (!status) {
+            throw new Error(`Unable to change password for user`);
+        }
+
+        response.data = {success: `User password changed`};
+    }
+};

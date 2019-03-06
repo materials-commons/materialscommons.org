@@ -4,7 +4,7 @@ angular.module('materialscommons').component('mcAccountSettingsPassword', {
 });
 
 /*@ngInject*/
-function MCAccountSettingsPasswordComponentController(mcapi, User, toast, focus) {
+function MCAccountSettingsPasswordComponentController(mcapi, accountsAPI, User, toast, focus) {
     const ctrl = this;
     ctrl.newPassword = null;
     ctrl.verifyNewPassword = null;
@@ -18,15 +18,16 @@ function MCAccountSettingsPasswordComponentController(mcapi, User, toast, focus)
     function changePassword() {
         if (ctrl.newPassword) {
             if (ctrl.newPassword === ctrl.verifyNewPassword) {
-                mcapi('/user/%/password', User.u(), ctrl.newPassword)
-                    .success(function() {
+                accountsAPI.changePassword(ctrl.newPassword).then(
+                    () => {
                         toast.success('Password updated successfully', 'top left');
                         resetPasswordFields();
-                    })
-                    .error(function(data) {
-                        toast.error('Unable to update password: ' + data.error, 'top left');
+                    },
+                    e => {
+                        toast.error('Unable to update password: ' + e.data.error, 'top left');
                         resetPasswordFields();
-                    }).put({password: ctrl.newPassword});
+                    }
+                );
             } else {
                 toast.error('Passwords do not match.', 'top left');
                 resetPasswordFields();
