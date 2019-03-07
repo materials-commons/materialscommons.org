@@ -30,6 +30,17 @@ class AccountsAPIService {
         );
     }
 
+    resetUserPasswordWithValidate(uuid, password) {
+        return this.Restangular.one('v3').one('resetUserPasswordFromUuid').customPOST({
+            validate_uuid: uuid,
+            password: password,
+        }).then(
+            () => true
+        );
+    }
+
+    //////////////////
+
     createResetPasswordRequest(email) {
         return this.apiService('accounts').one('reset').customPOST({
             email: email
@@ -38,15 +49,6 @@ class AccountsAPIService {
 
     getUserForResetPassword(uuid) {
         return this.apiService('users').one('rvalidate', uuid).get();
-    }
-
-    resetUserPasswordWithValidate(uuid, password) {
-        return this.Restangular.one('v3').one('resetUserPasswordFromUuid').customPOST({
-            validate_uuid: uuid,
-            password: password,
-        }).then(
-            () => true
-        );
     }
 }
 
