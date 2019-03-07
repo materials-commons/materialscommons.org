@@ -5,11 +5,6 @@ class DatasetsAPIService {
         this.Restangular = Restangular;
     }
 
-    getDatasetsForExperiment(projectId, experimentId) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets')
-            .getList().then(datasets => datasets.plain());
-    }
-
     getDatasetsForProject(projectId) {
         return this.Restangular.one('v3').one('listDatasets').customPOST({project_id: projectId}).then(datasets => datasets.plain().data);
     }
@@ -28,11 +23,6 @@ class DatasetsAPIService {
             dataset_id: datasetId,
             files: fileIds
         }).then(dataset => dataset.plain().data);
-    }
-
-    getDataset(projectId, experimentId, datasetId) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
-            .get().then(d => d.plain());
     }
 
     getDatasetForProject(projectId, datasetId) {
@@ -56,13 +46,6 @@ class DatasetsAPIService {
         }).then(d => d.plain().data);
     }
 
-    createDatasetForExperiment(projectId, experimentId, title, description) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets').customPOST({
-            title: title,
-            description: description
-        }).then(d => d.plain());
-    }
-
     createDatasetForProject(projectId, title, samples) {
         return this.Restangular.one('v3').one('createDataset').customPOST({
             project_id: projectId,
@@ -71,34 +54,41 @@ class DatasetsAPIService {
         }).then(d => d.plain().data);
     }
 
-    deleteDatasetFromExperiment(projectId, experimentId, datasetId) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).remove();
+    publishProjectDataset(projectId, datasetId) {
+        return this.Restangular.one('v3').one('publishDataset').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId
+        }).then(d => d.plain().data);
     }
 
-    addSampleToDataset(projectId, experimentId, datasetId, sampleId) {
+    unpublishProjectDataset(projectId, datasetId) {
+        return this.Restangular.one('v3').one('unpublishDataset').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId
+        }).then(d => d.plain().data);
+    }
+
+    ////////////////////
+
+    getDatasetsForExperiment(projectId, experimentId) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets')
+            .getList().then(datasets => datasets.plain());
+    }
+
+    getDataset(projectId, experimentId, datasetId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
-            .one('samples', sampleId).customPUT().then(d => d.plain());
+            .get().then(d => d.plain());
     }
 
-    updateSamplesInDataset(projectId, experimentId, datasetId, sampleIdsToAdd, sampleIdsToDelete) {
-        let toAdd = sampleIdsToAdd.map(sid => ({command: 'add', id: sid}));
-        let toDelete = sampleIdsToDelete.map(sid => ({command: 'delete', id: sid}));
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('samples').customPUT({
-            samples: toAdd.concat(toDelete)
+    createDatasetForExperiment(projectId, experimentId, title, description) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets').customPOST({
+            title: title,
+            description: description
         }).then(d => d.plain());
     }
 
-    getSamplesForDataset(projectId, experimentId, datasetId) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('samples')
-            .getList().then(samples => samples.plain());
-    }
-
-    updateFilesInDataset(projectId, experimentId, datasetId, fileIdsToAdd, fileIdsToDelete) {
-        let toAdd = fileIdsToAdd.map(fid => ({command: 'add', id: fid}));
-        let toDelete = fileIdsToDelete.map(fid => ({command: 'delete', id: fid}));
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('files').customPUT({
-            files: toAdd.concat(toDelete)
-        }).then(files => files.plain());
+    deleteDatasetFromExperiment(projectId, experimentId, datasetId) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).remove();
     }
 
     updateProcessesInDataset(projectId, experimentId, datasetId, processIdsToAdd, processIdsToDelete) {
@@ -123,13 +113,6 @@ class DatasetsAPIService {
             .one('publish').customPUT({}).then(d => d.plain());
     }
 
-    publishProjectDataset(projectId, datasetId) {
-        return this.Restangular.one('v3').one('publishDataset').customPOST({
-            project_id: projectId,
-            dataset_id: datasetId
-        }).then(d => d.plain().data);
-    }
-
     checkDataset(projectId, experimentId, datasetId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
             .one('publish').one('check').customGET().then(d => d.plain());
@@ -138,13 +121,6 @@ class DatasetsAPIService {
     unpublishDataset(projectId, experimentId, datasetId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
             .one('unpublish').customPUT({}).then(d => d.plain());
-    }
-
-    unpublishProjectDataset(projectId, datasetId) {
-        return this.Restangular.one('v3').one('unpublishDataset').customPOST({
-            project_id: projectId,
-            dataset_id: datasetId
-        }).then(d => d.plain().data);
     }
 
     createNewDoi(projectId, experimentId, datasetId, details) {
@@ -157,24 +133,9 @@ class DatasetsAPIService {
         return this.projectsAPIRoute(projectId).one('datasets', datasetId).one('doi').customPOST(details).then(d => d.plain());
     }
 
-    getDoiMetadata(projectId, experimentId, datasetId) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId)
-            .one('doi').get();
-    }
-
-    // updateDoiMetadata(projectId, experimentId, datasetId, details) {
-    //   Details: (all optional) 'title', 'author', 'publication_year', 'details'
-    //   return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('doi').customPut({details});
-    // }
-
     getDoiExternalLink(projectId, experimentId, datasetId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('doi').one('link').get();
     }
-
-    getDoiServerStatus(projectId, experimentId, datasetId) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('datasets', datasetId).one('doiserverstatus').get();
-    }
-
 }
 
 angular.module('materialscommons').service('datasetsAPI', DatasetsAPIService);
