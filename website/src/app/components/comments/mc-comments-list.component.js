@@ -3,8 +3,8 @@ class MCCommentsListComponentController {
         this.userid = User.u();
         this.loggedin = User.isAuthenticated();
         this.$mdDialog = $mdDialog;
-        this.commentsAPIService = commentsAPI;
-        this.publicCommentsAPIService = publicCommentsAPI;
+        this.commentsAPI = commentsAPI;
+        this.publicCommentsAPI = publicCommentsAPI;
         this.targetType = this.target.otype;
         this.targetId = this.target.id;
         this.comments = [];
@@ -25,7 +25,7 @@ class MCCommentsListComponentController {
     }
 
     createNewComment(targetType, targetId, text) {
-        this.commentsAPIService.createComment(targetType, targetId, text)
+        this.commentsAPI.createComment(targetType, targetId, text)
             .then(() => {
                 this.refreshCommentsList();
             });
@@ -38,7 +38,7 @@ class MCCommentsListComponentController {
     }
 
     updateComment(commentId, text) {
-        this.commentsAPIService.updateComment(commentId, text).then(() => {
+        this.commentsAPI.updateComment(commentId, text).then(() => {
             this.refreshCommentsList();
         });
     }
@@ -82,7 +82,7 @@ class MCCommentsListComponentController {
     }
 
     deleteConfirmed(id) {
-        this.commentsAPIService.deleteComment(id)
+        this.commentsAPI.deleteComment(id)
             .then(() => {
                 this.refreshCommentsList();
                 this.onDeleteFromCommentCount();
@@ -90,7 +90,7 @@ class MCCommentsListComponentController {
     }
 
     refreshCommentsList() {
-        this.publicCommentsAPIService.getCommentsListFor(this.targetId)
+        this.publicCommentsAPI.getCommentsListFor(this.targetId)
             .then((commentsList) => {
                 this.comments = commentsList;
             });
