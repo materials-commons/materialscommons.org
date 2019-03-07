@@ -7,9 +7,7 @@ let api;
 describe('actionhero Tests', () => {
     beforeAll(async() => { api = await actionhero.start(); });
     afterAll(async() => {
-        console.log('Calling actionhero.stop()');
         await actionhero.stop();
-        console.log('past actionhero.stop()');
     });
 
     test('should have booted into the test env', () => {
