@@ -214,15 +214,6 @@ function stop_mcpub() {
     done
 }
 
-function start_mcmon() {
-    R=$(is_running "servers/mcmon/main.js" "servertype $SERVERTYPE")
-    if [[ "$R" = "" ]]; then
-        echo "Starting mcmon ($SERVERTYPE)..."
-        move_log "mcmon"
-        nodemon --watch servers/mcmon/main.js --watch servers/mcmon/src servers/mcmon/main.js --servertype $SERVERTYPE  > ${MC_LOG_DIR}/mcmon.out.${SERVERTYPE} 2>&1&
-    fi
-}
-
 function stop_mcmon() {
     echo "Stopping mcmon ($SERVERTYPE)..."
     ps -eo "pid,command" | grep "servers/mcmon/main.js" | grep "servertype $SERVERTYPE" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
@@ -315,7 +306,6 @@ function start_servers() {
     start_mcstored
     start_mcserv
     start_mcapi
-    start_mcmon
     start_redis
     start_mcapid
 
@@ -442,10 +432,6 @@ function restart_named_server() {
             start_rethinkdb
             ;;
 
-        mcmon)
-            start_mcmon
-            ;;
-
         redis)
             start_redis
             ;;
@@ -506,11 +492,6 @@ function ps_server_env() {
     echo
     echo "MCSERV Server (${SERVERTYPE}):"
     ps -ef | grep mcserv | grep "$MCDB_CONNECTION" | grep -v grep
-
-
-    echo
-    echo "MCMON Server (${SERVERTYPE}):"
-    ps -ef | grep "servers/mcmon/main.js" | grep "servertype ${SERVERTYPE}" | grep -v grep
 
     echo
     echo "MCAPID Server (${SERVERTYPE}):"
@@ -602,11 +583,11 @@ function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
     touch ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} \
-        ${D}/mcmon.out.${ST} ${D}/redis.out.${ST} \
+        ${D}/redis.out.${ST} \
         ${D}/mcapid.out.${ST} ${D}/mcetlserver.out.${ST} \
         ${D}/mcserv.out.${ST}
     tail -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} \
-        -f ${D}/mcmon.out.${ST} -f ${D}/redis.out.${ST} \
+        -f ${D}/redis.out.${ST} \
         -f ${D}/mcapid.out.${ST} -f ${D}/mcetlserver.out.${ST} \
         -f ${D}/mcserv.out.${ST}
 }
