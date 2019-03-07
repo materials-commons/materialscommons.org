@@ -15,5 +15,5 @@ module.exports = class FileWatcherInitializer extends Initializer {
 };
 
 async function processFile(file) {
-    console.log('processFile', file);
+    await api.tasks.enqueue('convertFile', file.new_val, 'files');
 }
