@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const fsExtra = require('fs-extra');
+const _ = require('lodash');
 
 function findFile(fileId) {
     let dirs = getMCDirs();
@@ -37,8 +38,21 @@ async function moveIntoStore(filePath, fileId) {
     await fsExtra.move(filePath, fileLocation);
 }
 
+let mcdirsOverride = [];
+
 function getMCDirs() {
+    if (mcdirsOverride.length) {
+        return mcdirsOverride;
+    }
     return process.env.MCDIR.split(':');
+}
+
+function setMCDirs(dirs) {
+    if (_.isArray(dirs)) {
+        mcdirsOverride = _.clone(dirs);
+    } else if (_.isString(dirs)) {
+        mcdirsOverride.push(dirs);
+    }
 }
 
 function constructPathToFileId(dir, fileId) {
@@ -48,6 +62,11 @@ function constructPathToFileId(dir, fileId) {
 function pathToFileId(fileId) {
     let mcdirs = getMCDirs();
     return path.join(mcdirs[0], constructFileDirSubPathFromFile(fileId), fileId);
+}
+
+function fileDir(fileId) {
+    let mcdirs = getMCDirs();
+    return path.join(mcdirs[0], constructFileDirSubPathFromFile(fileId));
 }
 
 function conversionDir(fileId) {
@@ -68,4 +87,7 @@ module.exports = {
     moveIntoStore,
     conversionDir,
     pathToFileId,
+    fileDir,
+    getMCDirs,
+    setMCDirs,
 };
