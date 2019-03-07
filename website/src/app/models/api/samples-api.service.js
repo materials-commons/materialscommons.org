@@ -5,11 +5,6 @@ class SamplesAPIService {
         this.toast = toast;
     }
 
-    addSamplesToExperiment(projectId, experimentId, sampleIds) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('samples')
-            .customPOST({samples: sampleIds}).then(sampleExperimentIds => sampleExperimentIds.plain());
-    }
-
     getSample(sampleId) {
         return this.Restangular.one('v3').one('getSample').customPOST({sample_id: sampleId}).then(
             sample => sample.plain().data,
@@ -19,13 +14,16 @@ class SamplesAPIService {
 
     getSamplePath() {return 'v3/getSample';}
 
+    ///////////////////////////////////////////
+
+    addSamplesToExperiment(projectId, experimentId, sampleIds) {
+        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('samples')
+            .customPOST({samples: sampleIds}).then(sampleExperimentIds => sampleExperimentIds.plain());
+    }
+
     createSamplesInProjectForProcess(projectId, processId, samples) {
         return this.projectsAPIRoute(projectId).one('samples')
             .customPOST({process_id: processId, samples: samples});
-    }
-
-    getProjectSamples(projectID) {
-        return this.projectsAPIRoute(projectID).one('samples').getList().then(samples => samples.plain());
     }
 
     getProjectSample(projectId, sampleId) {
@@ -48,14 +46,6 @@ class SamplesAPIService {
     addMeasurementsToSamples(projectId, experimentId, processId, samplesMeasurements) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('samples').one('measurements')
             .customPOST({
-                process_id: processId,
-                properties: samplesMeasurements
-            });
-    }
-
-    updateMeasurementsToSamples(projectId, experimentId, processId, samplesMeasurements) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('samples').one('measurements')
-            .customPUT({
                 process_id: processId,
                 properties: samplesMeasurements
             });

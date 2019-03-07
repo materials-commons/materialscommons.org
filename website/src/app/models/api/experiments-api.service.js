@@ -5,19 +5,17 @@ class ExperimentsAPIService {
         this.projectsAPIRoute = projectsAPIRoute;
     }
 
-    getAllForProject(projectID) {
-        return this.projectsAPIRoute(projectID).one('experiments').getList().then(experiments => experiments.plain());
-    }
-
-    getExperimentForProject(projectId, experimentId) {
-        return this.projectsAPIRoute(projectId).one('experiments', experimentId).customGET().then(e => e.plain());
-    }
-
     getExperimentForProject2(projectId, experimentId) {
         return this.Restangular.one('v3').one('getProjectExperiment').customPOST({
             project_id: projectId,
             experiment_id: experimentId
         }).then(e => e.plain().data);
+    }
+
+    ///////////////////////
+
+    getAllForProject(projectID) {
+        return this.projectsAPIRoute(projectID).one('experiments').getList().then(experiments => experiments.plain());
     }
 
     createForProject(projectID, experiment) {
@@ -45,11 +43,6 @@ class ExperimentsAPIService {
             experiments: experimentIds
         });
     }
-
-    getForProject(projectID, experimentID) {
-        return this.projectsAPIRoute(projectID).one('experiments', experimentID).customGET().then(e => e.plain());
-    }
-
 
     updateProcess(projectId, experimentId, processId, updateArgs) {
         return this.projectsAPIRoute(projectId)

@@ -46,13 +46,6 @@ class PublicDatasetsAPIService {
     }
 
     getDatasetsForTag(tag) {
-        // return this.publicAPIRoute('tags', tag).one('datasets').getList().then(
-        //     (datasets) => {
-        //         datasets = datasets.plain();
-        //         datasets = this.augmentDatasets(datasets);
-        //         return datasets;
-        //     }
-        // );
         return this.Restangular.one('v3').one('getPublishedDatasetsForTag').customPOST({tag_id: tag}).then(
             (ds) => {
                 let datasets = ds.plain().data;
@@ -62,20 +55,6 @@ class PublicDatasetsAPIService {
     }
 
     datasetWasViewed(userId, datasetId) {
-        // let viewParams = {
-        //     item_type: 'dataset',
-        //     item_id: datasetId,
-        //     user_id: userId
-        // };
-        // return this.publicAPIRoute('views').customPOST(viewParams).then(
-        //     () => {
-        //         return this.getDataset(datasetId).then(
-        //             (dataset) => {
-        //                 return dataset;
-        //             }
-        //         );
-        //     }
-        // );
         return this.Restangular.one('v3').one('incrementPublishedDatasetViews').customPOST({
             dataset_id: datasetId,
             user_id: userId,
@@ -96,21 +75,6 @@ class PublicDatasetsAPIService {
     }
 
     updateUseful(userId, datasetId, isUseful) {
-        // let usefulParams = {
-        //     item_type: 'dataset',
-        //     item_id: datasetId,
-        //     user_id: userId,
-        //     action: isUseful ? 'add' : 'delete'
-        // };
-        // return this.publicAPIRoute('useful').customPOST(usefulParams).then(
-        //     () => {
-        //         return this.getDataset(datasetId).then(
-        //             (dataset) => {
-        //                 return dataset;
-        //             }
-        //         );
-        //     }
-        // );
         return this.Restangular.one('v3').one('updatePublishedDatasetUsefulCount').customPOST({
             dataset_id: datasetId,
             user_id: userId,
