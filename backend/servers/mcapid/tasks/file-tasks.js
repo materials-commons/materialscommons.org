@@ -1,4 +1,5 @@
 const {api, Task} = require('actionhero');
+let convertible = require('@lib/convertible');
 
 module.exports.ConvertFileTask = class ConvertFileTask extends Task {
     constructor() {
@@ -9,7 +10,13 @@ module.exports.ConvertFileTask = class ConvertFileTask extends Task {
         this.queue = 'files';
     }
 
-    async run(data) {
-        api.mc.log.info('Converting file', data);
+    async run(file) {
+        api.mc.log.info('Converting file:', file);
+        try {
+            return await convertible.convertFile(file);
+        } catch (e) {
+            api.mc.log.info('Failed converting file:', e);
+            return false;
+        }
     }
 };
