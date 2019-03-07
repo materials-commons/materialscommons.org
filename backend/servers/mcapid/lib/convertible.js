@@ -4,6 +4,7 @@ const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const os = require('os');
 const path = require('path');
+const fsExtra = require('fs-extra');
 
 const convertibleImageFileTypes = {
     'image/tiff': true,
@@ -33,7 +34,7 @@ async function convertFile(file) {
     return false;
 }
 
-async function convertDocumentFile(file) {
+function convertDocumentCommand(file) {
     // We use libreoffice to convert the file word/excel/powerpoint file to pdf. The command
     // syntax is a bit odd. Basically we are telling libreoffice to convert the file that is
     // stored in the storage repository. The file is stored with the name as the file.id. For
@@ -53,12 +54,24 @@ async function convertDocumentFile(file) {
         ` --outdir ${os.tmpdir()} ` +
         ` ${mcdir.pathToFileId(file.id)};` +
         ` cp ${tmpConvertedFile} ${mcdir.conversionDir(file.id)}; ` +
-        ` rm ${tmpConvertedFile} `;
+        ` rm ${tmpConvertedFile}`;
+    return command;
+}
+
+async function convertDocumentFile(file) {
+    await fsExtra.ensureDir(mcdir.conversionDir(file.id));
+    let command = convertDocumentCommand(file);
     return await execAsync(command);
 }
 
-async function convertImageFile(file) {
+function convertImageCommand(file) {
     let command = `convert ${mcdir.pathToFileId(file.id)} ${path.join(mcdir.conversionDir(file.id), file.id + '.jpg')}`;
+    return command;
+}
+
+async function convertImageFile(file) {
+    await fsExtra.ensureDir(mcdir.conversionDir(file.id));
+    let command = convertImageCommand(file);
     return await execAsync(command);
 }
 
@@ -85,5 +98,7 @@ function isConvertibleFileType(mimeType) {
 
 module.exports = {
     isConvertibleFileType,
-    convertFile
+    convertFile,
+    convertDocumentCommand,
+    convertImageCommand,
 };
