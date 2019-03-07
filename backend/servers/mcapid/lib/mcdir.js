@@ -45,6 +45,16 @@ function constructPathToFileId(dir, fileId) {
     return path.join(dir, constructFileDirSubPathFromFile(fileId), fileId);
 }
 
+function pathToFileId(fileId) {
+    let mcdirs = getMCDirs();
+    return path.join(mcdirs[0], constructFileDirSubPathFromFile(fileId), fileId);
+}
+
+function conversionDir(fileId) {
+    let mcdirs = getMCDirs();
+    return path.join(mcdirs[0], constructFileDirSubPathFromFile(fileId), '.conversion');
+}
+
 function constructFileDirSubPathFromFile(fileId) {
     let part = fileId.split('-')[1];
     let partA = part.substring(0, 2);
@@ -56,4 +66,6 @@ module.exports = {
     findFile,
     deleteFile,
     moveIntoStore,
+    conversionDir,
+    pathToFileId,
 };
