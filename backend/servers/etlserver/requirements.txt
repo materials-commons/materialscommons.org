@@ -1,7 +1,7 @@
 configparser
 httplib2
 flask-api
-rethinkdb
+rethinkdb==2.3.0.post6
 argparse
 six
 xlsxwriter
