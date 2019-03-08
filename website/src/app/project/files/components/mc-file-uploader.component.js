@@ -40,7 +40,6 @@ class MCFileUploaderComponentController {
         this.uploadFailures = [];
         P.map(this.uploadFiles, (f) => {
             return this.Upload.upload({
-                // url: `api/v2/projects/${this.projectId}/directories/${this.dir.id}/fileupload?apikey=${this.User.apikey()}`,
                 url: `api/v3/uploadFileToProjectDirectory`,
                 data: {
                     file: f.file,

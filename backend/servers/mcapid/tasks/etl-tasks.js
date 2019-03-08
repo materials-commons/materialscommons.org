@@ -12,10 +12,11 @@ module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Tas
 
     async run(etlArgs) {
         try {
+            api.mc.log.info('Starting ETL Job', etlArgs);
             await spawnEtlJob(etlArgs);
             return true;
         } catch (e) {
-            api.mc.log.info(`Failed to process etlJob ${e}`, etlArgs);
+            api.mc.log.info(`Failed to process ETL Job ${e}`, etlArgs);
             return false;
         }
     }
@@ -24,6 +25,7 @@ module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Tas
 async function spawnEtlJob(etlArgs) {
     return new Promise((resolve, reject) => {
         // example: pymcetl --apikey 124e09425cfe4c4287eff056e69c1dd1 --project 23b1eba7-425e-4ee0-a2a2-2ccdf6169920 --experiment E2 --spreadsheet /Pure_Mg_CHESS_MC.xlsx
+
         let child = spawn('pymcetl', ['--apikey', etlArgs.apikey, '--project', etlArgs.projectId, '--experiment', etlArgs.experimentName,
             '--spreadsheet', etlArgs.path]);
         child.stderr.on('data', data => api.mc.log.info(`Processing spreadsheet ${etlArgs.path}: ${data}`));

@@ -1,8 +1,9 @@
 class ExperimentsAPIService {
     /*@ngInject*/
-    constructor(Restangular, projectsAPIRoute) {
+    constructor(Restangular, projectsAPIRoute, toast) {
         this.Restangular = Restangular;
         this.projectsAPIRoute = projectsAPIRoute;
+        this.toast = toast;
     }
 
     getExperimentForProject2(projectId, experimentId) {
@@ -10,6 +11,17 @@ class ExperimentsAPIService {
             project_id: projectId,
             experiment_id: experimentId
         }).then(e => e.plain().data);
+    }
+
+    createExperimentFromSpreadsheet(experimentName, fileId, projectId) {
+        return this.Restangular.one('v3').one('createExperimentFromSpreadsheet').customPOST({
+            project_id: projectId,
+            file_id: fileId,
+            experiment_name: experimentName
+        }).then(
+            result => result.plain().data,
+            e => this.toast.error(`Unable to submit file for process: ${e.data.error}`)
+        );
     }
 
     ///////////////////////
@@ -50,7 +62,6 @@ class ExperimentsAPIService {
             .one('processes', processId).customPUT(updateArgs)
             .then((process) => this.convertDatePropertyAttributes(process.plain()));
     }
-
 
     getSamplesForExperiment(projectId, experimentId) {
         return this.projectsAPIRoute(projectId).one('experiments', experimentId).one('samples')

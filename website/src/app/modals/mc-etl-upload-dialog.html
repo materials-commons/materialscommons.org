@@ -30,7 +30,7 @@
                                 <md-select ng-required="true" ng-model="$ctrl.excelFile">
                                     <md-option ng-value="choice"
                                                ng-repeat="choice in $ctrl.excel_files">
-                                        {{::choice}}
+                                        {{::choice.path}}
                                     </md-option>
                                 </md-select>
                             </md-input-container>

@@ -295,74 +295,54 @@ class DeleteExperimentsDialogController {
 
 class EtlDialogController {
     /*@ngInject*/
-    constructor($mdDialog, Upload, etlServerAPI, sidenavGlobus, toast, User, globusEndpointSaver) {
+    constructor($mdDialog, Upload, experimentsAPI, toast, User) {
         this.$mdDialog = $mdDialog;
         this.Upload = Upload;
-        this.etlServerAPI = etlServerAPI;
-        this.sidenavGlobus = sidenavGlobus;
-        this.globusEndpointSaver = globusEndpointSaver;
+        this.experimentsAPI = experimentsAPI;
         this.toast = toast;
         this.User = User;
         this.user_id = User.u();
         this.name = '';
         this.description = '';
-        // for direct upload
-        this.files = [];
-        // for Project upload
-        this.excelFile = '';
+        this.files = []; // for direct upload
+        this.excelFile = null; // for Project upload
     }
 
     project_upload_ok() {
-        return this.name && (this.excelFile.length > 0);
+        return this.name && (this.excelFile);
     }
 
     etlInProject() {
-        let data = {};
-        data.project_id = this.project.id;
-        data.excel_file_path = this.excelFile;
-        this.etlServerAPI.createExperimentFromEtl(
-            this.project.id, this.excelFile, this.name, this.description).then(
-            (reply) => {
-                this.$mdDialog.hide(reply);
-            },
-            (e) => {
-                if (e.status === 502) {
-                    this.toast.error('Excel file ETL; Service not available. Contact Admin.');
-                } else if (e.status > 200) {
-                    this.toast.error('Excel file ETL; Service not available. Code - ' + e.status + '. Contact Admin.');
-                }
-                this.$mdDialog.cancel(e);
-            }
+        this.experimentsAPI.createExperimentFromSpreadsheet(this.name, this.excelFile.id, this.project.id).then(
+            () => this.$mdDialog.hide(),
+            () => this.$mdDialog.cancel()
         );
     }
 
     uploadDirect() {
-        let data = {};
-        data.project_id = this.project.id;
-        data.name = this.name;
-        data.description = this.description;
-        data.file = this.files[0];
-        this.isUploading = true;
         return this.Upload.upload({
-            url: `api/etl/upload?apikey=${this.User.apikey()}`,
-            data: data
+            url: `api/v3/uploadFileToProjectDirectory`,
+            data: {
+                file: this.files[0],
+                project_id: this.project.id,
+                directory_id: this.project.root_dir.id,
+                apikey: this.User.apikey(),
+            }
         }).then(
-            (uploaded) => {
-                let results = {
-                    status: 'DONE',
-                    data: uploaded.data
-                };
-                this.$mdDialog.hide(results);
-                this.isUploading = false;
+            (result) => {
+                this.experimentsAPI.createExperimentFromSpreadsheet(this.name, result.data.data.id, this.project.id).then(
+                    () => this.$mdDialog.hide(),
+                    () => this.$mdDialog.cancel()
+                );
             },
             (e) => {
+                console.log('error = ', e);
                 if (e.status === 502) {
-                    this.toast.error('Excel file uplaod; Service not available. Contact Admin.');
+                    this.toast.error('Excel file upload; Service not available. Contact Admin.');
                 } else if (e.status > 200) {
-                    this.toast.error('Excel file uplaod; Service not available. Code - ' + e.status + '. Contact Admin.');
+                    this.toast.error('Excel file upload; Service not available. Code - ' + e.status + '. Contact Admin.');
                 }
                 this.$mdDialog.cancel(e);
-                this.isUploading = false;
             }
         );
     }
@@ -371,7 +351,6 @@ class EtlDialogController {
         this.$mdDialog.cancel();
     }
 }
-
 
 angular.module('materialscommons').component('mcProjectHome', {
     template: require('./mc-project-home.html'),

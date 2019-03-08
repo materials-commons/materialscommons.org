@@ -283,7 +283,7 @@ function* getExcelFilePaths(projectID) {
         fileList[i].dir = path;
         // add file name to path
         path = path + '/' + fileList[i].name;
-        pathList.push(path);
+        pathList.push({path: path, id: fileList[i].id});
     }
     return pathList;
 }
