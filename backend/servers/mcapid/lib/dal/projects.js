@@ -117,8 +117,8 @@ module.exports = function(r) {
         return rql;
     }
 
-// addComputed adds additional attributes to the rql that
-// that are computed from other tables.
+    // addComputed adds additional attributes to the rql that
+    // that are computed from other tables.
     function addComputed(rql) {
         rql = rql.merge(function(project) {
             return {
@@ -227,11 +227,16 @@ module.exports = function(r) {
             .pluck('birthtime', 'fullname', 'id', 'user_id');
     }
 
+    async function getUsersGlobusUploadStatus(userId, projectId) {
+        return await r.table('background_process').getAll([userId, projectId], {index: 'user_project'}).orderBy(r.desc('birthtime'));
+    }
+
     return {
         createProject,
         getProject,
         getProjectExperiment,
         deleteProject,
+        getUsersGlobusUploadStatus,
         ui: {
             getProjectsForUser,
             getProjectOverview,

@@ -32,6 +32,15 @@ class ProjectsAPIService {
         return this.Restangular.one('v3').one('ui:getProjectAccessEntries').customPOST({project_id: projectId}).then(u => u.plain().data);
     }
 
+    getUsersGlobusUploadStatus(projectId) {
+        return this.Restangular.one('v3').one('getUserGlobusUploadsStatusForProject').customPOST({
+            project_id: projectId,
+        }).then(
+            status => status.plain().data,
+            e => this.toast.error(e.data.error)
+        );
+    }
+
     addProjectNote(projectId, note) {
         return this.notesAPI.addNote(note, 'project', projectId);
     }

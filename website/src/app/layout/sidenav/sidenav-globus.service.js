@@ -51,7 +51,6 @@ class SidenavGlobusService {
     }
 
     showUploadStatus(project) {
-        console.log('showUploadStatus', project.name);
         return this.$mdDialog.show({
                 templateUrl: 'app/modals/globus-upload-status-dialog.html',
                 controller: GlobusUploadStatusDialogController,
@@ -116,9 +115,9 @@ class GlobusUploadDialogController {
 
 class GlobusUploadStatusDialogController {
     /*@ngInject*/
-    constructor($mdDialog, User, etlServerAPI) {
+    constructor($mdDialog, projectsAPI) {
         this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
+        this.projectsAPI = projectsAPI;
         this.url = null;
         this.error = null;
         this.status = null;
@@ -131,7 +130,8 @@ class GlobusUploadStatusDialogController {
         this.activeCount = 0;
         this.successCount = 0;
         this.finishedCount = 0;
-        this.etlServerAPI.getGlobusUplaodStatus(this.project.id).then(
+        // this.etlServerAPI.getGlobusUploadStatus(this.project.id).then(
+        this.projectsAPI.getUsersGlobusUploadStatus(this.project.id).then(
             results => {
                 if (results.value) {
                     this.activeCount = 0;
