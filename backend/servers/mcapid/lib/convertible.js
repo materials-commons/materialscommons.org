@@ -21,6 +21,11 @@ const convertibleDocumentFileTypes = {
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document': true,
 };
 
+const spreadsheetDocumentFileTypes = {
+    'application/vnd.ms-excel': true,
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': true,
+};
+
 async function convertFile(file) {
     if (isDocumentFile(file)) {
         return await convertDocumentFile(file);
@@ -96,7 +101,12 @@ function isConvertibleFileType(mimeType) {
     return _.has(convertibleImageFileTypes, mimeType) || _.has(convertibleDocumentFileTypes, mimeType);
 }
 
+function isSpreadsheet(mimeType) {
+    return _.has(spreadsheetDocumentFileTypes, mimeType);
+}
+
 module.exports = {
+    isSpreadsheet,
     isConvertibleFileType,
     convertFile,
     convertDocumentCommand,
