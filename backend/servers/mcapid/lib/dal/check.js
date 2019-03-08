@@ -35,7 +35,7 @@ module.exports = function(r) {
     }
 
     async function fileInProject(fileId, projectId) {
-        return allFilesInProject(projectId, [fileId]);
+        return allFilesInProject([fileId], projectId);
     }
 
     async function fileInDirectory(fileId, directoryId) {
