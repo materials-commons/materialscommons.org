@@ -322,8 +322,6 @@ function stop_servers() {
 
     echo Stopping ${SERVERTYPE} servers....
 
-#    stop_es
-#    stop_globus
     stop_etl_server
     stop_mcapiserver
     stop_mcstored
@@ -332,8 +330,6 @@ function stop_servers() {
     stop_mcpub
     stop_mcmon
     stop_mcapid
-#    stop_rethinkdb
-#    stop_redis
 
     delete_old_logs
 
