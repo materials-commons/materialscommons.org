@@ -33,7 +33,6 @@ show_env() {
     echo "   MCDB_FILE:                  ${MCDB_FILE}"
     echo "   MCSTORE_SRC:                ${MCSTORE_SRC}"
     echo "   MC_LOG_DIR:                 ${MC_LOG_DIR}"
-    echo "   MC_API_URL:                 ${MC_API_URL}"
     echo
     echo " Binary paths:"
     echo "   rethinkdb binary:       $(which rethinkdb)"

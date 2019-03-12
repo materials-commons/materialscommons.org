@@ -34,8 +34,6 @@ export MCAPID_COMMAND="start.sh mcapid-${SERVERTYPE}"
 export MCAPID_PORT=5028
 export REDIS_PORT=5031
 
-export MC_API_URL="http://mcdev.localhost/api"
-
 if [ -f /etc/materialscommons/config.dev ]; then
     . /etc/materialscommons/config.dev
 fi

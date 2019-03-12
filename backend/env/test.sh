@@ -37,8 +37,6 @@ export MCAPID_COMMAND="npx actionhero start cluster --workerTitlePrefix=mcapid-$
 export MCAPID_PORT=6028
 export REDIS_PORT=7379
 
-export MC_API_URL="https://test.materialscommons.org/api"
-
 if [ -f /etc/materialscommons/config.test ]; then
     . /etc/materialscommons/config.test
 fi

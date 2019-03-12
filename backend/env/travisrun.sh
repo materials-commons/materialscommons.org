@@ -41,10 +41,6 @@ export REDIS_PORT=5031
 # except for the values of usernames and passwords,
 # for documentaion and completeness
 
-## General - base Materials commons links
-export MC_BASE_API_LINK=http://mctest.localhost/#
-export MCPUB_BASE_API_LINK=http://mcpub.localhost/#
-
 # see above --
 # export MCDIR=${HOME}/working/MaterialsCommons/mcdir:${HOME}/working/MaterialsCommons/mcdir
 # export MCDB_CONNECTION="localhost:30815"
