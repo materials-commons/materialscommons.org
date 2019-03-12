@@ -62,16 +62,6 @@ function stop_es() {
     fi
 }
 
-function start_etl_server() {
-    R=$(is_running "mc_etlserver.py")
-    if [[ "$R" = "" ]]; then
-        echo "Starting mcetlserver (${SERVERTYPE})..."
-        move_log "mcetlserver"
-        ./servers/etlserver/run_server.sh ${SERVERTYPE} > ${MC_LOG_DIR}/mcetlserver.out.${SERVERTYPE} 2>&1&
-        sleep 1
-    fi
-}
-
 function stop_etl_server() {
     echo "Stopping mcetlserver (${SERVERTYPE})..."
     ps -eo "pid,command" | grep "mc_etlserver.py" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
@@ -302,7 +292,6 @@ function start_servers() {
     start_es
     start_globus
     start_rethinkdb
-    start_etl_server
     start_mcstored
     start_mcserv
     start_mcapi
@@ -424,10 +413,6 @@ function restart_named_server() {
             start_es
             ;;
 
-        mcetl)
-            start_etl_server
-            ;;
-
         rethinkdb)
             start_rethinkdb
             ;;
@@ -476,10 +461,6 @@ function ps_server_env() {
     if [[ "$R" != "" ]]; then
         echo ${R}
     fi
-
-    echo
-    echo "MCETL server (${SERVERTYPE}):"
-    ps -ef | grep mc_etlserver.py | grep -v grep
 
     echo
     echo "MCAPI Node Server (${SERVERTYPE}):"
@@ -583,12 +564,10 @@ function tail_servers() {
     D=${MC_LOG_DIR}
     ST=${SERVERTYPE}
     touch ${D}/mcstored.out.${ST} ${D}/mcapi.out.${ST} \
-        ${D}/redis.out.${ST} \
-        ${D}/mcapid.out.${ST} ${D}/mcetlserver.out.${ST} \
+        ${D}/redis.out.${ST} ${D}/mcapid.out.${ST} \
         ${D}/mcserv.out.${ST}
     tail -f ${D}/mcstored.out.${ST} -f ${D}/mcapi.out.${ST} \
-        -f ${D}/redis.out.${ST} \
-        -f ${D}/mcapid.out.${ST} -f ${D}/mcetlserver.out.${ST} \
+        -f ${D}/redis.out.${ST} -f ${D}/mcapid.out.${ST} \
         -f ${D}/mcserv.out.${ST}
 }
 

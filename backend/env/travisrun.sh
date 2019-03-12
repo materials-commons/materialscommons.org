@@ -9,7 +9,6 @@ export SERVERTYPE=travisrun
 
 export MC_API_SERVICE_PORT=5004
 export MC_API_GLOBUS_SERVICE_PORT=5042
-export MC_ETL_SERVICE_PORT=5032
 export MCSERV_PORT=5052
 export MCDB_PORT=30815
 export MCDB_CONNECTION="localhost:$MCDB_PORT"
@@ -26,10 +25,6 @@ if [ "$MCDB_FILE" = "" ]; then
 fi
 export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
 export MCFS_HTTP_PORT=5012
-
-if [ -f /etc/materialscommons/config.dev ]; then
-    . /etc/materialscommons/config.dev
-fi
 
 if [ ! -d ${MCDB_DIR} ]; then
     mkdir -p ${MCDB_DIR}
@@ -84,3 +79,7 @@ export MC_DOI_PW=''
 export MC_CONFIDENTIAL_CLIENT_USER=''
 export MC_CONFIDENTIAL_CLIENT_PW=''
 export MC_CONFIDENTIAL_CLIENT_ENDPOINT=''
+
+if [ -f /etc/materialscommons/config.dev ]; then
+    . /etc/materialscommons/config.dev
+fi

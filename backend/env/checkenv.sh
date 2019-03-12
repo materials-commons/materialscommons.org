@@ -23,7 +23,6 @@ show_env() {
     echo "   REDIS_PORT:                 ${REDIS_PORT}"
     echo "   MC_API_SERVICE_PORT:        ${MC_API_SERVICE_PORT}"
     echo "   MC_API_GLOBUS_SERVICE_PORT: ${MC_API_GLOBUS_SERVICE_PORT}"
-    echo "   MC_ETL_SERVICE_PORT:        ${MC_ETL_SERVICE_PORT}"
     echo "   RETHINKDB_HTTP_PORT:        ${RETHINKDB_HTTP_PORT}"
     echo "   RETHINKDB_CLUSTER_PORT:     ${RETHINKDB_CLUSTER_PORT}"
     echo "   MCDB_DIR:                   ${MCDB_DIR}"
@@ -32,13 +31,10 @@ show_env() {
     echo "   MCDB_CONNECTION:            ${MCDB_CONNECTION}"
     echo "   MC_ES_URL:                  ${MC_ES_URL}"
     echo "   MC_ES_NAME:                 ${MC_ES_NAME}"
-    echo "   MC_FAKTORY_NAME:            ${MC_FAKTORY_NAME}"
-    echo "   MC_FAKTORY_PORT:            ${MC_FAKTORY_PORT}"
     echo "   MCDB_FILE:                  ${MCDB_FILE}"
     echo "   MCSTORE_SRC:                ${MCSTORE_SRC}"
     echo "   MC_LOG_DIR:                 ${MC_LOG_DIR}"
     echo "   MC_API_URL:                 ${MC_API_URL}"
-    echo "   MC_ETL_WORKER_LOG_LEVEL:    ${MC_ETL_WORKER_LOG_LEVEL}"
     echo
     echo " Binary paths:"
     echo "   rethinkdb binary:       $(which rethinkdb)"
@@ -60,8 +56,6 @@ show_env() {
 }
 
 export MC_API_URL="http://mcdev.localhost/api"
-
-export MC_ETL_WORKER_LOG_LEVEL=INFO
 
 set_echo_env() {
     source ${SERVERTYPE}.sh

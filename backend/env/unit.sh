@@ -6,7 +6,6 @@ export SERVERTYPE=unit
 
 export MC_API_SERVICE_PORT=5604
 export MC_API_GLOBUS_SERVICE_PORT=5044
-export MC_ETL_SERVICE_PORT=5632
 export MCSERV_PORT=5652
 export MCDB_PORT=40815
 export MCDB_CONNECTION="localhost:$MCDB_PORT"
@@ -24,10 +23,6 @@ fi
 export MCDIR=~/mcdir/mcfs/data/test:/mcfs/data/materialscommons
 export MCFS_HTTP_PORT=5012
 
-if [ -f /etc/materialscommons/config.dev ]; then
-    . /etc/materialscommons/config.dev
-fi
-
 if [ ! -d ${MCDB_DIR} ]; then
     mkdir ${MCDB_DIR}
 fi
@@ -40,14 +35,10 @@ export MCAPID_COMMAND="start.sh mcapid-${SERVERTYPE}"
 export MCAPID_PORT=5628
 export REDIS_PORT=5679
 
-export MC_FAKTORY_PORT=7419
-export MC_FAKTORY_NAME="mc-faktory-unit"
-
 export MC_API_URL="http://mcunit.localhost/api"
-# does not word as local nginx in not ssh
-# export MC_GLOBUS_AUTH_CALLBACK="$MC_API_URL/etl/globus/auth/callback"
-export MC_GLOBUS_AUTH_CALLBACK="https://localhost:5032/globus/auth/callback"
 
-export MC_ETL_WORKER_LOG_LEVEL=INFO
+if [ -f /etc/materialscommons/config.dev ]; then
+    . /etc/materialscommons/config.dev
+fi
 
 # see also the override file /etc/materialscommons/config.unit
