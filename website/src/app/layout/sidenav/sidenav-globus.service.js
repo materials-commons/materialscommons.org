@@ -1,8 +1,7 @@
 class SidenavGlobusService {
     /*@ngInject*/
-    constructor(User, etlServerAPI, $mdDialog) {
+    constructor(User, $mdDialog) {
         this.User = User;
-        this.etlServerAPI = etlServerAPI;
         this.$mdDialog = $mdDialog;
         this.globus_user = User.attr().globus_user;
     }
@@ -130,7 +129,6 @@ class GlobusUploadStatusDialogController {
         this.activeCount = 0;
         this.successCount = 0;
         this.finishedCount = 0;
-        // this.etlServerAPI.getGlobusUploadStatus(this.project.id).then(
         this.projectsAPI.getUsersGlobusUploadStatus(this.project.id).then(
             results => {
                 if (results.value) {
