@@ -1,5 +1,13 @@
 # Release Notes
 
+## March 2019
+- :star: **Improvement:** Issue #1316 New interface for interacting with files
+- :star: **Improvement:** ETL Processing now performed in a background task
+- :star: **Improvement:** Lots of improvements and simplifications to the backend services
+- :boom: **Fixed:** Issue #1381 Deleting a file was leaving some artifacts in the database
+- :boom: **Fixed:** Issue #1392 ETL wasn't properly handling root files
+
+
 ## Feb 2019
 - :star: **Improvement:** Issue #1315 Add sort to all columns in samples table, except experiment and modification time (We already group by experiment)
 - :star: **Improvement:** Issue #1363 Clicking on file in the details list of a directory brings up a modal displaying the file
