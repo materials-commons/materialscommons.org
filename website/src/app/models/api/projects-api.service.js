@@ -41,6 +41,15 @@ class ProjectsAPIService {
         );
     }
 
+    setupGlobusProjectDownload(projectId) {
+        return this.Restangular.one('v4').one('createGlobusProjectDownload').customPOST({project_id: projectId}).then(
+            resp => resp.plain(),
+            e => this.toast.error(e.error)
+        );
+    }
+
+    ////////////////////////////////////////////////////////
+
     addProjectNote(projectId, note) {
         return this.notesAPI.addNote(note, 'project', projectId);
     }

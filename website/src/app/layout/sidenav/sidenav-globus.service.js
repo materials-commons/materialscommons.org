@@ -16,7 +16,7 @@ class SidenavGlobusService {
                 controller: GlobusDownloadDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
-            clickOutsideToClose: true,
+                clickOutsideToClose: true,
                 locals: {
                     project: project,
                 }
@@ -33,7 +33,7 @@ class SidenavGlobusService {
                 controller: GlobusUploadDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
-            clickOutsideToClose: true,
+                clickOutsideToClose: true,
                 locals: {
                     project: project,
                 }
@@ -56,7 +56,7 @@ class SidenavGlobusService {
                 controller: GlobusUploadStatusDialogController,
                 controllerAs: '$ctrl',
                 bindToController: true,
-            clickOutsideToClose: true,
+                clickOutsideToClose: true,
                 locals: {
                     project: project,
                 }
@@ -186,23 +186,12 @@ class GlobusUploadStatusDialogController {
 
 class GlobusDownloadDialogController {
     /*@ngInject*/
-    constructor($mdDialog, etlServerAPI) {
+    constructor($mdDialog, projectsAPI) {
         this.$mdDialog = $mdDialog;
-        this.etlServerAPI = etlServerAPI;
         this.url = null;
         this.error = null;
-        this.etlServerAPI.setupGlobusDownloadTransfer(this.project.id).then(
-            results => {
-                if (results.url) {
-                    this.url = results.url;
-                } else {
-                    this.error = results.error;
-                    if (!this.error) {
-                        this.error = 'Unexpected error, no URL: please contact site admin';
-                    }
-                }
-            },
-            error => this.error = error
+        projectsAPI.setupGlobusProjectDownload(this.project.id).then(
+            resp => this.url = resp.globus_url
         );
     }
 
