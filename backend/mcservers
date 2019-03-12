@@ -106,6 +106,9 @@ function start_rethinkdb() {
                 fi
             fi
         fi
+    else
+        echo "Setting up database..."
+        scripts/dbcreate.py
     fi
 }
 
@@ -320,7 +323,7 @@ function stop_servers() {
     echo Stopping ${SERVERTYPE} servers....
 
     stop_es
-    stop_globus
+#    stop_globus
     stop_etl_server
     stop_mcapiserver
     stop_mcstored
@@ -329,8 +332,8 @@ function stop_servers() {
     stop_mcpub
     stop_mcmon
     stop_mcapid
-    stop_rethinkdb
-    stop_redis
+#    stop_rethinkdb
+#    stop_redis
 
     delete_old_logs
 
@@ -625,8 +628,8 @@ function deploy_mc() {
     echo "  Stopping servers..."
     stop_servers
 
-    echo "  Updating Python API Library"
-    scripts/updatePythonApi.sh
+    echo "  Updating pymcetl command"
+    (cd ../../pymcetl; python3 setup.py install --user)
 
     echo "  Updating server dependencies..."
     rm -f package-lock.json
