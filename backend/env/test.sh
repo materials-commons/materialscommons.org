@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-# Note: often this will be redundent, but it simplifies use
+# Note: often this will be redundant, but it simplifies use
 # source to set all environment variables for the type of server
 export SERVERTYPE=test
 
 export MC_DEPLOY_DIR=/var/www/test/materialscommons.org
 export MC_API_SERVICE_PORT=6004
-export MC_API_GLOBUS_SERVICE_PORT=6046
 export MCSERV_PORT=6052
 export MCDB_PORT=50815
 export MCDB_CONNECTION="localhost:$MCDB_PORT"

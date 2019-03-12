@@ -22,7 +22,6 @@ show_env() {
     echo "   MCAPID_PORT:                ${MCAPID_PORT}"
     echo "   REDIS_PORT:                 ${REDIS_PORT}"
     echo "   MC_API_SERVICE_PORT:        ${MC_API_SERVICE_PORT}"
-    echo "   MC_API_GLOBUS_SERVICE_PORT: ${MC_API_GLOBUS_SERVICE_PORT}"
     echo "   RETHINKDB_HTTP_PORT:        ${RETHINKDB_HTTP_PORT}"
     echo "   RETHINKDB_CLUSTER_PORT:     ${RETHINKDB_CLUSTER_PORT}"
     echo "   MCDB_DIR:                   ${MCDB_DIR}"

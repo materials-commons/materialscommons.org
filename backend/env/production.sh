@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Note: often this will be redundent, but it simplifies use
+# Note: often this will be redundant, but it simplifies use
 # source to set all environment variables for the type of server
 export SERVERTYPE=production
 
@@ -11,9 +11,9 @@ export MCDB_CONNECTION="localhost:$MCDB_PORT"
 #### Remove these after update ####
 export MC_SERVICE_PORT=5006
 export MC_PUB_SERVICE_PORT=5014
+export MC_ETL_SERVICE_PORT=5032
 ###################################
 
-export MC_API_GLOBUS_SERVICE_PORT=5046
 export MC_API_SERVICE_PORT=3006
 export MCSERV_PORT=5052
 export RETHINKDB_HTTP_PORT=8080
