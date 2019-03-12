@@ -5,7 +5,6 @@ node_js:
 notifications:
   email:
     recipients:
-        - weymouth@umich.edu
         - gtarcea@umich.edu
     on_success: change
     on_failure: always
@@ -25,7 +24,6 @@ env:
   global:
     - MC_SERVICE_PORT=5002
     - MC_API_SERVICE_PORT=5004
-    - MC_PUB_SERVICE_PORT=5026
     - MCDB_PORT=40815
     - MCDB_CONNECTION="localhost:$MCDB_PORT"
     - MCDIR=~/file_data
