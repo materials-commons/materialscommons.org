@@ -172,7 +172,7 @@
         </div>
 
         <div class="padding-3" ng-repeat="shortcut in $ctrl.project.shortcuts | orderBy:'name'">
-            <a class="project-sidenav-tool margin-left-30" ui-sref="project.files.dir({dir_id: shortcut.id})" ui-sref-opts="{reload: true}">
+            <a class="project-sidenav-tool margin-left-30" ui-sref="project.files({directory_id: shortcut.id})">
                 <i class="fa fa-fw fa-folder"></i> {{shortcut.name}}
             </a>
         </div>
