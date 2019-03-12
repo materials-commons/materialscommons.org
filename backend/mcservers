@@ -322,7 +322,7 @@ function stop_servers() {
 
     echo Stopping ${SERVERTYPE} servers....
 
-    stop_es
+#    stop_es
 #    stop_globus
     stop_etl_server
     stop_mcapiserver
