@@ -51,6 +51,17 @@ module.exports = function(r) {
         return await r.table('users').getAll(userId).count() === 1;
     }
 
+    async function experimentNameIsUniqueInProject(name, projectId) {
+        let experiments = await r.table('project2experiment').getAll(projectId, {index: projectId})
+            .eqJoin('experiment_id', r.table('experiments')).zip().filter({name: name});
+        return experiments.length === 0;
+    }
+
+    async function experimentInProject(experimentId, projectId) {
+        let matches = await r.table('project2experiment').getAll([projectId, experimentId], {index: 'project_experiment'});
+        return matches.length !== 0;
+    }
+
     return {
         allFilesInProject,
         allDirectoriesInProject,
@@ -62,5 +73,7 @@ module.exports = function(r) {
         fileInDirectory,
         isProjectOwner,
         userExists,
+        experimentNameIsUniqueInProject,
+        experimentInProject,
     };
 };

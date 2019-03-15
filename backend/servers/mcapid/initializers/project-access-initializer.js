@@ -2,11 +2,11 @@ const {Initializer, api} = require('actionhero');
 const {setStatusCode} = require('@lib/connection-helpers');
 const status = require('http-status');
 
-module.exports = class APIKeyInitializer extends Initializer {
+module.exports = class ProjectAccessInitializer extends Initializer {
     constructor() {
         super();
         this.name = 'project-access';
-        this.startPriority = 1010;
+        this.startPriority = 1110;
         this.loadPriority = 1100;
     }
 

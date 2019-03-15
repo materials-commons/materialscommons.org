@@ -10,12 +10,13 @@ module.exports = class ApiInitializer extends Initializer {
 
     initialize() {
         const r = require('rethinkdbdash')({db: api.config.db.name, port: api.config.db.port});
-        const inspect = (data) => (data ? {data: util.inspect(data, {showHidden: false, depth: null})} : null);
+        const inspect = (data) => (data ? {data: util.inspect(data, {showHidden: false, depth: null, breakLength: Infinity})} : null);
         api.mc = {
             r: r,
             directories: require('@dal/directories')(r),
             projects: require('@dal/projects')(r),
             datasets: require('@dal/datasets')(r),
+            experiments: require('@dal/experiments')(r),
             check: require('@dal/check')(r),
             processes: require('@dal/processes')(r),
             publishedDatasets: require('@dal/published-datasets')(r),
