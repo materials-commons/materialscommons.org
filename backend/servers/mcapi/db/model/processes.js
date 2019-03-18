@@ -4,7 +4,6 @@ const commonQueries = require('../../../lib/common-queries');
 const processCommon = require('./process-common');
 const model = require('../../../shared/model');
 
-
 function* getProcess(processID) {
     return yield processCommon.getProcess(r, processID);
 }
@@ -147,9 +146,9 @@ function* isLeafNode(processId) {
     return usingAsInputs.length === 0;
 }
 
-function* addAdditionalParemeters(processId, args){
+function* addAdditionalParemeters(processId, args) {
     //get new setup
-    let rv = yield r.table('setups').insert(new model.Setups('Process','process'));
+    let rv = yield r.table('setups').insert(new model.Setups('Process', 'process'));
     let setupId = rv.generated_keys[0];
     let properties = args.map(prop => {
         if (!prop.description) prop.description = '';
@@ -159,7 +158,7 @@ function* addAdditionalParemeters(processId, args){
             prop.attribute, prop.otype, prop.value, prop.unit);
     });
     yield r.table('setupproperties').insert(properties);
-    yield r.table('process2setup').insert(new model.Process2Setup(processId,setupId));
+    yield r.table('process2setup').insert(new model.Process2Setup(processId, setupId));
     return {val: yield getProcess(processId)};
 }
 
@@ -173,7 +172,7 @@ function* deleteProcessFull(projectId, processId, options) {
         // can not delete a process that is in a dataset
         let dataset2process = yield r.table('dataset2process').getAll(processId, {index: 'process_id'});
         if (dataset2process.length > 0) {
-            return {error: "Can not delete a process that is in a dataset: remove process from dataset(s)"}
+            return {error: 'Can not delete a process that is in a dataset: remove process from dataset(s)'};
         }
 
         // can not delete a process that is a non-leaf node in a workflow;
@@ -187,7 +186,7 @@ function* deleteProcessFull(projectId, processId, options) {
         if (usingAsInputs.length) {
             return {
                 error: `Can not delete a process, ${processId}, that is not the leaf node of a workflow; delete other processes first`
-            }
+            };
         }
     }
 
