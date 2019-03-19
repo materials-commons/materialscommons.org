@@ -72,6 +72,10 @@ module.exports.CreateSampleAction = class CreateSampleAction extends Action {
             }
         };
     }
+
+    async run() {
+
+    }
 };
 
 const sampleExample = {};
