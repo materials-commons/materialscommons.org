@@ -45,4 +45,33 @@ module.exports.GetSampleAction = class GetSampleAction extends Action {
     }
 };
 
+module.exports.CreateSampleAction = class CreateSampleAction extends Action {
+    constructor() {
+        super();
+        this.name = 'createSample';
+        this.description = 'Creates a new sample';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            },
+
+            process_id: {
+                default: '',
+            },
+
+            name: {
+                required: true,
+            },
+
+            attributes: {
+                default: [],
+            }
+        };
+    }
+};
+
 const sampleExample = {};

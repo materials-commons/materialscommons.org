@@ -64,8 +64,18 @@ module.exports = function(r) {
             }).coerceTo('array');
     }
 
+    async function createSample() {
+
+    }
+
+    async function addSampleToProcess() {
+
+    }
+
     return {
         getSamplesForProject,
         getSample,
+        createSample,
+        addSampleToProcess,
     };
 };
