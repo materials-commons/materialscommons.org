@@ -10,22 +10,14 @@ describe('Test createProject', () => {
     });
 
     test('a user can create a project', async() => {
-        const user = {
-            id: 'test@test.mc'
-        };
-
         name = await r.uuid();
-        createdProject = await projects.createProject(user, name, '');
+        createdProject = await projects.createProject('test@test.mc', name, '');
         expect(createdProject).not.toBeNull();
         expect(createdProject.name).toEqual(name);
     });
 
     test('creating a project that already exists returns the existing project', async() => {
-        const user = {
-            id: 'test@test.mc'
-        };
-
-        let p = await projects.createProject(user, name, '');
+        let p = await projects.createProject('test@test.mc', name, '');
         expect(p).not.toBeNull();
         expect(p.id).toEqual(createdProject.id);
     });

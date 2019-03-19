@@ -4,7 +4,7 @@ module.exports = function(r) {
     const dirUtils = require('@dal/dir-utils')(r);
 
     async function createTestProject(userId) {
-        const user = {id: userId ? userId : 'test@test.mc'};
+        const user = userId ? userId : 'test@test.mc';
         let name = await r.uuid();
         return await projects.createProject(user, name, '');
     }

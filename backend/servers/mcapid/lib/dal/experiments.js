@@ -1,7 +1,9 @@
 const model = require('@lib/model');
-const db = require('./db');
+
 
 module.exports = function(r) {
+    const db = require('./db')(r);
+
     async function createExperiment(name, description, owner, projectId) {
         let e = new model.Experiment(name, owner);
         e.description = description;

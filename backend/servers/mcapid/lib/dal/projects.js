@@ -15,8 +15,7 @@ module.exports = function(r) {
         await r.table('access').getAll(projectId, {index: 'project_id'}).delete();
     }
 
-    async function createProject(user, name, description) {
-        let owner = user.id;
+    async function createProject(owner, name, description) {
         let matches = await r.table('projects').filter({name: name, owner: owner});
         if (0 < matches.length) {
             return await getProject(matches[0].id);

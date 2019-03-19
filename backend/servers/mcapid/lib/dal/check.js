@@ -52,7 +52,7 @@ module.exports = function(r) {
     }
 
     async function experimentNameIsUniqueInProject(name, projectId) {
-        let experiments = await r.table('project2experiment').getAll(projectId, {index: projectId})
+        let experiments = await r.table('project2experiment').getAll(projectId, {index: 'project_id'})
             .eqJoin('experiment_id', r.table('experiments')).zip().filter({name: name});
         return experiments.length === 0;
     }

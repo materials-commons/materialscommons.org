@@ -58,11 +58,10 @@ module.exports.CreateProjectAction = class CreateProjectAction extends Action {
     }
 
     async run({response, params, user}) {
-        const project = await dal.tryCatch(async() => await api.mc.projects.createProject(user, params));
+        const project = await dal.tryCatch(async() => await api.mc.projects.createProject(user.id, params.name, params.description));
         if (!project) {
             throw new Error(`Unable to create project`);
         }
-        // api.mc.redis.clients.client.set(project.id, JSON.stringify(project));
         response.data = project;
     }
 };

@@ -6,9 +6,8 @@ const path = require('path');
 describe('test createDirsFromParent', () => {
     let project;
     beforeAll(async() => {
-        const user = {id: 'test@test.mc'};
         let name = await r.uuid();
-        project = await projects.createProject(user, name, '');
+        project = await projects.createProject('test@test.mc', name, '');
     });
 
     afterAll(async() => {
