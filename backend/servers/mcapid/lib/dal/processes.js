@@ -1,7 +1,7 @@
 const model = require('@lib/model');
 
 module.exports = function(r) {
-    const {createProcessFromTemplate} = require('./process-utils/create-process')(r);
+    const createProcessUtils = require('./process-utils/create-process')(r);
 
     async function getProcessesForProject(projectId) {
         return await r.table('project2process').getAll(projectId, {index: 'project_id'})
@@ -66,11 +66,16 @@ module.exports = function(r) {
         };
     }
 
-    async function createProcess(projectId, experimentId, owner) {
+    async function createProcess(projectId, experimentId, name, owner, setups) {
         let template = await r.table('templates').get('global_Generic Transform Samples Template');
-        let procId = await createProcessFromTemplate(projectId, template, owner);
+        let procId = await createProcessUtils.createProcessFromTemplate(projectId, template, name, owner);
         let e2proc = new model.Experiment2Process(experimentId, procId);
         await r.table('experiment2process').insert(e2proc);
+
+        for (let setup of setups) {
+            await createProcessUtils.addSetupParams(setup.name, setup.attribute, setup.properties, procId);
+        }
+
         return await getProcess(owner, procId);
     }
 
