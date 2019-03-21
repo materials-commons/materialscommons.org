@@ -69,7 +69,7 @@ module.exports = function(r) {
     async function resetUserPasswordFromUuid(password, validate_uuid) {
         let u = await r.table('users').getAll(validate_uuid, {index: 'validate_uuid'}).nth(0);
         let hashed = await bcrypt.hash(password, PASSWORD_HASH_ROUNDS);
-        await r.table('users').get(u.id).update({password: hashed});
+        await r.table('users').get(u.id).update({password: hashed, converted: true});
         await r.table('users').get(u.id).replace(r.row.without('reset_password', 'validate_uuid'));
         return true;
     }

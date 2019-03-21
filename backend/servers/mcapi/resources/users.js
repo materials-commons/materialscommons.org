@@ -227,7 +227,7 @@ function* getUserForPasswordResetFromUuid(next) {
 }
 
 function* setUserResetPasswordFlag(next) {
-    let result = yield user.clearResetPassword(this.params.user_id);
+    let result = yield users.clearUserPasswordResetFlag(this.params.user_id);
     if (result.error) {
         this.status = status.BAD_REQUEST;
         this.body = result;
@@ -239,7 +239,7 @@ function* setUserResetPasswordFlag(next) {
 }
 
 function* clearUserResetPasswordFlag(next) {
-    let result = yield user.clearResetPassword(this.params.user_id);
+    let result = yield users.clearUserPasswordResetFlag(this.params.user_id);
     if (result.error) {
         this.status = status.BAD_REQUEST;
         this.body = result;
