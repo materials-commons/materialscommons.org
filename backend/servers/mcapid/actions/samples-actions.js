@@ -73,6 +73,22 @@ module.exports.CreateSampleInProcessAction = class CreateSampleInProcessAction e
             },
 
             attributes: {
+                /*
+                An attribute looks as follows:
+                {
+                   name,
+                   measurements:[
+                       {
+                          name,
+                          attribute,
+                          value,
+                          unit,
+                          otype,
+                          is_best_measure
+                       }
+                   ]
+                }
+                 */
                 default: [],
                 validator: (param) => {
                     if (!_.isArray(param)) {
@@ -95,6 +111,9 @@ module.exports.CreateSampleInProcessAction = class CreateSampleInProcessAction e
         if (attributes.length !== 0) {
             let sample2 = await dal.tryCatch(async() => await api.mc.samples.addAttributesToSampleInProcess(attributes, sample.id, process_id));
 
+            // Adding the attributes changes what we return for the sample. If adding the attributes failed, but we did successfully create the
+            // sample then this is a partial failure condition. In this case its not clear what the user would consider the correct thing to do.
+            // So, if there is a failure we return the sample to this point and indicate a failure condition to the user.
             if (sample2 !== null) {
                 sample = sample2;
             } else {
