@@ -1,3 +1,4 @@
+const {nameToAttr} = require('./util');
 
 function Project(name, description, owner) {
     this.name = name;
@@ -84,7 +85,7 @@ function Process2File(processID, fileID, direction) {
 
 function Setups(name, attribute) {
     this.name = name;
-    this.attribute = attribute;
+    this.attribute = attribute ? attribute : nameToAttr(name);
     this.birthtime = new Date();
     this.otype = 'settings';
 }
@@ -125,7 +126,7 @@ function Property(name, attribute) {
     this.birthtime = new Date();
     this.otype = 'property';
     this.name = name;
-    this.attribute = attribute;
+    this.attribute = attribute ? attribute : nameToAttr(name);
     this.best_measure_id = '';
 }
 
@@ -158,7 +159,7 @@ function Sample2PropertySet(sampleID, psetID, current) {
     this.property_set_id = psetID;
     this.sample_id = sampleID;
     this.version = '';
-    this.current = current;
+    this.current = current ? current : false;
 }
 
 function PropertySet2Property(attrID, asetID) {
