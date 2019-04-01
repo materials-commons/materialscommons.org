@@ -132,7 +132,7 @@ module.exports.CreateSampleInProcessAction = class CreateSampleInProcessAction e
         await api.mc.samples.addSampleToExperiment(sample.id, experiment_id);
 
         if (attributes.length !== 0) {
-            let sample2 = await dal.tryCatch(async() => await api.mc.samples.addAttributesToSampleInProcess(attributes, sample.id, sample.property_set_id, process_id));
+            let sample2 = await dal.tryCatch(async() => await api.mc.samples.addMeasurementsToSampleInProcess(attributes, sample.id, sample.property_set_id, process_id));
 
             // Adding the attributes changes what we return for the sample. If adding the attributes failed, but we did successfully create the
             // sample then this is a partial failure condition. In this case its not clear what the user would consider the correct thing to do.
@@ -199,7 +199,7 @@ module.exports.CreateSampleAction = class CreateSampleAction extends Action {
         await api.mc.samples.addSampleToExperiment(sample.id, experiment_id);
 
         if (attributes.length !== 0) {
-            sample = await dal.tryCatch(async() => await api.mc.samples.addAttributesToSampleInProcess(attributes, sample.id, process.id));
+            sample = await dal.tryCatch(async() => await api.mc.samples.addMeasurementsToSampleInProcess(attributes, sample.id, sample.property_set_id, process.id));
         }
 
         response.data = sample;

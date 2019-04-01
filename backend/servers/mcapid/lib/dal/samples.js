@@ -192,6 +192,5 @@ module.exports = function(r) {
         createSampleInProcess,
         addSampleToProcess,
         addMeasurementsToSampleInProcess,
-        addAttributesToSampleInProcess,
     };
 };
