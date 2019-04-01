@@ -156,7 +156,7 @@ module.exports = function(r) {
         m.unit = measurement.unit;
         m.otype = measurement.otype;
         let createdMeas = await db.insert('measurements', m);
-        if (measurements.is_best_measure) {
+        if (measurement.is_best_measure) {
             await addAsBestMeasure(propertyId, createdMeas.id);
         }
         await addMeasurementToProperty(propertyId, createdMeas.id);

@@ -210,7 +210,7 @@ def create_mcpub_tables():
                           ["process_id", "sample_id", "property_set_id"], db='mcpub')
     create_compound_index("process2sample", "process_sample", ["process_id", "sample_id"], db='mcpub')
 
-    create_mcpub_table("best_measure_history", "process_id", "property_id")
+    create_mcpub_table("best_measure_history", "measurement_id", "property_id")
 
     create_mcpub_table("process2file", "process_id", "datafile_id", "_type")
     create_compound_index("process2file", "process_datafile", ["process_id", "datafile_id"], db='mcpub')
