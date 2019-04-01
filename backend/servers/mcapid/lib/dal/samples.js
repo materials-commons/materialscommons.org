@@ -84,6 +84,7 @@ module.exports = function(r) {
         let createdPSet = await db.insert('propertysets', pset);
         let s = new model.Sample(name, description, owner);
         let createdSample = await db.insert('samples', s);
+        createdSample.property_set_id = createdPSet.id;
         let s2ps = new model.Sample2PropertySet(createdSample.id, createdPSet.id, true);
         await db.insert('sample2propertyset', s2ps);
         let proc2sample = new model.Process2Sample(processId, createdSample.id, createdPSet.id, 'out');
@@ -113,28 +114,53 @@ module.exports = function(r) {
     }
 
     async function addMeasurementsToSampleInProcess(attributes, sampleId, propertySetId, processId) {
-        return {};
+        for (let attr of attributes) {
+            if (attr.id && attr.id !== '') {
+                // Attribute has an existing id which means it already exists in the database.
+                // So we are adding measurements to an existing attribute.
+                await addMeasurementsToExistingAttribute(attr, sampleId, processId);
+            } else {
+                // Adding new attributes
+                await addAttributeToExistingSampleInProcess(attr, sampleId, propertySetId, processId);
+            }
+        }
+        return true;
     }
 
-    async function addAttributesToSampleInProcess(attributes, sampleId, processId) {
+    async function addMeasurementsToExistingAttribute(attr, sampleId, propertySetId, processId) {
+        for (let m of attr.measurements) {
+            await addMeasurement(attr.name, m, attr.id, sampleId, processId);
+        }
+    }
+
+    async function addAttributeToExistingSampleInProcess(attr, sampleId, propertSetId, processId) {
+        await addAttributesToSampleInProcess([attr], sampleId, propertSetId, processId);
+    }
+
+    async function addAttributesToSampleInProcess(attributes, sampleId, propertySetId, processId) {
         for (let attr of attributes) {
             let p = new model.Property(attr.name, nameToAttr(attr.name));
             let createdProperty = await db.insert('properties', p);
+            let ps2p = new model.PropertySet2Property(createdProperty.id, propertySetId);
+            await db.insert('propertyset2property', ps2p);
             for (let measurement of attr.measurements) {
-                let m = new model.Measurement(attr.name, attr.attribute, sampleId);
-                m.value = measurement.value;
-                m.unit = measurement.unit;
-                m.otype = measurement.otype;
-                let createdMeas = await db.insert('measurements', m);
-                if (measurements.is_best_measure) {
-                    await addAsBestMeasure(createdProperty.id, createdMeas.id);
-                }
-                await addMeasurementToProperty(createdProperty.id, createdMeas.id);
-                await addMeasurementToProcess(processId, createdMeas.id);
+                await addMeasurement(attr.name, measurement, createdProperty.id, sampleId, processId);
             }
-
         }
-        return {};
+        return true;
+    }
+
+    async function addMeasurement(attrName, measurement, propertyId, sampleId, processId) {
+        let m = new model.Measurement(attrName, null, sampleId);
+        m.value = measurement.value;
+        m.unit = measurement.unit;
+        m.otype = measurement.otype;
+        let createdMeas = await db.insert('measurements', m);
+        if (measurements.is_best_measure) {
+            await addAsBestMeasure(propertyId, createdMeas.id);
+        }
+        await addMeasurementToProperty(propertyId, createdMeas.id);
+        await addMeasurementToProcess(processId, createdMeas.id);
     }
 
     async function addAsBestMeasure(propertyId, measurementId) {

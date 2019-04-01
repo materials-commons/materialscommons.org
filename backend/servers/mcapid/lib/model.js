@@ -102,7 +102,7 @@ function SetupProperty(setupID, name, description, attribute, otype, value, unit
 
 function Measurement(name, attribute, sampleID) {
     this.name = name;
-    this.attribute = attribute;
+    this.attribute = attribute ? attribute : nameToAttr(name);
     this.sample_id = sampleID;
     this.otype = 'measurement';
     this.file = {};

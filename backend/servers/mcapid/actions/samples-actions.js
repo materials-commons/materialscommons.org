@@ -1,6 +1,7 @@
 const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const _ = require('lodash');
+const joi = require('joi');
 
 module.exports.GetSamplesForProjectAction = class GetSamplesForProjectAction extends Action {
     constructor() {
@@ -90,12 +91,34 @@ module.exports.CreateSampleInProcessAction = class CreateSampleInProcessAction e
                 }
                  */
                 default: [],
-                validator: (param) => {
-                    if (!_.isArray(param)) {
+                validator: (attrs) => {
+                    if (!_.isArray(attrs)) {
                         throw new Error('attributes must be an array');
+                    }
+                    for (let attr of attrs) {
+                        if (!_.isString(attr.name)) {
+                            throw new Error(`Attribute must contain a name`);
+                        }
+                        if (!_.isArray(attr.measurements)) {
+                            throw new Error(`Attribute must contain measurements`);
+                        }
+                        for (let m of attr.measurements) {
+                            let results = joi.validate(m, this.measSchema);
+                            if (results.error !== null) {
+                                throw new Error(`Invalid measurement ${results.error}`);
+                            }
+                        }
                     }
                 }
             }
+        };
+
+        this.measSchema = {
+            name: joi.string().min(1).max(30),
+            value: joi.any(),
+            unit: joi.string(),
+            otype: joi.string(),
+            is_best_measure: joi.boolean(),
         };
     }
 
@@ -109,7 +132,7 @@ module.exports.CreateSampleInProcessAction = class CreateSampleInProcessAction e
         await api.mc.samples.addSampleToExperiment(sample.id, experiment_id);
 
         if (attributes.length !== 0) {
-            let sample2 = await dal.tryCatch(async() => await api.mc.samples.addAttributesToSampleInProcess(attributes, sample.id, process_id));
+            let sample2 = await dal.tryCatch(async() => await api.mc.samples.addAttributesToSampleInProcess(attributes, sample.id, sample.property_set_id, process_id));
 
             // Adding the attributes changes what we return for the sample. If adding the attributes failed, but we did successfully create the
             // sample then this is a partial failure condition. In this case its not clear what the user would consider the correct thing to do.
