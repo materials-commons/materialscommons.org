@@ -199,7 +199,11 @@ module.exports.CreateSampleAction = class CreateSampleAction extends Action {
         await api.mc.samples.addSampleToExperiment(sample.id, experiment_id);
 
         if (attributes.length !== 0) {
-            sample = await dal.tryCatch(async() => await api.mc.samples.addMeasurementsToSampleInProcess(attributes, sample.id, sample.property_set_id, process.id));
+            let result = await dal.tryCatch(async() => await api.mc.samples.addMeasurementsToSampleInProcess(attributes, sample.id, sample.property_set_id, process.id));
+            if (!result) {
+                // addMeasurementsToSampleInProcess returned an error
+                api.mc.log.info('addMeasurementsToSampleInProcess failed for attributes', attributes);
+            }
         }
 
         response.data = sample;
@@ -238,11 +242,16 @@ module.exports.AddSampleToProcessAction = class AddSampleToProcessAction extends
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
         const {sample_id, property_set_id, process_id, transform} = params;
-        const sample = await dal.tryCatch(async() => await api.mc.samples.addSampleToProcess(sample_id, property_set_id, process_id, transform));
-        if (!sample) {
+        const result = await dal.tryCatch(async() => await api.mc.samples.addSampleToProcess(sample_id, property_set_id, process_id, transform));
+        if (!result) {
             throw new Error(`Unable to add sample ${sample_id}/${property_set_id} to process ${process_id}`);
+        }
+
+        const sample = await dal.tryCatch(async() => await api.mc.samples.getSample(sample_id, user.id));
+        if (!sample) {
+            throw new Error(`Unable to retrieve sample ${sample_id}`);
         }
 
         response.data = sample;
