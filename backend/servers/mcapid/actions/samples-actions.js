@@ -244,8 +244,8 @@ module.exports.AddSampleToProcessAction = class AddSampleToProcessAction extends
 
     async run({response, params, user}) {
         const {sample_id, property_set_id, process_id, transform} = params;
-        const result = await dal.tryCatch(async() => await api.mc.samples.addSampleToProcess(sample_id, property_set_id, process_id, transform));
-        if (!result) {
+        const propertySetId = await dal.tryCatch(async() => await api.mc.samples.addSampleToProcess(sample_id, property_set_id, process_id, transform));
+        if (!propertySetId) {
             throw new Error(`Unable to add sample ${sample_id}/${property_set_id} to process ${process_id}`);
         }
 
@@ -253,6 +253,8 @@ module.exports.AddSampleToProcessAction = class AddSampleToProcessAction extends
         if (!sample) {
             throw new Error(`Unable to retrieve sample ${sample_id}`);
         }
+
+        sample.property_set_id = propertySetId;
 
         response.data = sample;
     }

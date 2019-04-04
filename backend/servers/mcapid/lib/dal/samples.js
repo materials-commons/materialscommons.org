@@ -109,8 +109,9 @@ module.exports = function(r) {
             await db.insert('sample2propertyset', s2ps);
             let p2s = new model.Process2Sample(processId, sampleId, createdPSet.id, 'out');
             await db.insert('process2sample', p2s);
+            return createdPSet.id;
         }
-        return true;
+        return propertySetId;
     }
 
     async function addMeasurementsToSampleInProcess(attributes, sampleId, propertySetId, processId) {
