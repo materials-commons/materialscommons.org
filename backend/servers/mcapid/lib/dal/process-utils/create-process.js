@@ -86,14 +86,15 @@ module.exports = function(r) {
             await db.insert('process2setup', new model.Process2Setup(processId, setup.id));
         }
 
-        let toInsert = properties.map(prop => {
-            if (!prop.description) prop.description = '';
-            if (!prop.unit) prop.unit = '';
-            return new model.SetupProperty(setup.id, prop.name, prop.description, prop.attribute, prop.otype, prop.value, prop.unit);
-        });
+        if (properties) {
+            let toInsert = properties.map(prop => {
+                if (!prop.description) prop.description = '';
+                if (!prop.unit) prop.unit = '';
+                return new model.SetupProperty(setup.id, prop.name, prop.description, prop.attribute, prop.otype, prop.value, prop.unit);
+            });
 
-        await r.table('setupproperties').insert(toInsert);
-
+            await r.table('setupproperties').insert(toInsert);
+        }
         return true;
     }
 
