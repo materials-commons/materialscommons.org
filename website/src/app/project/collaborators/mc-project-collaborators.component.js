@@ -81,11 +81,6 @@ function MCProjectCollaboratorsComponentController(User, projectsAPI, accessAPI,
     }
 
     function isOwner(username) {
-        if (username === ctrl.project.owner && username === ctrl.signedInUser) {
-            return true;
-        } else if (User.attr().admin) {
-            return true;
-        }
-        return false;
+        return username === ctrl.project.owner && username === ctrl.signedInUser;
     }
 }
