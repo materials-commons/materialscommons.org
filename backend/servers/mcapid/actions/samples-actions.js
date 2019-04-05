@@ -278,7 +278,31 @@ module.exports.AddMeasurementsToSampleInProcessAction = class AddMeasurementsToS
                 required: true,
             },
 
+            sample_id: {
+                required: true,
+            },
+
+            property_set_id: {
+                required: true,
+            },
+
             attributes: {
+
+                /*
+                An attribute looks as follows:
+                {
+                   name,
+                   id (optional),
+                   measurements:[
+                       {
+                          value,
+                          unit,
+                          otype,
+                          is_best_measure
+                       }
+                   ]
+                }
+                 */
                 required: true,
                 validator: (param) => {
                     if (!_.isArray(param)) {
@@ -289,12 +313,19 @@ module.exports.AddMeasurementsToSampleInProcessAction = class AddMeasurementsToS
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
         const {sample_id, property_set_id, process_id, attributes} = params;
-        const sample = await dal.tryCatch(async() => await api.mc.samples.addMeasurementsToSampleInProcess(attributes, sample_id, property_set_id, process_id));
-        if (!sample) {
+        const result = await dal.tryCatch(async() => await api.mc.samples.addMeasurementsToSampleInProcess(attributes, sample_id, property_set_id, process_id));
+        if (!result) {
             throw new Error(`Unable to add measurements to sample ${sample_id}/${property_set_id} in process ${process_id}`);
         }
+
+        const sample = await dal.tryCatch(async() => await api.mc.samples.getSample(sample_id, user.id));
+        if (!sample) {
+            throw new Error(`Unable to retrieve sample ${sample_id}`);
+        }
+
+        sample.property_set_id = property_set_id;
 
         response.data = sample;
     }
