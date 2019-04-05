@@ -125,6 +125,7 @@ module.exports = function(r) {
                 await addAttributeToExistingSampleInProcess(attr, sampleId, propertySetId, processId);
             }
         }
+
         return true;
     }
 
