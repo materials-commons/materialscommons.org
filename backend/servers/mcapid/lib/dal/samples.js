@@ -16,7 +16,7 @@ module.exports = function(r) {
     function sampleOverviewRql(s) {
         return {
             files_count: r.table('sample2datafile').getAll(s('id'), {index: 'sample_id'}).count(),
-            processes_count: r.table('process2sample').getAll(s('id'), {index: 'sample_id'}).distinct('process_id').count(),
+            processes_count: r.table('process2sample').getAll(s('id'), {index: 'sample_id'}).pluck('process_id').distinct().count(),
             experiments: r.table('experiment2sample').getAll(s('id'), {index: 'sample_id'})
                 .eqJoin('experiment_id', r.table('experiments')).zip().pluck('name', 'id').coerceTo('array'),
         };
