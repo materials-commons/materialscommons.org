@@ -55,7 +55,7 @@ class DatasetDetails2Service {
         });
     }
 
-    addDoi() {
+    addDoi(dataset) {
         return this.$mdDialog.show({
             templateUrl: 'app/modals/set-doi-dialog.html',
             controllerAs: '$ctrl',
@@ -63,7 +63,7 @@ class DatasetDetails2Service {
             bindToController: true,
             clickOutsideToClose: true,
             locals: {
-                dataset: this.state.dataset
+                dataset: dataset
             }
         });
     }
