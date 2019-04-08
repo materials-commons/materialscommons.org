@@ -6,7 +6,7 @@ angular.module('materialscommons').component('mcFileEditControls', {
     }
 });
 
-function MCFileEditControlsComponentController(mcfile, pubsub, toast, mcprojstore, selectItems) {
+function MCFileEditControlsComponentController(mcfile, pubsub, toast, mcprojstore, selectItems, mcshow) {
     'ngInject';
 
     const ctrl = this;
@@ -17,12 +17,13 @@ function MCFileEditControlsComponentController(mcfile, pubsub, toast, mcprojstor
     ctrl.downloadSrc = downloadSrc;
     ctrl.deleteFile = deleteFile;
     ctrl.linkTo = linkTo;
+    ctrl.showJson = showJson;
 
     ////////////////////////////////
 
     function linkTo(what) {
         switch (what) {
-            case "processes":
+            case 'processes':
                 displayProcesses();
                 break;
             //case "samples":
@@ -37,17 +38,17 @@ function MCFileEditControlsComponentController(mcfile, pubsub, toast, mcprojstor
     function displayProcesses() {
         let proj = mcprojstore.currentProject,
             projectId = proj.id;
-        selectItems.processesFromProject(projectId).then(function (items) {
+        selectItems.processesFromProject(projectId).then(function(items) {
             const processCommands = toProcessCommands(items.processes);
-            ctrl.file.customPUT({processes: processCommands}).then(function () {
+            ctrl.file.customPUT({processes: processCommands}).then(function() {
             });
         });
     }
 
     function toProcessCommands(processes) {
-        const inputs = processes.filter(function (p) {
+        const inputs = processes.filter(function(p) {
             return p.input;
-        }).map(function (p) {
+        }).map(function(p) {
             return {
                 command: 'add',
                 process_id: p.id,
@@ -55,9 +56,9 @@ function MCFileEditControlsComponentController(mcfile, pubsub, toast, mcprojstor
             };
         });
 
-        const outputs = processes.filter(function (p) {
+        const outputs = processes.filter(function(p) {
             return p.output;
-        }).map(function (p) {
+        }).map(function(p) {
             return {
                 command: 'add',
                 process_id: p.id,
@@ -70,31 +71,36 @@ function MCFileEditControlsComponentController(mcfile, pubsub, toast, mcprojstor
 
     function deleteFile() {
         //TODO: Ask user if they really wants to delete the file.
-        ctrl.file.remove().then(function () {
+        ctrl.file.remove().then(function() {
             // do something here with deleted the file.
-        }).catch(function (err) {
-            toast.error("File deletion failed: " + err.error);
+        }).catch(function(err) {
+            toast.error('File deletion failed: ' + err.error);
         });
     }
 
     function renameFile() {
-        if (ctrl.newName === "") {
+        if (ctrl.newName === '') {
             return;
         } else if (ctrl.newName === ctrl.file.name) {
             ctrl.renameActive = false;
             return;
         }
         ctrl.file.name = ctrl.newName;
-        ctrl.file.customPUT({name: ctrl.newName}).then(function (f) {
+        ctrl.file.customPUT({name: ctrl.newName}).then(function(f) {
             ctrl.file.name = f.name;
             ctrl.renameActive = false;
             pubsub.send('files.refresh', ctrl.file);
-        }).catch(function (err) {
-            toast.error("File rename failed: " + err.error);
+        }).catch(function(err) {
+            toast.error('File rename failed: ' + err.error);
         });
     }
 
     function downloadSrc() {
         return mcfile.downloadSrc(ctrl.file.id);
     }
+
+    function showJson() {
+        mcshow.showJson(ctrl.file);
+    }
+
 }

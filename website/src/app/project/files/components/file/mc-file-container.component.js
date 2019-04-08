@@ -1,9 +1,10 @@
 class MCFileContainerComponentController {
     /*@ngInject*/
-    constructor(projectsAPI, $stateParams, toast) {
+    constructor(projectsAPI, User, $stateParams, toast) {
         this.projectsAPI = projectsAPI;
         this.$stateParams = $stateParams;
         this.toast = toast;
+        this.isBetaUser = User.isBetaUser();
         this.state = {
             file: null
         };
@@ -19,5 +20,5 @@ class MCFileContainerComponentController {
 
 angular.module('materialscommons').component('mcFileContainer', {
     controller: MCFileContainerComponentController,
-    template: `<mc-file file="$ctrl.state.file"></mc-file>`
+    template: `<mc-file file="$ctrl.state.file" is-beta-user="$ctrl.isBetaUser"></mc-file>`
 });

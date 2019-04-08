@@ -11,6 +11,8 @@
         <div layout-margin>
             <mc-file-description file="$ctrl.state.file"></mc-file-description>
 
+            <mc-file-versions file="$ctrl.state.file" ng-if="$ctrl.state.isBetaUser"></mc-file-versions>
+
             <display-file-contents file="$ctrl.state.file"></display-file-contents>
 
             <div flex="100">

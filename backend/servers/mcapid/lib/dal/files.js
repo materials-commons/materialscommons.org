@@ -20,7 +20,19 @@ module.exports = function(r) {
             return {
                 directory: r.table('datadir2datafile').getAll(fileId, {index: 'datafile_id'})
                     .eqJoin('datadir_id', r.table('datadirs')).zip()
-                    .without('datadir_id', 'datafile_id').nth(0)
+                    .without('datadir_id', 'datafile_id').nth(0),
+                versions: r.db('materialscommons').table('datadir2datafile')
+                    .getAll(fileId, {index: 'datafile_id'})
+                    .eqJoin('datadir_id', r.db('materialscommons').table('datadir2datafile'), {index: 'datadir_id'}).zip()
+                    .eqJoin('datafile_id', r.db('materialscommons').table('datafiles')).zip()
+                    .filter(r.row('id').ne(fileId)).coerceTo('array'),
+                samples: r.table('sample2datafile').getAll(fileId, {index: 'datafile_id'})
+                    .eqJoin('sample_id', r.table('samples')).zip()
+                    .distinct().coerceTo('array'),
+                processes: r.table('process2file').getAll(fileId, {index: 'datafile_id'})
+                    .eqJoin('process_id', r.table('processes')).zip()
+                    .distinct().coerceTo('array'),
+                tags: r.table('tag2item').getAll(fileId, {index: 'item_id'}).orderBy('tag_id').pluck('tag_id').coerceTo('array'),
             };
         });
     }
