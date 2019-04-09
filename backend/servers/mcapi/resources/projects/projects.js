@@ -212,7 +212,7 @@ function * createAndAddNewDoi (next) {
                 otherArgs.description = processArgs.description;
             }
             this.body = yield experimentDatasetsDoi.doiMint(this.params.dataset_id,
-                processArgs.title, processArgs.author, processArgs.publication_year, otherArgs).val;
+                processArgs.title, processArgs.author, processArgs.publication_year, otherArgs);
         }
     }
 

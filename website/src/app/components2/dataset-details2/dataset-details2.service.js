@@ -112,7 +112,7 @@ class SetDatasetDoiDialogController {
             doi: {
                 title: angular.copy(this.dataset.title),
                 author: author,
-                publicationDate: (new Date()).getFullYear(),
+                publication_year: (new Date()).getFullYear(),
                 description: angular.copy(this.dataset.description),
             }
         };
