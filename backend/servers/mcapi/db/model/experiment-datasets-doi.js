@@ -66,6 +66,7 @@ function* doiMint(datasetId, title, creator, publicationYear, otherArgs) {
 
     let doi = null;
     try {
+        console.log('require ', options);
         let response = yield request(options);
         let matches = response.match(/doi:\S*/i);
         doi = matches[0];
