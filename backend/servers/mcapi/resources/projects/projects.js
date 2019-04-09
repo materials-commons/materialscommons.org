@@ -211,10 +211,8 @@ function * createAndAddNewDoi (next) {
             if (processArgs.description) {
                 otherArgs.description = processArgs.description;
             }
-            console.log('calling doi Mint');
             this.body = yield experimentDatasetsDoi.doiMint(this.params.dataset_id,
                 processArgs.title, processArgs.author, processArgs.publication_year, otherArgs);
-            console.log('past doi Mint');
         }
     }
 
