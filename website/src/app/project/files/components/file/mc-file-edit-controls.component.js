@@ -1,40 +1,44 @@
+class MCFileEditControlsComponentController {
+    /*@ngInject*/
+    constructor(mcfile) {
+        this.mcfile = mcfile;
+
+        this.state = {
+            file: null,
+            newName: '',
+            renameActive: false,
+        };
+    }
+
+    $onChanges(changes) {
+        if (changes.file) {
+            this.state.file = angular.copy(changes.file.currentValue);
+            this.state.newName = this.state.file.name;
+            this.state.renameActive = false;
+        }
+    }
+
+    renameFile() {
+        if (this.state.newName === '') {
+            return;
+        } else if (this.state.newName === this.state.file.name) {
+            this.state.renameActive = false;
+            return;
+        }
+
+        this.onRenameFile({name: this.state.newName});
+    }
+
+    downloadSrc() {
+        return this.mcfile.downloadSrc(this.state.file.id);
+    }
+}
+
 angular.module('materialscommons').component('mcFileEditControls', {
     template: require('./mc-file-edit-controls.html'),
     controller: MCFileEditControlsComponentController,
     bindings: {
-        file: '='
+        file: '<',
+        onRenameFile: '&'
     }
 });
-
-function MCFileEditControlsComponentController(mcfile, toast) {
-    'ngInject';
-
-    const ctrl = this;
-
-    ctrl.newName = ctrl.file.name;
-    ctrl.renameActive = false;
-    ctrl.renameFile = renameFile;
-    ctrl.downloadSrc = downloadSrc;
-
-    ////////////////////////////////
-
-    function renameFile() {
-        if (ctrl.newName === '') {
-            return;
-        } else if (ctrl.newName === ctrl.file.name) {
-            ctrl.renameActive = false;
-            return;
-        }
-        ctrl.file.name = ctrl.newName;
-        ctrl.file.customPUT({name: ctrl.newName}).then(function(f) {
-            ctrl.file.name = f.name;
-            ctrl.renameActive = false;
-        }).catch(function(err) {
-            toast.error('File rename failed: ' + err.error);
-        });
-    }
-
-    function downloadSrc() {
-        return mcfile.downloadSrc(ctrl.file.id);
-    }
-}

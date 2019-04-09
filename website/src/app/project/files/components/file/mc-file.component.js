@@ -21,6 +21,10 @@ class MCFileComponentController {
     showJson() {
         this.mcshow.showJson(this.state.file);
     }
+
+    handleRenameFile(name) {
+        this.onRenameFile({name: name});
+    }
 }
 
 angular.module('materialscommons').component('mcFile', {
@@ -29,6 +33,7 @@ angular.module('materialscommons').component('mcFile', {
     bindings: {
         file: '<',
         isBetaUser: '<',
+        onRenameFile: '&'
     }
 });
 

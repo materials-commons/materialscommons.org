@@ -4,7 +4,7 @@
         <a class="md-subhead" ng-click="$ctrl.showJson()">show json</a>
     </div>
 
-    <mc-file-edit-controls file="$ctrl.state.file"></mc-file-edit-controls>
+    <mc-file-edit-controls file="$ctrl.state.file" on-rename-file="$ctrl.handleRenameFile(name)"></mc-file-edit-controls>
 
     <div layout="column" md-whiteframe="5" layout-margin>
         <h5 class="md-title">Details</h5>

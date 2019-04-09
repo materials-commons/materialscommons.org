@@ -62,14 +62,17 @@ module.exports.MoveFileAction = class MoveFileAction extends Action {
             project_id: {
                 required: true,
             },
+
             to_directory_id: {
                 required: true,
             },
+
             from_directory_id: {
                 required: true,
             },
+
             file_id: {
-                requied: true,
+                required: true,
             }
         };
         this.outputExample = {};
@@ -91,6 +94,50 @@ module.exports.MoveFileAction = class MoveFileAction extends Action {
         let file = await dal.tryCatch(async() => await api.mc.files.moveFileToDirectory(params.file_id, params.from_directory_id, params.to_directory_id));
         if (!file) {
             throw new Error(`Unable to move file ${params.file_id} from directory ${params.from_directory_id} to directory ${params.to_directory_id} in project ${params.project_id}`);
+        }
+
+        response.data = file;
+    }
+};
+
+module.exports.RenameFileInProjectAction = class RenameFileInProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'renameFileInProject';
+        this.description = 'Renames the file';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            file_id: {
+                required: true,
+            },
+
+            name: {
+                required: true,
+                validator: name => {
+                    if (name === '') {
+                        throw new Error(`Name cannot be blank`);
+                    }
+                }
+            }
+        };
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
+            throw new Error(`File ${params.file_id} not found in project ${params.project_id}`);
+        }
+
+        let result = await dal.tryCatch(async() => await api.mc.files.renameFile(params.file_id, params.name));
+        if (!result) {
+            throw new Error(`unable to rename file ${params.file_id} to ${params.name}`);
+        }
+
+        let file = await dal.tryCatch(async() => await api.mc.files.getFile(params.file_id));
+        if (!file) {
+            throw new Error(`Unable to retrieve file ${params.file_id} in project ${params.project_id}`);
         }
 
         response.data = file;

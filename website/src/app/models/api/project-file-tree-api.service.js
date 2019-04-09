@@ -8,7 +8,7 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, Use
                 directory_id: directoryId
             }).then(
                 results => results.plain().data,
-                e => toast.error(e.error)
+                e => toast.error(e.data.error)
             );
         },
 
@@ -18,7 +18,7 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, Use
                 directory_path: path,
             }).then(
                 results => results.plain().data,
-                e => toast.error(e.error)
+                e => toast.error(e.data.error)
             );
         },
 
@@ -30,7 +30,7 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, Use
                 return_parent: true,
             }).then(
                 results => results.plain().data,
-                e => toast.error(e.error)
+                e => toast.error(e.data.error)
             );
         },
 
@@ -39,6 +39,17 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, Use
                 file_ids: fileIds
             }).then(
                 resp => `api/project2/download/archive/${resp.archive_id}.zip?apikey=${User.apikey()}`
+            );
+        },
+
+        renameFileInProject: function(fileId, projectId, newName) {
+            return Restangular.one('v3').one('renameFileInProject').customPOST({
+                project_id: projectId,
+                file_id: fileId,
+                name: newName,
+            }).then(
+                f => f.plain().data,
+                e => e.data.error,
             );
         },
 

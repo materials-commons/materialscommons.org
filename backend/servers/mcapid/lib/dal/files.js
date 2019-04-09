@@ -16,7 +16,7 @@ module.exports = function(r) {
     }
 
     async function getFile(fileId) {
-        return await r.table('datafiles').get(fileId).merge(() => {
+        return await r.table('datafiles').get(fileId).merge((file) => {
             return {
                 directory: r.table('datadir2datafile').getAll(fileId, {index: 'datafile_id'})
                     .eqJoin('datadir_id', r.table('datadirs')).zip()
@@ -25,7 +25,7 @@ module.exports = function(r) {
                     .getAll(fileId, {index: 'datafile_id'})
                     .eqJoin('datadir_id', r.db('materialscommons').table('datadir2datafile'), {index: 'datadir_id'}).zip()
                     .eqJoin('datafile_id', r.db('materialscommons').table('datafiles')).zip()
-                    .filter(f => f('id').ne(fileId))
+                    .filter(f => f('id').ne(fileId).and(f('name').eq(file('name'))))
                     .coerceTo('array'),
                 samples: r.table('sample2datafile').getAll(fileId, {index: 'datafile_id'})
                     .eqJoin('sample_id', r.table('samples')).zip()
@@ -51,9 +51,15 @@ module.exports = function(r) {
         });
     }
 
+    async function renameFile(fileId, name) {
+        await r.table('datafiles').get(fileId).update({name: name});
+        return true;
+    }
+
     return {
         uploadFileToProjectDirectory,
         moveFileToDirectory,
         getFile,
+        renameFile,
     };
 };
