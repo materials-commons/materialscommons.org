@@ -1,5 +1,11 @@
 # Release Notes
 
+## April 2019
+- :star: **New Feature:** Added backend support for new ETL process
+- :star: **Improvement:** File details page now gives access to file versions
+- :star: **Improvement:** File details page shows processes and samples
+- :boom: **Fixed:** DOI Publishing in project datasets now generates a DOI
+
 ## March 2019
 - :star: **Improvement:** Issue #1316 New interface for interacting with files
 - :star: **Improvement:** ETL Processing now performed in a background task
