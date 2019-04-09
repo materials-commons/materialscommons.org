@@ -21,3 +21,5 @@ import './components/uploads/mc-file-uploads.component';
 import './components/uploads/mc-file-upload-entry.component';
 import './components/file/mc-file-container.component';
 import './components/file/mc-file-versions.component';
+import './components/file/mc-file-processes.component';
+import './components/file/mc-file-samples.component';

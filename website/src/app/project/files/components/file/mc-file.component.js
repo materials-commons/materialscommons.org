@@ -1,6 +1,7 @@
 class MCFileComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(mcshow) {
+        this.mcshow = mcshow;
         this.state = {
             file: null,
             isBetaUser: false,
@@ -15,6 +16,10 @@ class MCFileComponentController {
         if (changes.isBetaUser) {
             this.state.isBetaUser = changes.isBetaUser.currentValue;
         }
+    }
+
+    showJson() {
+        this.mcshow.showJson(this.state.file);
     }
 }
 

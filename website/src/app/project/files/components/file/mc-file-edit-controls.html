@@ -1,5 +1,4 @@
 <div layout="row" layout-align="start center">
-    <h3 class="md-title" ng-if="!$ctrl.renameActive"><i class="fa fa-fw fa-file"></i>{{$ctrl.file.name}}</h3>
     <span ng-if="$ctrl.renameActive">
         <md-input-container md-no-float class="md-input-bottom-0">
             <input type="text" ng-model="$ctrl.newName" on-enter="$ctrl.renameFile()">
@@ -17,6 +16,4 @@
     <md-button ng-if="!$ctrl.renameActive" ng-href="{{$ctrl.downloadSrc()}}" class="md-primary" download="{{$ctrl.file.name}}">
         download
     </md-button>
-
-    <a class="md-subhead padding-left-30" ng-click="$ctrl.showJson()">show json</a>
 </div>

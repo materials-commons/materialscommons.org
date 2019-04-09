@@ -20,17 +20,31 @@ module.exports = function(r) {
             return {
                 directory: r.table('datadir2datafile').getAll(fileId, {index: 'datafile_id'})
                     .eqJoin('datadir_id', r.table('datadirs')).zip()
-                    .without('datadir_id', 'datafile_id').nth(0),
+                    .without('datadir_id', 'datafile_id').nth(0).pluck('name', 'id'),
                 versions: r.db('materialscommons').table('datadir2datafile')
                     .getAll(fileId, {index: 'datafile_id'})
                     .eqJoin('datadir_id', r.db('materialscommons').table('datadir2datafile'), {index: 'datadir_id'}).zip()
                     .eqJoin('datafile_id', r.db('materialscommons').table('datafiles')).zip()
-                    .filter(r.row('id').ne(fileId)).coerceTo('array'),
+                    .filter(f => f('id').ne(fileId))
+                    .coerceTo('array'),
                 samples: r.table('sample2datafile').getAll(fileId, {index: 'datafile_id'})
                     .eqJoin('sample_id', r.table('samples')).zip()
-                    .distinct().coerceTo('array'),
+                    .pluck('name', 'id', 'owner', 'birthtime')
+                    .merge(s => {
+                        return {
+                            files_count: r.table('sample2datafile').getAll(s('id'), {index: 'sample_id'}).count(),
+                            processes_count: r.table('process2sample').getAll(s('id'), {index: 'sample_id'}).pluck('process_id').distinct().count(),
+                        };
+                    }).coerceTo('array'),
                 processes: r.table('process2file').getAll(fileId, {index: 'datafile_id'})
                     .eqJoin('process_id', r.table('processes')).zip()
+                    .pluck('name', 'id', 'owner', 'birthtime')
+                    .merge(proc => {
+                        return {
+                            files_count: r.table('process2file').getAll(proc('id'), {index: 'process_id'}).count(),
+                            samples_count: r.table('process2sample').getAll(proc('id'), {index: 'process_id'}).count(),
+                        };
+                    })
                     .distinct().coerceTo('array'),
                 tags: r.table('tag2item').getAll(fileId, {index: 'item_id'}).orderBy('tag_id').pluck('tag_id').coerceTo('array'),
             };

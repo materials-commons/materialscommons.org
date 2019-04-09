@@ -1,29 +1,61 @@
-<div layout="column" layout-fill layout-margin layout-wrap>
-    <div ng-if="$ctrl.state.file">
-        <mc-file-edit-controls file="$ctrl.state.file"></mc-file-edit-controls>
-        <div layout="row" flex="60" layout-align="space-around center">
-            <span class="md-subhead-light"><i class="fa fa-calendar"></i>{{$ctrl.state.file.birthtime | toDateString}}</span>
-            <span class="md-subhead-light"><i class="fa fa-user"></i>{{$ctrl.state.file.owner}}</span>
-            <span class="md-subhead-light"><i class="fa fa-copy"></i>{{$ctrl.state.file.size | bytes}}</span>
-            <span class="md-subhead-light"><i class=""></i>{{$ctrl.state.file.mediatype.mime}}</span>
-        </div>
+<div layout="column" layout-margin flex>
+    <div layout="row" flex layout-align="space-between center">
+        <h2>File: {{$ctrl.state.file.directory.name}}/{{$ctrl.state.file.name}}</h2>
+        <a class="md-subhead" ng-click="$ctrl.showJson()">show json</a>
+    </div>
 
-        <div layout-margin>
-            <mc-file-description file="$ctrl.state.file"></mc-file-description>
+    <mc-file-edit-controls file="$ctrl.state.file"></mc-file-edit-controls>
 
-            <mc-file-versions file="$ctrl.state.file" ng-if="$ctrl.state.isBetaUser"></mc-file-versions>
-
-            <display-file-contents file="$ctrl.state.file"></display-file-contents>
-
-            <div flex="100">
-                <file-tags file="$ctrl.state.file"></file-tags>
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Details</h5>
+        <div layout="row" layout-margin>
+            <div layout="row" flex="40">
+                <dl>
+                    <dt>Uploaded By</dt>
+                    <dd>{{$ctrl.state.file.owner}}</dd>
+                    <dt>Uploaded On</dt>
+                    <dd>{{$ctrl.state.file.birthtime | date:'fullDate'}}</dd>
+                    <dt>Mediatype</dt>
+                    <dd>{{$ctrl.state.file.mediatype.mime}}</dd>
+                    <dt>Size</dt>
+                    <dd>{{$ctrl.state.file.size | bytes}}</dd>
+                </dl>
             </div>
-
-            <div ng-if="false" class="row">
-                <div class="section">
-                    <detail-tabs item="$ctrl.state.file"></detail-tabs>
-                </div>
+            <div layout="row" flex="40">
+                <dl>
+                    <dt>Id</dt>
+                    <dd>{{$ctrl.state.file.id}}</dd>
+                    <dt>Checksum</dt>
+                    <dd>{{$ctrl.state.file.checksum}}</dd>
+                    <dt>Latest Version</dt>
+                    <dd>{{$ctrl.state.file.current ? "Yes" : "No"}}</dd>
+                </dl>
             </div>
         </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Versions</h5>
+        <div layout="row" layout-margin>
+            <mc-file-versions versions="$ctrl.state.file.versions" flex="100"></mc-file-versions>
+        </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Samples</h5>
+        <div layout="row" layout-margin>
+            <mc-file-samples samples="$ctrl.state.file.samples" flex="100"></mc-file-samples>
+        </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <h5 class="md-title">Processes</h5>
+        <div layout="row" layout-margin>
+            <mc-file-processes processes="$ctrl.state.file.processes" flex="100"></mc-file-processes>
+        </div>
+    </div>
+
+    <div layout="column" md-whiteframe="5" layout-margin>
+        <display-file-contents file="$ctrl.state.file" flex="100"></display-file-contents>
     </div>
 </div>

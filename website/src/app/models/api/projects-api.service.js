@@ -41,6 +41,19 @@ class ProjectsAPIService {
         );
     }
 
+    getFileInProject(fileId, projectId) {
+        return this.Restangular.one('v3').one('getFileInProject').customPOST({
+            project_id: projectId,
+            file_id: fileId,
+        }).then(
+            file => file.plain().data,
+            e => {
+                console.log('e', e);
+                this.toast.error(e.data.error);
+            }
+        );
+    }
+
     setupGlobusProjectDownload(projectId) {
         return this.Restangular.one('v4').one('createGlobusProjectDownload').customPOST({project_id: projectId}).then(
             resp => resp.plain(),
