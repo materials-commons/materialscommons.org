@@ -13,7 +13,7 @@ class MCFileContainerComponentController {
     $onInit() {
         // this.projectsAPI.getProjectFile(this.$stateParams.project_id, this.$stateParams.file_id).then(
         this.projectsAPI.getFileInProject(this.$stateParams.file_id, this.$stateParams.project_id).then(
-            (file) => this.state.file = file,
+            (file) => this.state.file = file
         );
     }
 
