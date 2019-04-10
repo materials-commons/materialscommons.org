@@ -3,11 +3,12 @@ const dal = require('@dal');
 const convertible = require('@lib/convertible');
 const path = require('path');
 
-module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentFromSpreadsheetV2Action extends Action {
+module.exports.CreateExperimentFromSpreadsheetAction = class CreateExperimentFromSpreadsheetV2Action extends Action {
     constructor() {
         super();
-        this.name = 'createExperimentFromSpeadsheetv2';
+        this.name = 'createExperimentFromSpeadsheet';
         this.description = 'Create an experiment from a spreadsheet running mcetl';
+        this.version = 2;
         this.inputs = {
             project_id: {
                 required: true,
@@ -64,11 +65,12 @@ module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentF
     }
 };
 
-module.exports.CreateExperimentFromSpreadsheetAction = class CreateExperimentFromSpreadsheetAction extends Action {
+module.exports.CreateExperimentFromSpreadsheetV1Action = class CreateExperimentFromSpreadsheetV1Action extends Action {
     constructor() {
         super();
         this.name = 'createExperimentFromSpreadsheet';
-        this.description = 'createExperimentFromSpreadsheet';
+        this.description = 'Create an experiment from a spreadsheet running pymcetl';
+        this.version = 1;
         this.inputs = {
             project_id: {
                 required: true,
