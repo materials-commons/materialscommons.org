@@ -17,7 +17,19 @@ class ExperimentsAPIService {
         return this.Restangular.one('v3').one('createExperimentFromSpreadsheet').customPOST({
             project_id: projectId,
             file_id: fileId,
-            experiment_name: experimentName
+            experiment_name: experimentName,
+        }).then(
+            result => result.plain().data,
+            e => this.toast.error(`Unable to submit file for process: ${e.data.error}`)
+        );
+    }
+
+    createExperimentFromSpreadsheetV1(experimentName, fileId, projectId) {
+        return this.Restangular.one('v3').one('createExperimentFromSpreadsheet').customPOST({
+            project_id: projectId,
+            file_id: fileId,
+            experiment_name: experimentName,
+            apiVersion: 1,
         }).then(
             result => result.plain().data,
             e => this.toast.error(`Unable to submit file for process: ${e.data.error}`)
