@@ -1,5 +1,36 @@
 const {api, Task} = require('actionhero');
 const {spawn} = require('child_process');
+const mcdir = require('@lib/mcdir');
+
+module.exports.MCETLTask = class MCETLTask extends Task {
+    constructor() {
+        super();
+        this.name = 'mcetl';
+        this.description = 'Runs mcetl against the spreadsheet';
+        this.frequency = 0;
+        this.queue = 'etl';
+    }
+
+    async run(etlArgs) {
+        let filePath = mcdir.pathToFileId(mcdir.idToUse(etlArgs.file));
+        let args = [
+            '--apikey', etlArgs.apikey,
+            '--mcurl', 'http://localhost:5016/api',
+            '--file', filePath,
+            '--project-id', etlArgs.project_id,
+            '--experiment-name', etlArgs.experimentName
+        ];
+
+        try {
+            api.mc.log.info('Starting mcetl ETL Job', etlArgs);
+            await spawnEtlJob('mcetl', args);
+            return true;
+        } catch (e) {
+            api.mc.log.info(`Failed to process ETL Job ${e} cmd: 'mcetl', args: ${args}`, etlArgs);
+            return false;
+        }
+    }
+};
 
 module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Task {
     constructor() {
@@ -11,23 +42,22 @@ module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Tas
     }
 
     async run(etlArgs) {
+        let args = ['--apikey', etlArgs.apikey, '--project', etlArgs.projectId, '--experiment', etlArgs.experimentName, '--spreadsheet', etlArgs.path];
         try {
-            api.mc.log.info('Starting ETL Job', etlArgs);
-            await spawnEtlJob(etlArgs);
+            api.mc.log.info('Starting pymcetl ETL Job', etlArgs);
+            // example: pymcetl --apikey 124e09425cfe4c4287eff056e69c1dd1 --project 23b1eba7-425e-4ee0-a2a2-2ccdf6169920 --experiment E2 --spreadsheet /Pure_Mg_CHESS_MC.xlsx
+            await spawnEtlJob('pymcetl', args);
             return true;
         } catch (e) {
-            api.mc.log.info(`Failed to process ETL Job ${e}`, etlArgs);
+            api.mc.log.info(`Failed to process ETL Job ${e}, cmd: 'pymcetl', args: ${args}`, etlArgs);
             return false;
         }
     }
 };
 
-async function spawnEtlJob(etlArgs) {
+async function spawnEtlJob(cmd, args) {
     return new Promise((resolve, reject) => {
-        // example: pymcetl --apikey 124e09425cfe4c4287eff056e69c1dd1 --project 23b1eba7-425e-4ee0-a2a2-2ccdf6169920 --experiment E2 --spreadsheet /Pure_Mg_CHESS_MC.xlsx
-
-        let child = spawn('pymcetl', ['--apikey', etlArgs.apikey, '--project', etlArgs.projectId, '--experiment', etlArgs.experimentName,
-            '--spreadsheet', etlArgs.path]);
+        let child = spawn(cmd, args);
         child.stderr.on('data', data => api.mc.log.info(`Processing spreadsheet ${etlArgs.path}: ${data}`));
         child.stdout.on('data', data => api.mc.log.info(`Processing spreadsheet ${etlArgs.path}: ${data}`));
         child.on('close', exitCode => {

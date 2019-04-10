@@ -3,6 +3,67 @@ const dal = require('@dal');
 const convertible = require('@lib/convertible');
 const path = require('path');
 
+module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentFromSpreadsheetV2Action extends Action {
+    constructor() {
+        super();
+        this.name = 'createExperimentFromSpeadsheetv2';
+        this.description = 'Create an experiment from a spreadsheet running mcetl';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            file_id: {
+                required: true,
+            },
+
+            experiment_name: {
+                required: true,
+                validator: name => {
+                    if (name === '') {
+                        throw new Error(`experiment_name cannot be blank`);
+                    }
+
+                    if (name.match(/[^0-9a-zA-Z_\-\s]/)) {
+                        // A match means it found characters that are not in the list above
+                        throw new Error(`Invalid experiment name, only a-zA-Z0-9_- are allowed`);
+                    }
+                }
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
+            throw new Error(`File ${params.file_id} not in project ${params.project_id}`);
+        }
+
+        if (!await api.mc.check.experimentNameIsUniqueInProject(params.experiment_name, params.project_id)) {
+            throw new Error(`Experiment name ${params.experiment_name} is not unique in project ${params.project_id}`);
+        }
+
+        let file = await dal.tryCatch(async () => await api.mc.files.getFile(params.file_id));
+        if (!file) {
+            throw new Error(`Internal error: unable to retrieve file ${params.file_id}`);
+        }
+
+        if (!convertible.isSpreadsheet(file.mediatype.mime)) {
+            throw new Error(`File ${file.name} is not a spreadsheet: ${file.mediatype.mime}`);
+        }
+
+        let etlJob = {
+            projectId: params.project_id,
+            experimentName: params.experiment_name,
+            file: file,
+            apikey: user.apikey,
+        };
+
+        await api.tasks.enqueue('mcetl', etlJob, 'etl');
+
+        response.data = {success: `Successfully enqueued ETL job for ${file.name}`};
+    }
+};
+
 module.exports.CreateExperimentFromSpreadsheetAction = class CreateExperimentFromSpreadsheetAction extends Action {
     constructor() {
         super();
@@ -28,7 +89,7 @@ module.exports.CreateExperimentFromSpreadsheetAction = class CreateExperimentFro
             throw new Error(`File ${params.file_id} not in project ${params.project_id}`);
         }
 
-        let file = await dal.tryCatch(async() => await api.mc.files.getFile(params.file_id));
+        let file = await dal.tryCatch(async () => await api.mc.files.getFile(params.file_id));
         if (!file) {
             throw new Error(`Internal error: unable to retrieve file ${params.file_id}`);
         }
@@ -80,7 +141,7 @@ module.exports.CreateExperimentInProjectAction = class CreateExperimentInProject
             throw new Error(`Experiment name ${params.name} is not unique in project ${params.project_id}`);
         }
 
-        let e = await dal.tryCatch(async() => await api.mc.experiments.createExperiment(params.name, params.description, user.id, params.project_id));
+        let e = await dal.tryCatch(async () => await api.mc.experiments.createExperiment(params.name, params.description, user.id, params.project_id));
         if (!e) {
             throw new Error(`Unable to create experiment ${params.name} in project ${params.project_id}`);
         }
@@ -106,7 +167,7 @@ module.exports.GetExperimentAction = class GetExperimentAction extends Action {
     }
 
     async run({response, params}) {
-        let e = await dal.tryCatch(async() => await api.mc.experiments.getExperiment(params.experiment_id));
+        let e = await dal.tryCatch(async () => await api.mc.experiments.getExperiment(params.experiment_id));
         if (!e) {
             throw new Error(`Unable to retrieve experiment ${params.experiment_id} in project ${params.project_id}`);
         }
@@ -132,7 +193,7 @@ module.exports.RenameExperimentInProjectAction = class RenameExperimentInProject
             name: {
                 required: true,
                 validator: name => {
-                    if (name.match(/[^0-9a-zA-Z_\-]/)) {
+                    if (name.match(/[^0-9a-zA-Z_\-\s]/)) {
                         // A match means it found characters that are not in the list above
                         throw new Error(`Invalid experiment name, only a-zA-Z0-9_- are allowed`);
                     }
@@ -146,12 +207,12 @@ module.exports.RenameExperimentInProjectAction = class RenameExperimentInProject
             throw new Error(`Name ${params.name} is not unique in project ${params.project_id}`);
         }
 
-        let renamed = await dal.tryCatch(async() => await api.mc.experiments.renameExperiment(params.experimentId, params.name));
+        let renamed = await dal.tryCatch(async () => await api.mc.experiments.renameExperiment(params.experimentId, params.name));
         if (!renamed) {
             throw new Error(`Unable to rename experiment ${params.experiment_id} to ${params.name}`);
         }
 
-        let e = await dal.tryCatch(async() => await api.mc.experiment.getExperiment(params.experimentId));
+        let e = await dal.tryCatch(async () => await api.mc.experiment.getExperiment(params.experimentId));
         if (!e) {
             throw new Error(`Unable to retrieve updated experiment ${params.experiment_id}`);
         }
