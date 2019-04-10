@@ -1,6 +1,21 @@
 const {api, Task} = require('actionhero');
 const {spawn} = require('child_process');
 
+module.exports.TestTask = class TestTask extends Task {
+    constructor() {
+        super();
+        this.name = 'testTask';
+        this.description = 'Tests running a task';
+        this.frequency = 0;
+        this.queue = 'etl';
+    }
+
+    async run(args) {
+        api.mc.log.info('Running testTask', args);
+        return true;
+    }
+};
+
 module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Task {
     constructor() {
         super();

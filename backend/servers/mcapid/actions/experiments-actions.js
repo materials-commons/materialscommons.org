@@ -3,6 +3,26 @@ const dal = require('@dal');
 const convertible = require('@lib/convertible');
 const path = require('path');
 
+module.exports.TestTaskAction = class TestTaskAction extends Action {
+    constructor() {
+        super();
+        this.name = 'testTask';
+        this.description = 'Test running tasks';
+        this.do_not_authenticate = true;
+        this.inputs = {
+            arg: {
+                required: true
+            }
+        };
+    }
+
+    async run({response, params}) {
+        api.mc.log.info('calling enqueue');
+        await api.tasks.enqueue('testTask', params.arg, 'etl');
+        response.data = {success: 'Task run'};
+    }
+};
+
 module.exports.CreateExperimentFromSpreadsheetAction = class CreateExperimentFromSpreadsheetAction extends Action {
     constructor() {
         super();
