@@ -23,7 +23,7 @@ module.exports.MCETLTask = class MCETLTask extends Task {
 
         try {
             api.mc.log.info('Starting mcetl ETL Job', etlArgs);
-            await spawnEtlJob('mcetl', args);
+            await spawnEtlJob('../../prodbin/mcetl', args);
             return true;
         } catch (e) {
             api.mc.log.info(`Failed to process ETL Job ${e} cmd: 'mcetl', args: ${args}`, etlArgs);
