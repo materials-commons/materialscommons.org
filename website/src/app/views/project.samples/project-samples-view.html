@@ -1,0 +1,7 @@
+<div layout="column" layout-margin flex>
+    <a ng-click="$ctrl.state.showFilter = !$ctrl.state.showFilter">{{$ctrl.state.showFilter ? "Hide Filter" : "Show Filter"}}</a>
+    <mc-samples-filter ng-show="$ctrl.state.showFilter" samples="$ctrl.state.samples"
+                       on-reset-filter="$ctrl.handleResetFilter()"
+                       on-run-filter="$ctrl.handleRunFilter(processes, conditions)"></mc-samples-filter>
+    <mc-sample-card ng-repeat="sample in $ctrl.state.samples" sample="sample"></mc-sample-card>
+</div>

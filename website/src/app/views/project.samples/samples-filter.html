@@ -1,0 +1,14 @@
+<div>
+    <h3 class="md-subhead">Processes</h3>
+    <ul>
+        <li ng-repeat="(key, value) in $ctrl.state.uniqueProcesses">{{key}} <input type="checkbox" ng-model="value.selected"></li>
+    </ul>
+
+    <h3 class="md-subhead">Conditions</h3>
+    <ul>
+        <li ng-repeat="(key, value) in $ctrl.state.uniqueConditions" class="margin-top-10">{{key}} <input ng-model="value.value"></li>
+    </ul>
+
+    <md-button ng-click="$ctrl.handleRunFilter()" class="md-primary">Run Filter</md-button>
+    <md-button ng-click="$ctrl.handleResetFilter()" class="md-primary">Reset Filter</md-button>
+</div>

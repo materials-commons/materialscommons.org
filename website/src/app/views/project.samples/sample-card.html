@@ -1,4 +1,34 @@
 <div layout="column" md-whiteframe="5" layout-margin>
-    <h3 class="md-subtitle">Sample: {{$ctrl.state.sample.name}}</h3>
-    <pre>{{$ctrl.state.sample.processes | json}}</pre>
+    <h3 class="md-title">Sample: <a ui-sref="project.sample({sample_id: $ctrl.state.sample.id})">{{$ctrl.state.sample.name}}</a></h3>
+    <h3 class="md-subhead">Processes</h3>
+    <div layout="row">
+        <a ng-repeat="process in $ctrl.state.sample.processes"
+           ui-sref="project.process({process_id: process.id})"
+           class="padding-left-15">{{process.name}}</a>
+    </div>
+    <h3 class="md-subhead">Conditions</h3>
+    <div layout="column">
+        <md-table-container>
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column>Name</th>
+                    <th md-column>Process</th>
+                    <th md-column>Attribute</th>
+                    <th md-column>Value</th>
+                    <th md-column>Unit</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr md-row ng-repeat="attribute in $ctrl.state.sample.conditions">
+                    <td md-cell>{{attribute.name}}</td>
+                    <td md-cell>{{attribute.processName}}</td>
+                    <td md-cell>{{attribute.attribute}}</td>
+                    <td md-cell>{{attribute.value}}</td>
+                    <td md-cell>{{attribute.unit}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+    </div>
 </div>

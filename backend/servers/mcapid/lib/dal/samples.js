@@ -36,7 +36,7 @@ module.exports = function(r) {
             experiments: r.table('experiment2sample').getAll(s('id'), {index: 'sample_id'})
                 .eqJoin('experiment_id', r.table('experiments')).zip().pluck('name', 'id').coerceTo('array'),
             processes: r.table('process2sample').getAll(s('id'), {index: 'sample_id'})
-                .eqJoin('process_id', r.table('processes')).zip().pluck('name', 'id')
+                .eqJoin('process_id', r.table('processes')).zip().pluck('name', 'id').distinct()
                 .merge(proc => {
                     return {
                         setup: r.table('process2setup').getAll(proc('id'), {index: 'process_id'})

@@ -1,11 +1,12 @@
 class MCProjectSamplesViewContainerComponentController {
     /*@ngInject*/
-    constructor(projectsAPI, $stateParams) {
+    constructor(projectsAPI, User, $stateParams) {
         this.projectsAPI = projectsAPI;
         this.projectId = $stateParams.project_id;
         this.state = {
             samples: [],
             filter: '',
+            isBetaUser: User.isBetaUser(),
         };
     }
 
@@ -16,11 +17,9 @@ class MCProjectSamplesViewContainerComponentController {
 
 angular.module('materialscommons').component('mcProjectSamplesViewContainer', {
     controller: MCProjectSamplesViewContainerComponentController,
-    // template: `<mc-project-samples-table2 samples="$ctrl.state.samples" flex layout="column" layout-margin></mc-project-samples-table2>`
+    // template: ``
     template: `
-    <div layout="column" layout-margin flex>
-        <input ng-model="$ctrl.state.filter">
-        <mc-sample-card ng-repeat="sample in $ctrl.state.samples | filter:$ctrl.state.filtere" sample="sample"></mc-sample-card>
-    </div>
+           <mc-project-samples-table2 samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="!$ctrl.state.isBetaUser"></mc-project-samples-table2>
+           <mc-project-samples-view samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="$ctrl.state.isBetaUser"></mc-project-samples-view>
     `
 });
