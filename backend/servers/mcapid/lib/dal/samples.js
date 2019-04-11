@@ -22,6 +22,40 @@ module.exports = function(r) {
         };
     }
 
+    async function getSamplesWithConditionsForProject(projectId) {
+        return await r.table('project2sample').getAll(projectId, {index: 'project_id'})
+            .eqJoin('sample_id', r.table('samples')).zip()
+            .without('group_size', 'has_group', 'is_grouped', 'permissions', 'project_id',
+                'project_name', 'sample_id', 'status', 'user_id')
+            .merge(sampleConditionsOverviewRql);
+    }
+
+    function sampleConditionsOverviewRql(s) {
+        return {
+            files_count: r.table('sample2datafile').getAll(s('id'), {index: 'sample_id'}).count(),
+            experiments: r.table('experiment2sample').getAll(s('id'), {index: 'sample_id'})
+                .eqJoin('experiment_id', r.table('experiments')).zip().pluck('name', 'id').coerceTo('array'),
+            processes: r.table('process2sample').getAll(s('id'), {index: 'sample_id'})
+                .eqJoin('process_id', r.table('processes')).zip().pluck('name', 'id')
+                .merge(proc => {
+                    return {
+                        setup: r.table('process2setup').getAll(proc('id'), {index: 'process_id'})
+                            .eqJoin('setup_id', r.table('setups')).zip()
+                            .pluck('attribute', 'name', 'id')
+                            .merge(function(setup) {
+                                return {
+                                    properties: r.table('setupproperties')
+                                        .getAll(setup('id'), {index: 'setup_id'})
+                                        .pluck('name', 'attribute', 'unit', 'value', 'id')
+                                        .coerceTo('array')
+                                };
+                            }).coerceTo('array')
+                    };
+                })
+                .coerceTo('array')
+        };
+    }
+
     async function getSample(sampleId, userId) {
         return await r.table('access').getAll(userId, {index: 'user_id'})
             .eqJoin([r.row('project_id'), sampleId], r.table('project2sample'), {index: 'project_sample'}).zip().limit(1)
@@ -188,6 +222,7 @@ module.exports = function(r) {
 
     return {
         getSamplesForProject,
+        getSamplesWithConditionsForProject,
         getSample,
         addSampleToProject,
         addSampleToExperiment,

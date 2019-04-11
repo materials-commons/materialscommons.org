@@ -61,6 +61,34 @@ class ProjectsAPIService {
         );
     }
 
+    getProcessesForProject(projectId) {
+        return this.Restangular.one('v3').one('getProcessesForProject').customPOST({project_id: projectId}).then(
+            processes => processes.plain().data,
+            e => this.toast.error(e.error)
+        );
+    }
+
+    getSamplesForProject(projectId) {
+        return this.Restangular.one('v3').one('getSamplesForProject').customPOST({project_id: projectId}).then(
+            samples => samples.plain().data,
+            e => this.toast.error(e.error)
+        );
+    }
+
+    getSamplesWithConditionsForProject(projectId) {
+        return this.Restangular.one('v3').one('getSamplesWithConditionsForProject').customPOST({project_id: projectId}).then(
+            samples => samples.plain().data,
+            e => this.toast.error(e.error)
+        );
+    }
+
+    getProcessForProject(projectId, processId) {
+        return this.Restangular.one('v3').one('getProcessForProject').customPOST({project_id: projectId, process_id: processId}).then(
+            process => process.plain().data,
+            e => this.toast.error(e.error)
+        );
+    }
+
     ////////////////////////////////////////////////////////
 
     addProjectNote(projectId, note) {
@@ -145,27 +173,6 @@ class ProjectsAPIService {
 
     getProjectProcesses(projectID) {
         return this.projectsAPIRoute(projectID).one('processes').getList().then(processes => processes.plain());
-    }
-
-    getProcessesForProject(projectId) {
-        return this.Restangular.one('v3').one('getProcessesForProject').customPOST({project_id: projectId}).then(
-            processes => processes.plain().data,
-            e => this.toast.error(e.error)
-        );
-    }
-
-    getSamplesForProject(projectId) {
-        return this.Restangular.one('v3').one('getSamplesForProject').customPOST({project_id: projectId}).then(
-            samples => samples.plain().data,
-            e => this.toast.error(e.error)
-        );
-    }
-
-    getProcessForProject(projectId, processId) {
-        return this.Restangular.one('v3').one('getProcessForProject').customPOST({project_id: projectId, process_id: processId}).then(
-            process => process.plain().data,
-            e => this.toast.error(e.error)
-        );
     }
 
     getProjectProcess(projectId, processId) {

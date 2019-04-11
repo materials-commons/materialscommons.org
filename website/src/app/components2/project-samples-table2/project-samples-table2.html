@@ -27,7 +27,7 @@
                     {{sample.files_count}}
                 </td>
                 <td md-cell>
-                    {{sample.processes_count}}
+                    {{sample.processes_count ? sample.processes_count : sample.processes.length}}
                 </td>
             </tr>
             </tbody>

@@ -25,6 +25,27 @@ module.exports.GetSamplesForProjectAction = class GetSamplesForProjectAction ext
     }
 };
 
+module.exports.GetSamplesWithConditionsForProjectAction = class GetSamplesWithConditionsForProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getSamplesWithConditionsForProject';
+        this.description = 'Returns all samples in the given project';
+        this.inputs = {
+            project_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const samples = await dal.tryCatch(async() => await api.mc.samples.getSamplesWithConditionsForProject(params.project_id));
+        if (samples === null) {
+            throw new Error(`Unable to retrieve samples for project ${params.project_id}`);
+        }
+        response.data = samples;
+    }
+};
+
 module.exports.GetSampleAction = class GetSampleAction extends Action {
     constructor() {
         super();

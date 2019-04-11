@@ -9,7 +9,7 @@ function removeExistingItemsIn(items, matchingEntries, property) {
 }
 
 function nameToAttr(name) {
-    return name.replace(/\s+/g, '_').replace(/\//g, '_').replace(/-/g, '_').toLowerCase();
+    return name.trim().replace(/\s+/g, '_').replace(/\//g, '_').replace(/-/g, '_').toLowerCase();
 }
 
 module.exports = {
