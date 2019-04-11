@@ -313,7 +313,7 @@ class EtlDialogController {
     }
 
     etlInProject() {
-        this.experimentsAPI.createExperimentFromSpreadsheet(this.name, this.excelFile.id, this.project.id).then(
+        this.experimentsAPI.createExperimentFromSpreadsheetV1(this.name, this.excelFile.id, this.project.id).then(
             () => this.$mdDialog.hide(),
             () => this.$mdDialog.cancel()
         );
@@ -330,7 +330,7 @@ class EtlDialogController {
             }
         }).then(
             (result) => {
-                this.experimentsAPI.createExperimentFromSpreadsheet(this.name, result.data.data.id, this.project.id).then(
+                this.experimentsAPI.createExperimentFromSpreadsheetV1(this.name, result.data.data.id, this.project.id).then(
                     () => this.$mdDialog.hide(),
                     () => this.$mdDialog.cancel()
                 );

@@ -7,6 +7,8 @@ class MCFileEditControlsComponentController {
             file: null,
             newName: '',
             renameActive: false,
+            isBetaUser: false,
+            isExcelFile: false,
         };
     }
 
@@ -15,6 +17,11 @@ class MCFileEditControlsComponentController {
             this.state.file = angular.copy(changes.file.currentValue);
             this.state.newName = this.state.file.name;
             this.state.renameActive = false;
+            this.state.isExcelFile = this.mcfile.isMSExcel(this.state.file.mediatype.mime);
+        }
+
+        if (changes.isBetaUser) {
+            this.state.isBetaUser = changes.isBetaUser.currentValue;
         }
     }
 
@@ -32,6 +39,10 @@ class MCFileEditControlsComponentController {
     downloadSrc() {
         return this.mcfile.downloadSrc(this.state.file.id);
     }
+
+    handleEtlFile() {
+        this.onEtlFile();
+    }
 }
 
 angular.module('materialscommons').component('mcFileEditControls', {
@@ -39,6 +50,8 @@ angular.module('materialscommons').component('mcFileEditControls', {
     controller: MCFileEditControlsComponentController,
     bindings: {
         file: '<',
-        onRenameFile: '&'
+        isBetaUser: '<',
+        onRenameFile: '&',
+        onEtlFile: '&',
     }
 });

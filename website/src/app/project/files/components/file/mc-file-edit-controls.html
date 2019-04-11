@@ -13,7 +13,11 @@
                class="md-primary">
         rename
     </md-button>
+
     <md-button ng-if="!$ctrl.state.renameActive" ng-href="{{$ctrl.downloadSrc()}}" class="md-primary" download="{{$ctrl.state.file.name}}">
         download
     </md-button>
+
+    <md-button ng-if="!$ctrl.state.renameActive && $ctrl.state.isExcelFile" class="md-primary"
+               ng-click="$ctrl.handleEtlFile()">Create Experiment From File</md-button>
 </div>

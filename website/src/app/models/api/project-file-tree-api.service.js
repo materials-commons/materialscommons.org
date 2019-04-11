@@ -49,7 +49,7 @@ function ProjectFileTreeAPIService(projectsAPIRoute, gridFiles, Restangular, Use
                 name: newName,
             }).then(
                 f => f.plain().data,
-                e => e.data.error,
+                e => e.data.error
             );
         },
 

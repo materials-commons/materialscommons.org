@@ -81,6 +81,14 @@ function constructFileDirSubPathFromFile(fileId) {
     return path.join(partA, partB);
 }
 
+function idToUse(file) {
+    if (file.usesid !== "") {
+        return file.usesid;
+    }
+
+    return file.id;
+}
+
 module.exports = {
     findFile,
     deleteFile,
@@ -90,4 +98,5 @@ module.exports = {
     fileDir,
     getMCDirs,
     setMCDirs,
+    idToUse,
 };

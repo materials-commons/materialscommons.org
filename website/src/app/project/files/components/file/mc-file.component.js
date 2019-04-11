@@ -25,6 +25,10 @@ class MCFileComponentController {
     handleRenameFile(name) {
         this.onRenameFile({name: name});
     }
+
+    handleEtlFile() {
+        this.onEtlFile();
+    }
 }
 
 angular.module('materialscommons').component('mcFile', {
@@ -33,7 +37,8 @@ angular.module('materialscommons').component('mcFile', {
     bindings: {
         file: '<',
         isBetaUser: '<',
-        onRenameFile: '&'
+        onRenameFile: '&',
+        onEtlFile: '&',
     }
 });
 
