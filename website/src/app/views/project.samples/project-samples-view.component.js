@@ -15,7 +15,6 @@ class MCProjectSamplesViewComponentController {
     }
 
     handleRunFilter(processes, conditions) {
-        console.log('handleRunFilter', processes, conditions);
         let processesCount = _.size(processes);
         let conditionsCount = _.size(conditions);
         let samplesMatchingProcesses = this.state.samples.filter(sample => {
@@ -40,9 +39,9 @@ class MCProjectSamplesViewComponentController {
                 p.setup.forEach(s => {
                     s.properties.forEach(property => {
                         if (_.has(conditions, property.name)) {
-                            console.log('has property ', property.name, property.value, conditions[property.name].value);
-                            if (property.value == conditions[property.name].value) {
-                                console.log('  and they are equal');
+
+                            // *** Don't use strict '===' here. We need javascript to convert values for comparison purposes. ***
+                            if (/* Dont' change comparison to === */ property.value == conditions[property.name].value) {
                                 matches++;
                             }
                         }
@@ -51,9 +50,6 @@ class MCProjectSamplesViewComponentController {
             });
             return matches === conditionsCount;
         });
-
-        console.log(samplesMatchingConditions.length);
-        console.log(samplesMatchingConditions);
 
         this.state.savedSamples = this.state.samples;
 
@@ -67,7 +63,9 @@ class MCProjectSamplesViewComponentController {
     }
 
     handleResetFilter() {
-        this.state.samples = angular.copy(this.state.savedSamples);
+        if (this.state.savedSamples.length) {
+            this.state.samples = angular.copy(this.state.savedSamples);
+        }
     }
 }
 
