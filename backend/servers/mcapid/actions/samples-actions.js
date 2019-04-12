@@ -281,6 +281,89 @@ module.exports.AddSampleToProcessAction = class AddSampleToProcessAction extends
     }
 };
 
+/*
+ProjectID     string   `json:"project_id"`
+		ExperimentID  string   `json:"experiment_id"`
+		ProcessID     string   `json:"process_id"`
+		SampleID      string   `json:"sample_id"`
+		PropertySetID string   `json:"property_set_id"`
+		Transform     bool     `json:"transform"`
+		FilesByName   []string `json:"files_by_name,omitempty"`
+		FilesByID     []string `json:"files_by_id,omitempty"`
+ */
+
+module.exports.AddSampleAndFilesToProcessAction = class AddSampleAndFilesToProcessAction extends Action {
+    constructor() {
+        super();
+        this.name = 'addSampleAndFilesToProcess';
+        this.description = 'Add sample and files to process. Connect files to process and sample. Optionally create a new attribute set.';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            },
+
+            process_id: {
+                required: true,
+            },
+
+            sample_id: {
+                required: true,
+            },
+
+            property_set_id: {
+                required: true,
+            },
+
+            transform: {
+                default: false,
+            },
+
+            files_by_name: {
+                default: [],
+            },
+
+            files_by_id: {
+                default: [],
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        const {sample_id, property_set_id, process_id, transform} = params;
+        const propertySetId = await dal.tryCatch(async() => await api.mc.samples.addSampleToProcess(sample_id, property_set_id, process_id, transform));
+        if (!propertySetId) {
+            throw new Error(`Unable to add sample ${sample_id}/${property_set_id} to process ${process_id}`);
+        }
+
+        if (params.files_by_name.length) {
+            const result = await dal.tryCatch(async() => api.mc.samples.linkFilesByNameToProcessAndSample(params.files_by_name, process_id, sample_id));
+            if (!result) {
+                throw new Error(`Unable to link files to process ${process_id} and sample ${sample_id}`);
+            }
+        }
+
+        if (params.files_by_id.length) {
+            const result = await dal.tryCatch(async() => api.mc.samples.linkFilesByIdToProcessAndSample(params.files_by_id, process_id, sample_id));
+            if (!result) {
+                throw new Error(`Unable to link files to process ${process_id} and sample ${sample_id}`);
+            }
+        }
+
+        const sample = await dal.tryCatch(async() => await api.mc.samples.getSample(sample_id, user.id));
+        if (!sample) {
+            throw new Error(`Unable to retrieve sample ${sample_id}`);
+        }
+
+        sample.property_set_id = propertySetId;
+
+        response.data = sample;
+    }
+};
+
 module.exports.AddMeasurementsToSampleInProcessAction = class AddMeasurementsToSampleInProcessAction extends Action {
     constructor() {
         super();

@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = function(r) {
 
     const {addFileToDirectoryInProject} = require('./dir-utils')(r);
@@ -56,10 +58,98 @@ module.exports = function(r) {
         return true;
     }
 
+    async function linkFilesByNameToProcessAndSample(files, processId, sampleId, projectId) {
+        // get file ids
+        let paths = files.map(f => f.path);
+        let filesById = [];
+        for (let filePath of paths) {
+            let results = await fileByPath(projectId, filePath);
+            if (results.length) {
+                filesById.push({file_id: results[0].datafile_id, direction: f.direction});
+            }
+        }
+
+        return await linkFilesByIdToProcessAndSample(filesById, processId, sampleId);
+    }
+
+    async function fileByPath(projectId, filePath) {
+        let fileName = path.basename(filePath);
+        let dir = path.dirname(filePath);
+        return await r.table('datadirs').getAll(dir, {index: 'name'})
+            .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
+            .filter({project_id: projectId})
+            .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
+            .eqJoin('datafile_id', r.table('datafiles')).zip()
+            .filter({current: true, name: fileName});
+    }
+
+    async function linkFilesByIdToProcessAndSample(files, processId, sampleId) {
+        await updateProcessFiles(processId, files);
+        await updateSampleFiles(sampleId, files);
+
+        return true;
+    }
+
+    async function updateProcessFiles(processId, files) {
+        let filesToAddToProcess = files.map(f => {
+            let direction = '';
+            if (f.direction) {
+                switch (f.direction) {
+                    case 'in':
+                        direction = 'in';
+                        break;
+                    case 'out':
+                        direction = 'out';
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            return new model.Process2File(processId, f.file_id, direction);
+        });
+
+        filesToAddToProcess = await removeExistingProcessFileEntries(processId, filesToAddToProcess);
+        if (filesToAddToProcess.length) {
+            await r.table('process2file').insert(filesToAddToProcess);
+        }
+    }
+
+    async function removeExistingProcessFileEntries(processId, files) {
+        if (files.length) {
+            let indexEntries = files.map(f => [processId, f.file_id]);
+            let matchingEntries = await r.table('process2file').getAll(r.args(indexEntries), {index: 'process_datafile'});
+            let byFileID = _.keyBy(matchingEntries, 'datafile_id');
+            return files.filter(f => (!(f.file_id in byFileID)));
+        }
+
+        return files;
+    }
+
+    async function updateSampleFiles(sampleId, files) {
+        let fileSamplesToAdd = files.map(f => new model.Sample2Datafile(sampleId, f.file_id));
+        fileSamplesToAdd = await removeExistingSampleFileEntries(fileSamplesToAdd);
+        if (fileSamplesToAdd.length) {
+            await r.table('sample2datafile').insert(fileSamplesToAdd);
+        }
+    }
+
+    async function removeExistingSampleFileEntries(sampleFileEntries) {
+        if (sampleFileEntries.length) {
+            let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.file_id]);
+            let matchingEntries = await r.table('sample2datafile').getAll(r.args(indexEntries), {index: 'sample_file'});
+            let byFileID = _.keyBy(matchingEntries, 'datafile_id');
+            return sampleFileEntries.filter(entry => (!(entry.file_id in byFileID)));
+        }
+        return sampleFileEntries;
+    }
+
     return {
         uploadFileToProjectDirectory,
         moveFileToDirectory,
         getFile,
         renameFile,
+        linkFilesByNameToProcessAndSample,
+        linkFilesByIdToProcessAndSample,
     };
 };
