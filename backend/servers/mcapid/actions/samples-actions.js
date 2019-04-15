@@ -257,6 +257,10 @@ module.exports.AddSampleToProcessAction = class AddSampleToProcessAction extends
                 required: true,
             },
 
+            return_full_sample: {
+                default: true,
+            },
+
             transform: {
                 default: false,
             }
@@ -270,9 +274,16 @@ module.exports.AddSampleToProcessAction = class AddSampleToProcessAction extends
             throw new Error(`Unable to add sample ${sample_id}/${property_set_id} to process ${process_id}`);
         }
 
-        const sample = await dal.tryCatch(async() => await api.mc.samples.getSample(sample_id, user.id));
-        if (!sample) {
-            throw new Error(`Unable to retrieve sample ${sample_id}`);
+        let sample;
+        if (params.return_full_sample) {
+            sample = await dal.tryCatch(async() => await api.mc.samples.getSample(sample_id, user.id));
+            if (!sample) {
+                throw new Error(`Unable to retrieve sample ${sample_id}`);
+            }
+        } else {
+            sample = {
+                id: sample_id,
+            };
         }
 
         sample.property_set_id = propertySetId;
@@ -390,6 +401,10 @@ module.exports.AddMeasurementsToSampleInProcessAction = class AddMeasurementsToS
                 required: true,
             },
 
+            return_full_sample: {
+                default: true,
+            },
+
             attributes: {
 
                 /*
@@ -424,9 +439,16 @@ module.exports.AddMeasurementsToSampleInProcessAction = class AddMeasurementsToS
             throw new Error(`Unable to add measurements to sample ${sample_id}/${property_set_id} in process ${process_id}`);
         }
 
-        const sample = await dal.tryCatch(async() => await api.mc.samples.getSample(sample_id, user.id));
-        if (!sample) {
-            throw new Error(`Unable to retrieve sample ${sample_id}`);
+        let sample;
+        if (params.return_full_sample) {
+            sample = await dal.tryCatch(async() => await api.mc.samples.getSample(sample_id, user.id));
+            if (!sample) {
+                throw new Error(`Unable to retrieve sample ${sample_id}`);
+            }
+        } else {
+            sample = {
+                id: sample_id,
+            };
         }
 
         sample.property_set_id = property_set_id;

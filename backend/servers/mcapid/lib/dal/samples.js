@@ -133,16 +133,16 @@ module.exports = function(r) {
     // means adding a new property set to the sample. It returns true on success and throws an Error on failure.
     async function addSampleToProcess(sampleId, propertySetId, processId, transform) {
         let proc2sample = new model.Process2Sample(processId, sampleId, propertySetId, 'in');
-        await db.insert('process2sample', proc2sample);
+        await db.insertSoft('process2sample', proc2sample);
         if (transform) {
             // If the sample is transformed by the process then we need to create a new property set
             // for the sample and set it as an output of the process.
             let pset = new model.PropertySet(true);
-            let createdPSet = await db.insert('propertysets', pset);
+            let createdPSet = await db.insertSoftWithChanges('propertysets', pset);
             let s2ps = new model.Sample2PropertySet(sampleId, createdPSet.id, true);
-            await db.insert('sample2propertyset', s2ps);
+            await db.insertSoft('sample2propertyset', s2ps);
             let p2s = new model.Process2Sample(processId, sampleId, createdPSet.id, 'out');
-            await db.insert('process2sample', p2s);
+            await db.insertSoft('process2sample', p2s);
             return createdPSet.id;
         }
         return propertySetId;
@@ -176,9 +176,9 @@ module.exports = function(r) {
     async function addAttributesToSampleInProcess(attributes, sampleId, propertySetId, processId) {
         for (let attr of attributes) {
             let p = new model.Property(attr.name, nameToAttr(attr.name));
-            let createdProperty = await db.insert('properties', p);
+            let createdProperty = await db.insertSoftWithChanges('properties', p);
             let ps2p = new model.PropertySet2Property(createdProperty.id, propertySetId);
-            await db.insert('propertyset2property', ps2p);
+            await db.insertSoft('propertyset2property', ps2p);
             for (let measurement of attr.measurements) {
                 await addMeasurement(attr.name, measurement, createdProperty.id, sampleId, processId);
             }
@@ -191,7 +191,7 @@ module.exports = function(r) {
         m.value = measurement.value;
         m.unit = measurement.unit;
         m.otype = measurement.otype;
-        let createdMeas = await db.insert('measurements', m);
+        let createdMeas = await db.insertSoftWithChanges('measurements', m);
         if (measurement.is_best_measure) {
             await addAsBestMeasure(propertyId, createdMeas.id);
         }
@@ -203,7 +203,7 @@ module.exports = function(r) {
         let existing = await r.table('best_measure_history').getAll(propertyId, {index: 'property_id'});
         if (!existing.length) {
             let bmh = new model.BestMeasureHistory(propertyId, measurementId);
-            let inserted = await db.insert('best_measure_history', bmh);
+            let inserted = await db.insertSoftWithChanges('best_measure_history', bmh);
             await r.table('properties').get(propertyId).update({best_measure_id: inserted.id});
         } else {
             await r.table('best_measure_history').get(existing[0].id).update({measurement_id: measurementId});
@@ -212,12 +212,12 @@ module.exports = function(r) {
 
     async function addMeasurementToProperty(propertyId, measurementId) {
         let a2m = new model.Property2Measurement(propertyId, measurementId);
-        await db.insert('property2measurement', a2m);
+        await db.insertSoft('property2measurement', a2m);
     }
 
     async function addMeasurementToProcess(processId, measurementId) {
         let p2m = new model.Process2Measurement(processId, measurementId);
-        await db.insert('process2measurement', p2m);
+        await db.insertSoft('process2measurement', p2m);
     }
 
     return {
