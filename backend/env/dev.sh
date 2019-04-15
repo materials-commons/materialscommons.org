@@ -31,7 +31,7 @@ if [ "$REINIT" = "t" ]; then
 fi
 
 export MCAPID_COMMAND="start.sh mcapid-${SERVERTYPE}"
-export MCAPID_PORT=5028
+export MCAPID_PORT=5016
 export REDIS_PORT=5031
 
 if [ -f /etc/materialscommons/config.dev ]; then

@@ -3,10 +3,10 @@ const dal = require('@dal');
 const convertible = require('@lib/convertible');
 const path = require('path');
 
-module.exports.CreateExperimentFromSpreadsheetAction = class CreateExperimentFromSpreadsheetV2Action extends Action {
+module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentFromSpreadsheetV2Action extends Action {
     constructor() {
         super();
-        this.name = 'createExperimentFromSpeadsheet';
+        this.name = 'createExperimentFromSpreadsheet';
         this.description = 'Create an experiment from a spreadsheet running mcetl';
         this.version = 2;
         this.inputs = {
@@ -61,7 +61,7 @@ module.exports.CreateExperimentFromSpreadsheetAction = class CreateExperimentFro
 
         await api.tasks.enqueue('mcetl', etlJob, 'etl');
 
-        response.data = {success: `Successfully enqueued ETL job for ${file.name}`};
+        response.data = {success: `Successfully enqueued ETL V2 job for ${file.name}`};
     }
 };
 
@@ -114,7 +114,7 @@ module.exports.CreateExperimentFromSpreadsheetV1Action = class CreateExperimentF
 
         await api.tasks.enqueue('processSpreadsheet', etlJob, 'etl');
 
-        response.data = {success: `Successfully enqueued ETL job for ${filePath}`};
+        response.data = {success: `Successfully enqueued ETL V1 job for ${filePath}`};
     }
 };
 

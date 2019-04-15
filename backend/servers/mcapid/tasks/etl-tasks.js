@@ -14,16 +14,17 @@ module.exports.MCETLTask = class MCETLTask extends Task {
     async run(etlArgs) {
         let filePath = mcdir.pathToFileId(mcdir.idToUse(etlArgs.file));
         let args = [
+            'load',
             '--apikey', etlArgs.apikey,
-            '--mcurl', 'http://localhost:5016/api',
+            '--mcurl', process.env.MCURL,
             '--file', filePath,
-            '--project-id', etlArgs.project_id,
+            '--project-id', etlArgs.projectId,
             '--experiment-name', etlArgs.experimentName
         ];
 
         try {
-            api.mc.log.info('Starting mcetl ETL Job', etlArgs);
-            await spawnEtlJob('../../prodbin/mcetl', args);
+            api.mc.log.info('Starting mcetl ETL Job', args);
+            await spawnEtlJob('../../prodbin/mcetl', args, filePath);
             return true;
         } catch (e) {
             api.mc.log.info(`Failed to process ETL Job ${e} cmd: 'mcetl', args: ${args}`, etlArgs);
@@ -46,7 +47,7 @@ module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Tas
         try {
             api.mc.log.info('Starting pymcetl ETL Job', etlArgs);
             // example: pymcetl --apikey 124e09425cfe4c4287eff056e69c1dd1 --project 23b1eba7-425e-4ee0-a2a2-2ccdf6169920 --experiment E2 --spreadsheet /Pure_Mg_CHESS_MC.xlsx
-            await spawnEtlJob('pymcetl', args);
+            await spawnEtlJob('pymcetl', args, etlArgs.path);
             return true;
         } catch (e) {
             api.mc.log.info(`Failed to process ETL Job ${e}, cmd: 'pymcetl', args: ${args}`, etlArgs);
@@ -55,23 +56,23 @@ module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Tas
     }
 };
 
-async function spawnEtlJob(cmd, args) {
+async function spawnEtlJob(cmd, args, path) {
     return new Promise((resolve, reject) => {
         let child = spawn(cmd, args);
-        child.stderr.on('data', data => api.mc.log.info(`Processing spreadsheet ${etlArgs.path}: ${data}`));
-        child.stdout.on('data', data => api.mc.log.info(`Processing spreadsheet ${etlArgs.path}: ${data}`));
+        child.stderr.on('data', data => api.mc.log.info(`Processing spreadsheet ${path}: ${data}`));
+        child.stdout.on('data', data => api.mc.log.info(`Processing spreadsheet ${path}: ${data}`));
         child.on('close', exitCode => {
             if (exitCode === 0) {
-                api.mc.log.info(`Successfully processed spreadsheet ${etlArgs.path}`);
+                api.mc.log.info(`Successfully processed spreadsheet ${path}`);
                 resolve();
             } else {
-                api.mc.log.info(`Failed while processing spreadsheet ${etlArgs.path}`);
+                api.mc.log.info(`Failed while processing spreadsheet ${path}`);
                 reject();
             }
         });
 
         child.on('error', err => {
-            api.mc.log.info(`Failed to start processing job for file ${etlArgs.path}: ${err}`);
+            api.mc.log.info(`Failed to start processing job for file ${path}: ${err}`);
             reject();
         });
     });

@@ -1,7 +1,8 @@
 class MCFileEditControlsComponentController {
     /*@ngInject*/
-    constructor(mcfile) {
+    constructor(mcfile, $mdDialog) {
         this.mcfile = mcfile;
+        this.$mdDialog = $mdDialog;
 
         this.state = {
             file: null,
@@ -41,7 +42,15 @@ class MCFileEditControlsComponentController {
     }
 
     handleEtlFile() {
-        this.onEtlFile();
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/create-experiment-from-spreadsheet.html',
+            controller: CreateExperimentFromSpreadsheetDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            clickOutsideToClose: true,
+        }).then(
+            experimentName => this.onEtlFile({experimentName})
+        );
     }
 }
 
@@ -55,3 +64,21 @@ angular.module('materialscommons').component('mcFileEditControls', {
         onEtlFile: '&',
     }
 });
+
+class CreateExperimentFromSpreadsheetDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            experimentName: '',
+        };
+    }
+
+    submit() {
+        this.$mdDialog.hide(this.state.experimentName);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}

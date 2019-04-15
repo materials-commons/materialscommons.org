@@ -1,0 +1,23 @@
+<md-dialog flex="40">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Create Experiment From Spreadsheet
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <form layout="column" class="dialog-form">
+            <md-input-container md-no-float>
+                <label>Name</label>
+                <input ng-model="$ctrl.state.experimentName" type="text" on-enter="$ctrl.submit()">
+            </md-input-container>
+            <!--            <md-input-container md-no-float>-->
+            <!--                <label>Description</label>-->
+            <!--                <input ng-model="$ctrl.state.description" type="text" on-enter="$ctrl.submit()">-->
+            <!--            </md-input-container>-->
+        </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.submit()" ng-disabled="$ctrl.state.experimentName === ''">Submit</md-button>
+    </md-dialog-actions>
+</md-dialog>
