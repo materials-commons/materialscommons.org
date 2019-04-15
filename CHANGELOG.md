@@ -2,6 +2,7 @@
 
 ## April 2019
 - :star: **New Feature:** Added backend support for new ETL process
+- :star: **New Feature:** New ETL format in Beta
 - :star: **Improvement:** File details page now gives access to file versions
 - :star: **Improvement:** File details page shows processes and samples
 - :boom: **Fixed:** DOI Publishing in project datasets now generates a DOI

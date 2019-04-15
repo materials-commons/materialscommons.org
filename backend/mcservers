@@ -15,6 +15,12 @@ function build_mcstored() {
     fi
 }
 
+function build_mcetl() {
+    CURDIR=$(pwd)
+    (cd ${MCETL_SRC}; make cli)
+    (cp ${MCETL_SRC}/cmd/mcetl/mcetl ${CURDIR}/prodbin)
+}
+
 function move_log() {
     if [[ ${MC_LOG_DIR} != "" ]]; then
         mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
@@ -607,6 +613,8 @@ function deploy_mc() {
     fi
     (cd ${MCSTORE_SRC}; git pull)
     (cd ${MCSERV_SRC}; git pull)
+    (cd ${MCETL_SRC}; git pull)
+    (cd ${GOMCAPI_SRC}; git pull)
 
     if [[ "$BACKUP_DATABASE" = "t" ]]; then
         echo "  Creating database backup..."
@@ -624,8 +632,11 @@ function deploy_mc() {
     echo "  Stopping servers..."
     stop_servers
 
-    echo "  Updating pymcetl command"
+    echo "  Updating pymcetl command..."
     (cd ../../pymcetl; python3 setup.py install --user)
+
+    echo "  Updating mcetl command..."
+    build_mcetl
 
     echo "  Updating server dependencies..."
     rm -f package-lock.json
@@ -733,6 +744,7 @@ fi
 
 export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
 export MCSERV_SRC=$HOME/workspace/src/github.com/materials-commons/mc
+export MCETL_SRC=$HOME/workspace/src/github.com/materials-commons/mcetl
 
 # Set defaults
 TESTSERVER="d"

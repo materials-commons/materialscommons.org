@@ -14,8 +14,11 @@ export MCDB_CONNECTION="localhost:$MCDB_PORT"
 export MCDB_DIR=~/testdb
 export RETHINKDB_HTTP_PORT=8090
 export RETHINKDB_CLUSTER_PORT=31815
+
 export MCSTOREDBIN=testbin/mcstored
 export MCSERVBIN=testbin/mcserv
+export MCETLBIN=prodbin/mcetl
+
 export MC_ES_URL="http://localhost:9500"
 export MC_ES_NAME="mc-es-test"
 export MC_LOG_DIR=/tmp
