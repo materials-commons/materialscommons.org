@@ -1,5 +1,6 @@
 const model = require('@lib/model');
 const {nameToAttr} = require('@lib/util');
+const util = require('util');
 
 module.exports = function(r) {
 
@@ -148,6 +149,31 @@ module.exports = function(r) {
         return propertySetId;
     }
 
+    async function addSamplesToProcess(samples, processId, transform) {
+        let p2sArray = samples.map(s => new model.Process2Sample(processId, s.sample_id, s.property_set_id, 'in'));
+        await db.insertSoft('process2sample', p2sArray);
+        if (transform) {
+            // Create a bunch of PropertySets, then we will match those up to samples
+            let psets = samples.map(() => new model.PropertySet(true));
+            let createdPSets = await db.insertSoftWithChanges('propertysets', psets, {toArray: true});
+            console.log('createdPSets', util.inspect(createdPSets, {showHidden: false, depth: null}));
+            let s2psArray = [],
+                p2sArray = [];
+            for (let i = 0; i < samples.length; i++) {
+                s2psArray.push(new model.Sample2PropertySet(samples[i].sample_id, createdPSets[i].id));
+                p2sArray.push(new model.Process2Sample(processId, samples[i].sample_id, createdPSets[i].id, 'out'));
+            }
+
+            await db.insertSoft('sample2propertyset', s2psArray);
+            await db.insertSoft('process2sample', p2sArray);
+
+            return s2psArray;
+        }
+
+        // If transform is false then a new property set wasn't created, so we can just return the original list.
+        return samples;
+    }
+
     async function addMeasurementsToSampleInProcess(attributes, sampleId, propertySetId, processId) {
         for (let attr of attributes) {
             if (attr.id && attr.id !== '') {
@@ -228,6 +254,7 @@ module.exports = function(r) {
         addSampleToExperiment,
         createSampleInProcess,
         addSampleToProcess,
+        addSamplesToProcess,
         addMeasurementsToSampleInProcess,
     };
 };

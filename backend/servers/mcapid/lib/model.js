@@ -158,7 +158,6 @@ function Project2Sample(projectID, sampleID) {
 function Sample2PropertySet(sampleID, psetID, current) {
     this.property_set_id = psetID;
     this.sample_id = sampleID;
-    this.version = '';
     this.current = current ? current : false;
 }
 

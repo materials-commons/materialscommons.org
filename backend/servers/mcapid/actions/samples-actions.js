@@ -292,16 +292,59 @@ module.exports.AddSampleToProcessAction = class AddSampleToProcessAction extends
     }
 };
 
-/*
-ProjectID     string   `json:"project_id"`
-		ExperimentID  string   `json:"experiment_id"`
-		ProcessID     string   `json:"process_id"`
-		SampleID      string   `json:"sample_id"`
-		PropertySetID string   `json:"property_set_id"`
-		Transform     bool     `json:"transform"`
-		FilesByName   []string `json:"files_by_name,omitempty"`
-		FilesByID     []string `json:"files_by_id,omitempty"`
- */
+module.exports.AddSamplesToProcessAction = class AddSamplesToProcessAction extends Action {
+    constructor() {
+        super();
+        this.name = 'addSamplesToProcess';
+        this.description = 'Add sample to process. Optionally create a new attribute set.';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            },
+
+            process_id: {
+                required: true,
+            },
+
+            samples: {
+                required: true,
+                validator: param => {
+                    if (!_.isArray(param)) {
+                        throw new Error('sample parameter must be an array');
+                    }
+                }
+            },
+
+            transform: {
+                default: false,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const {samples, process_id, transform} = params;
+        const updatedSamples = await dal.tryCatch(async() => await api.mc.samples.addSamplesToProcess(samples, process_id, transform));
+        if (updatedSamples === null) {
+            throw new Error(`Unable to add samples to process ${process_id}`);
+        }
+
+        // add name back to samples and map s.sample_id to s.id, this allows the client to map samples.
+        const samplesMap = _.keyBy(samples, 'sample_id');
+        api.mc.log.info('samplesMap', samplesMap);
+        updatedSamples.forEach(s => {
+            api.mc.log.info('s', s);
+            let sampleWithName = samplesMap[s.sample_id];
+            s.name = sampleWithName.name;
+            s.id = s.sample_id;
+        });
+
+        response.data = updatedSamples;
+    }
+};
 
 module.exports.AddSampleAndFilesToProcessAction = class AddSampleAndFilesToProcessAction extends Action {
     constructor() {
