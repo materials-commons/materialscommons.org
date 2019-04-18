@@ -182,6 +182,19 @@ module.exports = function(r) {
             .merge(projectDetailCounts).merge(projectExperiments);
     }
 
+    async function getProjectOverviewByName(name, userId) {
+        let rql = transformDates(r.table('projects').getAll(userId, {index: 'owner'})
+            .filter({name: name})
+            .without('flag', 'mediatypes', 'overview', 'reminders', 'status', 'size')
+            .merge(projectDetailCounts));
+        let projects = await rql.run();
+        if (projects.length) {
+            return projects[0];
+        }
+
+        return null;
+    }
+
     function projectDetailCounts(p) {
         return {
             shortcuts: r.table('datadirs').getAll([p('id'), true], {index: 'datadir_project_shortcut'}).pluck('name', 'id').coerceTo('array'),
@@ -233,6 +246,7 @@ module.exports = function(r) {
     return {
         createProject,
         getProject,
+        getProjectOverviewByName,
         getProjectExperiment,
         deleteProject,
         getUsersGlobusUploadStatus,

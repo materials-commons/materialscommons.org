@@ -66,6 +66,28 @@ module.exports.CreateProjectAction = class CreateProjectAction extends Action {
     }
 };
 
+module.exports.GetProjectOverviewByNameAction = class GetProjectOverviewByNameAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getProjectOverviewByName';
+        this.description = 'Get details for the named project. User must be the owner of the project.';
+        this.inputs = {
+            name: {
+                required: true
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        const project = await dal.tryCatch(async() => await api.mc.projects.getProjectOverviewByName(params.name, user.id));
+        if (!project) {
+            throw new Error(`No such project_id ${params.name}`);
+        }
+
+        response.data = project;
+    }
+};
+
 module.exports.GetProjectAction = class GetProjectAction extends Action {
     constructor() {
         super();
