@@ -281,9 +281,7 @@ module.exports.AddSampleToProcessAction = class AddSampleToProcessAction extends
                 throw new Error(`Unable to retrieve sample ${sample_id}`);
             }
         } else {
-            sample = {
-                id: sample_id,
-            };
+            sample = await api.mc.samples.getSampleSimple(sample_id);
         }
 
         sample.property_set_id = propertySetId;

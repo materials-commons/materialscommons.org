@@ -66,6 +66,10 @@ module.exports = function(r) {
             .nth(0).merge(sampleDetailsRql);
     }
 
+    async function getSampleSimple(sampleId) {
+        return await r.table('samples').get(sampleId);
+    }
+
     function sampleDetailsRql(s) {
         return {
             processes: r.table('process2sample').getAll(s('id'), {index: 'sample_id'})
@@ -250,6 +254,7 @@ module.exports = function(r) {
         getSamplesForProject,
         getSamplesWithConditionsForProject,
         getSample,
+        getSampleSimple,
         addSampleToProject,
         addSampleToExperiment,
         createSampleInProcess,
