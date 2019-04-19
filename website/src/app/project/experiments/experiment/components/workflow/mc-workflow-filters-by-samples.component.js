@@ -1,8 +1,9 @@
 class MCWorkflowFiltersBySamplesComponentController {
     /*@ngInject*/
-    constructor(mcshow, mcbus, $stateParams) {
+    constructor(mcshow, mcbus, $filter, $stateParams) {
         this.mcshow = mcshow;
         this.mcbus = mcbus;
+        this.$filter = $filter;
         this.selectedSamples = [];
         this.filterSamplesListBy = "";
         this.projectId = $stateParams.project_id;
@@ -18,6 +19,23 @@ class MCWorkflowFiltersBySamplesComponentController {
             this.addToFilter(sample);
         } else {
             this.removeFromFilter(sample);
+        }
+
+        this.mcbus.send('WORKFLOW$RESET');
+        if (this.selectedSamples.length) {
+            this.applySamplesFilter();
+        }
+    }
+
+    showWorkflowFromFind() {
+        let filteredSamples = this.$filter('filter')(this.samples, this.filterSamplesListBy);
+        filteredSamples.forEach(s => {
+            s.selected = true;
+            this.addToFilter(s);
+        });
+        if (this.selectedSamples.length) {
+            this.mcbus.send('WORKFLOW$RESET');
+            this.applySamplesFilter();
         }
     }
 
