@@ -14,7 +14,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.$filter = $filter;
         this.$mdDialog = $mdDialog;
         this.mcshow = mcshow;
-        this.removedNodes = null;
+        this.removedNodes = [];
         this.navigator = null;
         this.workflowState = workflowState;
         this.cyGraph = cyGraph;
@@ -48,6 +48,7 @@ class MCProcessesWorkflowGraphComponentController {
         });
 
         this.mcbus.subscribe('PROCESSES$CHANGE', this.myName, cb);
+
         this.mcbus.subscribe('PROCESS$ADD', this.myName, (process) => {
             let node = this.processGraph.createProcessNode(process);
             this.cy.add(node);
@@ -62,6 +63,7 @@ class MCProcessesWorkflowGraphComponentController {
                 this.cyGraph.disableQTips(this.cy);
             }
         });
+
         this.mcbus.subscribe('PROCESS$DELETE', this.myName, (processId) => {
             let nodeToRemove = this.cy.filter(`node[id = "${processId}"]`);
             this.cy.remove(nodeToRemove);
@@ -94,7 +96,9 @@ class MCProcessesWorkflowGraphComponentController {
         });
 
         this.mcbus.subscribe('EDGE$ADD', this.myName, ({samples, process}) => this.addEdge(samples, process));
+
         this.mcbus.subscribe('EDGE$DELETE', this.myName, (source, target) => console.log('EDGE$DELETE', source, target));
+
         this.mcbus.subscribe('WORKFLOW$HIDEOTHERS', this.myName, processes => {
             this._addToHidden(this.cyGraph.hideOtherNodesMultiple(this.cy, processes));
         });
@@ -120,9 +124,12 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcbus.subscribe('WORKFLOW$RESET', this.myName, () => {
             const currentExperiment = this.mcprojstore.currentExperiment;
+            this.removedNodes = [];
+            this.hiddenNodes = [];
             this.processes = _.values(currentExperiment.processes);
             this.allProcessesGraph();
         });
+
         this.mcbus.subscribe('WORKFLOW$NAVIGATOR', this.myName, () => {
             if (this.navigator === null) {
                 this.navigator = this.cy.navigator();
@@ -134,6 +141,14 @@ class MCProcessesWorkflowGraphComponentController {
 
         this.mcbus.subscribe('WORKFLOW$FILTER$BYSAMPLES', this.myName, (samples) => {
             this.removedNodes = this.cyGraph.filterBySamples(this.cy, samples, this.processes);
+        });
+
+        this.mcbus.subscribe('WORKFLOW$RESTOREREMOVED', this.myName, () => {
+            if (this.removedNodes.length) {
+                this.removedNodes.restore();
+                this.removedNodes = [];
+                this.cy.layout({name: 'dagre', fit: true});
+            }
         });
 
         this.mcstate.subscribe('WORKFLOW$TOOLTIPS', this.myName, (tooltipsEnabled) => {
@@ -162,6 +177,7 @@ class MCProcessesWorkflowGraphComponentController {
         this.mcbus.leave('WORKFLOW$HIDEOTHERS', this.myName);
         this.mcbus.leave('WORKFLOW$NAVIGATOR', this.myName);
         this.mcbus.leave('WORKFLOW$RESTOREHIDDEN', this.myName);
+        this.mcbus.leave('WORKFLOW$RESTOREREMOVED', this.myName);
         if (this.navigator) {
             this.navigator.destroy();
         }

@@ -21,7 +21,7 @@ class MCWorkflowFiltersBySamplesComponentController {
             this.removeFromFilter(sample);
         }
 
-        this.mcbus.send('WORKFLOW$RESET');
+        this.mcbus.send('WORKFLOW$RESTOREREMOVED');
         if (this.selectedSamples.length) {
             this.applySamplesFilter();
         }
@@ -34,7 +34,7 @@ class MCWorkflowFiltersBySamplesComponentController {
             this.addToFilter(s);
         });
         if (this.selectedSamples.length) {
-            this.mcbus.send('WORKFLOW$RESET');
+            this.mcbus.send('WORKFLOW$RESTOREREMOVED');
             this.applySamplesFilter();
         }
     }
