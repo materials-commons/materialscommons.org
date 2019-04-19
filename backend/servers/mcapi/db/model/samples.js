@@ -62,11 +62,7 @@ function* getAllSamplesForExperiment(experimentId) {
         .eqJoin('sample_id', r.table('samples')).zip()
         .merge(function (sample) {
             return {
-                versions: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
-                    .filter({direction: 'out'})
-                    .eqJoin('process_id', r.table('processes')).zip()
-                    .coerceTo('array'),
-                processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'})
+                processes: r.table('process2sample').getAll(sample('id'), {index: 'sample_id'}).pluck('process_id').distinct()
                     .eqJoin('process_id', r.table('processes')).zip().coerceTo('array'),
                 experiments: r.table('experiment2sample')
                     .getAll(sample('id'), {index: 'sample_id'})
