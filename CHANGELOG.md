@@ -3,8 +3,11 @@
 ## April 2019
 - :star: **New Feature:** Added backend support for new ETL process
 - :star: **New Feature:** New ETL format in Beta
+- :star: **New Feature:** New ETL a second format is now supported for reading a spreadsheet without specifying a workflow
 - :star: **Improvement:** File details page now gives access to file versions
 - :star: **Improvement:** File details page shows processes and samples
+- :star: **Improvement:** Filter by samples in workflow now filters as you choose a sample
+- :star: **Improvement:** Filter by samples in workflow allows search and filter on search
 - :boom: **Fixed:** DOI Publishing in project datasets now generates a DOI
 
 ## March 2019
