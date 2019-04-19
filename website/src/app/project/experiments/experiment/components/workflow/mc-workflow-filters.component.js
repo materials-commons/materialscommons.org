@@ -5,12 +5,12 @@ class MCWorkflowFiltersComponentController {
         this.mcStateStore = mcStateStore;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
-        this.showSamplesFilter = false;
-        this.showProcessesFilter = true;
+        this.showSamplesFilter = true;
+        this.showProcessesFilter = false;
     }
 
     $onInit() {
-        this.activateProcessesFilter();
+        this.activateSamplesFilter();
     }
 
     activateProcessesFilter() {
@@ -18,13 +18,6 @@ class MCWorkflowFiltersComponentController {
         this.processes = _.values(e.processes);
         this.showProcessesFilter = true;
         this.showSamplesFilter = false;
-        // this.experimentsAPI.getProcessesForExperiment(this.projectId, this.experimentId).then(
-        //     (processes) => {
-        //         this.showProcessesFilter = true;
-        //         this.showSamplesFilter = false;
-        //         this.processes = processes;
-        //     }
-        // );
     }
 
     activateSamplesFilter() {
