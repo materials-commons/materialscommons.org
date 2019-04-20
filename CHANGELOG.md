@@ -9,6 +9,7 @@
 - :star: **Improvement:** Filter by samples in workflow now filters as you choose a sample
 - :star: **Improvement:** Filter by samples in workflow allows search and filter on search
 - :boom: **Fixed:** DOI Publishing in project datasets now generates a DOI
+- :boom: **Fixed:** Workflow process outline did not have a scrollbar
 
 ## March 2019
 - :star: **Improvement:** Issue #1316 New interface for interacting with files
