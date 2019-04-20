@@ -1,35 +1,37 @@
 <div style="margin-top: 10px" layout="row">
-    <div layout="column" flex="60">
-        <p style="padding-left: 40px; padding-bottom: 20px">
-            <strong>Note:</strong>
-            The same process can appear in multiple places in the outline because multiple nodes may
-            have it as a child. When selecting a node we will highlight all instances of it.
-        </p>
-        <ul>
-            <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
-                <div ng-class="{'outline-node-selected': node.model.selected, 'outline-node-highlight': !node.model.selected && node.model.highlight}">
-                    <input aria-label="In dataset" type="checkbox"
-                           ng-change="$ctrl.toggle(node.model)"
-                           ng-model="node.model.inds" ng-if="$ctrl.dataset">
-                    <a ng-if="node.children.length"
-                       ng-click="node.model.show = !node.model.show">
-                        <i class="primary-color fa fa-fw"
-                           ng-class="{'fa-chevron-right': !node.model.show, 'fa-chevron-down': node.model.show}"></i>
-                        {{::node.model.name}}
-                    </a>
-                    <span ng-if="!node.children.length">
+    <md-content style="height:80vh;">
+        <div layout="column" flex="60">
+            <p style="padding-left: 40px; padding-bottom: 20px">
+                <strong>Note:</strong>
+                The same process can appear in multiple places in the outline because multiple nodes may
+                have it as a child. When selecting a node we will highlight all instances of it.
+            </p>
+            <ul>
+                <li ng-repeat="node in $ctrl.rootNode.children" layout="column">
+                    <div ng-class="{'outline-node-selected': node.model.selected, 'outline-node-highlight': !node.model.selected && node.model.highlight}">
+                        <input aria-label="In dataset" type="checkbox"
+                               ng-change="$ctrl.toggle(node.model)"
+                               ng-model="node.model.inds" ng-if="$ctrl.dataset">
+                        <a ng-if="node.children.length"
+                           ng-click="node.model.show = !node.model.show">
+                            <i class="primary-color fa fa-fw"
+                               ng-class="{'fa-chevron-right': !node.model.show, 'fa-chevron-down': node.model.show}"></i>
+                            {{::node.model.name}}
+                        </a>
+                        <span ng-if="!node.children.length">
                         <i class="primary-color fa fa-fw fa-code-fork"></i> {{::node.model.name}}
                     </span>
-                    (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
-                </div>
-                <mc-processes-workflow-outline-dir process="node" mc-processes-workflow-outline="$ctrl"
-                                                   highlight-processes="$ctrl.highlightProcesses"
-                                                   dataset="$ctrl.dataset"
-                                                   ng-if="node.model.show">
-                </mc-processes-workflow-outline-dir>
-            </li>
-        </ul>
-    </div>
+                        (<a ng-click="$ctrl.showDetails(node.model)">Details</a>)
+                    </div>
+                    <mc-processes-workflow-outline-dir process="node" mc-processes-workflow-outline="$ctrl"
+                                                       highlight-processes="$ctrl.highlightProcesses"
+                                                       dataset="$ctrl.dataset"
+                                                       ng-if="node.model.show">
+                    </mc-processes-workflow-outline-dir>
+                </li>
+            </ul>
+        </div>
+    </md-content>
     <div flex md-whiteframe class="margin-left-15" ng-show="!$ctrl.sidebarShowing">
         <div ng-if="!$ctrl.process" layout-margin layout="center center">
             No process selected
