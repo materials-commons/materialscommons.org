@@ -54,6 +54,7 @@ class MCWorkflowFiltersBySamplesComponentController {
     clearFilter() {
         this.selectedSamples.length = 0;
         this.samples.forEach(s => s.selected = false);
+        this.filterSamplesListBy = "";
         this.mcbus.send('WORKFLOW$RESET');
     }
 
