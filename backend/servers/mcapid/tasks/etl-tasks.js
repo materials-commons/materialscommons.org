@@ -22,6 +22,10 @@ module.exports.MCETLTask = class MCETLTask extends Task {
             '--experiment-name', etlArgs.experimentName
         ];
 
+        if (etlArgs.hasParent) {
+            args.push('--has-parent');
+        }
+
         try {
             api.mc.log.info('Starting mcetl ETL Job', args);
             await spawnEtlJob('../../prodbin/mcetl', args, filePath);
