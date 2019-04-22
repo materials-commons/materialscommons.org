@@ -2,6 +2,8 @@ const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const convertible = require('@lib/convertible');
 const path = require('path');
+const etl = require('@lib/etl');
+const mcdir = require('@lib/mcdir');
 
 module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentFromSpreadsheetV2Action extends Action {
     constructor() {
@@ -16,6 +18,10 @@ module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentF
 
             file_id: {
                 required: true,
+            },
+
+            has_parent: {
+                default: false,
             },
 
             experiment_name: {
@@ -57,6 +63,7 @@ module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentF
             experimentName: params.experiment_name,
             file: file,
             apikey: user.apikey,
+            hasParent: params.has_parent,
         };
 
         await api.tasks.enqueue('mcetl', etlJob, 'etl');
@@ -115,6 +122,52 @@ module.exports.CreateExperimentFromSpreadsheetV1Action = class CreateExperimentF
         await api.tasks.enqueue('processSpreadsheet', etlJob, 'etl');
 
         response.data = {success: `Successfully enqueued ETL V1 job for ${filePath}`};
+    }
+};
+
+module.exports.CheckSpreadsheetAction = class CheckSpreadsheetAction extends Action {
+    constructor() {
+        super();
+        this.name = 'checkSpreadsheet';
+        this.description = 'Validate a spreadsheet for ETL';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            file_id: {
+                required: true,
+            },
+
+            experiment_name: {
+                required: true,
+            },
+
+            has_parent: {
+                default: false,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
+            throw new Error(`File ${params.file_id} not in project ${params.project_id}`);
+        }
+
+        if (!await api.mc.check.experimentNameIsUniqueInProject(params.experiment_name, params.project_id)) {
+            throw new Error(`Experiment name ${params.experiment_name} is not unique in project ${params.project_id}`);
+        }
+
+        let file = await dal.tryCatch(async() => await api.mc.files.getFile(params.file_id));
+        if (!file) {
+            throw new Error(`Internal error: unable to retrieve file ${params.file_id}`);
+        }
+
+        let filePath = mcdir.pathToFileId(mcdir.idToUse(file));
+
+        let status = await etl.checkSpreadsheet(filePath);
+
+        response.data = status;
     }
 };
 

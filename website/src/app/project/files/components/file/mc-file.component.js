@@ -26,8 +26,8 @@ class MCFileComponentController {
         this.onRenameFile({name: name});
     }
 
-    handleEtlFile(experimentName) {
-        this.onEtlFile({experimentName});
+    handleEtlFile(experimentName, hasParent) {
+        this.onEtlFile({experimentName, hasParent});
     }
 }
 

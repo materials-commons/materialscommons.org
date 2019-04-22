@@ -13,11 +13,12 @@ class ExperimentsAPIService {
         }).then(e => e.plain().data);
     }
 
-    createExperimentFromSpreadsheet(experimentName, fileId, projectId) {
+    createExperimentFromSpreadsheet(experimentName, fileId, projectId, hasParent) {
         return this.Restangular.one('v3').one('createExperimentFromSpreadsheet').customPOST({
             project_id: projectId,
             file_id: fileId,
             experiment_name: experimentName,
+            has_parent: hasParent,
         }).then(
             result => result.plain().data,
             e => this.toast.error(`Unable to submit file for process: ${e.data.error}`)
@@ -33,6 +34,18 @@ class ExperimentsAPIService {
         }).then(
             result => result.plain().data,
             e => this.toast.error(`Unable to submit file for process: ${e.data.error}`)
+        );
+    }
+
+    checkSpreadsheet(fileId, projectId, experimentName, hasParent) {
+        return this.Restangular.one('v3').one('checkSpreadsheet').customPOST({
+            project_id: projectId,
+            file_id: fileId,
+            experiment_name: experimentName,
+            has_parent: hasParent,
+        }).then(
+            result => result.plain().data,
+            e => this.toast.error(e.data.error)
         );
     }
 

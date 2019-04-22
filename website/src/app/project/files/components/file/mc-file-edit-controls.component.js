@@ -49,7 +49,7 @@ class MCFileEditControlsComponentController {
             bindToController: true,
             clickOutsideToClose: true,
         }).then(
-            experimentName => this.onEtlFile({experimentName})
+            options => this.onEtlFile({experimentName: options.experimentName, hasParent: options.hasParent})
         );
     }
 }
@@ -71,11 +71,12 @@ class CreateExperimentFromSpreadsheetDialogController {
         this.$mdDialog = $mdDialog;
         this.state = {
             experimentName: '',
+            hasParent: false,
         };
     }
 
     submit() {
-        this.$mdDialog.hide(this.state.experimentName);
+        this.$mdDialog.hide(this.state);
     }
 
     cancel() {

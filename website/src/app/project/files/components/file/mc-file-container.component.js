@@ -1,9 +1,10 @@
 class MCFileContainerComponentController {
     /*@ngInject*/
-    constructor(projectsAPI, projectFileTreeAPI, experimentsAPI, User, $stateParams) {
+    constructor(projectsAPI, projectFileTreeAPI, experimentsAPI, User, $mdDialog, $stateParams) {
         this.projectsAPI = projectsAPI;
         this.projectFileTreeAPI = projectFileTreeAPI;
         this.experimentsAPI = experimentsAPI;
+        this.$mdDialog = $mdDialog;
         this.$stateParams = $stateParams;
         this.isBetaUser = User.isBetaUser();
         this.state = {
@@ -23,8 +24,28 @@ class MCFileContainerComponentController {
         );
     }
 
-    handleEtlFile(experimentName) {
-        this.experimentsAPI.createExperimentFromSpreadsheet(experimentName, this.state.file.id, this.$stateParams.project_id);
+    handleEtlFile(experimentName, hasParent) {
+        this.experimentsAPI.checkSpreadsheet(this.state.file.id, this.$stateParams.project_id, experimentName, hasParent).then(
+            status => this.showStatus(status).then(
+                () => this.experimentsAPI.createExperimentFromSpreadsheet(experimentName, this.state.file.id, this.$stateParams.project_id, hasParent)
+            ),
+            e => this.showStatus(e)
+        );
+    }
+
+    showStatus(status) {
+        let logSplit = status.output.split('\n');
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/etl-output-dialog.html',
+            controller: CloseDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            clickOutsideToClose: true,
+            locals: {
+                log: logSplit,
+                isSuccess: status.success,
+            }
+        });
     }
 }
 
@@ -33,6 +54,21 @@ angular.module('materialscommons').component('mcFileContainer', {
     template: `<mc-file ng-if="$ctrl.state.file" 
                         file="$ctrl.state.file" 
                         is-beta-user="$ctrl.isBetaUser" 
-                        on-etl-file="$ctrl.handleEtlFile(experimentName)"
+                        on-etl-file="$ctrl.handleEtlFile(experimentName, hasParent)"
                         on-rename-file="$ctrl.handleRenameFile(name)"></mc-file>`
 });
+
+class CloseDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    submit() {
+        this.$mdDialog.hide();
+    }
+
+    close() {
+        this.$mdDialog.cancel();
+    }
+}

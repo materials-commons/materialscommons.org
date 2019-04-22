@@ -6,6 +6,7 @@
     </md-toolbar>
     <md-dialog-content layout-margin>
         <form layout="column" class="dialog-form">
+            <md-checkbox ng-model="$ctrl.state.hasParent">Second column is Parent column</md-checkbox>
             <md-input-container md-no-float>
                 <label>Name</label>
                 <input ng-model="$ctrl.state.experimentName" type="text" on-enter="$ctrl.submit()">

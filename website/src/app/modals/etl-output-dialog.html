@@ -1,0 +1,19 @@
+<md-dialog flex="40">
+    <md-toolbar layout="row" ng-class="{'md-warn' : !$ctrl.isSuccess}">
+        <div layout-margin ng-show="!$ctrl.isSuccess">
+            ETL Validation Failed
+        </div>
+        <div layout-margin ng-show="$ctrl.isSuccess">
+            ETL Validation Succeeded
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <ul>
+            <li ng-repeat="entry in $ctrl.log track by $index">{{entry}}</li>
+        </ul>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.close()">{{$ctrl.isSuccess ? "Cancel" : "Close"}}</md-button>
+        <md-button class="md-primary" ng-show="$ctrl.isSuccess" ng-click="$ctrl.submit()">Create Experiment from Spreadsheet</md-button>
+    </md-dialog-actions>
+</md-dialog>
