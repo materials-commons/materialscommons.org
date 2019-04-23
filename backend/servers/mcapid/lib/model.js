@@ -94,7 +94,7 @@ function SetupProperty(setupID, name, description, otype, value, unit) {
     this.setup_id = setupID;
     this.name = name.trim();
     this.description = description;
-    this.attribute = nameToAttr(attribute);
+    this.attribute = nameToAttr(name);
     this.otype = otype;
     this.value = value;
     this.unit = unit;
