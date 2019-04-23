@@ -1,7 +1,7 @@
 const {nameToAttr} = require('./util');
 
 function Project(name, description, owner) {
-    this.name = name;
+    this.name = name.trim();
     this.description = description;
     this.overview = '';
     this.status = 'active';
@@ -29,7 +29,7 @@ function Access(project_name, project_id, user_id) {
 }
 
 function Sample(name, description, owner) {
-    this.name = name;
+    this.name = name.trim();
     this.description = description;
     this.owner = owner;
     this.birthtime = new Date();
@@ -41,7 +41,7 @@ function Sample(name, description, owner) {
 }
 
 function Process(name, owner, templateId, transform) {
-    this.name = name;
+    this.name = name.trim();
     this.owner = owner;
     this.template_id = templateId;
     this.process_type = transform ? 'transform' : 'measurement';
@@ -84,25 +84,25 @@ function Process2File(processID, fileID, direction) {
 }
 
 function Setups(name, attribute) {
-    this.name = name;
-    this.attribute = attribute ? attribute : nameToAttr(name);
+    this.name = name.trim();
+    this.attribute = attribute ? attribute.trim() : nameToAttr(name);
     this.birthtime = new Date();
     this.otype = 'settings';
 }
 
-function SetupProperty(setupID, name, description, attribute, otype, value, unit) {
+function SetupProperty(setupID, name, description, otype, value, unit) {
     this.setup_id = setupID;
-    this.name = name;
+    this.name = name.trim();
     this.description = description;
-    this.attribute = attribute;
+    this.attribute = nameToAttr(attribute);
     this.otype = otype;
     this.value = value;
     this.unit = unit;
 }
 
 function Measurement(name, attribute, sampleID) {
-    this.name = name;
-    this.attribute = attribute ? attribute : nameToAttr(name);
+    this.name = name.trim();
+    this.attribute = attribute ? attribute.trim() : nameToAttr(name);
     this.sample_id = sampleID;
     this.otype = 'measurement';
     this.file = {};
@@ -125,8 +125,8 @@ function Property(name, attribute) {
     this.parent_id = '';
     this.birthtime = new Date();
     this.otype = 'property';
-    this.name = name;
-    this.attribute = attribute ? attribute : nameToAttr(name);
+    this.name = name.trim();
+    this.attribute = attribute ? attribute.trim() : nameToAttr(name);
     this.best_measure_id = '';
 }
 
@@ -203,7 +203,7 @@ function Directory(name, owner, project, parent) {
     let now = new Date();
     this.otype = 'datadir';
     this.owner = owner;
-    this.name = name;
+    this.name = name.trim();
     this.project = project;
     this.parent = parent;
     this.birthtime = now;
@@ -263,7 +263,7 @@ function User(email, fullname, apikey) {
 
 function Experiment(name, owner) {
     let now = new Date();
-    this.name = name;
+    this.name = name.trim();
     this.owner = owner;
     this.otype = 'experiment';
     this.description = '';
@@ -356,7 +356,7 @@ function ExperimentEtlMetadata(experimentId, json, owner) {
 function Dataset(title, owner) {
     let now = new Date();
     this.owner = owner;
-    this.title = title;
+    this.title = title.trim();
     this.otype = 'dataset';
     this.institution = '';
     this.authors = [];
@@ -412,7 +412,7 @@ function DataFile(name, owner) {
     this.birthtime = now;
     this.mtime = now;
     this.atime = now;
-    this.name = name;
+    this.name = name.trim();
     this.owner = owner;
     this.size = 0;
     this.uploaded = 0;

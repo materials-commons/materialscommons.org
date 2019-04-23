@@ -64,8 +64,7 @@ module.exports = function(r) {
             for (let j = 0; j < current.properties.length; j++) {
                 let p = current.properties[j];
                 let val = p.value;
-                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.attribute,
-                    p.otype, val, p.unit);
+                let prop = new model.SetupProperty(setup.id, p.name, p.description, p.otype, val, p.unit);
                 props.push(prop);
             }
 
@@ -90,7 +89,7 @@ module.exports = function(r) {
             let toInsert = properties.map(prop => {
                 if (!prop.description) prop.description = '';
                 if (!prop.unit) prop.unit = '';
-                return new model.SetupProperty(setup.id, prop.name, prop.description, prop.attribute, prop.otype, prop.value, prop.unit);
+                return new model.SetupProperty(setup.id, prop.name, prop.description, prop.otype, prop.value, prop.unit);
             });
 
             await r.table('setupproperties').insert(toInsert);
