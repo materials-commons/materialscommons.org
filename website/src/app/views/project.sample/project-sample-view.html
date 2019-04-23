@@ -36,7 +36,9 @@
     <div layout="column" md-whiteframe="5" layout-margin>
         <h5 class="md-title">Attributes</h5>
         <div layout="row" layout-margin>
-            <mc-sample-attribute-sets attribute-sets="$ctrl.state.sample.attribute_sets" flex="100"></mc-sample-attribute-sets>
+            <mc-sample-attribute-sets attribute-sets="$ctrl.state.sample.attribute_sets"
+                                      on-show-measurements="$ctrl.handleShowMeasurements(attr)"
+                                      flex="100"></mc-sample-attribute-sets>
         </div>
     </div>
 </div>

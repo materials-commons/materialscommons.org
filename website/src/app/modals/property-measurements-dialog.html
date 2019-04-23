@@ -1,0 +1,41 @@
+<md-dialog flex="40">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Show Measurements for Attribute
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <h3 class="md-title">{{$ctrl.property.name}}</h3>
+        <md-button class="md-primary" ng-click="$ctrl.clearBestMeasure()">Clear Best Measure</md-button>
+        <md-radio-group ng-model="$ctrl.state.bestMeasure" ng-change="$ctrl.setBestMeasure()">
+            <md-table-container ng-if="$ctrl.property.measurements.length">
+                <table md-table>
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column>Value</th>
+                        <th md-column>Unit</th>
+                        <th md-column>Best Measure?</th>
+                        <th md-column></th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row ng-repeat="m in $ctrl.property.measurements">
+                        <td md-cell>
+                            <pre>{{m.value | json}}</pre>
+                        </td>
+                        <td md-cell>{{m.unit}}</td>
+                        <td md-cell>{{$ctrl.state.bestMeasure === m.id ? "Yes" : "No"}}</td>
+                        <td md-cell>
+                            <md-radio-button ng-value="m.id"></md-radio-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </md-radio-group>
+        <h3 class="md-subhead" ng-if="$ctrl.property.measurements.length === 0">No measurements</h3>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.done()">Done</md-button>
+    </md-dialog-actions>
+</md-dialog>

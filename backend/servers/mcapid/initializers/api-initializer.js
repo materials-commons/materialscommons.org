@@ -13,18 +13,21 @@ module.exports = class ApiInitializer extends Initializer {
         const inspect = (data) => (data ? {data: util.inspect(data, {showHidden: false, depth: null, breakLength: Infinity})} : null);
         api.mc = {
             r: r,
-            directories: require('@dal/directories')(r),
-            projects: require('@dal/projects')(r),
-            datasets: require('@dal/datasets')(r),
-            experiments: require('@dal/experiments')(r),
+
+            access: require('@dal/access')(r),
             check: require('@dal/check')(r),
+            datasets: require('@dal/datasets')(r),
+            directories: require('@dal/directories')(r),
+            experiments: require('@dal/experiments')(r),
+            files: require('@dal/files')(r),
             processes: require('@dal/processes')(r),
+            projects: require('@dal/projects')(r),
+            properties: require('@dal/properties')(r),
             publishedDatasets: require('@dal/published-datasets')(r),
             samples: require('@dal/samples')(r),
             templates: require('@dal/templates')(r),
-            files: require('@dal/files')(r),
             users: require('@dal/users')(r),
-            access: require('@dal/access')(r),
+
             log: {
                 debug: (msg, data) => api.log(msg, 'debug', inspect(data)),
                 info: (msg, data) => api.log(msg, 'info', inspect(data)),

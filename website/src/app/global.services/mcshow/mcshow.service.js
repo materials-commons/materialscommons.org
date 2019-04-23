@@ -62,6 +62,22 @@ class MCShowService {
         });
     }
 
+    propertyMeasurementsDialog(property, setAsBestMeasure, multiple = true) {
+        console.log('property', property);
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/property-measurements-dialog.html',
+            controller: PropertyMeasurementsDialogDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            clickOutsideToClose: true,
+            multiple: multiple,
+            locals: {
+                property: property,
+                setAsBestMeasure: setAsBestMeasure,
+            }
+        });
+    }
+
     projectOverviewDialog(project, multiple = true) {
         this.$mdDialog.show({
             templateUrl: 'app/modals/project-overview-dialog.html',
@@ -206,6 +222,29 @@ class ChooseExistingSamplesDialogController {
 
     cancel() {
         this.$mdDialog.cancel();
+    }
+}
+
+class PropertyMeasurementsDialogDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            bestMeasure: '',
+        };
+    }
+
+    clearBestMeasure() {
+        this.state.bestMeasure = '';
+        this.setAsBestMeasure(this.property.id, '');
+    }
+
+    setBestMeasure() {
+        this.setAsBestMeasure(this.property.id, this.state.bestMeasure);
+    }
+
+    done() {
+        this.$mdDialog.hide();
     }
 }
 

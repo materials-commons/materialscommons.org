@@ -98,7 +98,7 @@ def create_mc_tables():
     create_mc_table("project2sample", "sample_id", "project_id")
     create_compound_index("project2sample", "project_sample", ["project_id", "sample_id"])
 
-    create_mc_table("best_measure_history", "process_id", "property_id", "measurement_id")
+    create_mc_table("best_measure_history", "property_id", "measurement_id")
 
     create_mc_table("process2file", "process_id", "datafile_id", "_type")
     create_compound_index("process2file", "process_datafile", ["process_id", "datafile_id"])

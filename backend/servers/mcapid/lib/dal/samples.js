@@ -241,7 +241,10 @@ module.exports = function(r) {
             await r.table('properties').get(propertyId).update({best_measure_id: inserted.id});
         } else {
             await r.table('best_measure_history').get(existing[0].id).update({measurement_id: measurementId});
+            await r.table('properties').get(propertyId).update({best_measure_id: existing[0].id});
         }
+
+        return true;
     }
 
     async function addMeasurementToProperty(propertyId, measurementId) {
@@ -265,5 +268,6 @@ module.exports = function(r) {
         addSampleToProcess,
         addSamplesToProcess,
         addMeasurementsToSampleInProcess,
+        addAsBestMeasure,
     };
 };

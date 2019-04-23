@@ -16,6 +16,10 @@ class MCProjectSampleViewComponentController {
     showJson() {
         this.mcshow.showJson(this.state.sample, this.curl);
     }
+
+    handleShowMeasurements(attr) {
+        this.onShowMeasurements({attr: attr});
+    }
 }
 
 angular.module('materialscommons').component('mcProjectSampleView', {
@@ -23,6 +27,7 @@ angular.module('materialscommons').component('mcProjectSampleView', {
     template: require('./project-sample-view.html'),
     bindings: {
         sample: '<',
-        curl: '<'
+        curl: '<',
+        onShowMeasurements: '&',
     }
 });

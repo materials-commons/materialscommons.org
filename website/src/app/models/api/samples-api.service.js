@@ -8,11 +8,45 @@ class SamplesAPIService {
     getSample(sampleId) {
         return this.Restangular.one('v3').one('getSample').customPOST({sample_id: sampleId}).then(
             sample => sample.plain().data,
-            e => this.toast.error(e.error)
+            e => this.toast.error(e.data.error)
         );
     }
 
     getSamplePath() {return 'v3/getSample';}
+
+    getSamplePropertyMeasurements(projectId, sampleId, propertyId) {
+        return this.Restangular.one('v3').one('getPropertyMeasurements').customPOST({
+            project_id: projectId,
+            sample_id: sampleId,
+            property_id: propertyId,
+        }).then(
+            p => p.plain().data,
+            e => this.toast.error(e.data.error)
+        );
+    }
+
+    setAsBestMeasure(projectId, sampleId, propertyId, measurementId) {
+        return this.Restangular.one('v3').one('setAsBestMeasure').customPOST({
+            project_id: projectId,
+            sample_id: sampleId,
+            property_id: propertyId,
+            measurement_id: measurementId,
+        }).then(
+            () => true,
+            e => this.toast.error(e.data.error)
+        );
+    }
+
+    clearBestMeasure(projectId, sampleId, propertyId) {
+        return this.Restangular.one('v3').one('clearBestMeasure').customPOST({
+            project_id: projectId,
+            sample_id: sampleId,
+            property_id: propertyId,
+        }).then(
+            () => true,
+            e => this.toast.error(e.data.error)
+        );
+    }
 
     ///////////////////////////////////////////
 
