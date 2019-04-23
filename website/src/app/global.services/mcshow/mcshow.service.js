@@ -232,6 +232,10 @@ class PropertyMeasurementsDialogDialogController {
         this.state = {
             bestMeasure: '',
         };
+
+        if (this.property.best_measure !== '') {
+            this.state.bestMeasure = this.property.best_measure.measurement_id;
+        }
     }
 
     clearBestMeasure() {
