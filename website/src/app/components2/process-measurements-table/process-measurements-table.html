@@ -10,7 +10,7 @@
             </tr>
             </thead>
             <tbody md-body>
-            <tr md-row ng-repeat="m in $ctrl.state.measurements">
+            <tr md-row ng-repeat="m in $ctrl.state.measurements | orderBy:'name'">
                 <td md-cell>{{m.name}}</td>
                 <td md-cell>{{m.attribute}}</td>
                 <td md-cell>

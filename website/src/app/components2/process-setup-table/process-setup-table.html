@@ -13,7 +13,7 @@
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row ng-repeat="attribute in section.properties">
+                    <tr md-row ng-repeat="attribute in section.properties | orderBy:'name'">
                         <td md-cell>{{attribute.name}}</td>
                         <td md-cell>{{attribute.attribute}}</td>
                         <td md-cell>{{attribute.value}}</td>
