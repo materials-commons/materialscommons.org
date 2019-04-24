@@ -275,3 +275,43 @@ module.exports.RenameExperimentInProjectAction = class RenameExperimentInProject
         response.data = e;
     }
 };
+
+module.exports.DeleteExperimentInProjectAction = class DeleteExperimentInProjectAction extends Action {
+    constructor() {
+        super();
+        this.name = 'deleteExperimentInProject';
+        this.description = 'Delete an experiment in a project';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        if (!await api.mc.check.experimentInProject(params.experiment_id, params.project_id)) {
+            throw new Error(`Experiment ${params.experiment_id} is not in project ${params.project_id}`);
+        }
+
+        let p = await api.mc.projects.getProjectSimple(params.project_id);
+        let e = await api.mc.experiments.getExperimentSimple(params.experiment_id);
+
+        if (p.owner !== user.id) {
+            if (e.owner !== user.owner) {
+                throw new Error(`You do not have permission to delete experiment ${params.experiment_id}`);
+            }
+        }
+
+        let status = await dal.tryCatch(async() => await api.mc.experiments.removeExperimentFromJoinTables(params.experiment_id, params.project_id));
+
+        if (!status) {
+            throw new Error(`Unable to delete experiment ${params.experiment_id} in project ${params.project_id}`);
+        }
+
+        response.data = {success: true};
+    }
+};

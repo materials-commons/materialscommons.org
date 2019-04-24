@@ -148,6 +148,8 @@ def create_mc_tables():
 
     create_mc_table("file_loads", "project_id")
 
+    create_mc_table("delete_item", "project_id", "experiment_id")
+
     run(r.db('materialscommons').wait())
 
 

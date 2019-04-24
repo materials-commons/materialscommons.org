@@ -71,6 +71,10 @@ module.exports = function(r) {
         return await run(rql);
     }
 
+    async function getProjectSimple(projectId) {
+        return await r.table('projects').get(projectId);
+    }
+
     async function getProjectExperiment(projectId, experimentId) {
         let rql = r.table('project2experiment').getAll([projectId, experimentId], {index: 'project_experiment'})
             .eqJoin('experiment_id', r.table('experiments')).zip()
@@ -245,6 +249,7 @@ module.exports = function(r) {
 
     return {
         createProject,
+        getProjectSimple,
         getProject,
         getProjectOverviewByName,
         getProjectExperiment,
