@@ -16,9 +16,10 @@ function build_mcstored() {
 }
 
 function build_mcetl() {
-    CURDIR=$(pwd)
     (cd ${MCETL_SRC}; make cli)
     (cp ${MCETL_SRC}/cmd/mcetl/mcetl ${MCETLBIN})
+    echo ${MCETL_SRC}
+    echo ${MCETLBIN}
 }
 
 function move_log() {
@@ -597,6 +598,9 @@ function deploy_backend() {
 }
 
 function deploy_mc() {
+
+    build_mcetl
+    exit 0
     export DB_BACKUP=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
     echo "Deploying Materials Commons deployment..."
     echo "  Updating code for materialscommons.org and mcstore...."
