@@ -18,7 +18,7 @@ function build_mcstored() {
 function build_mcetl() {
     CURDIR=$(pwd)
     (cd ${MCETL_SRC}; make cli)
-    (cp ${MCETL_SRC}/cmd/mcetl/mcetl ${CURDIR}/prodbin)
+    (cp ${MCETL_SRC}/cmd/mcetl/mcetl ${MCETLBIN})
 }
 
 function move_log() {
