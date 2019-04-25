@@ -27,7 +27,17 @@ class MCFileContainerComponentController {
     handleEtlFile(experimentName, hasParent) {
         this.experimentsAPI.checkSpreadsheet(this.state.file.id, this.$stateParams.project_id, experimentName, hasParent).then(
             status => this.showStatus(status).then(
-                () => this.experimentsAPI.createExperimentFromSpreadsheet(experimentName, this.state.file.id, this.$stateParams.project_id, hasParent)
+                () => {
+                    this.$mdDialog.show(
+                        this.$mdDialog.alert()
+                            .clickOutsideToClose(true)
+                            .title('ETL Jobs Run In Background')
+                            .textContent('Your spreadsheet will be loaded in the background. Press sync to check on progress.')
+                            .ariaLabel('ETL Background Dialog')
+                            .ok('Ok')
+                    );
+                    this.experimentsAPI.createExperimentFromSpreadsheet(experimentName, this.state.file.id, this.$stateParams.project_id, hasParent);
+                }
             ),
             e => this.showStatus(e)
         );
