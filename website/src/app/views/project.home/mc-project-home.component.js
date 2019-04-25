@@ -252,16 +252,16 @@ class DeleteExperimentsDialogController {
 
     done() {
         if (this.canDeleteExperiments()) {
-            let experimentIds = this.experiments.map(e => e.id);
-            this.experimentsAPI.deleteExperiments(this.project.id, experimentIds).then(
-                () => {
-                    this.mcStateStore.fire('sync:project');
-                    this.mcprojstore.removeExperiments(...this.experiments).then(
-                        () => this.$mdDialog.hide()
-                    );
-                },
-                () => this.$mdDialog.cancel()
-            );
+            for (let i = 0; i < this.experiments.length; i++) {
+                this.experimentsAPI.deleteExperimentInProject(this.experiments[i].id, this.project.id).then(
+                    () => {
+                        this.mcStateStore.fire('sync:project');
+                        this.mcprojstore.removeExperiments(this.experiments[i]);
+                    }
+                );
+            }
+
+            this.$mdDialog.hide();
         } else {
             this.toast.error('You are attempting to delete experiments when you are not the experiment or project owner');
         }

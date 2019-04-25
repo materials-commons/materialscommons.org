@@ -49,6 +49,16 @@ class ExperimentsAPIService {
         );
     }
 
+    deleteExperimentInProject(experimentId, projectId) {
+        return this.Restangular.one('v3').one('deleteExperimentInProject').customPOST({
+            project_id: projectId,
+            experiment_id: experimentId,
+        }).then(
+            result => result.plain().data,
+            e => this.toast.error(e.data.error)
+        );
+    }
+
     ///////////////////////
 
     getAllForProject(projectID) {

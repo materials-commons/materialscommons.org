@@ -308,23 +308,29 @@ module.exports.DeleteExperimentInProjectAction = class DeleteExperimentInProject
     }
 
     async run({response, params, user}) {
-        if (!await api.mc.check.experimentInProject(params.experiment_id, params.project_id)) {
-            throw new Error(`Experiment ${params.experiment_id} is not in project ${params.project_id}`);
+        const {experiment_id, project_id} = params;
+
+        if (!await api.mc.check.experimentInProject(experiment_id, project_id)) {
+            throw new Error(`Experiment ${experiment_id} is not in project ${project_id}`);
         }
 
-        let p = await api.mc.projects.getProjectSimple(params.project_id);
-        let e = await api.mc.experiments.getExperimentSimple(params.experiment_id);
+        let p = await api.mc.projects.getProjectSimple(project_id);
+        let e = await api.mc.experiments.getExperimentSimple(experiment_id);
 
         if (p.owner !== user.id) {
             if (e.owner !== user.owner) {
-                throw new Error(`You do not have permission to delete experiment ${params.experiment_id}`);
+                throw new Error(`You do not have permission to delete experiment ${experiment_id}`);
             }
         }
 
-        let status = await dal.tryCatch(async() => await api.mc.experiments.removeExperimentFromJoinTables(params.experiment_id, params.project_id));
-
+        let status = await dal.tryCatch(async() => await api.mc.experiments.addExperimentToDeleteItems(experiment_id, project_id));
         if (!status) {
-            throw new Error(`Unable to delete experiment ${params.experiment_id} in project ${params.project_id}`);
+            throw new Error(`Unable to delete experiment ${experiment_id} in project ${project_id}`);
+        }
+
+        status = await dal.tryCatch(async() => await api.mc.experiments.removeExperimentFromJoinTables(experiment_id, project_id));
+        if (!status) {
+            throw new Error(`Unable to delete experiment ${experiment_id} in project ${project_id}`);
         }
 
         response.data = {success: true};

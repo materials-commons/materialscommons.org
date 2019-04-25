@@ -1,5 +1,5 @@
 const model = require('@lib/model');
-
+const _ = require('lodash');
 
 module.exports = function(r) {
     const db = require('./db')(r);
@@ -35,21 +35,75 @@ module.exports = function(r) {
         return await r.table('experiments').get(experimentId);
     }
 
-    async function removeExperimentFromJoinTables(experimentId, projectId) {
+    async function addExperimentToDeleteItems(experimentId, projectId) {
         await r.table('delete_item').insert({project_id: projectId, experiment_id: experimentId});
+        return true;
+    }
+
+    async function removeExperimentFromJoinTables(experimentId, projectId) {
         await r.table('project2experiment').getAll([projectId, experimentId], {index: 'project_experiment'}).delete();
-        let samplesToDelete = await r.table('experiment2sample').getAll(experimentId, {index: 'experiment_id'});
+
+        let samplesToDelete = await determineExperimentSamplesToRemoveFromProject(experimentId, projectId);
+        let processesToDelete = await determineExperimentProcessesToRemove(experimentId, samplesToDelete);
+
         if (samplesToDelete.length) {
-            let sampleIds = samplesToDelete.map(s => s.sample_id);
-            await r.table('project2sample').getAll(r.args(sampleIds), {index: 'sample_id'}).delete();
+            await r.table('project2sample').getAll(r.args(samplesToDelete), {index: 'sample_id'}).delete();
         }
 
-        let processesToDelete = await r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'});
         if (processesToDelete.length) {
-            let processIds = processesToDelete.map(p => p.process_id);
-            await r.table('project2process').getAll(r.args(processIds), {index: 'process_id'}).delete();
+            await r.table('project2process').getAll(r.args(processesToDelete), {index: 'process_id'}).delete();
+            await r.table('process2sample').getAll(r.args(processesToDelete), {index: 'process_id'}).delete();
         }
+
         return true;
+    }
+
+    // determineExperimentSamplesToRemoveFromProject returns the list of samples for an experiment that can
+    // be removed. Samples that can't be removed are samples that are used in other experiments in the project.
+    async function determineExperimentSamplesToRemoveFromProject(experimentId, projectId) {
+        let existingExperimentSamples = await r.table('experiment2sample').getAll(experimentId, {index: 'experiment_id'});
+        if (existingExperimentSamples.length) {
+            let sampleIds = existingExperimentSamples.map(e2s => ({sampleId: e2s.sample_id}));
+            let sampleIdsMap = _.keyBy(sampleIds, 'sampleId');
+            // Are any of these samples used in other processes in experiment?
+            let processesInExperiment = await r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'});
+            let processesInExperimentMap = _.keyBy(processesInExperiment, 'process_id');
+            let match = await r.table('project2process').getAll(projectId, {index: 'project_id'})
+                .eqJoin('process_id', r.table('process2sample'), {index: 'process_id'})
+                .zip().pluck('sample_id', 'process_id');
+            // remove all matches that are a process from the experiment we are deleting
+            match = match.filter(m => {
+                return !_.has(processesInExperimentMap, m.process_id);
+            });
+            let samplesInOtherProcesses = match.filter(s => {
+                return _.has(sampleIdsMap, s.sample_id);
+            });
+            if (samplesInOtherProcesses.length) {
+                // There are samples in the experiment that are used in processes that
+                // are not in the experiment. Remove those ids from the list of ids
+                // we are cleaning up and add that sample back in to project2sample.
+                let samplesInOtherProcessesMap = _.keyBy(samplesInOtherProcesses, 'sample_id');
+
+                // remove them from sampleIds, which is the list of samples we wish to delete
+                return sampleIds.filter(s => !_.has(samplesInOtherProcessesMap, s.sampleId)).map(s => s.sampleId);
+            }
+        }
+
+        return existingExperimentSamples.map(e2s => e2s.sample_id);
+    }
+
+    // determineExperimentProcessesToRemove returns the list of processes to remove in the experiment that
+    // are only processes from the list of samples to remove. See determineExperimentSamplesToRemoveFromProject
+    // to see why not all samples in an experiment are removed when an experiment is deleted.
+    async function determineExperimentProcessesToRemove(experimentId, sampleIdsToRemove) {
+        let processesInExperiment = await r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'});
+        if (sampleIdsToRemove.length) {
+            let processesWithDeletedSamples = await r.table('process2sample').getAll(r.args(sampleIdsToRemove), {index: 'sample_id'});
+            let processesWithDeletedSamplesMap = _.keyBy(processesWithDeletedSamples, 'process_id');
+            return processesInExperiment.filter(p => _.has(processesWithDeletedSamplesMap, p.process_id)).map(p => p.process_id);
+        }
+
+        return processesInExperiment.map(p => p.process_id);
     }
 
     return {
@@ -57,6 +111,7 @@ module.exports = function(r) {
         getExperiment,
         renameExperiment,
         getExperimentSimple,
+        addExperimentToDeleteItems,
         removeExperimentFromJoinTables,
     };
 };
