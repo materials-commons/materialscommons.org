@@ -17,7 +17,7 @@ module.exports.MCETLTask = class MCETLTask extends Task {
             'load',
             '--apikey', etlArgs.apikey,
             '--mcurl', process.env.MCURL,
-            '--file', filePath,
+            '--files', filePath,
             '--project-id', etlArgs.projectId,
             '--experiment-name', etlArgs.experimentName
         ];

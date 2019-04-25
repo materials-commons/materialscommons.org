@@ -34,7 +34,7 @@ async function spawnJob(cmd, args, path) {
 }
 
 async function checkSpreadsheet(path, hasParent) {
-    let args = ['check', '--file', path], output, success;
+    let args = ['check', '--files', path], output, success;
     if (hasParent) {
         args.push('--has-parent');
     }
