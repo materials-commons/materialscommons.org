@@ -5,16 +5,50 @@
         </div>
     </md-toolbar>
     <md-dialog-content layout-margin>
+        <h3>Spreadsheet layout</h3>
+        <p>
+            Spreadsheets can be ingested and used to create a workflow and load samples and measurements. The first column must be the
+            name of the sample. The second column is optional and contains the name of the worksheet that is the process that this sample
+            came from. The remaining rows are process and sample attributes. Sample attributes are designated with a "S:" or "s:", process
+            attributes are designated with a "P:" or "p:". If you don't designate a column then it is assumed to be a sample attribute.
+        </p>
+        <p>
+            Units are specified in the header at the end of the header by enclosing them in paranthesis. For example "s:grain size(mm)" would
+            designate a sample attribute named "grain size" with units in "mm".
+        </p>
+        <p>
+            If you have a parent column then each of your sample names must be unique in a worksheet. If you do not have a parent column
+            then this restriction doesn't apply.
+        </p>
+        <p>
+            Below is an example layout that includes a parent column.
+        </p>
+        <md-table-container class="margin-bottom-30">
+            <table md-table>
+                <thead md-head>
+                <tr md-row>
+                    <th md-column>Sample</th>
+                    <th md-column>Parent (optional)</th>
+                    <th md-column>P:Process Attribute(unit)</th>
+                    <th md-column>S:Sample Attribute(unit)</th>
+                </tr>
+                </thead>
+                <tbody md-body>
+                <tr>
+                    <td md-cell>S1</td>
+                    <td md-cell>Worksheet Name</td>
+                    <td md-cell>44</td>
+                    <td md-cell>22</td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
         <form layout="column" class="dialog-form">
             <md-checkbox ng-model="$ctrl.state.hasParent">Second column is Parent column</md-checkbox>
             <md-input-container md-no-float>
                 <label>Name</label>
                 <input ng-model="$ctrl.state.experimentName" type="text" on-enter="$ctrl.submit()">
             </md-input-container>
-            <!--            <md-input-container md-no-float>-->
-            <!--                <label>Description</label>-->
-            <!--                <input ng-model="$ctrl.state.description" type="text" on-enter="$ctrl.submit()">-->
-            <!--            </md-input-container>-->
         </form>
     </md-dialog-content>
     <md-dialog-actions layout="row">
