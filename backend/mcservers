@@ -16,9 +16,8 @@ function build_mcstored() {
 }
 
 function build_mcetl() {
-    CURDIR=$(pwd)
     (cd ${MCETL_SRC}; make cli)
-    (cp ${MCETL_SRC}/cmd/mcetl/mcetl ${MCETLBIN})
+    (cp ${MCETL_SRC}/cmd/mcetl/mcetl prodbin)
 }
 
 function move_log() {
@@ -597,6 +596,7 @@ function deploy_backend() {
 }
 
 function deploy_mc() {
+
     export DB_BACKUP=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
     echo "Deploying Materials Commons deployment..."
     echo "  Updating code for materialscommons.org and mcstore...."
@@ -611,6 +611,7 @@ function deploy_mc() {
     if [[ "$MCSTORE_BRANCH" != "" ]]; then
         (cd ${MCSTORE_SRC}; git checkout ${MCSTORE_BRANCH})
     fi
+
     (cd ${MCSTORE_SRC}; git pull)
     (cd ${MCSERV_SRC}; git pull)
     (cd ${MCETL_SRC}; git pull)
@@ -745,6 +746,7 @@ fi
 export MCSTORE_SRC=$HOME/workspace/src/github.com/materials-commons/mcstore
 export MCSERV_SRC=$HOME/workspace/src/github.com/materials-commons/mc
 export MCETL_SRC=$HOME/workspace/src/github.com/materials-commons/mcetl
+export GOMCAPI_SRC=$HOME/workspace/src/github.com/materials-commons/gomcapi
 
 # Set defaults
 TESTSERVER="d"

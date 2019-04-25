@@ -37,6 +37,21 @@ module.exports.MCETLTask = class MCETLTask extends Task {
     }
 };
 
+module.exports.TestETLTask = class TestETLTask extends Task {
+    constructor() {
+        super();
+        this.name = 'testETLTask';
+        this.description = 'Runs test task';
+        this.frequency = 0;
+        this.queue = 'etl';
+    }
+
+    async run() {
+        api.mc.log.info('Starting testETLTask');
+        return true;
+    }
+};
+
 module.exports.ProcessSpreadsheetTask = class ProcessSpreadsheetTask extends Task {
     constructor() {
         super();
