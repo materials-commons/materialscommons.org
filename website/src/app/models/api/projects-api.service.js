@@ -57,35 +57,35 @@ class ProjectsAPIService {
     setupGlobusProjectDownload(projectId) {
         return this.Restangular.one('v4').one('createGlobusProjectDownload').customPOST({project_id: projectId}).then(
             resp => resp.plain(),
-            e => this.toast.error(e.error)
+            e => this.toast.error(e.data.error)
         );
     }
 
     getProcessesForProject(projectId) {
         return this.Restangular.one('v3').one('getProcessesForProject').customPOST({project_id: projectId}).then(
             processes => processes.plain().data,
-            e => this.toast.error(e.error)
+            e => this.toast.error(e.data.error)
         );
     }
 
     getSamplesForProject(projectId) {
         return this.Restangular.one('v3').one('getSamplesForProject').customPOST({project_id: projectId}).then(
             samples => samples.plain().data,
-            e => this.toast.error(e.error)
+            e => this.toast.error(e.data.error)
         );
     }
 
     getSamplesWithConditionsForProject(projectId) {
         return this.Restangular.one('v3').one('getSamplesWithConditionsForProject').customPOST({project_id: projectId}).then(
             samples => samples.plain().data,
-            e => this.toast.error(e.error)
+            e => this.toast.error(e.data.error)
         );
     }
 
     getProcessForProject(projectId, processId) {
         return this.Restangular.one('v3').one('getProcessForProject').customPOST({project_id: projectId, process_id: processId}).then(
             process => process.plain().data,
-            e => this.toast.error(e.error)
+            e => this.toast.error(e.data.error)
         );
     }
 
