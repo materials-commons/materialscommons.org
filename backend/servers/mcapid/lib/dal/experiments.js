@@ -4,9 +4,10 @@ const _ = require('lodash');
 module.exports = function(r) {
     const db = require('./db')(r);
 
-    async function createExperiment(name, description, owner, projectId) {
+    async function createExperiment(name, description, owner, projectId, inProgress) {
         let e = new model.Experiment(name, owner);
         e.description = description;
+        e.in_progress = inProgress;
         let created = await db.insert('experiments', e);
         let p2e = new model.Project2Experiment(projectId, created.id);
         await db.insert('project2experiment', p2e);
@@ -24,6 +25,11 @@ module.exports = function(r) {
                     processes_count: r.table('experiment2process').getAll(e('id'), {index: 'experiment_id'}).count(),
                 };
             });
+    }
+
+    async function updateInProgress(experimentId, inProgress) {
+        await r.table('experiments').get(experimentId).update({in_progress: inProgress});
+        return true;
     }
 
     async function renameExperiment(experimentId, name) {
@@ -108,6 +114,7 @@ module.exports = function(r) {
 
     return {
         createExperiment,
+        updateInProgress,
         getExperiment,
         renameExperiment,
         getExperimentSimple,

@@ -74,14 +74,16 @@
                             <td md-cell>
                                 <div layout="column">
                                     <div layout="row">
-                                        <md-checkbox ng-if="$ctrl.selectingExperiments"
+                                        <md-checkbox ng-if="$ctrl.selectingExperiments && !experiment.in_progress"
                                                      aria-label="select experiments"
                                                      ng-model="experiment.selected"
                                                      style="margin-right: 10px">
                                         </md-checkbox>
-                                        <a ng-click="$ctrl.gotoWorkflow(experiment)">
+
+                                        <a ng-click="$ctrl.gotoWorkflow(experiment)" ng-if="!experiment.in_progress">
                                             {{experiment.name}}
                                         </a>
+                                        <span ng-if="experiment.in_progress">{{experiment.name}} (in progress)</span>
                                     </div>
 
                                     <span>{{experiment.description}}</span>

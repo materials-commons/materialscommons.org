@@ -186,6 +186,42 @@ module.exports.CheckSpreadsheetAction = class CheckSpreadsheetAction extends Act
     }
 };
 
+module.exports.UpdateExperimentProgressStatusAction = class UpdateExperimentProgressStatusAction extends Action {
+    constructor() {
+        super();
+        this.name = 'updateExperimentProgressStatus';
+        this.description = 'Updates the in_progress flag';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            },
+
+            in_progress: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const {project_id, experiment_id, in_progress} = params;
+
+        if (!await api.mc.check.experimentInProject(experiment_id, project_id)) {
+            throw new Error(`Experiment ${experiment_id} is not in project ${project_id}`);
+        }
+
+        let status = await dal.tryCatch(async() => await api.mc.experiments.updateInProgress(experiment_id, in_progress));
+        if (!status) {
+            throw new Error(`Unable to update in progress status for experiment ${experiment_id}`);
+        }
+
+        response.data = {success: true};
+    }
+};
+
 module.exports.CreateExperimentInProjectAction = class CreateExperimentInProjectAction extends Action {
     constructor() {
         super();
@@ -202,6 +238,10 @@ module.exports.CreateExperimentInProjectAction = class CreateExperimentInProject
 
             description: {
                 default: ''
+            },
+
+            in_progress: {
+                default: false,
             }
         };
     }
@@ -211,7 +251,7 @@ module.exports.CreateExperimentInProjectAction = class CreateExperimentInProject
             throw new Error(`Experiment name ${params.name} is not unique in project ${params.project_id}`);
         }
 
-        let e = await dal.tryCatch(async() => await api.mc.experiments.createExperiment(params.name, params.description, user.id, params.project_id));
+        let e = await dal.tryCatch(async() => await api.mc.experiments.createExperiment(params.name, params.description, user.id, params.project_id, params.in_progress));
         if (!e) {
             throw new Error(`Unable to create experiment ${params.name} in project ${params.project_id}`);
         }

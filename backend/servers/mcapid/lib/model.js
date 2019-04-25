@@ -270,6 +270,7 @@ function Experiment(name, owner) {
     this.note = '<h2>Experiment Notes</h2>';
     this.status = 'active';
     this.birthtime = now;
+    this.in_progress = false;
     this.mtime = now;
     this.goals = [];
     this.collaborators = [];
