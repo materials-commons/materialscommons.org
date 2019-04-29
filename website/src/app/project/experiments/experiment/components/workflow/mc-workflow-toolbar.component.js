@@ -36,7 +36,6 @@ class MCWorkflowToolbarComponentController {
     }
 
     startIntro() {
-        console.log('element', document.getElementById('wf-step-1'));
         introJs().addSteps([
             {
                 element: document.getElementById('wf-step-1'),
@@ -68,6 +67,17 @@ class MCWorkflowToolbarComponentController {
         });
     }
 
+    addProcess2() {
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/add-new-process-dialog.html',
+            controller: SelectProcessTemplateDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            clickOutsideToClose: true,
+            multiple: true
+        });
+    }
+
     showWorkflowJson() {
         this.mcbus.send('WORKFLOW$SHOWJSON');
     }
@@ -83,8 +93,8 @@ class MCWorkflowToolbarComponentController {
 
     showSelectedProcess() {
         this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, this.selectedProcess.id).then(
-                p => this.mcshow.processDetailsDialog(p, false)
-            );
+            p => this.mcshow.processDetailsDialog(p, false)
+        );
     }
 
     search() {
@@ -131,12 +141,36 @@ class MCWorkflowToolbarComponentController {
 
 class SelectProcessTemplateDialogController {
     /*@ngInject*/
-    constructor($stateParams, $mdDialog, workflowService) {
+    constructor($stateParams, $mdDialog, workflowService, selectItems) {
         this.$mdDialog = $mdDialog;
         this.projectId = $stateParams.project_id;
         this.experimentId = $stateParams.experiment_id;
         this.workflowService = workflowService;
+        this.selectItems = selectItems;
         this.keepOpen = false;
+
+        this.items = [
+            {
+                action: 'create',
+                what: 'sample',
+                item: '',
+            }
+        ];
+
+        this.action = 'create';
+        this.what = 'sample';
+    }
+
+    addNewAction() {
+        this.items.push({
+            action: 'create',
+            what: 'sample',
+            item: '',
+        });
+    }
+
+    selectFile() {
+        this.selectItems.fileTree(true);
     }
 
     addSelectedProcessTemplate(templateId) {
@@ -145,6 +179,10 @@ class SelectProcessTemplateDialogController {
 
     done() {
         this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 
 }

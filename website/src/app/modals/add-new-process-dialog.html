@@ -1,0 +1,38 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            <h3 class="md-title">Add Process</h3>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin layout="column">
+        <div layout="row" layout-align="start">
+            <md-button class="md-primary" ng-click="$ctrl.addNewAction()">Add New Action</md-button>
+        </div>
+        <div layout="row" layout-align="space-between">
+            <h3 class="md-subhead" flex="15">Action</h3>
+            <h3 class="md-subhead" flex="15">On</h3>
+            <h3 class="md-subhead" flex="30">Item</h3>
+        </div>
+        <hr>
+        <div layout="row" flex="100" layout-align="space-between" ng-repeat="item in $ctrl.items track by $index">
+            <md-select class="md-no-underline" ng-model="item.action" flex="15">
+                <md-option value="create">Create</md-option>
+                <md-option value="use">Use</md-option>
+                <md-option value="transform">Transform</md-option>
+            </md-select>
+            <md-select class="md-no-underline" ng-model="item.what" flex="15">
+                <md-option value="sample">Sample</md-option>
+                <md-option value="file">File</md-option>
+            </md-select>
+            <md-select class="md-no-underline" placeholder="Item" ng-model="item.item" flex="30" ng-if="item.what === 'sample'">
+                <md-option value="s1/1">S1/1</md-option>
+                <md-option value="P1/dir1/dir2/dir3/file1.txt">S1/2</md-option>
+            </md-select>
+            <md-button class="md-primary" ng-if="item.what === 'file'" flex="30" ng-click="$ctrl.selectFile()">choose a file</md-button>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()">Create</md-button>
+    </md-dialog-actions>
+</md-dialog>
