@@ -20,9 +20,9 @@ function setZipDirPath(zipDirPath) {
 }
 
 function fullPathAndFilename(dataset) {
-    let zipFilename = zipFilename(dataset);
+    let zipfilename = zipFilename(dataset);
     let zipDir = zipDirPath(dataset);
-    return zipDir + zipFilename;
+    return zipDir + zipfilename;
 }
 
 function zipFilename(dataset) {
