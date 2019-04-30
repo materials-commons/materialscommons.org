@@ -1,5 +1,7 @@
 const {Action, api} = require('actionhero');
 const dal = require('@dal');
+const joi = require('joi');
+const _ = require('lodash');
 
 module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction extends Action {
     constructor() {
@@ -100,9 +102,159 @@ module.exports.CreateProcessAction = class CreateProcessAction extends Action {
     }
 
     async run({response, params, user}) {
-        let process = await dal.tryCatch(async() => await api.mc.processes.createProcess(params.project_id, params.experiment_id, params.name, user.id, params.attributes));
+        let process = await dal.tryCatch(async() => await api.mc.processes.createTransformProcessFromTemplate(params.project_id, params.experiment_id, params.name, user.id, params.attributes));
         if (!process) {
             throw new Error(`Unable to create process`);
+        }
+
+        response.data = process;
+    }
+};
+
+module.exports.AddNewProcessAction = class AddNewProcessAction extends Action {
+    constructor() {
+        super();
+        this.name = 'addNewProcess';
+        this.description = 'adds a new process';
+
+        this.sampleSchema = {
+            sample_id: joi.string().guid({version: ['uuidv4']}),
+            property_set_id: joi.string().guid({version: ['uuidv4']}),
+            action: joi.any().valid('use', 'transform'),
+        };
+
+        this.fileSchema = {
+            file_id: joi.string().guid({version: ['uuidv4']}),
+            action: joi.any().valid('use', 'create'),
+        };
+
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            },
+
+            name: {
+                required: true,
+            },
+
+            attributes: {
+                default: [],
+            },
+
+            samples: {
+                default: [],
+                validator: (samples) => {
+                    if (!_.isArray(samples)) {
+                        throw new Error('samples must be an array');
+                    }
+
+                    for (let sample of samples) {
+                        let result = joi.validate(sample, this.sampleSchema);
+                        if (result.error !== null) {
+                            throw new Error(`Invalid sample ${result.error}`);
+                        }
+                    }
+                }
+            },
+
+            create_samples: {
+                default: [],
+            },
+
+            files: {
+                default: [],
+                validator: (files) => {
+                    if (!_.isArray(files)) {
+                        throw new Error('files must be an array');
+                    }
+
+                    for (let file of files) {
+                        let result = joi.validate(file, this.fileSchema);
+                        if (result.error !== null) {
+                            throw new Error(`Invalid file ${result.error}`);
+                        }
+                    }
+                },
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        if (!await api.mc.check.experimentInProject(params.experiment_id, params.project_id)) {
+            throw new Error(`Experiment ${params.experiment_id} not in project ${params.project_id}`);
+        }
+
+        const sampleIds = params.samples.map(s => s.sample_id);
+        if (!await api.mc.check.allSamplesInProject(sampleIds, params.project_id)) {
+            throw new Error(`Not all samples in project`);
+        }
+
+        const fileIds = params.files.map(f => f.file_id);
+        if (!await api.mc.check.allFilesInProject(fileIds, params.project_id)) {
+            throw new Error(`Not all files in project`);
+        }
+
+        const {project_id, experiment_id, name, attributes} = params;
+        const processId = await dal.tryCatch(async() => await api.mc.processes.createProcess(project_id, experiment_id, name, user.id, attributes));
+        if (!processId) {
+            throw new Error(`Unable to create process`);
+        }
+
+        const files = params.files.map(f => {
+            if (f.action === 'use') {
+                return {
+                    file_id: f.file_id,
+                    direction: 'in',
+                };
+            } else {
+                // f.action === 'create'
+                return {
+                    file_id: f.file_id,
+                    direction: 'out'
+                };
+            }
+        });
+
+        let result;
+
+        if (files.length) {
+            result = await dal.tryCatch(async() => await api.mc.files.updateProcessFiles(processId, files));
+            if (!result) {
+                // not sure what to do
+            }
+        }
+
+        // add samples to process
+        const transformSamples = params.samples.filter(s => s.action === 'transform');
+        if (transformSamples.length) {
+            result = await dal.tryCatch(async() => await api.mc.samples.addSamplesToProcess(transformSamples, processId, true));
+            if (!result) {
+                // not sure what to do
+            }
+        }
+
+        const useSamples = params.samples.filter(s => s.action === 'use');
+        if (useSamples.length) {
+            result = await dal.tryCatch(async() => await api.mc.samples.addSamplesToProcess(useSamples, processId, false));
+            if (!result) {
+                // not sure what to do
+            }
+        }
+
+        for (let s of params.create_samples) {
+            result = await dal.tryCatch(async() => await api.mc.samples.createSampleInProcess(s.name, '', user.id, processId, project_id));
+            if (!result) {
+                // not sure what to do
+            }
+        }
+
+        const process = await dal.tryCatch(async() => await api.mc.processes.getProcess(user.id, processId));
+        if (!process) {
+            throw new Error(`Unable to retrieve created process`);
         }
 
         response.data = process;

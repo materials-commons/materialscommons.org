@@ -95,22 +95,6 @@ module.exports.CreateSampleInProcessAction = class CreateSampleInProcessAction e
             },
 
             attributes: {
-                /*
-                An attribute looks as follows:
-                {
-                   name,
-                   measurements:[
-                       {
-                          name,
-                          attribute,
-                          value,
-                          unit,
-                          otype,
-                          is_best_measure
-                       }
-                   ]
-                }
-                 */
                 default: [],
                 validator: (attrs) => {
                     if (!_.isArray(attrs)) {

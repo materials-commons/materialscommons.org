@@ -113,6 +113,8 @@ module.exports = function(r) {
         if (filesToAddToProcess.length) {
             await r.table('process2file').insert(filesToAddToProcess);
         }
+
+        return true;
     }
 
     async function removeExistingProcessFileEntries(processId, files) {
@@ -132,6 +134,8 @@ module.exports = function(r) {
         if (fileSamplesToAdd.length) {
             await r.table('sample2datafile').insert(fileSamplesToAdd);
         }
+
+        return true;
     }
 
     async function removeExistingSampleFileEntries(sampleFileEntries) {
@@ -151,5 +155,7 @@ module.exports = function(r) {
         renameFile,
         linkFilesByNameToProcessAndSample,
         linkFilesByIdToProcessAndSample,
+        updateProcessFiles,
+        updateSampleFiles,
     };
 };

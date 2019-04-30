@@ -1,6 +1,5 @@
 const model = require('@lib/model');
 const {nameToAttr} = require('@lib/util');
-const util = require('util');
 
 module.exports = function(r) {
 
@@ -164,7 +163,6 @@ module.exports = function(r) {
             // Create a bunch of PropertySets, then we will match those up to samples
             let psets = samples.map(() => new model.PropertySet(true));
             let createdPSets = await db.insertSoftWithChanges('propertysets', psets, {toArray: true});
-            console.log('createdPSets', util.inspect(createdPSets, {showHidden: false, depth: null}));
             let s2psArray = [],
                 p2sArray = [];
             for (let i = 0; i < samples.length; i++) {

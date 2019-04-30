@@ -38,6 +38,15 @@ module.exports = function(r) {
         return proc.id;
     }
 
+    async function createProcess(projectId, name, owner) {
+        let p = new model.Process(name, owner, template.id, template.does_transform);
+        p.process_type = 'transform';
+        p.template_name = '';
+        p.category = '';
+        let proc = await addProcess(projectId, p);
+        return proc.id;
+    }
+
     async function addProcess(projectId, process) {
         let p = await db.insert('processes', process);
         let p2proc = new model.Project2Process(projectId, p.id);
@@ -113,6 +122,7 @@ module.exports = function(r) {
 
     return {
         createProcessFromTemplate,
+        createProcess,
         addSetupParams,
     };
 };

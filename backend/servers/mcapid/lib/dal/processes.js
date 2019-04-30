@@ -66,7 +66,7 @@ module.exports = function(r) {
         };
     }
 
-    async function createProcess(projectId, experimentId, name, owner, setups) {
+    async function createTransformProcessFromTemplate(projectId, experimentId, name, owner, setups) {
         let template = await r.table('templates').get('global_Generic Transform Samples Template');
         let procId = await createProcessUtils.createProcessFromTemplate(projectId, template, name, owner);
         let e2proc = new model.Experiment2Process(experimentId, procId);
@@ -79,10 +79,19 @@ module.exports = function(r) {
         return await getProcess(owner, procId);
     }
 
+    async function createProcess(projectId, experimentId, name, owner, properties) {
+        let procId = await createProcessUtils.createProcess(projectId, name, owner);
+        let e2proc = new model.Experiment2Process(experimentId, procId);
+        await r.table('experiment2process').insert(e2proc);
+        await createProcessUtils.addSetupParams('Setup', 'setup', properties, procId);
+        return procId;
+    }
+
     return {
         getProcessesForProject,
         getProcessForProject,
         getProcess,
+        createTransformProcessFromTemplate,
         createProcess,
     };
 };
