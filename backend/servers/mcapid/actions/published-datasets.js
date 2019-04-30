@@ -229,7 +229,7 @@ module.exports.DownloadDatasetZipfileAction = class DownloadDatasetZipFileAction
         const filename = path.basename(filepath);
         let fstream = fs.createReadStream(filepath);
         data.connection.rawConnection.responseHeaders.push(['Content-Disposition', `attachment; filename=${filename}`]);
-        api.mc.servers.servers.web.sendFile(data.connection, null, fstream, 'application/zip');
+        api.servers.servers.web.sendFile(data.connection, null, fstream, 'application/zip');
         data.toRender = false;
     }
 };
