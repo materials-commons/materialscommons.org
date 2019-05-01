@@ -204,6 +204,17 @@ module.exports.AddNewProcessAction = class AddNewProcessAction extends Action {
             throw new Error(`Unable to create process`);
         }
 
+        /*
+        ** The following set of operations can partially complete. Because we can't back out at this point we track whether any
+        ** error occurred during using/creating/transforming samples and using/creating files. If an error does occur we append
+        ** a message to the errors array. At the end if the errors array is not empty we add it to the resulting process to let
+        ** the user know that some errors did occur.
+         */
+
+        let result, errors = [];
+
+        // perform file operations
+
         const files = params.files.map(f => {
             if (f.action === 'use') {
                 return {
@@ -219,21 +230,20 @@ module.exports.AddNewProcessAction = class AddNewProcessAction extends Action {
             }
         });
 
-        let result;
-
         if (files.length) {
             result = await dal.tryCatch(async() => await api.mc.files.updateProcessFiles(processId, files));
             if (!result) {
-                // not sure what to do
+                errors.push(`Unable to add 1 or more files`);
             }
         }
 
-        // add samples to process
+        // perform sample operations
+
         const transformSamples = params.samples.filter(s => s.action === 'transform');
         if (transformSamples.length) {
             result = await dal.tryCatch(async() => await api.mc.samples.addSamplesToProcess(transformSamples, processId, true));
             if (!result) {
-                // not sure what to do
+                errors.push(`Unable to transform 1 or more samples`);
             }
         }
 
@@ -241,20 +251,29 @@ module.exports.AddNewProcessAction = class AddNewProcessAction extends Action {
         if (useSamples.length) {
             result = await dal.tryCatch(async() => await api.mc.samples.addSamplesToProcess(useSamples, processId, false));
             if (!result) {
-                // not sure what to do
+                errors.push(`Unable to add 1 or more samples`);
             }
         }
 
+        let createError = false;
         for (let s of params.create_samples) {
             result = await dal.tryCatch(async() => await api.mc.samples.createSampleInProcess(s.name, '', user.id, processId, project_id));
             if (!result) {
-                // not sure what to do
+                createError = true;
             }
+        }
+
+        if (createError) {
+            errors.push(`Unable to create 1 or more samples`);
         }
 
         const process = await dal.tryCatch(async() => await api.mc.processes.getProcess(user.id, processId));
         if (!process) {
             throw new Error(`Unable to retrieve created process`);
+        }
+
+        if (errors.length) {
+            process.errors = errors;
         }
 
         response.data = process;
