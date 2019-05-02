@@ -24,4 +24,5 @@
             </md-table-container>
         </div>
     </div>
+    <div ng-if="!$ctrl.state.setup.length || $ctrl.state.setup.length === 1 && $ctrl.state.setup[0].properties.length === 0 ">No Setup Properties</div>
 </div>
