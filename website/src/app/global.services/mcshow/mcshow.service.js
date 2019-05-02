@@ -106,6 +106,18 @@ class MCShowService {
         });
     }
 
+    addAttribute(multiple = true) {
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/add-attribute-dialog.html',
+            controllerAs: '$ctrl',
+            controller: AddAttributeDialogController,
+            bindToController: true,
+            clickOutsideToClose: true,
+            multiple: multiple,
+            locals: {}
+        });
+    }
+
     chooseSamplesFromProject(samples) {
         const proj = this.mcprojecstore.getCurrentProject();
         let fillRandomProcesses = (count) => {
@@ -249,6 +261,45 @@ class PropertyMeasurementsDialogDialogController {
 
     done() {
         this.$mdDialog.hide();
+    }
+}
+
+class AddAttributeDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            name: '',
+            measurements: [
+                {
+                    value: '',
+                    unit: '',
+                    process: '',
+                }
+            ]
+        };
+    }
+
+    delete(index) {
+        if (index === 0) {
+            this.state.measurements[0].value = '';
+            this.state.measurements[0].unit = '';
+            this.state.measurements[0].process = '';
+        } else {
+            this.state.measurements.splice(index, 1);
+        }
+    }
+
+    addMeasurement() {
+        this.state.measurements.push({value: '', unit: '', process: ''});
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 

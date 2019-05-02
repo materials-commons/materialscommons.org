@@ -1,6 +1,7 @@
 class MCSampleAttributeSetsComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(mcshow) {
+        this.mcshow = mcshow;
         this.state = {
             attributeSets: []
         };
@@ -15,6 +16,11 @@ class MCSampleAttributeSetsComponentController {
     showMeasurements(attr) {
         this.onShowMeasurements({attr: attr});
     }
+
+    handleAddAttribute() {
+        // this.onAddAttribute({attrSet: attrSet});
+        this.mcshow.addAttribute();
+    }
 }
 
 angular.module('materialscommons').component('mcSampleAttributeSets', {
@@ -22,6 +28,7 @@ angular.module('materialscommons').component('mcSampleAttributeSets', {
     template: require('./sample-attribute-sets.html'),
     bindings: {
         attributeSets: '<',
-        onShowMeasurements: '&'
+        onShowMeasurements: '&',
+        onAddAttribute: '&',
     }
 });

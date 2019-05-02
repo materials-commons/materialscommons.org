@@ -1,0 +1,40 @@
+<md-dialog flex="80">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            Add Attribute
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin>
+        <form layout="column" class="dialog-form">
+            <md-input-container md-no-float>
+                <label>Attribute</label>
+                <input ng-model="$ctrl.state.name" type="text">
+            </md-input-container>
+        </form>
+        <md-button class="md-primary" ng-click="$ctrl.addMeasurement()">add measurement</md-button>
+        <div layout="column" layout-margin>
+            <div layout="row" layout-align="space-between center" ng-repeat="m in $ctrl.state.measurements">
+                <md-input-container flex="30">
+                    <label>Value</label>
+                    <textarea ng-model="m.value" type="text"></textarea>
+                </md-input-container>
+                <md-input-container flex="30">
+                    <label>Units</label>
+                    <input ng-model="m.unit" type="text">
+                </md-input-container>
+                <md-input-container flex="30">
+                    <label>Measuring Process</label>
+                    <md-select class="md-no-underline" ng-model="m.process">
+                        <md-option value="sample">Create Samples</md-option>
+                        <md-option value="file">SEM</md-option>
+                    </md-select>
+                </md-input-container>
+                <a class="md-warn" ng-click="$ctrl.delete($index)" ng-show="m.value !== ''"><i class="fa fa-fw fa-trash-o"></i></a>
+            </div>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-primary" ng-click="$ctrl.submit()" ng-disabled="$ctrl.state.name === ''">Submit</md-button>
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+</md-dialog>

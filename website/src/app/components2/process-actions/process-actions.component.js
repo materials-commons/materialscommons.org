@@ -20,7 +20,7 @@ class MCProcessActionsComponentController {
         this.what = 'sample';
     }
 
-    $onChanges(changes) {
+    $onChanges() {
 
     }
 
