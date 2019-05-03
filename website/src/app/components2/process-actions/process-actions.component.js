@@ -1,7 +1,3 @@
-const SAMPLE_STATE_CREATE = 'create';
-const SAMPLE_STATE_USE = 'use';
-const SAMPLE_STATE_TRANSFORM = 'transform';
-
 class MCProcessActionsComponentController {
     /*@ngInject*/
     constructor(selectItems, $stateParams) {
@@ -47,13 +43,13 @@ class MCProcessActionsComponentController {
         this.state.process.samples.forEach(s => {
             if (!_.has(sampleStates, s.sample_id)) {
                 sampleStates[s.sample_id] = {
-                    action: s.direction === 'out' ? SAMPLE_STATE_CREATE : SAMPLE_STATE_USE,
+                    action: s.direction === 'out' ? 'create' : 'use',
                     name: s.name,
                 };
             } else {
                 // We have already seen this sample. If a sample appears twice then it must be
                 // a sample that is transformed.
-                sampleStates[s.sample_id].direction = SAMPLE_STATE_TRANSFORM;
+                sampleStates[s.sample_id].action = 'transform';
             }
         });
 
