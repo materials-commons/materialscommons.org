@@ -77,6 +77,249 @@ module.exports.GetProcessAction = class GetProcessAction extends Action {
     }
 };
 
+module.exports.AddFilesToProcessAction = class AddFilesToProcessAction extends Action {
+    constructor() {
+        super();
+        this.name = 'addFilesToProcess';
+        this.description = 'Adds files to a process';
+        this.fileSchema = {
+            file_id: joi.string().guid({version: ['uuidv4']}),
+            direction: joi.any().valid('in', 'out')
+        };
+
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            process_id: {
+                required: true,
+            },
+
+            files: {
+                required: true,
+                validator: files => {
+                    if (!_.isArray(files)) {
+                        throw new Error('files must be an array');
+                    }
+
+                }
+            }
+        };
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.processInProject(params.process_id, params.projectId)) {
+            throw new Error(`process is not in project`);
+        }
+
+        let fileIds = params.files.map(s => s.file_id);
+        if (!await api.mc.check.allFilesInProject(fileIds, params.project_id)) {
+            throw new Error(`1 or more samples are not in project`);
+        }
+
+        let result = await dal.tryCatch(async() => await api.mc.files.updateProcessFiles(params.process_id, params.files));
+        if (!result) {
+            throw new Error(`Unable to add one or more files to process`);
+        }
+
+        let process = await dal.tryCatch(async() => await api.mc.processes.getProcessForProject(params.project_id, params.process_id));
+
+        if (!process) {
+            throw new Error('Unable to retrieve updated process');
+        }
+
+        response.data = process;
+    }
+};
+
+module.exports.RemoveFilesFromProcessAction = class RemoveFilesFromProcessAction extends Action {
+    constructor() {
+        super();
+        this.name = 'removeFilesFromProcess';
+        this.description = 'Removes files from process';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            process_id: {
+                required: true,
+            },
+
+            files: {
+                required: true,
+                validator: files => {
+                    if (!_.isArray(files)) {
+                        throw new Error('files must be an array');
+                    }
+                }
+            }
+        };
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.processInProject(params.process_id, params.projectId)) {
+            throw new Error(`process is not in project`);
+        }
+
+        if (!await api.mc.check.allFilesInProject(file, params.project_id)) {
+            throw new Error(`1 or more samples are not in project`);
+        }
+
+        let result = await dal.tryCatch(async() => await api.mc.processes.removeFilesFromProcess(params.files, params.process_id));
+        if (!result) {
+            throw new Error(`Unable to remove files from process`);
+        }
+
+        let process = await dal.tryCatch(async() => await api.mc.processes.getProcessForProject(params.project_id, params.process_id));
+
+        if (!process) {
+            throw new Error('Unable to retrieve updated process');
+        }
+
+        response.data = process;
+    }
+};
+
+module.exports.AddSamplesToProcessAction = class AddSamplesToProcessAction extends Action {
+    constructor() {
+        super();
+        this.name = 'addSamplesToProcess';
+        this.description = 'Adds samples to a process';
+
+        this.sampleSchema = {
+            sample_id: joi.string().guid({version: ['uuidv4']}),
+            property_set_id: joi.string().guid({version: ['uuidv4']}),
+            transform: joi.boolean(),
+        };
+
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            process_id: {
+                required: true,
+            },
+
+            samples: {
+                required: true,
+                validator: samples => {
+                    if (!_.isArray(samples)) {
+                        throw new Error('samples must be an array');
+                    }
+
+                    for (let sample of samples) {
+                        let result = joi.validate(sample, this.sampleSchema);
+                        if (result.error !== null) {
+                            throw new Error(`Invalid sample ${result.error}`);
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.processInProject(params.process_id, params.projectId)) {
+            throw new Error(`process is not in project`);
+        }
+
+        let sampleIds = params.samples.map(s => s.sample_id);
+        if (!await api.mc.check.allSamplesInProject(sampleIds, params.project_id)) {
+            throw new Error(`1 or more samples are not in project`);
+        }
+
+        let transformSamples = params.samples.filter(s => s.transform);
+        if (transformSamples.length) {
+            let result = await dal.tryCatch(async() => await api.mc.samples.addSamplesToProcess(transformSamples, params.process_id, true));
+            if (!result) {
+                throw new Error(`Unable to add one or more samples to process`);
+            }
+        }
+
+        let otherSamples = params.samples.filter(s => !s.transform);
+        if (otherSamples.length) {
+            let result = await dal.tryCatch(async() => await api.mc.samples.addSamplesToProcess(otherSamples, params.process_id, false));
+            if (!result) {
+                throw new Error(`Unable to add one or more samples to process`);
+            }
+        }
+
+        let process = await dal.tryCatch(async() => await api.mc.processes.getProcessForProject(params.project_id, params.process_id));
+
+        if (!process) {
+            throw new Error('Unable to retrieve updated process');
+        }
+
+        response.data = process;
+    }
+};
+
+module.exports.RemoveSamplesFromProcessAction = class RemoveSamplesFromProcessAction extends Action {
+    constructor() {
+        super();
+        this.name = 'removeSamplesFromProcess';
+        this.description = 'Removes samples from process';
+
+        this.sampleSchema = {
+            sample_id: joi.string().guid({version: ['uuidv4']}),
+            property_set_id: joi.string().guid({version: ['uuidv4']}),
+        };
+
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            process_id: {
+                required: true,
+            },
+
+            samples: {
+                required: true,
+                validator: samples => {
+                    if (!_.isArray(samples)) {
+                        throw new Error('samples must be an array');
+                    }
+
+                    for (let sample of samples) {
+                        let result = joi.validate(sample, this.sampleSchema);
+                        if (result.error !== null) {
+                            throw new Error(`Invalid sample ${result.error}`);
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    async run({response, params}) {
+        if (!await api.mc.check.processInProject(params.process_id, params.projectId)) {
+            throw new Error(`process is not in project`);
+        }
+
+        let sampleIds = params.samples.map(s => s.sample_id);
+        if (!await api.mc.check.allSamplesInProject(sampleIds, params.project_id)) {
+            throw new Error(`1 or more samples are not in project`);
+        }
+
+        let result = await dal.tryCatch(async() => await api.mc.processes.removeSamplesFromProcess(params.samples, params.process_id));
+        if (!result) {
+            throw new Error(`Unable to remove samples from process`);
+        }
+
+        let process = await dal.tryCatch(async() => await api.mc.processes.getProcessForProject(params.project_id, params.process_id));
+
+        if (!process) {
+            throw new Error('Unable to retrieve updated process');
+        }
+
+        response.data = process;
+    }
+};
+
 module.exports.CreateProcessAction = class CreateProcessAction extends Action {
     constructor() {
         super();

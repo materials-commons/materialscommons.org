@@ -157,17 +157,18 @@ module.exports = function(r) {
     }
 
     async function addSamplesToProcess(samples, processId, transform) {
-        let p2sArray = samples.map(s => new model.Process2Sample(processId, s.sample_id, s.property_set_id, 'in'));
+        let samplesToAdd = await removeExistingProcessSampleEntries(processId, samples);
+        let p2sArray = samplesToAdd.map(s => new model.Process2Sample(processId, s.sample_id, s.property_set_id, 'in'));
         await db.insertSoft('process2sample', p2sArray);
         if (transform) {
             // Create a bunch of PropertySets, then we will match those up to samples
-            let psets = samples.map(() => new model.PropertySet(true));
+            let psets = samplesToAdd.map(() => new model.PropertySet(true));
             let createdPSets = await db.insertSoftWithChanges('propertysets', psets, {toArray: true});
             let s2psArray = [],
                 p2sArray = [];
-            for (let i = 0; i < samples.length; i++) {
-                s2psArray.push(new model.Sample2PropertySet(samples[i].sample_id, createdPSets[i].id));
-                p2sArray.push(new model.Process2Sample(processId, samples[i].sample_id, createdPSets[i].id, 'out'));
+            for (let i = 0; i < samplesToAdd.length; i++) {
+                s2psArray.push(new model.Sample2PropertySet(samplesToAdd[i].sample_id, createdPSets[i].id));
+                p2sArray.push(new model.Process2Sample(processId, samplesToAdd[i].sample_id, createdPSets[i].id, 'out'));
             }
 
             await db.insertSoft('sample2propertyset', s2psArray);
@@ -177,7 +178,18 @@ module.exports = function(r) {
         }
 
         // If transform is false then a new property set wasn't created, so we can just return the original list.
-        return samples;
+        return samplesToAdd;
+    }
+
+    async function removeExistingProcessSampleEntries(processId, samples) {
+        if (samples.length) {
+            let indexEntries = files.map(f => [processId, f.sample_id, f.property_set_id]);
+            let matchingEntries = await r.table('process2sample').getAll(r.args(indexEntries), {index: 'process_sample_property_set'});
+            let bySampleID = _.keyBy(matchingEntries, e => `${e.sample_id}/${e.property_set_id}`);
+            return samples.filter(s => (!(`${s.sample_id}/${s.property_set_id}` in bySampleID)));
+        }
+
+        return files;
     }
 
     async function addMeasurementsToSampleInProcess(attributes, sampleId, propertySetId, processId) {

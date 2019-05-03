@@ -102,6 +102,7 @@ module.exports = function(r) {
                         direction = 'out';
                         break;
                     default:
+                        direction = 'in';
                         break;
                 }
             }
