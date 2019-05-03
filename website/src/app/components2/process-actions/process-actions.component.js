@@ -1,31 +1,99 @@
+const SAMPLE_STATE_CREATE = 'create';
+const SAMPLE_STATE_USE = 'use';
+const SAMPLE_STATE_TRANSFORM = 'transform';
+
 class MCProcessActionsComponentController {
     /*@ngInject*/
-    constructor(selectItems) {
+    constructor(selectItems, $stateParams) {
         this.selectItems = selectItems;
+        this.projectId = $stateParams.project_id;
 
         this.state = {
             createSampleName: '',
+            process: null,
+            items: [
+                {
+                    action: 'create',
+                    kind: 'sample',
+                    files: [],
+                    samples: [],
+                }
+            ],
         };
-
-        this.items = [
-            {
-                action: 'create',
-                kind: 'sample',
-                files: [],
-                samples: [],
-            }
-        ];
-
-        this.action = 'create';
-        this.what = 'sample';
     }
 
-    $onChanges() {
+    $onChanges(changes) {
+        if (changes.process) {
+            this.state.process = angular.copy(changes.process.currentValue);
+            console.log('process', this.state.process);
+            if (this.state.process.samples.length || this.state.process.files.length) {
+                this.state.items = [];
+                this.buildExistingActions();
+            }
+        }
+    }
 
+    buildExistingActions() {
+        this.buildExistingSamplesActions();
+        this.buildExistingFilesActions();
+    }
+
+    buildExistingSamplesActions() {
+        // Map the in/out direction for the samples. Samples will either appear once with a direction of
+        // in (use sample) or out (create sample). If a sample appears twice then one of the version has
+        // a in direction and the other an our direction. These are transformed samples. The code below
+        // is for consolidating samples to a particular set of directions.
+        let sampleStates = {};
+        this.state.process.samples.forEach(s => {
+            if (!_.has(sampleStates, s.sample_id)) {
+                sampleStates[s.sample_id] = {
+                    action: s.direction === 'out' ? SAMPLE_STATE_CREATE : SAMPLE_STATE_USE,
+                    name: s.name,
+                };
+            } else {
+                // We have already seen this sample. If a sample appears twice then it must be
+                // a sample that is transformed.
+                sampleStates[s.sample_id].direction = SAMPLE_STATE_TRANSFORM;
+            }
+        });
+
+        // Now that we have all sample directions fill out the items list to contain these
+        // entries.
+        _.values(sampleStates).forEach(s => {
+            this.state.items.push({
+                action: s.action,
+                kind: 'sample',
+                samples: [s],
+                files: [],
+            });
+        });
+    }
+
+    buildExistingFilesActions() {
+        this.state.process.files.forEach(f => {
+            this.state.items.push({
+                action: this.mapFileDirectionToAction(f.direction),
+                kind: 'file',
+                samples: [],
+                files: [f],
+            });
+        });
+    }
+
+    mapFileDirectionToAction(direction) {
+        switch (direction) {
+            case 'in':
+                return 'use';
+            case 'out':
+                return 'create';
+            default:
+                // direction should be blank, default to use
+                return 'use';
+        }
     }
 
     addNewAction() {
-        this.items.push({
+        this.state.items.push({
             action: 'create',
             kind: 'sample',
             item: '',
@@ -36,17 +104,16 @@ class MCProcessActionsComponentController {
 
     delete(index) {
         if (index === 0) {
-            this.items[0].action = 'create';
-            this.items[0].kind = 'sample';
-            this.items[0].files.length = 0;
-            this.items[0].samples = [];
+            this.state.items[0].action = 'create';
+            this.state.items[0].kind = 'sample';
+            this.state.items[0].files.length = 0;
+            this.state.items[0].samples = [];
         } else {
-            this.items.splice(index, 1);
+            this.state.items.splice(index, 1);
         }
     }
 
     addCreateSample(item) {
-        console.log('addCreateSample item =', item);
         if (this.state.createSampleName !== '') {
             item.samples.push({name: angular.copy(this.state.createSampleName)});
             this.state.createSampleName = '';
@@ -56,14 +123,23 @@ class MCProcessActionsComponentController {
     selectFiles(item) {
         this.selectItems.fileTree(true).then(selected => {
             console.log('selected files =', selected.files);
-            item.files = selected.files;
+            item.files = [];
+            selected.files.forEach(file => {
+                item.files.push(file);
+            });
         });
     }
 
     selectSamples(item) {
-        this.selectItems.samplesFromProject(this.projectId, this.experimentId).then(selected => {
-            console.log('selectSamples selected samples', selected.samples);
-            item.samples = selected.samples;
+        this.selectItems.samplesFromProject(this.projectId).then(selected => {
+            item.samples = [];
+            selected.samples.forEach(sample => {
+                sample.versions.filter(s => s.selected).forEach(s => {
+                    // Name in versions is the process name, we want the sample name
+                    s.name = sample.name;
+                    item.samples.push(s);
+                });
+            });
         });
     }
 
@@ -72,5 +148,7 @@ class MCProcessActionsComponentController {
 angular.module('materialscommons').component('mcProcessActions', {
     controller: MCProcessActionsComponentController,
     template: require('./process-actions.html'),
-    bindings: {}
+    bindings: {
+        process: '<',
+    }
 });
