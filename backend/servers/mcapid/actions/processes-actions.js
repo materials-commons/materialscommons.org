@@ -217,12 +217,16 @@ module.exports.AddSamplesToProcessAction = class AddSamplesToProcessAction exten
                         }
                     }
                 }
+            },
+
+            create_samples: {
+                default: [],
             }
         };
     }
 
-    async run({response, params}) {
-        if (!await api.mc.check.processInProject(params.process_id, params.projectId)) {
+    async run({response, params, user}) {
+        if (!await api.mc.check.processInProject(params.process_id, params.project_id)) {
             throw new Error(`process is not in project`);
         }
 
@@ -244,6 +248,20 @@ module.exports.AddSamplesToProcessAction = class AddSamplesToProcessAction exten
             let result = await dal.tryCatch(async() => await api.mc.samples.addSamplesToProcess(otherSamples, params.process_id, false));
             if (!result) {
                 throw new Error(`Unable to add one or more samples to process`);
+            }
+        }
+
+        if (params.create_samples.length) {
+            let createError = false;
+            for (let s of params.create_samples) {
+                let result = await dal.tryCatch(async() => await api.mc.samples.createSampleInProcess(s.name, '', user.id, params.process_id, params.project_id));
+                if (!result) {
+                    createError = true;
+                }
+            }
+
+            if (createError) {
+                errors.push(`Unable to create 1 or more samples`);
             }
         }
 

@@ -1,5 +1,6 @@
 const model = require('@lib/model');
 const {nameToAttr} = require('@lib/util');
+const _ = require('lodash');
 
 module.exports = function(r) {
 
@@ -183,7 +184,7 @@ module.exports = function(r) {
 
     async function removeExistingProcessSampleEntries(processId, samples) {
         if (samples.length) {
-            let indexEntries = files.map(f => [processId, f.sample_id, f.property_set_id]);
+            let indexEntries = samples.map(f => [processId, f.sample_id, f.property_set_id]);
             let matchingEntries = await r.table('process2sample').getAll(r.args(indexEntries), {index: 'process_sample_property_set'});
             let bySampleID = _.keyBy(matchingEntries, e => `${e.sample_id}/${e.property_set_id}`);
             return samples.filter(s => (!(`${s.sample_id}/${s.property_set_id}` in bySampleID)));

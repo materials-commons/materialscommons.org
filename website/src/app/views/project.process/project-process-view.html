@@ -36,7 +36,14 @@
     </div>
     <div layout="column" md-whiteframe="5" layout-margin>
         <h5 class="md-title">Actions</h5>
-        <mc-process-actions process="$ctrl.state.process"></mc-process-actions>
+        <mc-process-actions process="$ctrl.state.process"
+                            on-select-samples="$ctrl.handleSelectSamples()"
+                            on-select-files="$ctrl.handleSelectFiles()"
+                            on-add-samples="$ctrl.handleAddSamples(samples, transform)"
+                            on-create-sample="$ctrl.onCreateSample(sample)"
+                            on-delete-sample="$ctrl.onDeleteSample()"
+                            on-add-file="$ctrl.onAddFile()"
+                            on-delete-file="$ctrl.onDeleteFile()"></mc-process-actions>
     </div>
     <div layout="column" md-whiteframe="5" layout-margin>
         <h5 class="md-title">Setup</h5>

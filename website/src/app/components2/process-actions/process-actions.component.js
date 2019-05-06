@@ -1,8 +1,7 @@
 class MCProcessActionsComponentController {
     /*@ngInject*/
-    constructor(selectItems, $stateParams) {
+    constructor(selectItems) {
         this.selectItems = selectItems;
-        this.projectId = $stateParams.project_id;
 
         this.state = {
             createSampleName: '',
@@ -22,6 +21,7 @@ class MCProcessActionsComponentController {
         if (changes.process) {
             this.state.process = angular.copy(changes.process.currentValue);
             console.log('process', this.state.process);
+            this.state.createSampleName = '';
             if (this.state.process.samples.length || this.state.process.files.length) {
                 this.state.items = [];
                 this.buildExistingActions();
@@ -111,13 +111,14 @@ class MCProcessActionsComponentController {
 
     addCreateSample(item) {
         if (this.state.createSampleName !== '') {
+            this.onCreateSample({sample: this.state.createSampleName});
             item.samples.push({name: angular.copy(this.state.createSampleName)});
             this.state.createSampleName = '';
         }
     }
 
     selectFiles(item) {
-        this.selectItems.fileTree(true).then(selected => {
+        this.onSelectFiles().then(selected => {
             console.log('selected files =', selected.files);
             item.files = [];
             selected.files.forEach(file => {
@@ -127,15 +128,18 @@ class MCProcessActionsComponentController {
     }
 
     selectSamples(item) {
-        this.selectItems.samplesFromProject(this.projectId).then(selected => {
+        this.onSelectSamples().then(selected => {
             item.samples = [];
             selected.samples.forEach(sample => {
                 sample.versions.filter(s => s.selected).forEach(s => {
                     // Name in versions is the process name, we want the sample name
+                    console.log('s', s);
                     s.name = sample.name;
                     item.samples.push(s);
                 });
             });
+            let samples = item.samples.map(s => ({sample_id: s.sample_id, property_set_id: s.property_set_id}));
+            return this.onAddSamples({samples, transform: item.action === 'transform'});
         });
     }
 
@@ -146,5 +150,12 @@ angular.module('materialscommons').component('mcProcessActions', {
     template: require('./process-actions.html'),
     bindings: {
         process: '<',
+        onSelectSamples: '&',
+        onSelectFiles: '&',
+        onCreateSample: '&',
+        onDeleteSample: '&',
+        onAddSamples: '&',
+        onAddFile: '&',
+        onDeleteFile: '&',
     }
 });
