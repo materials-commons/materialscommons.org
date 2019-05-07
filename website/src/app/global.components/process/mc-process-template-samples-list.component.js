@@ -18,7 +18,7 @@ class MCProcessTemplateSamplesListComponentController {
         };
         this.processesAPI.updateSamplesInProcess(this.projectId, this.process.id, [], [sampleArg]).then(
             () => this.removeSampleFromProcess(s),
-            () => this.toast.error('Unable to remove file from process')
+            () => this.toast.error('Unable to remove sample from process')
         );
     }
 

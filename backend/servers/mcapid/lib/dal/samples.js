@@ -118,8 +118,11 @@ module.exports = function(r) {
     }
 
     async function addSampleToExperiment(sampleId, experimentId) {
-        const e2s = new model.Experiment2Sample(experimentId, sampleId);
-        await db.insert('experiment2sample', e2s);
+        let matches = await r.table('experiment2sample').getAll([experimentId, sampleId], {index: 'experiment_sample'});
+        if (matches.length === 0) {
+            const e2s = new model.Experiment2Sample(experimentId, sampleId);
+            await db.insert('experiment2sample', e2s);
+        }
     }
 
     async function createSampleInProcess(name, description, owner, processId, projectId) {
@@ -134,6 +137,7 @@ module.exports = function(r) {
         let proj2sample = new model.Project2Sample(projectId, createdSample.id);
         await db.insert('process2sample', proc2sample);
         await db.insert('project2sample', proj2sample);
+        await addSamplesToExperimentsForProcess([{sample_id: createdSample.id}], processId);
 
         return createdSample;
     }
@@ -161,6 +165,12 @@ module.exports = function(r) {
         let samplesToAdd = await removeExistingProcessSampleEntries(processId, samples);
         let p2sArray = samplesToAdd.map(s => new model.Process2Sample(processId, s.sample_id, s.property_set_id, 'in'));
         await db.insertSoft('process2sample', p2sArray);
+
+        /*
+        ** Processes are in experiments, so we need to add the samples to the experiments for the processes that
+        ** the samples are in.
+         */
+        await addSamplesToExperimentsForProcess(samples, processId);
         if (transform) {
             // Create a bunch of PropertySets, then we will match those up to samples
             let psets = samplesToAdd.map(() => new model.PropertySet(true));
@@ -190,7 +200,35 @@ module.exports = function(r) {
             return samples.filter(s => (!(`${s.sample_id}/${s.property_set_id}` in bySampleID)));
         }
 
-        return files;
+        return samples;
+    }
+
+    async function addSamplesToExperimentsForProcess(samples, processId) {
+        let e2p = await r.table('experiment2process').getAll(processId, {index: 'process_id'});
+        let e2sArray = [];
+        e2p.forEach(entry => {
+            samples.forEach(s => {
+                e2sArray.push(new model.Experiment2Sample(entry.experiment_id, s.sample_id));
+            });
+        });
+
+        if (e2sArray.length) {
+            let e2s = await removeExistingExperimentSampleEntries(e2sArray);
+            if (e2s.length) {
+                await db.insertSoft('experiment2sample', e2s);
+            }
+        }
+    }
+
+    async function removeExistingExperimentSampleEntries(e2s) {
+        let entries = e2s.map(entry => [entry.experiment_id, entry.sample_id]);
+        let matchingEntries = await r.table('experiment2sample').getAll(r.args(entries), {index: 'experiment_sample'});
+        if (matchingEntries.length) {
+            let bySampleId = _.keyBy(matchingEntries, 'sample_id');
+            return e2s.filter(e => (!(e.sample_id in bySampleId)));
+        }
+
+        return e2s;
     }
 
     async function addMeasurementsToSampleInProcess(attributes, sampleId, propertySetId, processId) {

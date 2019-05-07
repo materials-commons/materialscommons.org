@@ -56,9 +56,9 @@ angular.module('materialscommons').component('mcProjectProcessViewContainer', {
                                         on-select-samples="$ctrl.handleSelectSamples()"
                                         on-select-files="$ctrl.handleSelectFiles()"
                                         on-add-samples="$ctrl.handleAddSamples(samples, transform)"
-                                        on-create-sample="$ctrl.onCreateSample(sample)"
-                                        on-delete-sample="$ctrl.onDeleteSample()"
-                                        on-add-file="$ctrl.onAddFile()"
-                                        on-delete-file="$ctrl.onDeleteFile()"
+                                        on-create-sample="$ctrl.handleCreateSample(sample)"
+                                        on-delete-sample="$ctrl.handleDeleteSample()"
+                                        on-add-file="$ctrl.handleAddFile()"
+                                        on-delete-file="$ctrl.handleDeleteFile()"
                                         ng-if="$ctrl.state.process"></mc-project-process-view>`
 });

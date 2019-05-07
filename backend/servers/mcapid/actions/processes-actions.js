@@ -254,7 +254,7 @@ module.exports.AddSamplesToProcessAction = class AddSamplesToProcessAction exten
         if (params.create_samples.length) {
             let createError = false;
             for (let s of params.create_samples) {
-                let result = await dal.tryCatch(async() => await api.mc.samples.createSampleInProcess(s.name, '', user.id, params.process_id, params.project_id));
+                let result = await dal.tryCatch(async() => await api.mc.samples.createSampleInProcess(s, '', user.id, params.process_id, params.project_id));
                 if (!result) {
                     createError = true;
                 }
@@ -518,7 +518,7 @@ module.exports.AddNewProcessAction = class AddNewProcessAction extends Action {
 
         let createError = false;
         for (let s of params.create_samples) {
-            result = await dal.tryCatch(async() => await api.mc.samples.createSampleInProcess(s.name, '', user.id, processId, project_id));
+            result = await dal.tryCatch(async() => await api.mc.samples.createSampleInProcess(s, '', user.id, processId, project_id));
             if (!result) {
                 createError = true;
             }
