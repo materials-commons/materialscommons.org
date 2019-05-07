@@ -42,8 +42,9 @@
                         <i class="fa fa-fw fa-clipboard"></i>Experiments ({{$ctrl.state.project.experiments | toSize}})
                     </a>
                     <md-menu-content width="10">
-                        <md-menu-item ng-repeat="experiment in $ctrl.state.project.experiments | orderBy:'name'">
-                            <md-button ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
+                        <md-menu-item ng-repeat="experiment in $ctrl.state.project.experiments| orderBy:'name'">
+                            <span ng-if="experiment.in_progress">{{experiment.name}} (in progress)</span>
+                            <md-button ng-if="!experiment.in_progress" ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
                                 <i class="fa fa-fw flask"></i>{{experiment.name}}
                             </md-button>
                         </md-menu-item>
