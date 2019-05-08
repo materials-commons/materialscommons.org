@@ -151,5 +151,6 @@ module.exports = function(r) {
         renameFile,
         linkFilesByNameToProcessAndSample,
         linkFilesByIdToProcessAndSample,
+        fileByPath,
     };
 };
