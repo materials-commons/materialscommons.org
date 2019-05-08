@@ -193,10 +193,10 @@ module.exports.GetFileByPathInProject = class GetFileByPathInProject extends Act
 
     async run({response, params}) {
         let file = await dal.tryCatch(async() => await api.mc.files.fileByPath(params.project_id, params.path));
-        if (!file) {
+        if (!file || !file.length) {
             throw new Error(`No such file '${params.path} in project`);
         }
 
-        response.data = file;
+        response.data = file[0];
     }
 }
