@@ -18,6 +18,7 @@ class NavbarComponentController {
             this.user = User.attr().fullname;
             this.isAdmin = User.attr().admin;
             this.isBetaUser = User.attr().beta_user;
+            this.saveBetaUser = this.isBetaUser;
         }
         this.isAuthenticated = User.isAuthenticated();
         this.$mdDialog = $mdDialog;
@@ -120,6 +121,11 @@ class NavbarComponentController {
             bindToController: true,
             clickOutsideToClose: true,
         });
+    }
+
+    toggleBetaUser() {
+        this.User.toggleBetaUser();
+        this.isBetaUser = !this.isBetaUser;
     }
 }
 
