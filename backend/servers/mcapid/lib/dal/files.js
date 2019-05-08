@@ -63,9 +63,9 @@ module.exports = function(r) {
         let paths = files.map(f => f.path);
         let filesById = [];
         for (let filePath of paths) {
-            let results = await fileByPath(projectId, filePath);
-            if (results.length) {
-                filesById.push({file_id: results[0].datafile_id, direction: f.direction});
+            let file = await fileByPath(projectId, filePath);
+            if (file) {
+                filesById.push({file_id: file.datafile_id, direction: f.direction});
             }
         }
 
@@ -75,12 +75,13 @@ module.exports = function(r) {
     async function fileByPath(projectId, filePath) {
         let fileName = path.basename(filePath);
         let dir = path.dirname(filePath);
-        return await r.table('datadirs').getAll(dir, {index: 'name'})
+        let f = await r.table('datadirs').getAll(dir, {index: 'name'})
             .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
             .filter({project_id: projectId})
             .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
             .eqJoin('datafile_id', r.table('datafiles')).zip()
             .filter({current: true, name: fileName});
+        return f.length ? f[0] : null;
     }
 
     async function linkFilesByIdToProcessAndSample(files, processId, sampleId) {
