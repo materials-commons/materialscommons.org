@@ -1,4 +1,6 @@
 const path = require('path');
+const model = require('@lib/model');
+const _ = require('lodash');
 
 module.exports = function(r) {
 
@@ -60,10 +62,9 @@ module.exports = function(r) {
 
     async function linkFilesByNameToProcessAndSample(files, processId, sampleId, projectId) {
         // get file ids
-        let paths = files.map(f => f.path);
         let filesById = [];
-        for (let filePath of paths) {
-            let file = await fileByPath(projectId, filePath);
+        for (let f of files) {
+            let file = await fileByPath(projectId, f.path);
             if (file) {
                 filesById.push({file_id: file.datafile_id, direction: f.direction});
             }
@@ -103,6 +104,7 @@ module.exports = function(r) {
                         direction = 'out';
                         break;
                     default:
+                        direction = 'in';
                         break;
                 }
             }
@@ -118,10 +120,10 @@ module.exports = function(r) {
 
     async function removeExistingProcessFileEntries(processId, files) {
         if (files.length) {
-            let indexEntries = files.map(f => [processId, f.file_id]);
+            let indexEntries = files.map(f => [processId, f.datafile_id]);
             let matchingEntries = await r.table('process2file').getAll(r.args(indexEntries), {index: 'process_datafile'});
             let byFileID = _.keyBy(matchingEntries, 'datafile_id');
-            return files.filter(f => (!(f.file_id in byFileID)));
+            return files.filter(f => (!(f.datafile_id in byFileID)));
         }
 
         return files;
@@ -137,10 +139,10 @@ module.exports = function(r) {
 
     async function removeExistingSampleFileEntries(sampleFileEntries) {
         if (sampleFileEntries.length) {
-            let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.file_id]);
+            let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.datafile_id]);
             let matchingEntries = await r.table('sample2datafile').getAll(r.args(indexEntries), {index: 'sample_file'});
             let byFileID = _.keyBy(matchingEntries, 'datafile_id');
-            return sampleFileEntries.filter(entry => (!(entry.file_id in byFileID)));
+            return sampleFileEntries.filter(entry => (!(entry.datafile_id in byFileID)));
         }
         return sampleFileEntries;
     }
