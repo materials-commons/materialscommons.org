@@ -19,7 +19,7 @@
                 </tr>
                 </thead>
                 <tbody md-body>
-                <tr md-row ng-repeat="attr in as.attributes">
+                <tr md-row ng-repeat="attr in as.attributes | orderBy:'name'">
                     <td md-cell><a ng-click="$ctrl.showMeasurements(attr)">{{attr.name}}</a></td>
                     <td md-cell>
                         <span ng-show="attr.best_measure === 'None'">None</span>
