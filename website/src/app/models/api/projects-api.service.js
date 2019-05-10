@@ -139,7 +139,7 @@ class ProjectsAPIService {
     getExcelFilePaths(projectId) {
         return this.projectsAPIRoute(projectId).one('excel_files').get().then(
             results => {
-                return {'file_list': results};
+                return {'file_list': results.plain()};
             }
         );
     }

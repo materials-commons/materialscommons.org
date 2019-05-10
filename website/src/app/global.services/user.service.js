@@ -52,6 +52,10 @@ function UserService($window, $log, Restangular, $state) {
             return self.mcuser ? self.mcuser.beta_user : false
         },
 
+        toggleBetaUser: function() {
+            self.mcuser.beta_user = !self.mcuser.beta_user;
+        },
+
         isTemplateAdmin: function () {
             return self.mcuser ? self.mcuser.is_template_admin : false
         },

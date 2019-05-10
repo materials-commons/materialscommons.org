@@ -1,4 +1,4 @@
-class MCProjectSamplesViewComponentController {
+class MCSamplesList2ComponentController {
     /*@ngInject*/
     constructor() {
         this.state = {
@@ -69,9 +69,9 @@ class MCProjectSamplesViewComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcProjectSamplesView', {
-    controller: MCProjectSamplesViewComponentController,
-    template: require('./project-samples-view.html'),
+angular.module('materialscommons').component('mcSamplesList2', {
+    controller: MCSamplesList2ComponentController,
+    template: require('./samples-list2.html'),
     bindings: {
         samples: '<'
     }

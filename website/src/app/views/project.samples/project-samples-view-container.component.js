@@ -19,7 +19,7 @@ angular.module('materialscommons').component('mcProjectSamplesViewContainer', {
     controller: MCProjectSamplesViewContainerComponentController,
     // template: ``
     template: `
-           <mc-project-samples-table2 samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="!$ctrl.state.isBetaUser"></mc-project-samples-table2>
-           <mc-project-samples-view samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="$ctrl.state.isBetaUser"></mc-project-samples-view>
+           <mc-samples-table2 samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="!$ctrl.state.isBetaUser"></mc-samples-table2>
+           <mc-samples-list2 samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="$ctrl.state.isBetaUser"></mc-samples-list2>
     `
 });

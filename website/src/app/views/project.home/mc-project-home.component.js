@@ -2,11 +2,12 @@ import { Experiment } from '../../models/experiment.model';
 
 class MCProjectHomeComponentController {
     /*@ngInject*/
-    constructor(User, $scope, toast, $state,
+    constructor(User, $scope, toast, $state, $stateParams,
                 editorOpts, $mdDialog,
-                mcprojstore, projectsAPI, mcStateStore) {
+                mcprojstore, projectsAPI, experimentsAPI, mcStateStore) {
         this.toast = toast;
         this.$state = $state;
+        this.$stateParams = $stateParams;
         this.$mdDialog = $mdDialog;
         this.experimentType = 'active';
         this.mergingExperiments = false;
@@ -15,6 +16,7 @@ class MCProjectHomeComponentController {
         this.sortOrder = 'name';
         this.mcprojstore = mcprojstore;
         this.projectsAPI = projectsAPI;
+        this.experimentsAPI = experimentsAPI;
         this.mcStateStore = mcStateStore;
         this.etlStatusAvailable = false;
         this.etlInProgress = false;
@@ -135,6 +137,7 @@ class MCProjectHomeComponentController {
         this.excelFileList = [];
         this.projectsAPI.getExcelFilePaths(this.project.id).then(
             (results) => {
+                console.log('results', results);
                 this.excelFileList = results.file_list;
             },
             () => {
@@ -159,6 +162,57 @@ class MCProjectHomeComponentController {
                 );
             }
         );
+    }
+
+    handleEtlFile() {
+        this.projectsAPI.getExcelFilePaths(this.project.id).then(
+            (results) => {
+                this.$mdDialog.show({
+                    templateUrl: 'app/modals/create-experiment-from-spreadsheet2.html',
+                    controller: CreateExperimentFromSpreadsheetDialogController,
+                    controllerAs: '$ctrl',
+                    bindToController: true,
+                    clickOutsideToClose: true,
+                    locals: {
+                        fileList: results.file_list,
+                    }
+                }).then(
+                    options => {
+                        this.experimentsAPI.checkSpreadsheet(options.file.id, this.$stateParams.project_id, options.experimentName, options.hasParent).then(
+                            status => this.showStatus(status).then(
+                                () => {
+                                    this.$mdDialog.show(
+                                        this.$mdDialog.alert()
+                                            .clickOutsideToClose(true)
+                                            .title('ETL Jobs Run In Background')
+                                            .textContent('Your spreadsheet will be loaded in the background. Press sync to check on progress.')
+                                            .ariaLabel('ETL Background Dialog')
+                                            .ok('Ok')
+                                    );
+                                    this.experimentsAPI.createExperimentFromSpreadsheet(options.experimentName, options.file.id, this.$stateParams.project_id, options.hasParent);
+                                }
+                            ),
+                            e => this.showStatus(e)
+                        );
+                    }
+                );
+            }
+        );
+    }
+
+    showStatus(status) {
+        let logSplit = status.output.split('\n');
+        return this.$mdDialog.show({
+            templateUrl: 'app/modals/etl-output-dialog.html',
+            controller: CloseDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            clickOutsideToClose: true,
+            locals: {
+                log: logSplit,
+                isSuccess: status.success,
+            }
+        });
     }
 
     _reloadComponentState() {
@@ -348,6 +402,41 @@ class EtlDialogController {
     }
 
     cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class CreateExperimentFromSpreadsheetDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+        this.state = {
+            experimentName: '',
+            hasParent: false,
+            file: null,
+        };
+    }
+
+    submit() {
+        this.$mdDialog.hide(this.state);
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
+    }
+}
+
+class CloseDialogController {
+    /*@ngInject*/
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
+    }
+
+    submit() {
+        this.$mdDialog.hide();
+    }
+
+    close() {
         this.$mdDialog.cancel();
     }
 }

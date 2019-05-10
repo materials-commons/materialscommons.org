@@ -59,6 +59,26 @@ class ExperimentsAPIService {
         );
     }
 
+    getSamplesWithProcessAttributesForExperiment(experimentId, projectId) {
+        return this.Restangular.one('v3').one('getSamplesWithProcessAttributesForExperiment').customPOST({
+            project_id: projectId,
+            experiment_id: experimentId,
+        }).then(
+            result => result.plain().data,
+            e => this.toast.error(e.data ? e.data.error : e.error)
+        );
+    }
+
+    getProcessesForExperiment2(experimentId, projectId) {
+        return this.Restangular.one('v3').one('getProcessesForExperiment').customPOST({
+            project_id: projectId,
+            experiment_id: experimentId,
+        }).then(
+            result => result.plain().data,
+            e => this.toast.error(e.data ? e.data.error : e.error)
+        );
+    }
+
     ///////////////////////
 
     getAllForProject(projectID) {

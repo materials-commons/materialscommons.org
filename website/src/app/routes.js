@@ -131,14 +131,17 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.samples', {
             url: '/samples',
-            template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples"></mc-project-samples></md-content>',
-            resolve: {
-                samples: ['experimentsAPI', '$stateParams',
-                    (experimentsAPI, $stateParams) => {
-                        return experimentsAPI.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id);
-                    }
-                ]
-            }
+            template: `
+                <md-content layout="column" class="height-100">
+                    <mc-project-experiment-samples-view-container class="height-100"></mc-project-experiment-samples-view-container>
+                </md-content>`,
+        })
+        .state('project.experiment.processes', {
+            url: '/processes',
+            template: `
+                <md-content layout="column" class="height-100">
+                    <mc-project-experiment-processes-view-container class="height-100"></mc-project-experiment-processes-view-container>
+                </md-content>`,
         })
         .state('project.experiment.files', {
             url: '/files',
@@ -171,14 +174,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             url: '/dataset/:dataset_id',
             template: '<mc-experiment-dataset layout="column" flex layout-fill></mc-experiment-dataset>'
         })
-        .state('project.experiment.sample', {
-            url: '/sample/:sample_id',
-            template: '<mc-show-sample sample-id="ctrl.sampleId"></mc-show-sample>',
-            controllerAs: 'ctrl',
-            controller: ['$stateParams', function($stateParams) {
-                this.sampleId = $stateParams.sample_id;
-            }]
-        })
         .state('project.experiments', {
             url: '/experiments',
             template: '<mc-project-experiments experiments="$resolve.experiments"></mc-project-experiments>',
@@ -203,16 +198,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
                     <mc-project-process-view-container></mc-project-process-view-container>
                 </md-content>`
         })
-        // .state('project.samples', {
-        //     url: '/samples',
-        //     template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples" class="height-100" layout-margin></mc-project-samples></md-content>',
-        //     resolve: {
-        //         samples: ['samplesAPI', '$stateParams',
-        //             (samplesAPI, $stateParams) =>
-        //                 samplesAPI.getProjectSamples($stateParams.project_id)
-        //         ]
-        //     }
-        // })
         .state('project.samples', {
             url: '/samples',
             template: `
@@ -223,18 +208,16 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.sample', {
             url: '/sample/:sample_id',
             template: `
-            <md-content layout="column" class="height-100">
-                <mc-project-sample-view-container></mc-project-sample-view-container>
-            </md-content>
-            `
+                <md-content layout="column" class="height-100">
+                    <mc-project-sample-view-container></mc-project-sample-view-container>
+                </md-content>`
         })
         .state('project.files', {
             url: '/files/:directory_id',
-            // template: '<mc-file-tree flex layout-fill></mc-file-tree>'
             template: `
-                        <md-content layout="column" class="height-100" layout-margin>
-                            <mc-project-files-view-container class="height-100">
-                        </mc-project-files-view-container>`
+                <md-content layout="column" class="height-100" layout-margin>
+                    <mc-project-files-view-container class="height-100">
+                </mc-project-files-view-container>`
         })
         .state('project.files.uploads2', {
             url: '/uploads2/:directory_id',
@@ -267,7 +250,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.datasets.dataset', {
             url: '/dataset/:dataset_id',
-            // template: '<md-content layout-fill flex layout="column" style="background-color:brown"><mc-project-dataset-view-container></mc-project-dataset-view-container></md-content>'
+// template: '<md-content layout-fill flex layout="column" style="background-color:brown"><mc-project-dataset-view-container></mc-project-dataset-view-container></md-content>'
             template: '<mc-project-dataset-view-container></mc-project-dataset-view-container>'
         })
         .state('project.settings', {
@@ -281,7 +264,7 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('data', {
             url: '/data',
             abstract: true,
-            // template: '<md-content ui-view flex></md-content>'
+// template: '<md-content ui-view flex></md-content>'
             template: '<div ui-view flex layout="column"></div>'
         })
         .state('data.dataset', {
@@ -327,6 +310,6 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
             }
         });
 
-    // $urlRouterProvider.otherwise('/login');
+// $urlRouterProvider.otherwise('/login');
     $urlRouterProvider.otherwise('/data/home/top');
 }

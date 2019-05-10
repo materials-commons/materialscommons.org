@@ -1,4 +1,6 @@
 const path = require('path');
+const model = require('@lib/model');
+const _ = require('lodash');
 
 module.exports = function(r) {
 
@@ -60,12 +62,11 @@ module.exports = function(r) {
 
     async function linkFilesByNameToProcessAndSample(files, processId, sampleId, projectId) {
         // get file ids
-        let paths = files.map(f => f.path);
         let filesById = [];
-        for (let filePath of paths) {
-            let results = await fileByPath(projectId, filePath);
-            if (results.length) {
-                filesById.push({file_id: results[0].datafile_id, direction: f.direction});
+        for (let f of files) {
+            let file = await fileByPath(projectId, f.path);
+            if (file) {
+                filesById.push({file_id: file.datafile_id, direction: f.direction});
             }
         }
 
@@ -75,12 +76,13 @@ module.exports = function(r) {
     async function fileByPath(projectId, filePath) {
         let fileName = path.basename(filePath);
         let dir = path.dirname(filePath);
-        return await r.table('datadirs').getAll(dir, {index: 'name'})
+        let f = await r.table('datadirs').getAll(dir, {index: 'name'})
             .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
             .filter({project_id: projectId})
             .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
             .eqJoin('datafile_id', r.table('datafiles')).zip()
             .filter({current: true, name: fileName});
+        return f.length ? f[0] : null;
     }
 
     async function linkFilesByIdToProcessAndSample(files, processId, sampleId) {
@@ -120,10 +122,10 @@ module.exports = function(r) {
 
     async function removeExistingProcessFileEntries(processId, files) {
         if (files.length) {
-            let indexEntries = files.map(f => [processId, f.file_id]);
+            let indexEntries = files.map(f => [processId, f.datafile_id]);
             let matchingEntries = await r.table('process2file').getAll(r.args(indexEntries), {index: 'process_datafile'});
             let byFileID = _.keyBy(matchingEntries, 'datafile_id');
-            return files.filter(f => (!(f.file_id in byFileID)));
+            return files.filter(f => (!(f.datafile_id in byFileID)));
         }
 
         return files;
@@ -141,10 +143,10 @@ module.exports = function(r) {
 
     async function removeExistingSampleFileEntries(sampleFileEntries) {
         if (sampleFileEntries.length) {
-            let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.file_id]);
+            let indexEntries = sampleFileEntries.map(entry => [entry.sample_id, entry.datafile_id]);
             let matchingEntries = await r.table('sample2datafile').getAll(r.args(indexEntries), {index: 'sample_file'});
             let byFileID = _.keyBy(matchingEntries, 'datafile_id');
-            return sampleFileEntries.filter(entry => (!(entry.file_id in byFileID)));
+            return sampleFileEntries.filter(entry => (!(entry.datafile_id in byFileID)));
         }
         return sampleFileEntries;
     }
@@ -158,5 +160,6 @@ module.exports = function(r) {
         linkFilesByIdToProcessAndSample,
         updateProcessFiles,
         updateSampleFiles,
+        fileByPath,
     };
 };

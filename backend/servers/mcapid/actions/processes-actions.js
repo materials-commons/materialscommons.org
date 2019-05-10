@@ -29,6 +29,37 @@ module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction
     }
 };
 
+module.exports.GetProcessesForExperimentAction = class GetProcessesForExperimentAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getProcessesForExperiment';
+        this.description = 'Returns all processes in the given experiment';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            }
+        };
+
+        this.outputExample = {
+            data: [processExample.data],
+            serverInformation: processExample.serverInformation,
+            requesterInformation: processExample.requesterInformation
+        };
+    }
+
+    async run({response, params}) {
+        const results = await dal.tryCatch(async() => await api.mc.processes.getProcessesForExperiment(params.experiment_id));
+        if (results === null) {
+            throw new Error(`Unable to retrieve processes for experiment`);
+        }
+        response.data = results;
+    }
+};
+
 module.exports.GetProcessForProjectAction = class GetProcessForProjectAction extends Action {
     constructor() {
         super();

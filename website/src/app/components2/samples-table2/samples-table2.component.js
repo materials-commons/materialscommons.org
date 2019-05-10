@@ -1,4 +1,4 @@
-class MCProjectSamplesTable2ComponentController {
+class MCSamplesTable2ComponentController {
     constructor(mcshow) {
         this.mcshow = mcshow;
         this.state = {
@@ -23,9 +23,9 @@ class MCProjectSamplesTable2ComponentController {
     }
 }
 
-angular.module('materialscommons').component('mcProjectSamplesTable2', {
-    controller: MCProjectSamplesTable2ComponentController,
-    template: require('./project-samples-table2.html'),
+angular.module('materialscommons').component('mcSamplesTable2', {
+    controller: MCSamplesTable2ComponentController,
+    template: require('./samples-table2.html'),
     bindings: {
         samples: '<',
     }

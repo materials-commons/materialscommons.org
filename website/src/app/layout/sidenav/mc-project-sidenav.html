@@ -2,7 +2,7 @@
     <md-sidenav md-is-locked-open="true" layout="column" class="project-sidenav">
         <div style="padding: 0 0 8px 0; background-colorx: #0656b1;background-color: #4393ee">
             <div style="margin-top: 15px; background-colorx: #1a82d4; padding: 3px;">
-                <a class="md-subhead white margin-left-10 project-sidenav-title" ui-sref="project.home">
+                <a class="md-subhead white margin-left-10 project-sidenav-title" ui-sref="project.home" ng-click="$ctrl.state.experiment = null">
                     <i class="fa fa-fw fa-home"></i>{{$ctrl.state.project.name}}
                 </a>
             </div>
@@ -42,8 +42,9 @@
                         <i class="fa fa-fw fa-clipboard"></i>Experiments ({{$ctrl.state.project.experiments | toSize}})
                     </a>
                     <md-menu-content width="10">
-                        <md-menu-item ng-repeat="experiment in $ctrl.state.project.experiments | orderBy:'name'">
-                            <md-button ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
+                        <md-menu-item ng-repeat="experiment in $ctrl.state.project.experiments| orderBy:'name'">
+                            <span ng-if="experiment.in_progress">{{experiment.name}} (in progress)</span>
+                            <md-button ng-if="!experiment.in_progress" ui-sref="project.experiment.workflow({experiment_id: experiment.id})">
                                 <i class="fa fa-fw flask"></i>{{experiment.name}}
                             </md-button>
                         </md-menu-item>
@@ -84,6 +85,13 @@
                         <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.samples({experiment_id: $ctrl.experiment.id})">
                             <!--<i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.experiment.samples | toSize}})-->
                             <i class="fa fa-fw fa-cubes"></i>Samples
+                        </a>
+                    </div>
+
+                    <div class="padding-3" ui-sref-active="pst-active">
+                        <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.processes({experiment_id: $ctrl.experiment.id})">
+                            <!--<i class="fa fa-fw fa-cubes"></i>Samples({{$ctrl.experiment.samples | toSize}})-->
+                            <i class="fa fa-fw fa-code-fork"></i>Processes
                         </a>
                     </div>
 

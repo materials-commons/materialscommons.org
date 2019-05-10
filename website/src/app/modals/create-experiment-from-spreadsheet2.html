@@ -44,6 +44,15 @@
             </table>
         </md-table-container>
         <form layout="column" class="dialog-form">
+            <md-input-container md-no-float class="margin-top-10 margin-bottom-30">
+                <label>Select an Excel file for ETL</label>
+                <md-select ng-required="true" ng-model="$ctrl.state.file">
+                    <md-option ng-value="choice"
+                               ng-repeat="choice in $ctrl.fileList">
+                        {{::choice.path}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
             <md-checkbox ng-model="$ctrl.state.hasParent">Second column is Parent column</md-checkbox>
             <md-input-container md-no-float>
                 <label>Experiment Name</label>

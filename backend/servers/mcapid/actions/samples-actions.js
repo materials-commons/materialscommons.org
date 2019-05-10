@@ -46,6 +46,31 @@ module.exports.GetSamplesWithConditionsForProjectAction = class GetSamplesWithCo
     }
 };
 
+module.exports.GetSamplesWithProcessAttributesForExperimentAction = class GetSamplesWithProcessAttributesForExperimentAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getSamplesWithProcessAttributesForExperiment';
+        this.description = 'Returns samples with process attributes for experiment';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const samples = await dal.tryCatch(async() => await api.mc.samples.getSamplesWithProcessAttributesForExperiment(params.experiment_id));
+        if (samples === null) {
+            throw new Error(`Unable to retrieve samples for experiment`);
+        }
+        response.data = samples;
+    }
+};
+
 module.exports.GetSampleAction = class GetSampleAction extends Action {
     constructor() {
         super();
@@ -376,14 +401,14 @@ module.exports.AddSampleAndFilesToProcessAction = class AddSampleAndFilesToProce
         }
 
         if (params.files_by_name.length) {
-            const result = await dal.tryCatch(async() => api.mc.samples.linkFilesByNameToProcessAndSample(params.files_by_name, process_id, sample_id));
+            const result = await dal.tryCatch(async() => api.mc.files.linkFilesByNameToProcessAndSample(params.files_by_name, process_id, sample_id));
             if (!result) {
                 throw new Error(`Unable to link files to process ${process_id} and sample ${sample_id}`);
             }
         }
 
         if (params.files_by_id.length) {
-            const result = await dal.tryCatch(async() => api.mc.samples.linkFilesByIdToProcessAndSample(params.files_by_id, process_id, sample_id));
+            const result = await dal.tryCatch(async() => api.mc.files.linkFilesByIdToProcessAndSample(params.files_by_id, process_id, sample_id));
             if (!result) {
                 throw new Error(`Unable to link files to process ${process_id} and sample ${sample_id}`);
             }
