@@ -12,6 +12,12 @@ class MCSampleAttributeSetsComponentController {
         }
     }
 
+    setAttrBestMeasure(attr, m) {
+        let currentValue = m.selected;
+        attr.measurements.forEach(m => m.selected = false);
+        m.selected = currentValue;
+    }
+
     showMeasurements(attr) {
         this.onShowMeasurements({attr: attr});
     }
