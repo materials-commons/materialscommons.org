@@ -37,10 +37,6 @@ class MCSampleAttributeSetsComponentController {
         // attr.measurements.forEach(m => m.selected = false);
         // m.selected = currentValue;
     }
-
-    showMeasurements(attr) {
-        this.onShowMeasurements({attr: attr});
-    }
 }
 
 angular.module('materialscommons').component('mcSampleAttributeSets', {
@@ -48,7 +44,6 @@ angular.module('materialscommons').component('mcSampleAttributeSets', {
     template: require('./sample-attribute-sets.html'),
     bindings: {
         attributeSets: '<',
-        onShowMeasurements: '&',
         onSetAsBestMeasure: '&'
     }
 });

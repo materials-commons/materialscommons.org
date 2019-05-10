@@ -17,14 +17,6 @@ class MCProjectSampleViewContainerComponentController {
         });
     }
 
-    handleShowMeasurements(attr) {
-        this.samplesAPI.getSamplePropertyMeasurements(this.$stateParams.project_id, this.$stateParams.sample_id, attr.id).then(
-            a => this.mcshow.propertyMeasurementsDialog(a, (attrId, mId) => {
-                this.setAsBestMeasure(attrId, mId);
-            })
-        );
-    }
-
     setAsBestMeasure(attrId, mId) {
         if (mId === '') {
             this.clearBestMeasure(attrId);
@@ -57,6 +49,5 @@ angular.module('materialscommons').component('mcProjectSampleViewContainer', {
     template: `<mc-project-sample-view sample="$ctrl.state.sample" 
                                        curl="$ctrl.state.curl" 
                                        on-set-as-best-measure="$ctrl.setAsBestMeasure(attrId, mId)"
-                                       on-show-measurements="$ctrl.handleShowMeasurements(attr)"
                                        ng-if="$ctrl.state.sample"></mc-project-sample-view>`
 });
