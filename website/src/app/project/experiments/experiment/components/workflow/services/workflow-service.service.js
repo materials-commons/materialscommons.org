@@ -76,6 +76,17 @@ class WorkflowService {
             (process) => this.mcprojstore.addProcess(process).then(() => process));
     }
 
+    createProcessWithSamplesAndFiles(projectId, experimentId, name, samples, createSamples) {
+        this.processesAPI.createProcess(projectId, experimentId, name).then(
+            p => {
+                return this.addSamplesToProcess(projectId, p.id, samples, createSamples);
+            }
+        );
+        // this.processesAPI.createProcess().then(
+        //   process => this.processesAPI.addSamplesToProcess().then(() => this.$mdDialog.hide())
+        // )
+    }
+
     addChildProcessFromTemplate(templateId, projectId, experimentId, parentProcess, multiple = true) {
         this.experimentsAPI.createProcessFromTemplate(projectId, experimentId, `global_${templateId}`)
             .then(

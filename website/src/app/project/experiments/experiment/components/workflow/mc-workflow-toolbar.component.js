@@ -206,7 +206,16 @@ class SelectProcessTemplateDialogController {
     selectSamples(item) {
         this.selectItems.samplesFromProject(this.projectId, this.experimentId).then(selected => {
             console.log('selectSamples selected samples', selected.samples);
-            item.samples = selected.samples;
+            item.samples = [];
+            selected.samples.forEach(sample => {
+                sample.versions.filter(s => s.selected).forEach(s => {
+                    // Name in versions is the process name, we want the sample name
+                    console.log('s', s);
+                    s.name = sample.name;
+                    item.samples.push(s);
+                });
+            });
+            // let samples = item.samples.map(s => ({sample_id: s.sample_id, property_set_id: s.property_set_id}));
         });
     }
 
@@ -215,6 +224,7 @@ class SelectProcessTemplateDialogController {
     }
 
     done() {
+        this.workflowService.createProcessWithSamplesAndFiles(this.projectId, this.experimentId, [], []);
         this.$mdDialog.hide();
     }
 
