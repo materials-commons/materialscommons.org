@@ -23,6 +23,14 @@ module.exports = function(r) {
         };
     }
 
+    async function getSamplesWithProcessAttributesForExperiment(experimentId) {
+        return await r.table('experiment2sample').getAll(experimentId, {index: 'experiment_id'})
+            .eqJoin('sample_id', r.table('samples')).zip()
+            .without('group_size', 'has_group', 'is_grouped', 'permissions', 'project_id',
+                'project_name', 'sample_id', 'status', 'user_id')
+            .merge(sampleConditionsOverviewRql);
+    }
+
     async function getSamplesWithConditionsForProject(projectId) {
         return await r.table('project2sample').getAll(projectId, {index: 'project_id'})
             .eqJoin('sample_id', r.table('samples')).zip()
@@ -259,6 +267,7 @@ module.exports = function(r) {
 
     return {
         getSamplesForProject,
+        getSamplesWithProcessAttributesForExperiment,
         getSamplesWithConditionsForProject,
         getSample,
         getSampleSimple,

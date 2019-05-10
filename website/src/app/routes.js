@@ -131,14 +131,10 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         })
         .state('project.experiment.samples', {
             url: '/samples',
-            template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples"></mc-project-samples></md-content>',
-            resolve: {
-                samples: ['experimentsAPI', '$stateParams',
-                    (experimentsAPI, $stateParams) => {
-                        return experimentsAPI.getSamplesForExperiment($stateParams.project_id, $stateParams.experiment_id);
-                    }
-                ]
-            }
+            template: `
+                <md-content layout="column" class="height-100">
+                    <mc-project-experiment-samples-view-container class="height-100"></mc-project-experiment-samples-view-container>
+                </md-content>`,
         })
         .state('project.experiment.files', {
             url: '/files',

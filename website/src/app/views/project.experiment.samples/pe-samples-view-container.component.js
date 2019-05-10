@@ -1,8 +1,9 @@
 class MCProjectExperimentSamplesViewContainerComponentController {
     /*@ngInject*/
-    constructor(projectsAPI, User, $stateParams) {
-        this.projectsAPI = projectsAPI;
+    constructor(experimentsAPI, User, $stateParams) {
+        this.experimentsAPI = experimentsAPI;
         this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
         this.state = {
             samples: [],
             filter: '',
@@ -11,15 +12,16 @@ class MCProjectExperimentSamplesViewContainerComponentController {
     }
 
     $onInit() {
-        this.projectsAPI.getSamplesWithConditionsForProject(this.projectId).then(samples => this.state.samples = samples);
+        this.experimentsAPI.getSamplesWithProcessAttributesForExperiment(this.experimentId, this.projectId).then(
+            samples => this.state.samples = samples
+        );
     }
 }
 
 angular.module('materialscommons').component('mcProjectExperimentSamplesViewContainer', {
-    controller: MCProjectSamplesViewContainerComponentController,
-    // template: ``
+    controller: MCProjectExperimentSamplesViewContainerComponentController,
     template: `
-           <mc-samples-table2 samples="$ctrl.state.samples" flex layout="column" layout-margin ng-xif="!$ctrl.state.isBetaUser"></mc-samples-table2>
-<!--           <mc-project-samples-view samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="$ctrl.state.isBetaUser"></mc-project-samples-view>-->
+           <mc-samples-table2 samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="!$ctrl.state.isBetaUser"></mc-samples-table2>
+           <mc-samples-list2 samples="$ctrl.state.samples" flex layout="column" layout-margin ng-if="$ctrl.state.isBetaUser"></mc-samples-list2>
     `
 });

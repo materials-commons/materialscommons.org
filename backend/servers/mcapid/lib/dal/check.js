@@ -24,6 +24,10 @@ module.exports = function(r) {
         return matches.length === sampleIds.length;
     }
 
+    async function sampleInProject(sampleId, projectId) {
+        return allSamplesInProject([sampleId], projectId);
+    }
+
     async function datasetInProject(datasetId, projectId) {
         let d = await r.table('project2dataset').getAll([projectId, datasetId], {index: 'project_dataset'});
         return d.length !== 0;
@@ -67,6 +71,7 @@ module.exports = function(r) {
         allDirectoriesInProject,
         allFilesInDirectory,
         allSamplesInProject,
+        sampleInProject,
         datasetInProject,
         directoryInProject,
         fileInProject,

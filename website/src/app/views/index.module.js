@@ -9,3 +9,4 @@ import './project.processes/index.module';
 import './project.process/index.module';
 import './project.sample/index.module';
 import './project.samples/index.module';
+import './project.experiment.samples/pe-samples-view-container.component';
