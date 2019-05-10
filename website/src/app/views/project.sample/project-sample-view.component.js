@@ -20,6 +20,10 @@ class MCProjectSampleViewComponentController {
     handleShowMeasurements(attr) {
         this.onShowMeasurements({attr: attr});
     }
+
+    handleSetAsBestMeasure(attrId, mId) {
+        this.onSetAsBestMeasure({attrId, mId});
+    }
 }
 
 angular.module('materialscommons').component('mcProjectSampleView', {
@@ -29,5 +33,6 @@ angular.module('materialscommons').component('mcProjectSampleView', {
         sample: '<',
         curl: '<',
         onShowMeasurements: '&',
+        onSetAsBestMeasure: '&',
     }
 });

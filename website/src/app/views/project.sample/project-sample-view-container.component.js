@@ -56,6 +56,7 @@ angular.module('materialscommons').component('mcProjectSampleViewContainer', {
     controller: MCProjectSampleViewContainerComponentController,
     template: `<mc-project-sample-view sample="$ctrl.state.sample" 
                                        curl="$ctrl.state.curl" 
+                                       on-set-as-best-measure="$ctrl.setAsBestMeasure(attrId, mId)"
                                        on-show-measurements="$ctrl.handleShowMeasurements(attr)"
                                        ng-if="$ctrl.state.sample"></mc-project-sample-view>`
 });

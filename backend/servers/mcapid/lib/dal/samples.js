@@ -106,7 +106,7 @@ module.exports = function(r) {
                             return {
                                 best_measure: r.branch(a('best_measure_id').eq(''), 'None',
                                     r.table('best_measure_history').getAll(a('best_measure_id'))
-                                        .eqJoin('measurement_id', r.table('measurements')).zip().pluck('unit', 'value').nth(0),
+                                        .eqJoin('measurement_id', r.table('measurements')).zip().pluck('measurement_id', 'unit', 'value').nth(0),
                                 ),
                                 measurements: r.table('property2measurement').getAll(a('id'), {index: 'property_id'})
                                     .eqJoin('measurement_id', r.table('measurements')).zip()
