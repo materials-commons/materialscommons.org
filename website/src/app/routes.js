@@ -187,54 +187,37 @@ export function setupRoutes($stateProvider, $urlRouterProvider) {
         .state('project.processes', {
             url: '/processes',
             template: `
-    < md - content;
-    layout = 'column';
-class
-    = 'height-100' >
-        < mc - project - processes - view - container;
-class
-    = 'height-100' > < /mc-project-processes-view-container>;
-</md-content>`,
+                <md-content layout="column" class="height-100">
+                    <mc-project-processes-view-container class="height-100"></mc-project-processes-view-container>
+                </md-content>`,
         })
         .state('project.process', {
             url: '/process/:process_id',
             template: `
-<md-content layout="column" class="height-100">
-<mc-project-process-view-container></mc-project-process-view-container>
-</md-content>`
+                <md-content layout="column" class="height-100">
+                    <mc-project-process-view-container></mc-project-process-view-container>
+                </md-content>`
         })
-        // .state('project.samples', {
-        //     url: '/samples',
-        //     template: '<md-content layout="column" class="height-100"><mc-project-samples samples="$resolve.samples" class="height-100" layout-margin></mc-project-samples></md-content>',
-        //     resolve: {
-        //         samples: ['samplesAPI', '$stateParams',
-        //             (samplesAPI, $stateParams) =>
-        //                 samplesAPI.getProjectSamples($stateParams.project_id)
-        //         ]
-        //     }
-        // })
         .state('project.samples', {
             url: '/samples',
             template: `
-<md-content layout="column" class="height-100">
-<mc-project-samples-view-container class="height-100"></mc-project-samples-view-container>
-</md-content>`,
+                <md-content layout="column" class="height-100">
+                    <mc-project-samples-view-container class="height-100"></mc-project-samples-view-container>
+                </md-content>`,
         })
         .state('project.sample', {
             url: '/sample/:sample_id',
             template: `
-<md-content layout="column" class="height-100">
-<mc-project-sample-view-container></mc-project-sample-view-container>
-</md-content>
-`
+                <md-content layout="column" class="height-100">
+                    <mc-project-sample-view-container></mc-project-sample-view-container>
+                </md-content>`
         })
         .state('project.files', {
             url: '/files/:directory_id',
-// template: '<mc-file-tree flex layout-fill></mc-file-tree>'
             template: `
-<md-content layout="column" class="height-100" layout-margin>
-<mc-project-files-view-container class="height-100">
-</mc-project-files-view-container>`
+                <md-content layout="column" class="height-100" layout-margin>
+                    <mc-project-files-view-container class="height-100">
+                </mc-project-files-view-container>`
         })
         .state('project.files.uploads2', {
             url: '/uploads2/:directory_id',
