@@ -3,6 +3,13 @@ const model = require('@lib/model');
 module.exports = function(r) {
     const createProcessUtils = require('./process-utils/create-process')(r);
 
+    async function getProcessesForExperiment(experimentId) {
+        return await r.table('experiment2process').getAll(experimentId, {index: 'experiment_id'})
+            .eqJoin('process_id', r.table('processes')).zip()
+            .without('experiment_id', 'process_id', 'category')
+            .merge(processDetailsRql);
+    }
+
     async function getProcessesForProject(projectId) {
         return await r.table('project2process').getAll(projectId, {index: 'project_id'})
             .eqJoin('process_id', r.table('processes')).zip()
@@ -80,6 +87,7 @@ module.exports = function(r) {
     }
 
     return {
+        getProcessesForExperiment,
         getProcessesForProject,
         getProcessForProject,
         getProcess,
