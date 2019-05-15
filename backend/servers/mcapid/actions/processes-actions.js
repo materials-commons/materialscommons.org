@@ -1,5 +1,6 @@
 const {Action, api} = require('actionhero');
 const dal = require('@dal');
+const _ = require('lodash');
 
 module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction extends Action {
     constructor() {
@@ -126,12 +127,22 @@ module.exports.CreateProcessAction = class CreateProcessAction extends Action {
 
             attributes: {
                 default: [],
+            },
+
+            process_type: {
+                default: "",
+                validator: param => {
+                    if (!_.isString(param)) {
+                        throw new Error('process_type must be a string');
+                    }
+                }
             }
         };
     }
 
     async run({response, params, user}) {
-        let process = await dal.tryCatch(async() => await api.mc.processes.createProcess(params.project_id, params.experiment_id, params.name, user.id, params.attributes));
+        let processType = params.process_type !== "" ? params.process_type : params.name;
+        let process = await dal.tryCatch(async() => await api.mc.processes.createProcess(params.project_id, params.experiment_id, params.name, user.id, params.attributes, processType));
         if (!process) {
             throw new Error(`Unable to create process`);
         }

@@ -231,7 +231,7 @@ module.exports.CreateSampleAction = class CreateSampleAction extends Action {
     async run({response, params, user}) {
         const {project_id, experiment_id, name, description, attributes} = params;
 
-        let process = await dal.tryCatch(async() => await api.mc.processes.createProcess(project_id, experiment_id, 'Create Samples', user.id, []));
+        let process = await dal.tryCatch(async() => await api.mc.processes.createProcess(project_id, experiment_id, 'Create Samples', user.id, [], "Create Samples"));
         if (!process) {
             throw new Error(`Unable to create process to add sample ${name} to`);
         }
