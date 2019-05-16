@@ -33,8 +33,8 @@ async function spawnJob(cmd, args, path) {
     });
 }
 
-async function checkSpreadsheet(path, hasParent, apikey) {
-    let args = ['check', '--files', path, '--mcurl', process.env.MCURL, '--apikey', apikey], output, success;
+async function checkSpreadsheet(path, hasParent, projectId, apikey) {
+    let args = ['check', '--files', path, '--mcurl', process.env.MCURL, '--apikey', apikey, '--project-id', projectId], output, success;
     if (hasParent) {
         args.push('--has-parent');
     }

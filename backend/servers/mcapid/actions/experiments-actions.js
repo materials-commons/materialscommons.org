@@ -5,20 +5,20 @@ const path = require('path');
 const etl = require('@lib/etl');
 const mcdir = require('@lib/mcdir');
 
-module.exports.TestETLTaskAction = class TestETLTaskAction extends Action {
-    constructor() {
-        super();
-        this.name = 'testETLTask';
-        this.description = 'test that etl tasks are working';
-        this.inputs = {};
-        this.do_not_authenticate = true;
-    }
-
-    async run({response}) {
-        await api.tasks.enqueue('testETLTask', {}, 'etl');
-        response.data = {success: 'Enqueued'};
-    }
-};
+// module.exports.TestETLTaskAction = class TestETLTaskAction extends Action {
+//     constructor() {
+//         super();
+//         this.name = 'testETLTask';
+//         this.description = 'test that etl tasks are working';
+//         this.inputs = {};
+//         this.do_not_authenticate = true;
+//     }
+//
+//     async run({response}) {
+//         await api.tasks.enqueue('testETLTask', {}, 'etl');
+//         response.data = {success: 'Enqueued'};
+//     }
+// };
 
 module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentFromSpreadsheetV2Action extends Action {
     constructor() {
@@ -180,9 +180,7 @@ module.exports.CheckSpreadsheetAction = class CheckSpreadsheetAction extends Act
 
         let filePath = mcdir.pathToFileId(mcdir.idToUse(file));
 
-        let status = await etl.checkSpreadsheet(filePath, params.has_parent, user.apikey);
-
-        response.data = status;
+        response.data = await etl.checkSpreadsheet(filePath, params.has_parent, params.project_id, user.apikey);
     }
 };
 
