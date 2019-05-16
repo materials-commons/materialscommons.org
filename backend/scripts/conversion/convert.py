@@ -38,12 +38,21 @@ def delete_unused_tables(conn):
     run_rql(r.table_drop("dataset2experimentnote"), conn)
 
 
+def add_ptype_to_processes(conn):
+    print "Adding ptype field to all processes..."
+    processes = r.table('processes').run(conn)
+    for process in processes:
+        r.table('processes').get(process['id']).update({"ptype": process['template_name']}).run(conn)
+    print "Done."
+
+
 def main():
     parser = OptionParser()
     parser.add_option("-P", "--port", dest="port", type="int", help="rethinkdb port", default=30815)
     (options, args) = parser.parse_args()
     conn = r.connect('localhost', options.port, db="materialscommons")
-    delete_unused_tables(conn)
+    # delete_unused_tables(conn)
+    add_ptype_to_processes(conn)
 
 
 if __name__ == "__main__":
