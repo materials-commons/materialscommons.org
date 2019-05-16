@@ -31,7 +31,7 @@
 
             <div class="padding-3" ng-class="{'pst-active': $ctrl.isProjectDatasetsRoute()}" ng-if="$ctrl.isBetaUser">
                 <a class="project-sidenav-tool margin-left-30" ui-sref="project.datasets.list">
-                    <i class="fa fa-fw fa-database"></i>Datasets ({{$ctrl.state.project.datasets_count | number}})
+                    <i class="fa fa-fw fa-book"></i>Publish ({{$ctrl.state.project.datasets_count | number}})
                     <!--<i class="fa fa-fw fa-database"></i>Datasets-->
                 </a>
             </div>
@@ -98,7 +98,7 @@
                     <div class="padding-3" ui-sref-activex="pst-active" ng-class="{'pst-active': $ctrl.isDatasetsRoute()}">
                         <a class="project-sidenav-tool margin-left-55" ui-sref="project.experiment.datasets.list({experiment_id: $ctrl.experiment.id})">
                             <!--<i class="fa fa-fw fa-database"></i>Datasets({{$ctrl.experiment.datasets | toSize}})-->
-                            <i class="fa fa-fw fa-database"></i>Datasets
+                            <i class="fa fa-fw fa-book"></i>Publish
                         </a>
                     </div>
 
