@@ -164,7 +164,7 @@ module.exports.CheckSpreadsheetAction = class CheckSpreadsheetAction extends Act
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
         if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
             throw new Error(`File ${params.file_id} not in project ${params.project_id}`);
         }
@@ -180,7 +180,7 @@ module.exports.CheckSpreadsheetAction = class CheckSpreadsheetAction extends Act
 
         let filePath = mcdir.pathToFileId(mcdir.idToUse(file));
 
-        let status = await etl.checkSpreadsheet(filePath);
+        let status = await etl.checkSpreadsheet(filePath, params.has_parent, user.apikey);
 
         response.data = status;
     }
