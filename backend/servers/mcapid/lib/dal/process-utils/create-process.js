@@ -27,8 +27,8 @@ const model = require('@lib/model');
 module.exports = function(r) {
     const db = require('@dal/db')(r);
 
-    async function createProcessFromTemplate(projectId, template, name, owner) {
-        let p = new model.Process(name, owner, template.id, template.does_transform);
+    async function createProcessFromTemplate(projectId, template, name, owner, processType) {
+        let p = new model.Process(name, owner, template.id, template.does_transform, processType);
         // TODO: Fix ugly hack, template id is global_<name>, the substring removes the global_ part.
         p.process_type = template.process_type;
         p.template_name = template.id.substring(7);

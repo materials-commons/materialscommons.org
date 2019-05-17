@@ -40,11 +40,12 @@ function Sample(name, description, owner) {
     this.otype = 'sample';
 }
 
-function Process(name, owner, templateId, transform) {
+function Process(name, owner, templateId, transform, processType) {
     this.name = name.trim();
     this.owner = owner;
     this.template_id = templateId;
     this.process_type = transform ? 'transform' : 'measurement';
+    this.ptype = processType;
     this.birthtime = new Date();
     this.mtime = this.birthtime;
     this.otype = 'process';

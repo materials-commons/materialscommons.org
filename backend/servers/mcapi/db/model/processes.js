@@ -62,6 +62,10 @@ function* updateProcess(processId, updateArgs) {
         yield r.table('processes').get(processId).update({description: updateArgs.description});
     }
 
+    if (updateArgs.ptype) {
+        yield r.table('processes').get(processId).update({ptype: updateArgs.ptype});
+    }
+
     return yield getProcess(processId);
 }
 

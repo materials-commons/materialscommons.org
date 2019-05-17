@@ -247,6 +247,7 @@ function* createProcessFromTemplate(projectId, template, owner) {
     p.process_type = template.process_type;
     p.template_name = template.id.substring(7);
     p.category = template.category;
+    p.ptype = p.template_name;
     let proc = yield addProcess(projectId, p);
     yield createSetup(proc.id, template.setup);
     return proc.id;

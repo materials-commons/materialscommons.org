@@ -62,6 +62,6 @@
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
-        <md-button class="md-primary" ng-click="$ctrl.submit()" ng-disabled="$ctrl.state.experimentName === ''">Submit</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.submit()" ng-disabled="$ctrl.state.experimentName === '' || $ctrl.state.file === null">Submit</md-button>
     </md-dialog-actions>
 </md-dialog>
