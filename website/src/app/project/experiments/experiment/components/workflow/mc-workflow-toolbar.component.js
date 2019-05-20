@@ -152,86 +152,63 @@ class SelectProcessTemplateDialogController {
         this.state = {
             createSampleName: '',
             processName: '',
-        };
-
-        this.items = [
-            {
-                action: 'create',
-                kind: 'sample',
-                files: [],
+            process: {
                 samples: [],
-            }
-        ];
+                files: [],
+            },
 
-        this.action = 'create';
-        this.what = 'sample';
-    }
-
-    addNewAction() {
-        this.items.push({
-            action: 'create',
-            kind: 'sample',
-            item: '',
-            files: [],
+            createSamples: [],
             samples: [],
+        };
+    }
+
+    // addSelectedProcessTemplate(templateId) {
+    //     this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId, this.keepOpen);
+    // }
+
+    /////////////////////////////
+
+    handleSelectSamples() {
+        return this.selectItems.samplesFromProject(this.projectId);
+    }
+
+    handleSelectFiles() {
+        return this.selectItems.fileTree(true);
+    }
+
+    handleAddSamples(samples, transform) {
+        samples.forEach(s => {
+            s.transform = transform;
+            this.state.samples.push(s);
         });
     }
 
-    delete(index) {
-        if (index === 0) {
-            this.items[0].action = 'create';
-            this.items[0].kind = 'sample';
-            this.items[0].files.length = 0;
-            this.items[0].samples = [];
-        } else {
-            this.items.splice(index, 1);
-        }
+    handleCreateSample(sample) {
+        this.state.createSamples.push(sample);
     }
 
-    addCreateSample(item) {
-        console.log('addCreateSample item =', item);
-        if (this.state.createSampleName !== '') {
-            item.samples.push({name: angular.copy(this.state.createSampleName)});
-            this.state.createSampleName = '';
-        }
+    handleDeleteSampleSample() {
+
     }
 
-    selectFiles(item) {
-        this.selectItems.fileTree(true).then(selected => {
-            console.log('selected files =', selected.files);
-            item.files = selected.files;
-        });
+    handleAddFile() {
+
     }
 
-    selectSamples(item) {
-        this.selectItems.samplesFromProject(this.projectId, this.experimentId).then(selected => {
-            console.log('selectSamples selected samples', selected.samples);
-            item.samples = [];
-            selected.samples.forEach(sample => {
-                sample.versions.filter(s => s.selected).forEach(s => {
-                    // Name in versions is the process name, we want the sample name
-                    console.log('s', s);
-                    s.name = sample.name;
-                    item.samples.push(s);
-                });
-            });
-            // let samples = item.samples.map(s => ({sample_id: s.sample_id, property_set_id: s.property_set_id}));
-        });
+    handleDeleteFile() {
+
     }
 
-    addSelectedProcessTemplate(templateId) {
-        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId, this.keepOpen);
-    }
+    /////////////////////////////
 
     done() {
-        this.workflowService.createProcessWithSamplesAndFiles(this.projectId, this.experimentId, [], []);
+        this.workflowService.createProcessWithSamplesAndFiles(this.projectId, this.experimentId, this.state.processName, this.state.samples, this.state.createSamples);
         this.$mdDialog.hide();
     }
 
     cancel() {
         this.$mdDialog.cancel();
     }
-
 }
 
 angular.module('materialscommons').component('mcWorkflowToolbar', {

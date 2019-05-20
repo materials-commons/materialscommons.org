@@ -79,6 +79,19 @@ class ExperimentsAPIService {
         );
     }
 
+    createProcess(projectId, experimentId, name, processType, attrs) {
+        return this.Restangular.one('v3').one('createProcess').customPOST({
+            project_id: projectId,
+            experiment_id: experimentId,
+            name: name,
+            process_type: processType,
+            attributes: attrs
+        }).then(
+            result => result.plain().data,
+            e => this.toast.error(e.data ? e.data.error : e.error)
+        );
+    }
+
     ///////////////////////
 
     getAllForProject(projectID) {

@@ -77,14 +77,18 @@ class WorkflowService {
     }
 
     createProcessWithSamplesAndFiles(projectId, experimentId, name, samples, createSamples) {
-        this.processesAPI.createProcess(projectId, experimentId, name).then(
-            p => {
-                return this.addSamplesToProcess(projectId, p.id, samples, createSamples);
+        this.experimentsAPI.createProcess(projectId, experimentId, name, name, []).then(
+            process => {
+                return this.processesAPI.addSamplesToProcess(projectId, process.id, samples, createSamples).then(
+                    process => this.mcprojstore.addProcess(process).then(() => {
+                        let p = this.templates.loadTemplateFromProcess(process.template_name, process);
+                        p.name = name;
+                        this.mcbus.send('PROCESS$ADD', p);
+                        return process;
+                    })
+                );
             }
         );
-        // this.processesAPI.createProcess().then(
-        //   process => this.processesAPI.addSamplesToProcess().then(() => this.$mdDialog.hide())
-        // )
     }
 
     addChildProcessFromTemplate(templateId, projectId, experimentId, parentProcess, multiple = true) {
