@@ -1,7 +1,7 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
     constructor(workflowService, workflowFiltersService, $timeout, $mdDialog, $stateParams, mcstate, mcbus,
-                mcshow, mcprojstore, experimentsAPI) {
+                mcshow, mcprojstore, experimentsAPI, User) {
         this.myName = 'mcWorkflowToolbar';
         this.workflowService = workflowService;
         this.workflowFiltersService = workflowFiltersService;
@@ -19,6 +19,7 @@ class MCWorkflowToolbarComponentController {
         this.showingWorkflowGraph = true;
         this.isMaximized = false;
         this.tooltipsEnabled = true;
+        this.isBetaUser = User.isBetaUser();
     }
 
     $onInit() {
@@ -70,7 +71,7 @@ class MCWorkflowToolbarComponentController {
     addProcess2() {
         this.$mdDialog.show({
             templateUrl: 'app/modals/add-new-process-dialog.html',
-            controller: SelectProcessTemplateDialogController,
+            controller: SelectProcessWithActionTemplateDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             clickOutsideToClose: true,
@@ -139,7 +140,7 @@ class MCWorkflowToolbarComponentController {
     }
 }
 
-class SelectProcessTemplateDialogController {
+class SelectProcessWithActionTemplateDialogController {
     /*@ngInject*/
     constructor($stateParams, $mdDialog, workflowService, selectItems) {
         this.$mdDialog = $mdDialog;
@@ -209,6 +210,26 @@ class SelectProcessTemplateDialogController {
     cancel() {
         this.$mdDialog.cancel();
     }
+}
+
+class SelectProcessTemplateDialogController {
+    /*@ngInject*/
+    constructor($stateParams, $mdDialog, workflowService) {
+        this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.workflowService = workflowService;
+        this.keepOpen = false;
+    }
+
+    addSelectedProcessTemplate(templateId) {
+        this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId, this.keepOpen);
+    }
+
+    done() {
+        this.$mdDialog.hide();
+    }
+
 }
 
 angular.module('materialscommons').component('mcWorkflowToolbar', {
