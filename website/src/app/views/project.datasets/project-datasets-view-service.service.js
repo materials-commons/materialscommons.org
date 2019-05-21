@@ -38,10 +38,11 @@ angular.module('materialscommons').service('projectDatasetsViewService', Project
 
 class CreateNewDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, createDatasetDialogState, mcStateStore) {
+    constructor($mdDialog, createDatasetDialogState, mcStateStore, selectItems) {
         this.$mdDialog = $mdDialog;
         this.createDatasetDialogState = createDatasetDialogState;
         this.mcStateStore = mcStateStore;
+        this.selectItems = selectItems;
         this.state = {
             project: this.mcStateStore.getState('project'),
             datasetTitle: '',
@@ -56,11 +57,13 @@ class CreateNewDatasetDialogController {
     }
 
     isInvalidDataset() {
-        if (this.state.datasetTitle === '') {
-            return true;
-        }
+        return this.state.datasetTitle === '';
+    }
 
-        return false;
+    selectFiles() {
+        this.selectItems.fileTree(true).then(selected => {
+            console.log('selected', selected);
+        });
     }
 
     done() {
@@ -98,11 +101,7 @@ class CreateDatasetDialogStateService {
 
     resetSampleState(selectedSamples, samples) {
         samples.forEach(s => {
-            if (s.id in selectedSamples) {
-                s.selected = true;
-            } else {
-                s.selected = false;
-            }
+            s.selected = s.id in selectedSamples;
         });
     }
 
@@ -117,7 +116,7 @@ class CreateDatasetDialogStateService {
                 if (e.id in experimentLookupTable) {
                     if (!(s.id in experimentLookupTable[e.id])) {
                         experimentLookupTable[e.id][s.id] = s;
-                        let i = _.findIndex(project.experiments, exp => exp.id == e.id);
+                        let i = _.findIndex(project.experiments, exp => exp.id === e.id);
                         let exp = project.experiments[i];
                         exp.samples.push(s);
                     }
