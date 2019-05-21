@@ -216,8 +216,10 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
     }
 
     getFilesFromTree() {
-        let filesFromTree = [];
-        let dirsFromTree = [];
+        let selectedFilesFromTree = [];
+        let selectedDirsFromTree = [];
+        let unselectedFilesFromTree = [];
+        let unselectedDirsFromTree = [];
         let projectFiles = this.project.files;
         if (projectFiles && projectFiles.length) {
             let treeModel = new TreeModel(),
@@ -229,17 +231,27 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
             root.walk({strategy: 'pre'}, function(node) {
                 if (node.model.data.selected) {
                     node.model.data.selected = false;
-                    console.log('node.model.data', node.model.data);
                     if (node.model.data.otype === 'file') {
-                        filesFromTree.push(node.model.data);
+                        selectedFilesFromTree.push(node.model.data);
                     } else if (node.model.data.otype === 'directory') {
-                        dirsFromTree.push(node.model.data);
+                        selectedDirsFromTree.push(node.model.data);
+                    }
+                } else {
+                    if (node.model.data.otype === 'file') {
+                        unselectedFilesFromTree.push(node.model.data);
+                    } else if (node.model.data.otype === 'directory') {
+                        unselectedDirsFromTree.push(node.model.data);
                     }
                 }
             });
         }
 
-        return {files: filesFromTree, dirs: dirsFromTree};
+        return {
+            files: selectedFilesFromTree,
+            dirs: selectedDirsFromTree,
+            unselected_files: unselectedFilesFromTree,
+            unselected_dirs: unselectedDirsFromTree
+        };
     }
 }
 
