@@ -4,11 +4,6 @@ function templatesService(Restangular, $log) {
     const self = this;
     self.templates = {};
 
-    // defined but not used
-    //function createName(templateName) {
-    //    return templateName + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-    //}
-
     function getTemplate(name) {
         let t = _.find(self.templates, {name: name});
         if (!t) {
