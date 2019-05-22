@@ -15,7 +15,7 @@
                 </tr>
                 </thead>
                 <tbody md-body>
-                <tr md-row ng-repeat="file in $ctrl.files | orderBy:'name'">
+                <tr md-row ng-repeat="file in $ctrl.filesToLink | orderBy:'name'">
                     <td md-cell>
                         <md-checkbox aria-label="linked" ng-model="file.linked"></md-checkbox>
                     </td>

@@ -52,7 +52,7 @@ class LinkFilesToSampleController {
     }
 
     done() {
-        this.$mdDialog.hide(this.filesToLink);
+        this.$mdDialog.hide(this.filesToLink.filter(f => f.linked));
     }
 
     cancel() {
