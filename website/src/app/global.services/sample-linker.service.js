@@ -47,12 +47,12 @@ class LinkFilesToSampleController {
         this.$mdDialog = $mdDialog;
         this.isImage = isImage;
         this.fileSrc = mcfile.src;
-        this.filesToLink = this.files.map(f => ({id: f.id, name: f.name, linked: f.linked, mediatype: f.mediatype}));
+        this.filesToLinkOrUnlink = this.files.map(f => ({id: f.id, name: f.name, linked: f.linked, mediatype: f.mediatype}));
         this.selected = [];
     }
 
     done() {
-        this.$mdDialog.hide(this.filesToLink.filter(f => f.linked));
+        this.$mdDialog.hide(this.filesToLinkOrUnlink);
     }
 
     cancel() {

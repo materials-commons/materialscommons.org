@@ -24,9 +24,11 @@ class MCProcessTemplateSamplesListComponentController {
 
     linkFilesToSample(sample) {
         this.sampleLinker.linkFilesToSample(sample, this.process.files, []).then(
-            (linkedFiles) => {
-                this.samplesAPI.updateSampleFiles(this.projectId, sample.id, linkedFiles, []).then(
-                    () => sample.files = _.uniq(sample.files.concat(linkedFiles), 'id'),
+            (files) => {
+                let filesToLink = files.filter(f => f.linked);
+                let filesToRemove = files.filter(f => !f.linked);
+                this.samplesAPI.updateSampleFiles(this.projectId, sample.id, filesToLink, filesToRemove).then(
+                    () => sample.files = _.uniq(filesToLink, 'id'),
                     () => this.toast.error('Unable to link files to sample')
                 );
             }
