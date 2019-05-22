@@ -1,0 +1,27 @@
+<md-dialog flex="60">
+    <md-toolbar layout="row">
+        <div layout-margin>
+            <h3 class="md-title">Add Process</h3>
+        </div>
+    </md-toolbar>
+    <md-dialog-content layout-margin layout="column">
+        <div layout="column" layout-align="center stretch">
+            <md-input-container>
+                <label>Process Name</label>
+                <input ng-model="$ctrl.state.processName">
+            </md-input-container>
+        </div>
+        <mc-process-actions process="$ctrl.state.process"
+                            on-select-samples="$ctrl.handleSelectSamples()"
+                            on-select-files="$ctrl.handleSelectFiles()"
+                            on-add-samples="$ctrl.handleAddSamples(samples, transform)"
+                            on-create-sample="$ctrl.handleCreateSample(sample)"
+                            on-delete-sample="$ctrl.handleDeleteSample()"
+                            on-add-file="$ctrl.handleAddFile()"
+                            on-delete-file="$ctrl.handleDeleteFile()"></mc-process-actions>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button class="md-warn" ng-click="$ctrl.cancel()">Cancel</md-button>
+        <md-button class="md-primary" ng-click="$ctrl.done()" ng-disabled="$ctrl.state.processName === ''">Create</md-button>
+    </md-dialog-actions>
+</md-dialog>

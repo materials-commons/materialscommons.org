@@ -1,7 +1,7 @@
 class MCWorkflowToolbarComponentController {
     /*@ngInject*/
     constructor(workflowService, workflowFiltersService, $timeout, $mdDialog, $stateParams, mcstate, mcbus,
-                mcshow, mcprojstore, experimentsAPI) {
+                mcshow, mcprojstore, experimentsAPI, User) {
         this.myName = 'mcWorkflowToolbar';
         this.workflowService = workflowService;
         this.workflowFiltersService = workflowFiltersService;
@@ -19,6 +19,7 @@ class MCWorkflowToolbarComponentController {
         this.showingWorkflowGraph = true;
         this.isMaximized = false;
         this.tooltipsEnabled = true;
+        this.isBetaUser = User.isBetaUser();
     }
 
     $onInit() {
@@ -36,7 +37,6 @@ class MCWorkflowToolbarComponentController {
     }
 
     startIntro() {
-        console.log('element', document.getElementById('wf-step-1'));
         introJs().addSteps([
             {
                 element: document.getElementById('wf-step-1'),
@@ -68,6 +68,17 @@ class MCWorkflowToolbarComponentController {
         });
     }
 
+    addProcess2() {
+        this.$mdDialog.show({
+            templateUrl: 'app/modals/add-new-process-dialog.html',
+            controller: SelectProcessWithActionTemplateDialogController,
+            controllerAs: '$ctrl',
+            bindToController: true,
+            clickOutsideToClose: true,
+            multiple: true
+        });
+    }
+
     showWorkflowJson() {
         this.mcbus.send('WORKFLOW$SHOWJSON');
     }
@@ -83,8 +94,8 @@ class MCWorkflowToolbarComponentController {
 
     showSelectedProcess() {
         this.experimentsAPI.getProcessForExperiment(this.projectId, this.experimentId, this.selectedProcess.id).then(
-                p => this.mcshow.processDetailsDialog(p, false)
-            );
+            p => this.mcshow.processDetailsDialog(p, false)
+        );
     }
 
     search() {
@@ -126,6 +137,78 @@ class MCWorkflowToolbarComponentController {
     toggleSidebar() {
         this.isMaximized = !this.isMaximized;
         this.mcstate.set('WORKSPACE$MAXIMIZED', this.isMaximized);
+    }
+}
+
+class SelectProcessWithActionTemplateDialogController {
+    /*@ngInject*/
+    constructor($stateParams, $mdDialog, workflowService, selectItems) {
+        this.$mdDialog = $mdDialog;
+        this.projectId = $stateParams.project_id;
+        this.experimentId = $stateParams.experiment_id;
+        this.workflowService = workflowService;
+        this.selectItems = selectItems;
+        this.keepOpen = false;
+
+        this.state = {
+            createSampleName: '',
+            processName: '',
+            process: {
+                samples: [],
+                files: [],
+            },
+
+            createSamples: [],
+            samples: [],
+        };
+    }
+
+    // addSelectedProcessTemplate(templateId) {
+    //     this.workflowService.addProcessFromTemplate(templateId, this.projectId, this.experimentId, this.keepOpen);
+    // }
+
+    /////////////////////////////
+
+    handleSelectSamples() {
+        return this.selectItems.samplesFromProject(this.projectId);
+    }
+
+    handleSelectFiles() {
+        return this.selectItems.fileTree(true);
+    }
+
+    handleAddSamples(samples, transform) {
+        samples.forEach(s => {
+            s.transform = transform;
+            this.state.samples.push(s);
+        });
+    }
+
+    handleCreateSample(sample) {
+        this.state.createSamples.push(sample);
+    }
+
+    handleDeleteSampleSample() {
+
+    }
+
+    handleAddFile() {
+
+    }
+
+    handleDeleteFile() {
+
+    }
+
+    /////////////////////////////
+
+    done() {
+        this.workflowService.createProcessWithSamplesAndFiles(this.projectId, this.experimentId, this.state.processName, this.state.samples, this.state.createSamples);
+        this.$mdDialog.hide();
+    }
+
+    cancel() {
+        this.$mdDialog.cancel();
     }
 }
 

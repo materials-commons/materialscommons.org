@@ -25,7 +25,7 @@ module.exports = function(r) {
     }
 
     async function sampleInProject(sampleId, projectId) {
-        return allSamplesInProject([sampleId], projectId);
+        return await allSamplesInProject([sampleId], projectId);
     }
 
     async function datasetInProject(datasetId, projectId) {
@@ -66,6 +66,11 @@ module.exports = function(r) {
         return matches.length !== 0;
     }
 
+    async function processInProject(processId, projectId) {
+        let matches = await r.table('project2process').getAll([projectId, processId], {index: 'project_process'});
+        return matches.length !== 0;
+    }
+
     return {
         allFilesInProject,
         allDirectoriesInProject,
@@ -80,5 +85,6 @@ module.exports = function(r) {
         userExists,
         experimentNameIsUniqueInProject,
         experimentInProject,
+        processInProject,
     };
 };

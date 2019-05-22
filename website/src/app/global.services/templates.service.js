@@ -4,11 +4,6 @@ function templatesService(Restangular, $log) {
     const self = this;
     self.templates = {};
 
-    // defined but not used
-    //function createName(templateName) {
-    //    return templateName + ' - ' + $filter('date')(new Date(), 'MM/dd/yyyy @ h:mma');
-    //}
-
     function getTemplate(name) {
         let t = _.find(self.templates, {name: name});
         if (!t) {
@@ -54,6 +49,20 @@ function templatesService(Restangular, $log) {
             } else {
                 p.output_files = [];
             }
+
+            if (process.samples) {
+                // New API for processes returns samples in the 'samples' attribute.
+                // The workflow code assumes the input_samples and output_samples are
+                // filled out. So copy the samples into these attributes.
+                process.samples.forEach(s => {
+                    if (s.direction === 'in') {
+                        process.input_samples.push(s);
+                    } else if (s.direction === 'out') {
+                        process.output_samples.push(s);
+                    }
+                });
+            }
+
             return p;
         },
 
@@ -65,5 +74,5 @@ function templatesService(Restangular, $log) {
     };
 }
 
-angular.module('materialscommons').factory("templates", templatesService);
+angular.module('materialscommons').factory('templates', templatesService);
 

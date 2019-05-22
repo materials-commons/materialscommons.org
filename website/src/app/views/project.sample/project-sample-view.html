@@ -37,6 +37,7 @@
         <h5 class="md-title">Attributes</h5>
         <div layout="row" layout-margin>
             <mc-sample-attribute-sets attribute-sets="$ctrl.state.sample.attribute_sets"
+                                      on-add-attribute="$ctrl.handleAddAttribute(attrSet)"
                                       on-set-as-best-measure="$ctrl.handleSetAsBestMeasure(attrId, mId)"
                                       flex="100"></mc-sample-attribute-sets>
         </div>

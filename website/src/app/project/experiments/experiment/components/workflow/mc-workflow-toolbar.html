@@ -1,7 +1,11 @@
 <md-toolbar>
     <div class="md-toolbar-tools">
 
-        <md-button ng-click="$ctrl.addProcess()" style="margin-right:0">
+        <md-button ng-click="$ctrl.addProcess2()" style="margin-right:0" ng-if="$ctrl.isBetaUser">
+            <i class="fa fa-fw fa-plus"></i> ADD
+        </md-button>
+
+        <md-button ng-click="$ctrl.addProcess()" style="margin-right:0" ng-if="!$ctrl.isBetaUser">
             <i class="fa fa-fw fa-plus"></i> ADD
         </md-button>
 

@@ -1,6 +1,7 @@
 class MCSampleAttributeSetsComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor(mcshow) {
+        this.mcshow = mcshow;
         this.state = {
             attributeSets: []
         };
@@ -33,9 +34,11 @@ class MCSampleAttributeSetsComponentController {
         } else {
             this.onSetAsBestMeasure({attrId: attr.id, mId: m.id});
         }
-        // let currentValue = m.selected;
-        // attr.measurements.forEach(m => m.selected = false);
-        // m.selected = currentValue;
+    }
+
+    handleAddAttribute() {
+        // this.onAddAttribute({attrSet: attrSet});
+        this.mcshow.addAttribute();
     }
 }
 
@@ -44,6 +47,7 @@ angular.module('materialscommons').component('mcSampleAttributeSets', {
     template: require('./sample-attribute-sets.html'),
     bindings: {
         attributeSets: '<',
-        onSetAsBestMeasure: '&'
+        onAddAttribute: '&',
+        onSetAsBestMeasure: '&',
     }
 });

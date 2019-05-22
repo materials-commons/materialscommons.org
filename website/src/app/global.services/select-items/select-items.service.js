@@ -197,8 +197,11 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
 
     ok() {
         let selectedFiles = [];
+        let selectedDirs = [];
         if (this.showFileTree) {
-            selectedFiles = selectedFiles.concat(this.getFilesFromTree());
+            let {files, dirs} = this.getFilesFromTree();
+            selectedFiles = selectedFiles.concat(files);
+            selectedDirs = selectedDirs.concat(dirs);
         }
 
         if (this.showFileTable) {
@@ -209,11 +212,14 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
             selectedFiles = selectedFiles.concat(selectItemsState.uploadedFiles);
         }
 
-        this.$mdDialog.hide({files: selectedFiles});
+        this.$mdDialog.hide({files: selectedFiles, dirs: selectedDirs});
     }
 
     getFilesFromTree() {
-        let filesFromTree = [];
+        let selectedFilesFromTree = [];
+        let selectedDirsFromTree = [];
+        let unselectedFilesFromTree = [];
+        let unselectedDirsFromTree = [];
         let projectFiles = this.project.files;
         if (projectFiles && projectFiles.length) {
             let treeModel = new TreeModel(),
@@ -226,13 +232,26 @@ class SelectItemsFilesServiceModalController extends SelectItemsBase {
                 if (node.model.data.selected) {
                     node.model.data.selected = false;
                     if (node.model.data.otype === 'file') {
-                        filesFromTree.push(node.model.data);
+                        selectedFilesFromTree.push(node.model.data);
+                    } else if (node.model.data.otype === 'directory') {
+                        selectedDirsFromTree.push(node.model.data);
+                    }
+                } else {
+                    if (node.model.data.otype === 'file') {
+                        unselectedFilesFromTree.push(node.model.data);
+                    } else if (node.model.data.otype === 'directory') {
+                        unselectedDirsFromTree.push(node.model.data);
                     }
                 }
             });
         }
 
-        return filesFromTree;
+        return {
+            files: selectedFilesFromTree,
+            dirs: selectedDirsFromTree,
+            unselected_files: unselectedFilesFromTree,
+            unselected_dirs: unselectedDirsFromTree
+        };
     }
 }
 

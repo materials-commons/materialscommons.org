@@ -17,6 +17,7 @@ function MCFilesSelectComponentController() {
 }
 
 angular.module('materialscommons').directive('mcFilesSelectDir', MCFilesSelectDirDirective);
+
 function MCFilesSelectDirDirective(RecursionHelper) {
     'ngInject';
 
@@ -31,11 +32,11 @@ function MCFilesSelectDirDirective(RecursionHelper) {
         controllerAs: 'ctrl',
         bindToController: true,
         template: require('./mc-files-select-dir.html'),
-        compile: function (element) {
-            return RecursionHelper.compile(element, function () {
+        compile: function(element) {
+            return RecursionHelper.compile(element, function() {
             });
         }
-    }
+    };
 }
 
 function MCFilesSelectDirDirectiveController(projectFileTreeAPI) {
@@ -60,6 +61,9 @@ function MCFilesSelectDirDirectiveController(projectFileTreeAPI) {
                     file.active = true;
                     file.data.childrenLoaded = true;
                     file.expand = !file.expand;
+                    file.children.forEach(f => {
+                        f.data.selected = file.data.selected;
+                    });
                 });
             } else {
                 file.active = true;
@@ -71,7 +75,7 @@ function MCFilesSelectDirDirectiveController(projectFileTreeAPI) {
     function clearActiveStateInAllNodes() {
         var treeModel = new TreeModel(),
             root = treeModel.parse(ctrl.project.files[0]);
-        root.walk(function (treeNode) {
+        root.walk(function(treeNode) {
             treeNode.model.active = false;
         });
     }
@@ -82,16 +86,29 @@ function MCFilesSelectDirDirectiveController(projectFileTreeAPI) {
                 dir.children = files;
                 dir.active = true;
                 dir.data.childrenLoaded = true;
-                dir.children.forEach(function (f) {
-                    if (f.data.otype === 'file') {
-                        f.data.selected = dir.data.selected;
-                    }
+                dir.children.forEach(function(f) {
+                    f.data.selected = dir.data.selected;
                 });
             });
         } else {
-            dir.children.forEach(function (f) {
+            dir.children.forEach(function(f) {
                 if (f.data.otype === 'file') {
                     f.data.selected = dir.data.selected;
+                } else {
+                    dirToggleNoLoad(f, dir.data.selected);
+                }
+            });
+        }
+    }
+
+    function dirToggleNoLoad(dir, selected) {
+        dir.data.selected = selected;
+        if (dir.data.childrenLoaded) {
+            dir.children.forEach(f => {
+                if (f.data.otype === 'directory') {
+                    dirToggleNoLoad(f, selected);
+                } else {
+                    f.data.selected = selected;
                 }
             });
         }

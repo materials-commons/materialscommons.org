@@ -1,7 +1,34 @@
 class ProcessesAPIService {
-    constructor(projectsAPIRoute) {
+    constructor(projectsAPIRoute, Restangular, toast) {
         this.projectsAPIRoute = projectsAPIRoute;
+        this.Restangular = Restangular;
+        this.toast = toast;
     }
+
+    addSamplesToProcess(projectId, processId, samples, createSamples) {
+        return this.Restangular.one('v3').one('addSamplesToProcess').customPOST({
+            project_id: projectId,
+            process_id: processId,
+            samples: samples ? samples : [],
+            create_samples: createSamples ? createSamples : [],
+        }).then(
+            (p) => p.plain().data,
+            (e) => this.toast.error(e.data ? e.data.error : 'Failed adding samples to process')
+        );
+    }
+
+    createProcess(projectId, experimentId, name) {
+        return this.Restangular.one('v3').one('createProcess').customPOST({
+            project_id: projectId,
+            experiment_id: experimentId,
+            name: name,
+        }).then(
+            p => p.plain().data,
+            e => this.toast.error(e.data ? e.data.error : 'Failed creating process')
+        );
+    }
+
+    ///////////////////////////////
 
     updateProcess(projectId, processId, updateArgs) {
         return this.projectsAPIRoute(projectId).one('processes', processId)

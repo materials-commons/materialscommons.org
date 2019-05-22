@@ -39,7 +39,7 @@ module.exports = function(r) {
         return {
             samples: r.table('process2sample').getAll(proc('id'), {index: 'process_id'})
                 .eqJoin('sample_id', r.table('samples')).zip()
-                .pluck('name', 'id', 'direction', 'owner')
+                .pluck('name', 'sample_id', 'property_set_id', 'id', 'process_id', 'direction', 'owner')
                 .merge(s => {
                     return {
                         files_count: r.table('sample2datafile').getAll(s('id'), {index: 'sample_id'}).count(),
@@ -48,7 +48,7 @@ module.exports = function(r) {
                 }).coerceTo('array'),
             files: r.table('process2file').getAll(proc('id'), {index: 'process_id'})
                 .eqJoin('datafile_id', r.table('datafiles')).zip()
-                .pluck('id', 'name', 'direction', 'size', 'owner')
+                .pluck('id', 'name', 'direction', 'size', 'owner', 'datafile_id', 'process_id')
                 .merge(f => {
                     return {
                         samples_count: r.table('sample2datafile').getAll(f('id'), {index: 'datafile_id'}).count(),
@@ -73,7 +73,7 @@ module.exports = function(r) {
         };
     }
 
-    async function createProcess(projectId, experimentId, name, owner, setups, processType) {
+    async function createTransformProcessFromTemplate(projectId, experimentId, name, owner, setups, processType) {
         let template = await r.table('templates').get('global_Generic Transform Samples Template');
         let procId = await createProcessUtils.createProcessFromTemplate(projectId, template, name, owner, processType);
         let e2proc = new model.Experiment2Process(experimentId, procId);
@@ -86,11 +86,34 @@ module.exports = function(r) {
         return await getProcess(owner, procId);
     }
 
+    async function createProcess(projectId, experimentId, name, owner, properties) {
+        let procId = await createProcessUtils.createProcess(projectId, name, owner);
+        let e2proc = new model.Experiment2Process(experimentId, procId);
+        await r.table('experiment2process').insert(e2proc);
+        await createProcessUtils.addSetupParams('Setup', 'setup', properties, procId);
+        return procId;
+    }
+
+    async function removeFilesFromProcess(fileIds, processId) {
+        let filesToRemove = fileIds.map(fid => [processId, fid]);
+        await r.table('process2file').getAll(r.args(filesToRemove), {index: 'process_datafile'}).delete();
+        return true;
+    }
+
+    async function removeSamplesFromProcess(samples, processId) {
+        let samplesToRemove = samples.map(s => [processId, s.sample_id, s.property_set_id]);
+        await r.table('process2sample').getAll(r.args(samplesToRemove), {index: 'process_sample_property_set'}).delete();
+        return true;
+    }
+
     return {
         getProcessesForExperiment,
         getProcessesForProject,
         getProcessForProject,
         getProcess,
+        createTransformProcessFromTemplate,
         createProcess,
+        removeFilesFromProcess,
+        removeSamplesFromProcess,
     };
 };

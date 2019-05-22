@@ -17,4 +17,5 @@ import './sample-timeline/sample-timeline.component';
 import './sample-files-table/sample-files-table.component';
 import './sample-attribute-sets/sample-attribute-sets.component';
 import './show-json/show-json.component';
+import './process-actions/process-actions.component';
 import './samples-list2/index.module';

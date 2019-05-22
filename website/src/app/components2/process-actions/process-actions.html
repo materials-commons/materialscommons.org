@@ -1,0 +1,54 @@
+<div layout-margin layout="column">
+    <div layout="row" layout-align="start">
+        <md-button class="md-primary" ng-click="$ctrl.addNewAction()">Add New Action</md-button>
+    </div>
+    <div layout="row" layout-align="space-between">
+        <h3 class="md-subhead" flex="15">Action</h3>
+        <h3 class="md-subhead" flex="15">On</h3>
+        <h3 class="md-subhead" flex="30">Item</h3>
+    </div>
+    <hr>
+    <div layout="row" flex="100" layout-align="space-between center" ng-repeat="item in $ctrl.state.items track by $index">
+        <md-select class="md-no-underline" ng-model="item.action" flex="15" ng-disabled="item.files.length || item.samples.length"
+                   aria-label="action">
+            <md-option value="create">Create</md-option>
+            <md-option value="use">Use</md-option>
+            <md-option value="transform">Transform</md-option>
+        </md-select>
+
+        <md-select class="md-no-underline" ng-model="item.kind" flex="15" ng-disabled="item.files.length || item.samples.length"
+                   aria-label="kind">
+            <md-option value="sample">Sample</md-option>
+            <md-option value="file">File</md-option>
+        </md-select>
+
+        <md-button class="md-primary" ng-if="item.kind === 'sample' && !item.samples.length && item.action !== 'create'" flex="30"
+                   ng-click="$ctrl.selectSamples(item)">
+            choose samples
+        </md-button>
+
+        <div ng-if="item.kind === 'sample' && !item.samples.length && item.action === 'create'" flex="30">
+            <md-input-container>
+                <label>Sample</label>
+                <input ng-model="$ctrl.state.createSampleName" on-enter="$ctrl.addCreateSample(item)">
+            </md-input-container>
+        </div>
+
+        <ul ng-if="item.kind === 'sample' && item.samples.length" flex="30">
+            <li ng-repeat="sample in item.samples">
+                {{sample.name}}
+            </li>
+        </ul>
+
+        <md-button class="md-primary" ng-if="item.kind === 'file' && !item.files.length" flex="30"
+                   ng-click="$ctrl.selectFiles(item)">
+            choose files
+        </md-button>
+        <ul ng-if="item.kind === 'file' && item.files.length" flex="30">
+            <li ng-repeat="file in item.files">
+                {{file.name}}
+            </li>
+        </ul>
+        <a class="md-warn" ng-click="$ctrl.delete($index)"><i class="fa fa-fw fa-trash-o"></i></a>
+    </div>
+</div>
