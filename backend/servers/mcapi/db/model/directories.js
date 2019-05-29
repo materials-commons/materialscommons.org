@@ -103,6 +103,7 @@ function toDir(results) {
             otype: 'directory',
             id: d.id,
             size: 0,
+            mtime: d.mtime,
             name: path.basename(d.name),
             path: d.name,
             checksum: "",
