@@ -1,5 +1,6 @@
 const model = require('@lib/model');
 const _ = require('lodash');
+const {api} = require('actionhero');
 
 module.exports = function(r) {
     const db = require('./db')(r);
@@ -112,6 +113,36 @@ module.exports = function(r) {
         return processesInExperiment.map(p => p.process_id);
     }
 
+    async function addFilesByNameToExperiment(fileNames, experimentId, projectId) {
+        let fileIds = [];
+        for (let f of fileNames) {
+            let file = await api.mc.files.fileByPath(projectId, f.path);
+            if (file) {
+                fileIds.push({file_id: file.id});
+            }
+        }
+
+        return await addFilesByIdToExperiment(fileIds, experimentId);
+    }
+
+    async function addFilesByIdToExperiment(fileIds, experimentId) {
+        let fileIdsToAdd = await removeExistingFileEntries(experimentId, fileIds);
+        let toAdd = fileIdsToAdd.map(f => new model.Experiment2DataFile(experimentId, f.file_id));
+        await r.table('experiment2datafile').insert(toAdd);
+        return true;
+    }
+
+    async function removeExistingFileEntries(experimentId, fileIds) {
+        if (fileIds.length) {
+            let indexEntries = fileIds.map(f => [experimentId, f.file_id]);
+            let matchingEntries = await r.table('experiment2datafile').getAll(r.args(indexEntries), {index: 'experiment_datafile'});
+            let byFileID = _.keyBy(matchingEntries, 'datafile_id');
+            return fileIds.filter(f => (!(f.file_id in byFileID)));
+        }
+
+        return fileIds;
+    }
+
     return {
         createExperiment,
         updateInProgress,
@@ -120,5 +151,7 @@ module.exports = function(r) {
         getExperimentSimple,
         addExperimentToDeleteItems,
         removeExperimentFromJoinTables,
+        addFilesByNameToExperiment,
+        addFilesByIdToExperiment,
     };
 };
