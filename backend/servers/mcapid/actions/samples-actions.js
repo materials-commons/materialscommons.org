@@ -402,14 +402,24 @@ module.exports.AddSampleAndFilesToProcessAction = class AddSampleAndFilesToProce
         }
 
         if (params.files_by_name.length) {
-            const result = await dal.tryCatch(async() => api.mc.files.linkFilesByNameToProcessAndSample(params.files_by_name, process_id, sample_id));
+            let result = await dal.tryCatch(async() => api.mc.experiments.addFilesByNameToExperiment(params.files_by_name, params.experiment_id, params.project_id));
+            if (!result) {
+                throw new Error(`Unable to link files to process ${process_id} and sample ${sample_id}`);
+            }
+
+            result = await dal.tryCatch(async() => api.mc.files.linkFilesByNameToProcessAndSample(params.files_by_name, process_id, sample_id));
             if (!result) {
                 throw new Error(`Unable to link files to process ${process_id} and sample ${sample_id}`);
             }
         }
 
         if (params.files_by_id.length) {
-            const result = await dal.tryCatch(async() => api.mc.files.linkFilesByIdToProcessAndSample(params.files_by_id, process_id, sample_id));
+            let result = await dal.tryCatch(async() => api.mc.experiments.addFilesByIdToExperiment(params.files_by_id, params.experiment_id, params.project_id));
+            if (!result) {
+                throw new Error(`Unable to link files to process ${process_id} and sample ${sample_id}`);
+            }
+
+            result = await dal.tryCatch(async() => api.mc.files.linkFilesByIdToProcessAndSample(params.files_by_id, process_id, sample_id));
             if (!result) {
                 throw new Error(`Unable to link files to process ${process_id} and sample ${sample_id}`);
             }
