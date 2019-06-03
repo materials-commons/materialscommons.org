@@ -1,8 +1,9 @@
 class DatasetsAPIService {
     /*@ngInject*/
-    constructor(projectsAPIRoute, Restangular) {
+    constructor(projectsAPIRoute, Restangular, toast) {
         this.projectsAPIRoute = projectsAPIRoute;
         this.Restangular = Restangular;
+        this.toast = toast;
     }
 
     getDatasetsForProject(projectId) {
@@ -66,6 +67,17 @@ class DatasetsAPIService {
             project_id: projectId,
             dataset_id: datasetId
         }).then(d => d.plain().data);
+    }
+
+    updateDatasetFileSelection(projectId, datasetId, selection) {
+        return this.Restangular.one('v3').one('updateDatasetFileSelection').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId,
+            file_selection: selection,
+        }).then(
+            d => d.plain().data,
+            e => this.toast.error(e.error)
+        );
     }
 
     ////////////////////

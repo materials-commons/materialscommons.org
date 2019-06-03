@@ -130,6 +130,16 @@ module.exports = function(r) {
         });
     }
 
+    async function updateDatasetFileSelection(datasetId, selectionId, selection) {
+        let id = await updateSelectedFiles(selection, selectionId);
+        if (!selectionId) {
+            // selection created for first time for dataset, so update dataset to contain the selection.
+            await r.table('datasets').get(datasetId).update({selection_id: id});
+        }
+
+        return id;
+    }
+
     async function canPublishDataset(datasetId) {
         let dsStatus = {
             files_count: 0,
@@ -508,6 +518,7 @@ module.exports = function(r) {
         getDatasetsForProject,
         getDataset,
         getDatasetFiles,
+        updateDatasetFileSelection,
         getDatasetSamplesAndProcesses,
         updateDataset,
         addFilesToDataset,

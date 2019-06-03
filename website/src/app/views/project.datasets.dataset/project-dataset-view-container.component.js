@@ -46,15 +46,18 @@ class MCProjectDatasetViewContainerComponentController {
     }
 
     handleAddFiles(filesToAdd) {
-        let existingFiles = _.indexBy(this.state.dataset.files, 'id'),
-            newFiles = filesToAdd.filter(f => (!(f.id in existingFiles))),
-            newFileIds = newFiles.map(f => f.id);
-        this.datasetsAPI.addFilesToProjectDataset(this.state.project.id, this.state.dataset.id, newFileIds)
-            .then(
-                (d) => {
-                    this.state.dataset = angular.copy(d);
-                }
-            );
+        this.datasetsAPI.updateDatasetFileSelection(this.state.project.id, this.state.dataset.id, filesToAdd.selection).then(
+            d => this.state.dataset = angular.copy(d)
+        );
+        // let existingFiles = _.indexBy(this.state.dataset.files, 'id'),
+        //     newFiles = filesToAdd.filter(f => (!(f.id in existingFiles))),
+        //     newFileIds = newFiles.map(f => f.id);
+        // this.datasetsAPI.addFilesToProjectDataset(this.state.project.id, this.state.dataset.id, newFileIds)
+        //     .then(
+        //         (d) => {
+        //             this.state.dataset = angular.copy(d);
+        //         }
+        //     );
     }
 
     handleUpdateDataset(dataset) {

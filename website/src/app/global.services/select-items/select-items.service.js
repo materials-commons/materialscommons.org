@@ -278,7 +278,6 @@ class SelectItemsFilesService2ModalController extends SelectItemsBase {
         super($mdDialog);
         this.fileSelection = fileSelection;
         this.$onInit();
-        console.log('selection = ', this.selection);
     }
 
     $onInit() {
@@ -305,63 +304,7 @@ class SelectItemsFilesService2ModalController extends SelectItemsBase {
     }
 
     ok() {
-        console.log('fileSelection.toSelection()', this.fileSelection.toSelection());
-        let selectedFiles = [];
-        let selectedDirs = [];
-        if (this.showFileTree) {
-            let {files, dirs} = this.getFilesFromTree();
-            selectedFiles = selectedFiles.concat(files);
-            selectedDirs = selectedDirs.concat(dirs);
-        }
-
-        if (this.showFileTable) {
-            selectedFiles = selectedFiles.concat(this.files.filter(f => f.selected));
-        }
-
-        if (this.uploadFiles) {
-            selectedFiles = selectedFiles.concat(selectItemsState.uploadedFiles);
-        }
-
-        this.$mdDialog.hide({files: selectedFiles, dirs: selectedDirs});
-    }
-
-    getFilesFromTree() {
-        let selectedFilesFromTree = [];
-        let selectedDirsFromTree = [];
-        let unselectedFilesFromTree = [];
-        let unselectedDirsFromTree = [];
-        let projectFiles = this.project.files;
-        if (projectFiles && projectFiles.length) {
-            let treeModel = new TreeModel(),
-                root = treeModel.parse(this.project.files[0]);
-            // Walk the tree looking for selected files and adding them to the
-            // list of files. Also reset the selected flag so the next time
-            // the popup for files is used it doesn't show previously selected
-            // items.
-            root.walk({strategy: 'pre'}, function(node) {
-                if (node.model.data.selected) {
-                    node.model.data.selected = false;
-                    if (node.model.data.otype === 'file') {
-                        selectedFilesFromTree.push(node.model.data);
-                    } else if (node.model.data.otype === 'directory') {
-                        selectedDirsFromTree.push(node.model.data);
-                    }
-                } else {
-                    if (node.model.data.otype === 'file') {
-                        unselectedFilesFromTree.push(node.model.data);
-                    } else if (node.model.data.otype === 'directory') {
-                        unselectedDirsFromTree.push(node.model.data);
-                    }
-                }
-            });
-        }
-
-        return {
-            files: selectedFilesFromTree,
-            dirs: selectedDirsFromTree,
-            unselected_files: unselectedFilesFromTree,
-            unselected_dirs: unselectedDirsFromTree
-        };
+        this.$mdDialog.hide({selection: this.fileSelection.toSelection()});
     }
 }
 

@@ -211,6 +211,51 @@ module.exports.DeleteDatasetAction = class DeleteDatasetAction extends Action {
     }
 };
 
+module.exports.UpdateDatasetFileSelectionAction = class UpdateDatasetFileSelectionAction extends Action {
+    constructor() {
+        super();
+        this.name = 'updateDatasetFileSelection';
+        this.description = 'Update the file selection for a dataset';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            dataset_id: {
+                required: true,
+            },
+
+            file_selection: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
+        if (!inProject) {
+            throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
+        }
+
+        const ds = await dal.tryCatch(async() => await api.mc.datasets.getDataset(params.dataset_id));
+        if (!ds) {
+            throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
+        }
+
+        const selectionId = await dal.tryCatch(async() => await api.mc.datasets.updateDatasetFileSelection(ds.id, ds.selection_id, params.file_selection));
+        if (!selectionId) {
+            throw new Error(`Unable to update file selection for dataset`);
+        }
+
+        // Dataset now contains this selection and selection id, so update ds, since we retrieved the dataset before the database entry was
+        // updated with the selection information.
+        ds.selection_id = selectionId;
+        ds.file_selection = params.file_selection;
+
+        response.data = ds;
+    }
+};
+
 module.exports.AddDatasetFilesAction = class AddDatasetFilesAction extends Action {
     constructor() {
         super();

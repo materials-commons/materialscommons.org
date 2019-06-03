@@ -16,6 +16,14 @@ function MCFilesSelect2ComponentController(fileSelection) {
     ctrl.files[0].data.childrenLoaded = true;
     ctrl.files[0].expand = true;
     fileSelection.loadSelection(ctrl.selection);
+
+    ctrl.files[0].children.forEach(f => {
+        if (f.data.otype === 'directory') {
+            f.data.selected = fileSelection.isIncludedDir(f.data.path, ctrl.files[0].data);
+        } else {
+            f.data.selected = fileSelection.isIncludedFile(f.data.path, ctrl.files[0].data);
+        }
+    });
 }
 
 angular.module('materialscommons').directive('mcFilesSelectDir2', MCFilesSelectDir2Directive);
@@ -55,11 +63,8 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection)
     function setActive(file) {
         clearActiveStateInAllNodes();
 
-        console.log('setActive = ', file);
         if (file.data && file.data.otype === 'file') {
             file.active = true;
-            console.log('file dir = ', ctrl.file);
-            //fileSelection.includeFile()
         } else {
             if (!file.data.childrenLoaded) {
                 projectFileTreeAPI.getDirectory(ctrl.project.id, file.data.id).then(function(files) {
@@ -68,7 +73,11 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection)
                     file.data.childrenLoaded = true;
                     file.expand = !file.expand;
                     file.children.forEach(f => {
-                        f.data.selected = file.data.selected;
+                        if (f.data.otype === 'directory') {
+                            f.data.selected = fileSelection.isIncludedDir(f.data.path, file.data);
+                        } else {
+                            f.data.selected = fileSelection.isIncludedFile(f.data.path, file.data);
+                        }
                     });
                 });
             } else {
@@ -87,7 +96,6 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection)
     }
 
     function setFile(file) {
-        console.log('setFile', file);
         if (file.data.selected) {
             fileSelection.includeFile(file.data.path);
         } else {
@@ -98,7 +106,6 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection)
     }
 
     function dirToggle(dir) {
-        console.log('dirToggle dir', dir);
         if (dir.data.selected) {
             fileSelection.includeDir(dir.data.path);
         } else {
@@ -114,7 +121,11 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection)
                 dir.active = true;
                 dir.data.childrenLoaded = true;
                 dir.children.forEach(function(f) {
-                    f.data.selected = dir.data.selected;
+                    if (f.data.otype === 'directory') {
+                        f.data.selected = fileSelection.isIncludedDir(f.data.path, dir.data);
+                    } else {
+                        f.data.selected = fileSelection.isIncludedFile(f.data.path, dir.data);
+                    }
                 });
             });
         } else {

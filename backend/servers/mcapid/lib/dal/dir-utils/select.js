@@ -3,10 +3,10 @@ module.exports = function(r) {
 
     async function updateSelectedFiles(selection, selectionId) {
         if (selectionId) {
-            r.table('fileselection').get(selectionId).update(selection);
+            await r.table('fileselection').get(selectionId).update(selection);
             return selectionId;
         } else {
-            let created = db.insert(selection);
+            let created = await db.insert('fileselection', selection);
             return created.id;
         }
     }
