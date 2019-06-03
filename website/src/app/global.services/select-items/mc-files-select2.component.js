@@ -49,7 +49,7 @@ function MCFilesSelectDir2Directive(RecursionHelper) {
     };
 }
 
-function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection) {
+function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection, mcshow) {
     'ngInject';
 
     var ctrl = this;
@@ -57,13 +57,18 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection)
     ctrl.setActive = setActive;
     ctrl.dirToggle = dirToggle;
     ctrl.setFile = setFile;
+    ctrl.showFile = showFile;
 
     ////////////////////
 
     function setActive(file) {
+        if (!file.data) {
+            return;
+        }
+
         clearActiveStateInAllNodes();
 
-        if (file.data && file.data.otype === 'file') {
+        if (file.data.otype === 'file') {
             file.active = true;
         } else {
             if (!file.data.childrenLoaded) {
@@ -103,6 +108,10 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection)
                 fileSelection.excludeFile(file.data.path);
             }
         }
+    }
+
+    function showFile(file) {
+        mcshow.showFile(file.data);
     }
 
     function dirToggle(dir) {

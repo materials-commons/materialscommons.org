@@ -20,7 +20,7 @@
                         <md-checkbox ng-model="file.data.selected" class="mc-md-file-checkbox"
                                      ng-change="ctrl.setFile(file)"
                                      aria-label="file"></md-checkbox>
-                        <a ng-click="ctrl.setActive(this, file)" data-nodrag>
+                        <a ng-click="ctrl.showFile(file)" data-nodrag>
                             <span>
                                 <i class="fa fa-fw file-tree-icon-color"
                                    ng-class="file.data.icon">
