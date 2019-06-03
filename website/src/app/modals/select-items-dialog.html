@@ -20,6 +20,9 @@
                     <div ng-if="$ctrl.isActive('file tree')">
                         <mc-files-select project="$ctrl.project"></mc-files-select>
                     </div>
+                    <div ng-if="$ctrl.isActive('file tree2')">
+                        <mc-files-select2 project="$ctrl.project" selection="$ctrl.selection"></mc-files-select2>
+                    </div>
                     <div ng-if="$ctrl.isActive('file table')">
                         <mc-files-table-select files="$ctrl.files"></mc-files-table-select>
                     </div>

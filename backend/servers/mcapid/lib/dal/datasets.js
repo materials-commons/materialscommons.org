@@ -9,6 +9,7 @@ const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 module.exports = function(r) {
 
     const db = require('./db')(r);
+    const {updateSelectedFiles} = require('./dir-utils')(r);
 
     async function createDataset(ds, owner, projectId) {
         let dataset = new model.Dataset(ds.title, owner);
@@ -92,6 +93,17 @@ module.exports = function(r) {
             if (dataset.status.files_count && dataset.status.samples_count && dataset.status.processes_count) {
                 dataset.status.can_be_published = true;
             }
+        }
+
+        if (dataset.selection_id) {
+            dataset.file_selection = await r.table('fileselection').get(dataset.selection_id);
+        } else {
+            dataset.file_selection = {
+                include_files: [],
+                exclude_files: [],
+                include_dirs: [],
+                exclude_dirs: [],
+            };
         }
         return dataset;
     }
@@ -178,7 +190,19 @@ module.exports = function(r) {
         if (filesToAdd.length) {
             await r.table('dataset2datafile').insert(filesToAdd, {conflict: 'update'});
         }
-        return await getDataset(datasetId);
+        return true;
+    }
+
+    async function addFilesAndDirectoriesToDataset(datasetId, files, directories) {
+        await addFilesToDataset(datasetId, files);
+        let ds = await r.table('datasets').get(datasetId);
+        if (ds.selection_id) {
+            await updateSelectedFiles(directories, ds.selection_id);
+        } else {
+            const selectionId = await updateSelectedFiles(directories);
+            await r.table('datasets').get(datasetId).update({selection_id: selectionId});
+        }
+        return true;
     }
 
     async function createFilesToAdd(datasetId, files) {
@@ -487,6 +511,7 @@ module.exports = function(r) {
         getDatasetSamplesAndProcesses,
         updateDataset,
         addFilesToDataset,
+        addFilesAndDirectoriesToDataset,
         deleteFilesFromDataset,
         addSamplesToDataset,
         deleteSamplesFromDataset,

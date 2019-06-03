@@ -4,6 +4,7 @@ class MCDatasetFilesComponentController {
         this.datasetFiles = datasetFiles;
         this.state = {
             files: [],
+            selection: {},
         };
     }
 
@@ -11,10 +12,14 @@ class MCDatasetFilesComponentController {
         if (changes.files) {
             this.state.files = angular.copy(changes.files.currentValue);
         }
+
+        if (changes.selection) {
+            this.state.selection = angular.copy(changes.selection.currentValue);
+        }
     }
 
     selectFilesToAdd() {
-        this.datasetFiles.selectProjectFiles(true).then(files => this.onAddFiles({filesToAdd: files}));
+        this.datasetFiles.selectProjectFiles(this.state.selection).then(files => this.onAddFiles({filesToAdd: files}));
     }
 
     removeSelectedFiles() {
@@ -28,6 +33,7 @@ angular.module('materialscommons').component('mcDatasetFiles', {
     controller: MCDatasetFilesComponentController,
     bindings: {
         files: '<',
+        selection: '<',
         onRemoveFiles: '&',
         onAddFiles: '&'
     }

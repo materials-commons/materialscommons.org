@@ -4,8 +4,8 @@ class DatasetFilesService {
         this.selectItems = selectItems;
     }
 
-    selectProjectFiles() {
-        return this.selectItems.fileTree(true).then(selected => selected.files);
+    selectProjectFiles(selection) {
+        return this.selectItems.fileTree2(selection).then(selected => selected.files);
     }
 }
 

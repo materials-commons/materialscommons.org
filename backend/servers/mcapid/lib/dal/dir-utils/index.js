@@ -9,5 +9,6 @@ module.exports = function(r) {
         createFile: fl.createFile,
         moveDir: move.moveDir,
         renameDir: move.renameDir,
+        updateSelectedFiles: require('./select')(r).updateSelectedFiles,
     };
 };

@@ -4,7 +4,7 @@ const _ = require('lodash');
 const validators = require('@lib/validators');
 
 module.exports.ListDatasetsAction = class ListDatasetsAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'listDatasets';
         this.description = 'Retrieve a list of all datasets for a project';
@@ -15,7 +15,7 @@ module.exports.ListDatasetsAction = class ListDatasetsAction extends Action {
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const dsets = await dal.tryCatch(async() => await api.mc.datasets.getDatasetsForProject(params.project_id));
         if (!dsets) {
             throw new Error(`Unable to get datasets for project ${params.project_id}`);
@@ -26,7 +26,7 @@ module.exports.ListDatasetsAction = class ListDatasetsAction extends Action {
 };
 
 module.exports.GetDatasetAction = class GetDatasetAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'getDataset';
         this.description = 'Get dataset';
@@ -41,7 +41,7 @@ module.exports.GetDatasetAction = class GetDatasetAction extends Action {
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -119,7 +119,7 @@ module.exports.GetDatasetSamplesAndProcessesAction = class GetDatasetSamplesAndP
 };
 
 module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'createDataset';
         this.description = 'Create a new dataset';
@@ -157,7 +157,7 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
         };
     }
 
-    async run ({response, params, user}) {
+    async run({response, params, user}) {
         const dsParams = {
             title: params.title,
             description: params.description,
@@ -181,7 +181,7 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
 };
 
 module.exports.DeleteDatasetAction = class DeleteDatasetAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'deleteDataset';
         this.description = 'Deletes a dataset';
@@ -196,7 +196,7 @@ module.exports.DeleteDatasetAction = class DeleteDatasetAction extends Action {
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -206,11 +206,13 @@ module.exports.DeleteDatasetAction = class DeleteDatasetAction extends Action {
         if (!success) {
             throw new Error(`unable to delete dataset ${params.dataset_id}`);
         }
+
+        response.data = {success: true};
     }
 };
 
 module.exports.AddDatasetFilesAction = class AddDatasetFilesAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'addDatasetFiles';
         this.description = 'Adds files to a dataset';
@@ -234,7 +236,7 @@ module.exports.AddDatasetFilesAction = class AddDatasetFilesAction extends Actio
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -245,9 +247,69 @@ module.exports.AddDatasetFilesAction = class AddDatasetFilesAction extends Actio
             throw new Error(`Invalid files ${params.files} for project ${params.project_id}`);
         }
 
-        const ds = await dal.tryCatch(async() => await api.mc.datasets.addFilesToDataset(params.dataset_id, params.files));
-        if (!ds) {
+        const result = await dal.tryCatch(async() => await api.mc.datasets.addFilesToDataset(params.dataset_id, params.files));
+        if (!result) {
             throw new Error(`Unable to add files ${params.files} to dataset ${params.dataset_id}`);
+        }
+
+        const ds = await dal.tryCatch(async() => await api.mc.datasets.getDataset(params.dataset_id));
+        if (!ds) {
+            throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
+        }
+
+        response.data = ds;
+    }
+};
+
+module.exports.AddFilesAndDirsToDatasetAction = class AddFilesAndDirsToDatasetAction extends Action {
+    constructor() {
+        super();
+        this.name = 'addFilesAndDirsToDataset';
+        this.description = 'Adds files and directories to dataset';
+        this.inputs = {
+            dataset_id: {
+                required: true,
+            },
+
+            project_id: {
+                required: true,
+            },
+
+            files: {
+                default: [],
+            },
+
+            directories: {
+                default: [],
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
+        if (!inProject) {
+            throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
+        }
+
+        const allFilesInProject = await dal.tryCatch(async() => await api.mc.check.allFilesInProject(params.files, params.project_id));
+        if (!allFilesInProject) {
+            throw new Error(`Invalid files ${params.files} for project ${params.project_id}`);
+        }
+
+        const dirIds = params.directories.map(d => d.id);
+        const allDirsInProject = await dal.tryCatch(async() => await api.mc.check.allDirectoriesInProject(dirIds, params.project_id));
+        if (!allDirsInProject) {
+            throw new Error(`Invalid files ${params.files} for project ${params.project_id}`);
+        }
+
+        const result = await dal.tryCatch(async() => await api.mc.datasets.addFilesAndDirectoriesToDataset(params.dataset_id, params.files, params.directories));
+        if (!result) {
+            throw new Error(`Unable to add files and directories to dataset ${params.dataset_id}`);
+        }
+
+        const ds = await dal.tryCatch(async() => await api.mc.datasets.getDataset(params.dataset_id));
+        if (!ds) {
+            throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
         }
 
         response.data = ds;
@@ -255,7 +317,7 @@ module.exports.AddDatasetFilesAction = class AddDatasetFilesAction extends Actio
 };
 
 module.exports.DeleteDatasetFilesAction = class DeleteDatasetFilesAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'deleteDatasetFiles';
         this.description = 'Delete files from a dataset';
@@ -279,7 +341,7 @@ module.exports.DeleteDatasetFilesAction = class DeleteDatasetFilesAction extends
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -295,7 +357,7 @@ module.exports.DeleteDatasetFilesAction = class DeleteDatasetFilesAction extends
 };
 
 module.exports.AddDatasetSamplesAction = class AddDatasetSamplesAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'addDatasetSamples';
         this.description = 'Add samples to a dataset';
@@ -319,7 +381,7 @@ module.exports.AddDatasetSamplesAction = class AddDatasetSamplesAction extends A
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -340,7 +402,7 @@ module.exports.AddDatasetSamplesAction = class AddDatasetSamplesAction extends A
 };
 
 module.exports.DeleteDatasetSamplesAction = class DeleteDatasetSamplesAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'deleteDatasetSamples';
         this.description = 'Delete samples from a dataset';
@@ -364,7 +426,7 @@ module.exports.DeleteDatasetSamplesAction = class DeleteDatasetSamplesAction ext
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -380,7 +442,7 @@ module.exports.DeleteDatasetSamplesAction = class DeleteDatasetSamplesAction ext
 };
 
 module.exports.DeleteProcessesFromDatasetSampleAction = class DeleteProcessesFromDatasetSampleAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'deleteProcessesFromDatasetSample';
         this.description = 'Delete processes from a sample in dataset';
@@ -404,7 +466,7 @@ module.exports.DeleteProcessesFromDatasetSampleAction = class DeleteProcessesFro
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -420,7 +482,7 @@ module.exports.DeleteProcessesFromDatasetSampleAction = class DeleteProcessesFro
 };
 
 module.exports.PublishDatasetAction = class PublishDatasetAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'publishDataset';
         this.description = 'Publish a dataset';
@@ -435,7 +497,7 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -451,7 +513,7 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
 };
 
 module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Action {
-    constructor () {
+    constructor() {
         super();
         this.name = 'unpublishDataset';
         this.description = 'Unpublish an already published dataset';
@@ -466,7 +528,7 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
         };
     }
 
-    async run ({response, params}) {
+    async run({response, params}) {
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);

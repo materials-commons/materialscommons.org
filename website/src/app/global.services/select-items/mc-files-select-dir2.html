@@ -1,0 +1,42 @@
+<div>
+    <ol ui-tree-nodes ng-model="ctrl.files">
+        <li ng-repeat="file in ctrl.files track by file.data.id | orderBy:'data.name'" ui-tree-node>
+            <div ui-tree-handle ng-class="{'angular-ui-tree-handle-active': file.active}">
+                <div ng-if="file.data.otype === 'directory'">
+                    <div layout="row" layout-align="start center">
+                        <md-checkbox ng-model="file.data.selected" class="mc-md-dir-checkbox" aria-label="directory"
+                                     ng-change="ctrl.dirToggle(file)"></md-checkbox>
+                        <a ng-click="ctrl.setActive(file)" data-nodrag>
+                            <span ng-if="file.expand"><i
+                                    class="fa fa-fw fa-folder-open file-tree-icon-color"></i></span>
+                            <span ng-if="!file.expand"><i
+                                    class="fa fa-fw fa-folder file-tree-icon-color"></i></span>
+                            {{file.data.name}}
+                        </a>
+                    </div>
+                </div>
+                <div ng-if="file.data.otype !== 'directory'">
+                    <div ng-if="file.data.name !== ctrl.placeholderName">
+                        <md-checkbox ng-model="file.data.selected" class="mc-md-file-checkbox"
+                                     ng-change="ctrl.setFile(file)"
+                                     aria-label="file"></md-checkbox>
+                        <a ng-click="ctrl.setActive(this, file)" data-nodrag>
+                            <span>
+                                <i class="fa fa-fw file-tree-icon-color"
+                                   ng-class="file.data.icon">
+                                </i>
+                            </span>
+                            {{file.data.name}} {{file.icon}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="file.data.otype === 'directory'">
+                <mc-files-select-dir2 ng-if="file.expand"
+                                      file="file"
+                                      project="ctrl.project">
+                </mc-files-select-dir2>
+            </div>
+        </li>
+    </ol>
+</div>
