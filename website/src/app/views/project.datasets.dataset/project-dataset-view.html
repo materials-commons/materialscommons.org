@@ -36,6 +36,7 @@
                 <md-tab-body>
                     <mc-dataset-files ng-if="$ctrl.state.dataset.filesLoaded"
                                       files="$ctrl.state.dataset.files"
+                                      project="$ctrl.state.project"
                                       selection="$ctrl.state.dataset.file_selection"
                                       on-remove-files="$ctrl.handleDeleteFiles(filesToDelete)"
                                       on-add-files="$ctrl.handleAddFiles(filesToAdd)">

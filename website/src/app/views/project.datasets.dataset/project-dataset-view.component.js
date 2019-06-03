@@ -5,6 +5,7 @@ class MCProjectDatasetViewComponentController {
         this.mcshow = mcshow;
         this.state = {
             dataset: null,
+            project: null,
             selectedTab: 'details',
         };
     }
@@ -17,6 +18,10 @@ class MCProjectDatasetViewComponentController {
             } else if (this.state.selectedTab === 'files') {
                 this.filesSelected();
             }
+        }
+
+        if (changes.project) {
+            this.state.project = angular.copy(changes.project.currentValue);
         }
     }
 
@@ -84,6 +89,7 @@ angular.module('materialscommons').component('mcProjectDatasetView', {
     controller: MCProjectDatasetViewComponentController,
     bindings: {
         dataset: '<',
+        project: '<',
         onDeleteFiles: '&',
         onAddFiles: '&',
         onUpdateDataset: '&',

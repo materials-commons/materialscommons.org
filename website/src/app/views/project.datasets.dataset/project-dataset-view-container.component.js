@@ -1,16 +1,18 @@
 class MCProjectDatasetViewContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams, $state, mcdsstore, datasetsAPI, projectsAPI, mcStateStore, toast) {
+    constructor($stateParams, $state, mcdsstore, datasetsAPI, projectsAPI, projectFileTreeAPI, mcStateStore, toast) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.mcdsstore = mcdsstore;
         this.datasetsAPI = datasetsAPI;
         this.projectsAPI = projectsAPI;
+        this.projectFileTreeAPI = projectFileTreeAPI;
         this.mcStateStore = mcStateStore;
         this.toast = toast;
         this.state = {
             dataset: null,
             project: mcStateStore.getState('project'),
+            filesLoaded: false,
         };
     }
 
@@ -30,7 +32,14 @@ class MCProjectDatasetViewContainerComponentController {
             (samples) => {
                 this.state.project.samples = samples;
             }
-        )
+        );
+
+        this.projectFileTreeAPI.getProjectRoot(this.state.project.id).then(
+            files => {
+                this.state.project.files = files;
+                this.state.filesLoaded = true;
+            }
+        );
     }
 
     handleDeleteFiles(filesToDelete) {
@@ -143,7 +152,8 @@ class MCProjectDatasetViewContainerComponentController {
 }
 
 angular.module('materialscommons').component('mcProjectDatasetViewContainer', {
-    template: `<mc-project-dataset-view dataset="$ctrl.state.dataset" 
+    template: `<mc-project-dataset-view dataset="$ctrl.state.dataset" ng-if="$ctrl.state.filesLoaded"
+                                    project="$ctrl.state.project"
                                     on-delete-files="$ctrl.handleDeleteFiles(filesToDelete)"
                                     on-add-files="$ctrl.handleAddFiles(filesToAdd)"
                                     on-update-dataset="$ctrl.handleUpdateDataset(dataset)"
