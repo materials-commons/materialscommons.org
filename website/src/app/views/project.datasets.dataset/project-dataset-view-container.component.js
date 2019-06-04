@@ -1,12 +1,13 @@
 class MCProjectDatasetViewContainerComponentController {
     /*@ngInject*/
-    constructor($stateParams, $state, mcdsstore, datasetsAPI, projectsAPI, projectFileTreeAPI, mcStateStore, toast) {
+    constructor($stateParams, $state, mcdsstore, datasetsAPI, projectsAPI, projectFileTreeAPI, fileSelection, mcStateStore, toast) {
         this.$stateParams = $stateParams;
         this.$state = $state;
         this.mcdsstore = mcdsstore;
         this.datasetsAPI = datasetsAPI;
         this.projectsAPI = projectsAPI;
         this.projectFileTreeAPI = projectFileTreeAPI;
+        this.fileSelection = fileSelection;
         this.mcStateStore = mcStateStore;
         this.toast = toast;
         this.state = {
@@ -67,6 +68,14 @@ class MCProjectDatasetViewContainerComponentController {
         //             this.state.dataset = angular.copy(d);
         //         }
         //     );
+    }
+
+    handleSelectionChanged() {
+        let selection = this.fileSelection.toSelection();
+        this.datasetsAPI.updateDatasetFileSelection(this.state.project.id, this.state.dataset.id, selection).then(
+            // d => this.state.dataset = angular.copy(d)
+            () => null
+        );
     }
 
     handleUpdateDataset(dataset) {
@@ -152,10 +161,11 @@ class MCProjectDatasetViewContainerComponentController {
 }
 
 angular.module('materialscommons').component('mcProjectDatasetViewContainer', {
-    template: `<mc-project-dataset-view dataset="$ctrl.state.dataset" ng-if="$ctrl.state.filesLoaded"
+    template: `<mc-project-dataset-view dataset="$ctrl.state.dataset" ng-if="$ctrl.state.filesLoaded && $ctrl.state.dataset !== null"
                                     project="$ctrl.state.project"
                                     on-delete-files="$ctrl.handleDeleteFiles(filesToDelete)"
                                     on-add-files="$ctrl.handleAddFiles(filesToAdd)"
+                                    on-selection-changed="$ctrl.handleSelectionChanged()"
                                     on-update-dataset="$ctrl.handleUpdateDataset(dataset)"
                                     on-publish-dataset="$ctrl.handlePublishDataset()"
                                     on-unpublish-dataset="$ctrl.handleUnpublishDataset()"

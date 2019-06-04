@@ -1,6 +1,6 @@
 <div layout="column" layout-fill layout-align="start stretch" layout-margin>
     <md-content>
-        <mc-files-select2 project="$ctrl.state.project" selection="$ctrl.state.selection"></mc-files-select2>
+        <mc-files-select2 project="$ctrl.state.project" selection="$ctrl.state.selection" on-selection-changed="$ctrl.handleSelectionChanged()"></mc-files-select2>
     </md-content>
 
     <!--    <div layout="row">-->

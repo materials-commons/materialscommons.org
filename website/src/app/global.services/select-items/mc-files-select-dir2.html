@@ -34,6 +34,7 @@
             <div ng-if="file.data.otype === 'directory'">
                 <mc-files-select-dir2 ng-if="file.expand"
                                       file="file"
+                                      on-selection-changed="ctrl.handleSelectionChanged()"
                                       project="ctrl.project">
                 </mc-files-select-dir2>
             </div>

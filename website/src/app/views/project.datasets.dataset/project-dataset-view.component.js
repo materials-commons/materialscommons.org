@@ -65,6 +65,10 @@ class MCProjectDatasetViewComponentController {
         this.onCancel();
     }
 
+    handleSelectionChanged() {
+        this.onSelectionChanged();
+    }
+
     detailsSelected() {
         this.state.selectedTab = 'details';
     }
@@ -95,6 +99,7 @@ angular.module('materialscommons').component('mcProjectDatasetView', {
         onUpdateDataset: '&',
         onPublishDataset: '&',
         onUnpublishDataset: '&',
+        onSelectionChanged: '&',
         onAddAuthor: '&',
         onAddPaper: '&',
         onAddDoi: '&',

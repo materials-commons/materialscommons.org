@@ -8,7 +8,7 @@
                     {{::file.data.name}}
                 </a>
             </div>
-            <mc-files-select-dir2 ng-if="file.expand" file="file" project="$ctrl.project"></mc-files-select-dir2>
+            <mc-files-select-dir2 ng-if="file.expand" file="file" project="$ctrl.project" on-selection-changed="$ctrl.handleSelectionChanged()"></mc-files-select-dir2>
         </li>
     </ol>
 </div>

@@ -38,6 +38,7 @@
                                       files="$ctrl.state.dataset.files"
                                       project="$ctrl.state.project"
                                       selection="$ctrl.state.dataset.file_selection"
+                                      on-selection-changed="$ctrl.handleSelectionChanged()"
                                       on-remove-files="$ctrl.handleDeleteFiles(filesToDelete)"
                                       on-add-files="$ctrl.handleAddFiles(filesToAdd)">
                     </mc-dataset-files>

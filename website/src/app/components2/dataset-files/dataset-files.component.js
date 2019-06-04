@@ -31,6 +31,10 @@ class MCDatasetFilesComponentController {
         let filesToDelete = this.state.files.filter(f => f.selected);
         this.onRemoveFiles({filesToDelete: filesToDelete});
     }
+
+    handleSelectionChanged() {
+        this.onSelectionChanged();
+    }
 }
 
 angular.module('materialscommons').component('mcDatasetFiles', {
@@ -41,6 +45,7 @@ angular.module('materialscommons').component('mcDatasetFiles', {
         project: '<',
         selection: '<',
         onRemoveFiles: '&',
-        onAddFiles: '&'
+        onAddFiles: '&',
+        onSelectionChanged: '&',
     }
 });

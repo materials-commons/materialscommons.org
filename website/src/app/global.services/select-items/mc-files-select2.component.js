@@ -4,6 +4,7 @@ angular.module('materialscommons').component('mcFilesSelect2', {
     bindings: {
         project: '=',
         selection: '=',
+        onSelectionChanged: '&',
     }
 });
 
@@ -16,6 +17,7 @@ function MCFilesSelect2ComponentController(fileSelection) {
     ctrl.files[0].data.childrenLoaded = true;
     ctrl.files[0].expand = true;
     fileSelection.loadSelection(ctrl.selection);
+    ctrl.handleSelectionChanged = handleSelectionChanged;
 
     ctrl.files[0].children.forEach(f => {
         if (f.data.otype === 'directory') {
@@ -24,6 +26,10 @@ function MCFilesSelect2ComponentController(fileSelection) {
             f.data.selected = fileSelection.isIncludedFile(f.data.path, ctrl.files[0].data);
         }
     });
+
+    function handleSelectionChanged() {
+        ctrl.onSelectionChanged();
+    }
 }
 
 angular.module('materialscommons').directive('mcFilesSelectDir2', MCFilesSelectDir2Directive);
@@ -36,6 +42,7 @@ function MCFilesSelectDir2Directive(RecursionHelper) {
         scope: {
             file: '=',
             project: '=',
+            onSelectionChanged: '&',
         },
         controller: MCFilesSelectDir2DirectiveController,
         replace: true,
@@ -58,6 +65,7 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection,
     ctrl.dirToggle = dirToggle;
     ctrl.setFile = setFile;
     ctrl.showFile = showFile;
+    ctrl.handleSelectionChanged = handleSelectionChanged;
 
     ////////////////////
 
@@ -108,6 +116,8 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection,
                 fileSelection.excludeFile(file.data.path);
             }
         }
+
+        handleSelectionChanged();
     }
 
     function showFile(file) {
@@ -124,6 +134,9 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection,
                 fileSelection.removeDir(dir.data.path);
             }
         }
+
+        handleSelectionChanged();
+
         if (!dir.data.childrenLoaded) {
             projectFileTreeAPI.getDirectory(ctrl.project.id, dir.data.id).then(function(files) {
                 dir.children = files;
@@ -159,5 +172,9 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection,
                 }
             });
         }
+    }
+
+    function handleSelectionChanged() {
+        ctrl.onSelectionChanged();
     }
 }
