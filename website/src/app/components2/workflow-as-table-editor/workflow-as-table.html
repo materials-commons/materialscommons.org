@@ -14,7 +14,7 @@
                         <md-checkbox aria-label="select" ng-model="sample.selected"
                                      ng-change="$ctrl.handleSampleSelection($index, sample.selected)"></md-checkbox>
                     </td>
-                    <td md-cell style="white-space: nowrap"><a ng-click="$ctrl.editSample(sample)">{{sample.name}}</a></td>
+                    <td md-cell style="white-space: nowrap"><a ngx-click="$ctrl.editSample(sample)">{{sample.name}}</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -39,9 +39,8 @@
             <tr md-row class="md-row-hover" ng-repeat="sample in $ctrl.state.samples" ng-init="sampleIndex = $index" ng-if="$ctrl.state.samplesMarked">
                 <td md-cell ng-repeat="processHeader in sample.headers track by $index" style="text-align:center" ng-if="!$ctrl.state.editTable">
                     <a ng-if="processHeader.use"
-                       qtip="<span><b>{{process.template_name}}</b> from qtip with html</span>"
                        style="background-color:green; color: green; height:10px;"
-                       ng-click="$ctrl.editProcess($ctrl.state.headers[$index], sample)">hello</a>
+                       ngx-click="$ctrl.editProcess($ctrl.state.headers[$index], sample)">hello</a>
                     <span ng-if="!processHeader.use"></span>
                 </td>
                 <td md-cell ng-repeat="process in sample.headers track by $index" ng-if="$ctrl.state.editTable" style="text-align:center">
