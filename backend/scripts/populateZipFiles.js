@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 'use strict';
-const path = require('path');
-
 const program = require('commander');
 const Promise = require("bluebird");
 const fsa = Promise.promisifyAll(require("fs"));
@@ -72,7 +70,7 @@ function* buildZipFiles() {
 
         console.log("Zip files to be created for " + idsToProcess.length + " datasets");
 
-        if (idsToProcess.length == 0) {
+        if (idsToProcess.length === 0) {
             return Promise.reject("Error: no dataset id values to process");
         }
 
@@ -99,7 +97,9 @@ function* publishDatasetZipFile(r, datasetId) {
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
         console.log("full path and filename: ", fillPathAndFilename);
-        if (fs.existsSync()) {
+        if (fs.existsSync(fillPathAndFilename)) {
+            console.log('  zip file exists, not rebuilding', fillPathAndFilename);
+            numberProcessed++;
             return new Promise(function(resolve) {
                 resolve();
             });
@@ -112,7 +112,7 @@ function* publishDatasetZipFile(r, datasetId) {
             numberProcessed++;
             console.log('no zip for id = ' + datasetId);
             console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
-            return new Promise(function (resolve, reject) {
+            return new Promise(function(resolve) {
                 resolve()
             });
         }
@@ -128,7 +128,6 @@ function* publishDatasetZipFile(r, datasetId) {
                 }
             });
         let nameSourceList = [];
-        var seenThisOne = {};
 
         for (var i = 0; i < datafiles.length; i++) {
             let df = datafiles[i];
@@ -144,8 +143,6 @@ function* publishDatasetZipFile(r, datasetId) {
             console.log('sourcePath = ', path);
             console.log('name = ',name);
 
-            let checksum = zipEntry.checksum;
-            name = resolveZipfileFilenameDuplicates(seenThisOne, name, checksum);
             let stream = fsa.createReadStream(path, {
                 flags: 'r',
                 encoding: null,
@@ -171,7 +168,7 @@ function* publishDatasetZipFile(r, datasetId) {
                 let zip = {size: zipfileSize, filename: zipFileName};
                 r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() => {
                     resolve();
-                    if (numberProcessed == totalNumberToProcess) {
+                    if (numberProcessed >= totalNumberToProcess) {
                         process.exit(0);
                     }
                 });
@@ -200,37 +197,6 @@ function* publishDatasetZipFile(r, datasetId) {
     } catch (error) {
         return yield Promise.reject("Error in publishDatasetZipFile: " + error.message);
     }
-}
-
-function resolveZipfileFilenameDuplicates(seenThisOne, name, checksum) {
-    name = name.toLowerCase();
-
-    if (name.startsWith(".")) {
-        name = "dot_" + name;
-    }
-
-    if (name in seenThisOne) {
-        var count = 0;
-        if (seenThisOne[name] == checksum) {
-            console.log("Seen this file before: " + name);
-            return null;
-        } else {
-            let newName = resolveZipfileFilenameUnique(name, count);
-            while (newName in seenThisOne) {
-                count++;
-                newName = resolveZipfileFilenameUnique(name, count);
-            }
-            // console.log(name + " --> " + newName);
-            name = newName;
-        }
-    }
-    seenThisOne[name] = checksum;
-    return name;
-}
-
-function resolveZipfileFilenameUnique(name, count) {
-    let parts = path.parse(name);
-    return parts.name + "_" + count + parts.ext;
 }
 
 function verifyParameters() {
