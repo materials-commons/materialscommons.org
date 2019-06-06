@@ -99,6 +99,7 @@ function* publishDatasetZipFile(r, datasetId) {
         console.log("full path and filename: ", fillPathAndFilename);
         if (fs.existsSync(fillPathAndFilename)) {
             console.log('  zip file exists, not rebuilding', fillPathAndFilename);
+            numberProcessed++;
             return new Promise(function(resolve) {
                 resolve();
             });
@@ -167,7 +168,7 @@ function* publishDatasetZipFile(r, datasetId) {
                 let zip = {size: zipfileSize, filename: zipFileName};
                 r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() => {
                     resolve();
-                    if (numberProcessed === totalNumberToProcess) {
+                    if (numberProcessed >= totalNumberToProcess) {
                         process.exit(0);
                     }
                 });
