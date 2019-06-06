@@ -2,8 +2,6 @@ const model = require('@lib/model');
 const dbExec = require('./run');
 const commonQueries = require('@lib/common-queries');
 const _ = require('lodash');
-const util = require('@lib/util');
-
 const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
 
 module.exports = function(r) {
@@ -259,7 +257,6 @@ module.exports = function(r) {
         await publishDatasetKeywords(datasetId);
         await publishProcesses(datasetId);
         await publishSamples(datasetId);
-        await publishFiles(datasetId);
         await r.table('datasets').get(datasetId).update({published: true});
         return await getDataset(datasetId);
     }
@@ -397,84 +394,10 @@ module.exports = function(r) {
         await r.table('dataset2sample').insert(samplesToAdd);
     }
 
-    async function publishFiles(datasetId) {
-        await addFilesToPublishedDataset(datasetId);
-        let ds2dfEntries = await r.table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
-        if (!ds2dfEntries.length) {
-            return;
-        }
-        let datafileIds = ds2dfEntries.map(entry => entry.datafile_id);
-        let datafiles = await r.table('datafiles').getAll(r.args(datafileIds));
-        datafiles.forEach(f => {
-            f.original_id = f.id;
-            delete f['id'];
-        });
-        let insertedDatafiles = await r.db('mcpub').table('datafiles').insert(datafiles, {returnChanges: 'always'});
-        let ds2dfToInsert = insertedDatafiles.changes.map(f => new model.Dataset2Datafile(datasetId, f.new_val.id));
-        await r.db('mcpub').table('dataset2datafile').insert(ds2dfToInsert);
-
-        // Update process2file table
-        let newDatafiles = insertedDatafiles.changes.map(f => f.new_val);
-        let originalDFIds = newDatafiles.map(f => f.original_id);
-        let p2fEntries = await r.table('process2file').getAll(r.args(originalDFIds), {index: 'datafile_id'});
-        let originalProcessIds = p2fEntries.map(e => e.process_id);
-        let mcPubProcesses = await r.db('mcpub').table('processes').getAll(r.args(originalProcessIds), {index: 'original_id'});
-        let processesByOriginalId = _.keyBy(mcPubProcesses, 'original_id');
-        let datafilesByOriginalId = _.keyBy(newDatafiles, 'original_id');
-        p2fEntries.forEach(e => {
-            let process = processesByOriginalId[e.process_id];
-            let datafile = datafilesByOriginalId[e.datafile_id];
-            if (process && datafile) {
-                e.process_id = process.id;
-                e.datafile_id = datafile.id;
-            } else {
-                e.invalid = true;
-            }
-            delete e['id'];
-        });
-        await r.db('mcpub').table('process2file').insert(p2fEntries);
-    }
-
-    async function addFilesToPublishedDataset(datasetId) {
-        let datasetProcessIds = await r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'}).pluck('process_id');
-        let processIds = datasetProcessIds.map(d => d.process_id);
-
-        let sampleProcessIds = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).pluck('sample_id');
-        let sampleIds = sampleProcessIds.map(d => d.sample_id);
-        await addFilesForProcessesAndSamples(datasetId, processIds, sampleIds);
-    }
-
-    async function addFilesForProcessesAndSamples(datasetId, processIds, sampleIds) {
-        let processFiles = await r.table('process2file').getAll(r.args(processIds), {index: 'process_id'});
-        let sampleFiles = await r.table('sample2datafile').getAll(r.args(sampleIds), {index: 'sample_id'});
-        let uniqFileIds = _.keys(_.keyBy(processFiles.concat(sampleFiles), 'datafile_id')).map(id => ({id: id}));
-        if (uniqFileIds.length) {
-            await updateFilesInDataset(datasetId, uniqFileIds, []);
-        }
-    }
-
-    async function updateFilesInDataset(datasetId, filesToAdd, filesToDelete) {
-        if (filesToAdd.length) {
-            let add = filesToAdd.map(f => new model.Dataset2Datafile(datasetId, f.id));
-            let indexEntries = add.map(f => [f.dataset_id, f.datafile_id]);
-            let matchingEntries = await r.table('dataset2datafile').getAll(r.args(indexEntries), {index: 'dataset_datafile'});
-            add = util.removeExistingItemsIn(add, matchingEntries, 'datafile_id');
-            if (add.length) {
-                await r.table('dataset2datafile').insert(add);
-            }
-        }
-
-        if (filesToDelete.length) {
-            let toDelete = filesToDelete.map(f => [datasetId, f.id]);
-            await r.table('dataset2datafile').getAll(r.args(toDelete), {index: 'dataset_datafile'}).delete();
-        }
-    }
-
     async function unpublish(datasetId) {
         await r.table('datasets').get(datasetId).update({published: false});
         await unpublishDatasetProcesses(datasetId);
         await unpublishDatasetSamples(datasetId);
-        await unpublishDatasetFiles(datasetId);
         await unpublishDatasetTags(datasetId);
         return await getDataset(datasetId);
     }
@@ -497,14 +420,6 @@ module.exports = function(r) {
         await r.db('mcpub').table('samples').getAll(r.args(sampleIds)).delete();
         await r.db('mcpub').table('process2sample').getAll(r.args(sampleIds), {index: 'sample_id'}).delete();
         await r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'}).delete();
-    }
-
-    async function unpublishDatasetFiles(datasetId) {
-        let datafiles = await r.db('mcpub').table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'});
-        let datafileIds = datafiles.map(d => d.datafile_id);
-        await r.db('mcpub').table('datafiles').getAll(r.args(datafileIds)).delete();
-        await r.db('mcpub').table('process2file').getAll(r.args(datafileIds), {index: 'datafile_id'}).delete();
-        await r.db('mcpub').table('dataset2datafile').getAll(datasetId, {index: 'dataset_id'}).delete();
     }
 
     async function unpublishDatasetTags(datasetId) {
