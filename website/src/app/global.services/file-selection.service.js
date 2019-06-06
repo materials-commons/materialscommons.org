@@ -14,6 +14,12 @@ class FileSelectionService {
     // loadSelection takes the selection object and loads it into a series of maps
     // for efficient look up.
     loadSelection(selection) {
+        this.state.selection = {
+            include_files: {},
+            exclude_files: {},
+            include_dirs: {},
+            exclude_dirs: {},
+        };
         for (let file of selection.include_files) {
             this.state.selection.include_files[file] = true;
         }

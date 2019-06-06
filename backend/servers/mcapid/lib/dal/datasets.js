@@ -11,8 +11,11 @@ module.exports = function(r) {
     const db = require('./db')(r);
     const {updateSelectedFiles} = require('./dir-utils')(r);
 
-    async function createDataset(ds, owner, projectId) {
+    async function createDataset(ds, owner, projectId, fileSelection) {
+        let selectionId = await updateSelectedFiles(fileSelection);
+
         let dataset = new model.Dataset(ds.title, owner);
+        dataset.selection_id = selectionId;
         dataset.description = ds.description;
         let createdDS = await db.insert('datasets', dataset);
         let e2p = {
@@ -75,6 +78,12 @@ module.exports = function(r) {
                                     .eqJoin('datadir_id', r.table('datadirs')).zip().pluck('name').nth(0).getField('name'),
                             };
                         }).coerceTo('array'),
+                    file_selection: r.branch(ds.hasFields('selection_id'), r.table('fileselection').get(ds('selection_id')), {
+                        include_dirs: [],
+                        exclude_dirs: [],
+                        include_files: [],
+                        exclude_files: []
+                    }),
                 };
             });
         return await dbExec(rql);

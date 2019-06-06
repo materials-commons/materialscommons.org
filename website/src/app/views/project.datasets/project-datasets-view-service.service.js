@@ -1,35 +1,43 @@
 class ProjectDatasetsViewService {
     /*@ngInject*/
-    constructor($mdDialog, datasetsAPI, projectsAPI, toast) {
+    constructor($mdDialog, datasetsAPI, projectsAPI, projectFileTreeAPI, toast) {
         this.$mdDialog = $mdDialog;
         this.datasetsAPI = datasetsAPI;
         this.projectsAPI = projectsAPI;
+        this.projectFileTreeAPI = projectFileTreeAPI;
         this.toast = toast;
     }
 
     createNewDataset(projectId) {
         return this.projectsAPI.getProjectSamples(projectId).then(
-            (samples) => this.$mdDialog.show({
-                templateUrl: 'app/modals/create-new-dataset-dialog.html',
-                controller: CreateNewDatasetDialogController,
-                controllerAs: '$ctrl',
-                bindToController: true,
-                clickOutsideToClose: true,
-                locals: {
-                    samples: samples,
-                }
-            }).then(ds => {
-                let samples = ds.samples.map(s => s.id);
-                return this.datasetsAPI.createDatasetForProject(projectId, ds.title, samples).then(
-                    dataset => {
-                        ds.id = dataset.id;
-                        return ds;
-                    },
-                    () => {
-                        this.toast.error('Unable to create dataset');
+            (samples) => {
+                return this.projectFileTreeAPI.getProjectRoot(projectId).then(
+                    files => {
+                        return this.$mdDialog.show({
+                            templateUrl: 'app/modals/create-new-dataset-dialog.html',
+                            controller: CreateNewDatasetDialogController,
+                            controllerAs: '$ctrl',
+                            bindToController: true,
+                            clickOutsideToClose: true,
+                            locals: {
+                                samples: samples,
+                                files: files,
+                            }
+                        }).then(ds => {
+                            let samples = ds.samples.map(s => s.id);
+                            return this.datasetsAPI.createDatasetForProject(projectId, ds.title, samples, ds.fileSelection).then(
+                                dataset => {
+                                    ds.id = dataset.id;
+                                    return ds;
+                                },
+                                () => {
+                                    this.toast.error('Unable to create dataset');
+                                }
+                            );
+                        });
                     }
                 );
-            })
+            }
         );
     }
 }
@@ -38,15 +46,23 @@ angular.module('materialscommons').service('projectDatasetsViewService', Project
 
 class CreateNewDatasetDialogController {
     /*@ngInject*/
-    constructor($mdDialog, createDatasetDialogState, mcStateStore, selectItems) {
+    constructor($mdDialog, createDatasetDialogState, mcStateStore, fileSelection, selectItems) {
         this.$mdDialog = $mdDialog;
         this.createDatasetDialogState = createDatasetDialogState;
         this.mcStateStore = mcStateStore;
+        this.fileSelection = fileSelection;
         this.selectItems = selectItems;
         this.state = {
             project: this.mcStateStore.getState('project'),
             datasetTitle: '',
+            selection: {
+                include_dirs: [],
+                exclude_dirs: [],
+                include_files: [],
+                exclude_files: [],
+            }
         };
+        this.state.project.files = this.files;
         this.state.project.samples = this.samples;
         this.createDatasetDialogState.computeExperimentsForSamples(this.state.project);
     }
@@ -66,6 +82,10 @@ class CreateNewDatasetDialogController {
         });
     }
 
+    handleSelectionChanged() {
+        // Nothing to do but required by the component
+    }
+
     done() {
         const samples = this.state.project.samples.filter(s => s.selected);
         let experiments = {};
@@ -78,6 +98,7 @@ class CreateNewDatasetDialogController {
             title: this.state.datasetTitle,
             samples: samples,
             experiments: _.values(experiments),
+            fileSelection: this.fileSelection.toSelection(),
         });
     }
 

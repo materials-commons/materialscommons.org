@@ -2,25 +2,18 @@
     <form layout="column">
         <div layout="row">
             <md-button ng-show="!$ctrl.state.dataset.published" class="md-primary md-raised"
-                       ng-disabled="!$ctrl.state.dataset.status.can_be_published"
+                       ng-disabled="true"
                        ng-click="$ctrl.publishDataset()">
                 <i class="fa fa-fw fa-cloud-upload"></i>Publish Dataset
             </md-button>
             <md-button class="md-primary md-raised" ng-click="$ctrl.updateDataset()">Save Changes</md-button>
             <md-button class="md-warn md-raised" ng-click="$ctrl.cancel()">Cancel</md-button>
         </div>
-        <div style="min-height: 70px" ng-if="!$ctrl.state.dataset.published && !$ctrl.state.dataset.status.can_be_published" class="margin-left-30">
-            <p>Dataset cannot be published because: </p>
-            <ul>
-                <li ng-show="!$ctrl.state.dataset.status.processes_count">It contains no processes.</li>
-                <li ng-show="!$ctrl.state.dataset.status.samples_count">It contains no samples.</li>
-                <li ng-show="!$ctrl.state.dataset.status.files_count">It contains no files.</li>
-            </ul>
-        </div>
+
         <div class="margin-top-20 margin-left-30">
             <p>
-                Dataset contains {{$ctrl.state.dataset.status.processes_count | number}} processes, {{$ctrl.state.dataset.status.samples_count | number}}
-                samples, and {{$ctrl.state.dataset.status.files_count}} files.
+                Dataset contains {{$ctrl.state.dataset.status.processes_count | number}} processes, and {{$ctrl.state.dataset.status.samples_count | number}}
+                samples.
             </p>
         </div>
         <div ng-show="$ctrl.state.dataset.published">
@@ -74,7 +67,7 @@
             </a>
             <md-chips class="margin-top-20"
                       ng-model="$ctrl.state.dataset.keywords"
-                      placeholder="Keywords: add one"
+                      placeholder="Add keyword"
                       md-add-on-blur="true"
                       delete-button-label="Remove keyword"
                       md-on-add="$ctrl.changed()"

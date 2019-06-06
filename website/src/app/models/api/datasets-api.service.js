@@ -47,11 +47,12 @@ class DatasetsAPIService {
         }).then(d => d.plain().data);
     }
 
-    createDatasetForProject(projectId, title, samples) {
+    createDatasetForProject(projectId, title, samples, fileSelection) {
         return this.Restangular.one('v3').one('createDataset').customPOST({
             project_id: projectId,
             title: title,
             samples: samples,
+            file_selection: fileSelection,
         }).then(d => d.plain().data);
     }
 

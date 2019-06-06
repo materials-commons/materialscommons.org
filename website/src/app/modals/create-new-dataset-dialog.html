@@ -82,10 +82,8 @@
                 </md-tab-label>
                 <md-tab-body>
                     <div layout="row">
-                        <md-button class="md-primary" ng-click="$ctrl.selectFiles()">
-                            <i class="fa fa-fw fa-plus"></i>
-                            files
-                        </md-button>
+                        <mc-files-select2 project="$ctrl.state.project" selection="$ctrl.state.selection"
+                                          on-selection-changed="$ctrl.handleSelectionChanged()"></mc-files-select2>
                     </div>
                 </md-tab-body>
             </md-tab>

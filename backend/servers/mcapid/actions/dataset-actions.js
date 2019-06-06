@@ -153,6 +153,15 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
                         throw new Error('samples must be an array');
                     }
                 }
+            },
+
+            file_selection: {
+                default: {
+                    include_dirs: [],
+                    exclude_dirs: [],
+                    include_files: [],
+                    exclude_files: [],
+                }
             }
         };
     }
@@ -171,7 +180,7 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
             }
         }
 
-        const ds = await dal.tryCatch(async() => await api.mc.datasets.createDataset(dsParams, user.id, params.project_id));
+        const ds = await dal.tryCatch(async() => await api.mc.datasets.createDataset(dsParams, user.id, params.project_id, params.file_selection));
         if (!ds) {
             throw new Error(`Unable to create dataset ${dsParams.title}`);
         }
