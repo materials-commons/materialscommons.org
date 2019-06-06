@@ -1,9 +1,10 @@
 class MCProjectProcessViewComponentController {
     /*@ngInject*/
-    constructor(mcshow) {
+    constructor(mcshow, User) {
         this.mcshow = mcshow;
         this.state = {
             process: null,
+            isBetaUser: User.isBetaUser(),
         };
     }
 

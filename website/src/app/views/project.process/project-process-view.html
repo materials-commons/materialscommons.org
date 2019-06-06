@@ -34,7 +34,7 @@
             <div flex="20"></div>
         </div>
     </div>
-    <div layout="column" md-whiteframe="5" layout-margin>
+    <div layout="column" md-whiteframe="5" layout-margin ng-if="$ctrl.state.isBetaUser">
         <h5 class="md-title">Actions</h5>
         <mc-process-actions process="$ctrl.state.process"
                             on-select-samples="$ctrl.handleSelectSamples()"
