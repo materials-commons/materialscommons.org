@@ -17,7 +17,7 @@ angular.module('materialscommons', [
     'angular-timeline',
     'blockUI',
     'ngHandsontable',
-    'angular-c3-simple',
+    'chart.js',
     'dndLists',
     'ngFileUpload',
     'mdMarkdownIt',

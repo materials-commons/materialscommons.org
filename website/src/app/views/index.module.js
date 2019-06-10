@@ -11,3 +11,4 @@ import './project.sample/index.module';
 import './project.samples/index.module';
 import './project.experiment.samples/pe-samples-view-container.component';
 import './project.experiment.processes/pe-processes-view-container.component';
+import './project.experiment.analysis/index.module';
