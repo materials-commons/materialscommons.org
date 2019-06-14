@@ -2,16 +2,9 @@ const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const _ = require('lodash');
 const sizeof = require('object-sizeof');
+const objectTypes = require('@lib/object-types');
 
-const validObjectTypes = ['project', 'experiment', 'sample', 'process', 'file', 'dataset', 'directory', 'sample_attribute'];
 const MAX_METADATA_OBJECT_SIZE = 512;
-
-function validateObjectType(o) {
-    let i = _.indexOf(validObjectTypes, o);
-    if (i === -1) {
-        throw new Error(`object_type must be one of ${validObjectTypes}, got ${o}.`);
-    }
-}
 
 module.exports.GetMetadataAction = class GetMetadataAction extends Action {
     constructor() {
@@ -26,7 +19,7 @@ module.exports.GetMetadataAction = class GetMetadataAction extends Action {
             object_type: {
                 required: true,
                 validator: param => {
-                    validateObjectType(param);
+                    objectTypes.validate(param);
                 }
             },
 
@@ -37,9 +30,7 @@ module.exports.GetMetadataAction = class GetMetadataAction extends Action {
     }
 
     async run({response, params}) {
-        if (!await api.mc.check.objectInProject(params.object_type, params.object_id, params.project_id)) {
-            throw new Error(`${params.object_type} with id ${params.object_id} not found in project ${params.project_id}`);
-        }
+        await api.mc.check.validateObjectInProjectThrow(params.object_type, params.object_id, params.project_id);
 
         let o = await dal.tryCatch(async() => await api.mc.metadata.getMetadata(params.object_id, params.object_type));
         if (o === null) {
@@ -63,7 +54,7 @@ module.exports.SetMetadataAction = class SetMetadataAction extends Action {
             object_type: {
                 required: true,
                 validator: param => {
-                    validateObjectType(param);
+                    objectTypes.validate(param);
                 }
             },
 
@@ -91,9 +82,7 @@ module.exports.SetMetadataAction = class SetMetadataAction extends Action {
     }
 
     async run({response, params}) {
-        if (!await api.mc.check.objectInProject(params.object_type, params.object_id, params.project_id)) {
-            throw new Error(`${params.object_type} with id ${params.object_id} not found in project ${params.project_id}`);
-        }
+        await api.mc.check.validateObjectInProjectThrow(params.object_type, params.object_id, params.project_id);
 
         let o = await dal.tryCatch(async() => await api.mc.metadata.setMetadata(params.object_id, params.object_type, params.metadata));
         if (o === null) {

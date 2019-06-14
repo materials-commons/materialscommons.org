@@ -103,6 +103,12 @@ module.exports = function(r) {
         }
     }
 
+    async function validateObjectInProjectThrow(otype, oid, projectId) {
+        if (!await api.mc.check.objectInProject(otype, oid, projectId)) {
+            throw new Error(`${otype} with id ${oid} not found in project ${projectId}`);
+        }
+    }
+
     return {
         allFilesInProject,
         allDirectoriesInProject,
@@ -119,5 +125,6 @@ module.exports = function(r) {
         experimentInProject,
         processInProject,
         objectInProject,
+        validateObjectInProjectThrow
     };
 };
