@@ -255,7 +255,7 @@ function stop_mcapid() {
     echo "Stopping mcapid (${SERVERTYPE})..."
     ps -eo "pid,command" | grep "mcapid-${SERVERTYPE}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
-        kill ${line}
+        kill -9 ${line}
         echo "  Stopped mcapid server with pid ${line}"
     done
 }
