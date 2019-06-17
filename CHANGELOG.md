@@ -3,7 +3,10 @@
 ## June 2019
 - :star: **New Feature:** Add support for ignoring columns in ETL
 - :star: **New Feature:** Project level publishing allows recursive file selection
--
+- :star: **New Feature:** New APIs to get and set Metadata on various objects in system
+- :star: **New Feature:** Beta support for publishing datasets to a Globus endpoint
+- :star: **New Feature:** Beta support for downloading published datasets using Globus
+- :star: **Improvement:** Add notes as an ignored keyword for spreadsheet processing
 
 ## May 2019
 - :star: **New Feature:** Add support for ignoring cells in ETL
