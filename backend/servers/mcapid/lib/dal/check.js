@@ -12,6 +12,10 @@ module.exports = function(r) {
         return matches.length === directoryIds.length;
     }
 
+    async function directoryInProject(directoryId, projectId) {
+        return await allDirectoriesInProject([directoryId], projectId);
+    }
+
     async function allFilesInDirectory(fileIds, directoryId) {
         let indexArgs = fileIds.map(fid => [directoryId, fid]);
         let matches = await r.table('datadir2datafile').getAll(r.args(indexArgs), {index: 'datadir_datafile'});
@@ -31,11 +35,6 @@ module.exports = function(r) {
     async function datasetInProject(datasetId, projectId) {
         let d = await r.table('project2dataset').getAll([projectId, datasetId], {index: 'project_dataset'});
         return d.length !== 0;
-    }
-
-    async function directoryInProject(directoryId, projectId) {
-        let entry = await r.table('project2datadir').getAll([projectId, directoryId], {index: 'project_datadir'});
-        return entry.length !== 0;
     }
 
     async function fileInProject(fileId, projectId) {
@@ -71,6 +70,39 @@ module.exports = function(r) {
         return matches.length !== 0;
     }
 
+    async function propertyInProject(propertyId, projectId) {
+        let results = await r.table('propertyset2property').getAll(propertyId, {index: 'property_id'})
+            .eqJoin('property_set_id', r.table('sample2propertyset'), {index: 'property_set_id'}).zip();
+        if (results.length === 0) {
+            return false;
+        }
+
+        let sampleId = results[0].sample_id;
+
+        return await sampleInProject(sampleId, projectId);
+    }
+
+    async function objectInProject(objectType, objectId, projectId) {
+        switch (objectType) {
+            case 'experiment':
+                return await experimentInProject(objectId, projectId);
+            case 'file':
+                return await fileInProject(objectId, projectId);
+            case 'directory':
+                return await directoryInProject(objectId, projectId);
+            case 'sample':
+                return await sampleInProject(objectId, projectId);
+            case 'process':
+                return await processInProject(objectId, projectId);
+            case 'dataset':
+                return await datasetInProject(objectId, projectId);
+            case 'sample_attribute':
+                return await propertyInProject(objectId, projectId);
+            default:
+                return false;
+        }
+    }
+
     return {
         allFilesInProject,
         allDirectoriesInProject,
@@ -86,5 +118,6 @@ module.exports = function(r) {
         experimentNameIsUniqueInProject,
         experimentInProject,
         processInProject,
+        objectInProject,
     };
 };

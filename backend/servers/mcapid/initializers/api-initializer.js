@@ -27,6 +27,7 @@ module.exports = class ApiInitializer extends Initializer {
             samples: require('@dal/samples')(r),
             templates: require('@dal/templates')(r),
             users: require('@dal/users')(r),
+            metadata: require('@dal/metadata')(r),
 
             log: {
                 debug: (msg, data) => api.log(msg, 'debug', inspect(data)),
