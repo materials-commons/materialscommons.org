@@ -3,6 +3,7 @@ const dbExec = require('./run');
 const commonQueries = require('@lib/common-queries');
 const _ = require('lodash');
 const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
+const {api} = require('actionhero');
 
 module.exports = function(r) {
 
@@ -288,6 +289,11 @@ module.exports = function(r) {
 
     async function publishProcesses(datasetId) {
         let d2pEntries = await r.table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
+        if (d2pEntries.length === 0) {
+            // no processes in dataset
+            return;
+        }
+        api.mc.log.info('d2pEntries', d2pEntries);
         let processIds = d2pEntries.map(entry => entry.process_id);
         let processes = await r.table('processes').getAll(r.args(processIds));
         processes.forEach(p => {
@@ -350,6 +356,10 @@ module.exports = function(r) {
     async function publishSamples(datasetId) {
         await addSamplesToPublishedDataset(datasetId);
         let ds2sEntries = await r.table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
+        if (ds2sEntries.length === 0) {
+            // No samples in dataset
+            return;
+        }
         let sampleIds = ds2sEntries.map(entry => entry.sample_id);
         let samples = await r.table('samples').getAll(r.args(sampleIds));
         samples.forEach(s => {

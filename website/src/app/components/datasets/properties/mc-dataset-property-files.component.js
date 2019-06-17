@@ -4,6 +4,7 @@ class MCDatasetPropertyFilesComponentController {
         this.isAuthenticated = User.isAuthenticated();
         this.apikey = User.apikey();
         this.$window = $window;
+        console.log('this.dataset', this.dataset);
     }
 
     isDownloadAvailable() {
@@ -45,6 +46,7 @@ angular.module('materialscommons').component('mcDatasetPropertyFiles', {
             </a>
             ({{$ctrl.dataset.zip.size | bytes}})
         </span>
+        <span class="margin-left-15"><a ng-if="$ctrl.dataset.published_to_globus" href="{{$ctrl.dataset.globus_url}}" target="_blank">Download using globus</a></span>
     `,
     controller: MCDatasetPropertyFilesComponentController,
     bindings: {

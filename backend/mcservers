@@ -20,6 +20,11 @@ function build_mcetl() {
     (cp ${MCETL_SRC}/cmd/mcetl/mcetl prodbin)
 }
 
+function build_mcdsbuild() {
+    (cd ${MCSERV_SRC}; make cli)
+    (cp ${MCSERV_SRC}/cmd/mcdsbuild/mcdsbuild prodbin)
+}
+
 function move_log() {
     if [[ ${MC_LOG_DIR} != "" ]]; then
         mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
@@ -638,6 +643,9 @@ function deploy_mc() {
 
     echo "  Updating mcetl command..."
     build_mcetl
+
+    echo "  Update mcdsbuild command..."
+    build_mcdsbuild
 
     echo "  Updating server dependencies..."
     rm -f package-lock.json

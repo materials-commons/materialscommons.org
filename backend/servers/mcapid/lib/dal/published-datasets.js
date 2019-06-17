@@ -52,6 +52,17 @@ module.exports = function(r) {
             dataset.doi_url = doiUrlLink(dataset.doi);
         }
 
+        if (dataset.selection_id) {
+            // Dataset has a file selection associated with it. These dataset are also published to globus
+            dataset.published_to_globus = true;
+            let endpointId = process.env.MC_CONFIDENTIAL_CLIENT_ENDPOINT;
+            let originPath = `/__published_datasets/${dataset.id}/`;
+            dataset.globus_url = `https://app.globus.org/file-manager?origin_id=${endpointId}&origin_path=${originPath}`;
+        } else {
+            dataset.published_to_globus = false;
+            dataset.globus_url = '';
+        }
+
         return dataset;
     }
 
@@ -73,7 +84,7 @@ module.exports = function(r) {
     }
 
     async function getAllDatasets() {
-        return await r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
+        let datasets = await r.db('materialscommons').table('datasets').filter({published: true}).merge(function(ds) {
             return {
                 file_count: r.db('mcpub').table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'}).count(),
                 stats: {
@@ -88,6 +99,21 @@ module.exports = function(r) {
                 }
             };
         });
+
+        datasets.forEach(ds => {
+            if (ds.selection_id) {
+                // Dataset has a file selection associated with it. These dataset are also published to globus
+                ds.published_to_globus = true;
+                let endpointId = process.env.MC_CONFIDENTIAL_CLIENT_ENDPOINT;
+                let originPath = `/__published_datasets/${ds.id}/`;
+                ds.globus_url = `https://app.globus.org/file-manager?origin_id=${endpointId}&origin_path=${originPath}`;
+            } else {
+                ds.published_to_globus = false;
+                ds.globus_url = '';
+            }
+        });
+
+        return datasets;
     }
 
     async function getDatasetsForTag(tagId) {
