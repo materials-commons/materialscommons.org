@@ -27,3 +27,25 @@ module.exports.PublishDatasetToGlobusTask = class PublishDatasetToGlobusTask ext
 // module.exports.PublishDatasetToZipfileTask = class PublishDatasetToZipfileTask extends Task {
 //
 // }
+
+module.exports.RemoveDatasetInGlobusTask = class RemoveDatasetInGlobusTask extends Task {
+    constructor() {
+        super();
+        this.name = 'remove-ds-in-globus';
+        this.description = 'Remove dataset files that were published to globus';
+        this.frequency = 0;
+        this.queue = 'datasets';
+    }
+
+    async run(dsArgs) {
+        let args = ['remove-globus-dataset', '--dataset-id', dsArgs.datasetId, '--mcdir', process.env.MCDIR];
+        try {
+            api.mc.log.info('mcdsbuild', args);
+            await spawn.runCmd('../../prodbin/mcdsbuild', args);
+            return true;
+        } catch (e) {
+            api.mc.log.info(`Failed to remove dataset from globus ${e}`);
+            return false;
+        }
+    }
+};

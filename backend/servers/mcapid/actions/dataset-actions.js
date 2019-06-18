@@ -600,6 +600,12 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
             throw new Error(`Unable to publish dataset ${params.dataset_id}`);
         }
 
+        let dsJobArgs = {
+            datasetId: params.dataset_id
+        };
+
+        await api.tasks.enqueue('remove-ds-in-globus', dsJobArgs, 'datasets');
+
         response.data = ds;
     }
 };
