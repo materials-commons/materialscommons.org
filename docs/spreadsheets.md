@@ -11,7 +11,7 @@ All other rules are optional.
 
   1. The first column contains the names of your samples
   2. The first row consists of headers
-  3. Each processing step must be in a separate sheet. The processing step will have the same name as the sheet.
+  3. Each processing step must be in a separate worksheet in your spreadsheet. The processing step will have the same name as the worksheet.
   
 This will look as follows:
 
@@ -37,14 +37,14 @@ Your spreadsheet would now look as follows:
 
 ## Specifying Column Types
 
-Your first column must be the sample names. After this you can control how Materials Commons will
+Your first column must be sample names. After this you can control how Materials Commons will
 interpret each column. To do this you use keywords. A keyword is a special word that Materials Commons
 understands followed by a colon. Keywords are case insensitive. For example file: is a keyword. You
 can type it as file:, File:, FILE:, fILe:, any of these combinations will work. A keyword must appear
 as the first word in your column header. Materials Commons will ignore any extra whitespace before
 the keyword.
 
-Currently Materials Commons understands the following keywords
+Currently Materials Commons understands the following keywords:
 
 | Keyword | Meaning |
 | ------- | ------- |
@@ -68,7 +68,7 @@ keyword lets you specify a column that can contain files (one per cell in the co
 There are a couple of rules to make this work:
 
   1. The files must already be uploaded into your project on Materials Commons
-  2. You must specify the directory as Materials Commons understands it to the file
+  2. You must specify the directory path to the file starting with the project name
   
 ### Materials Commons Directory Paths
 
@@ -79,7 +79,7 @@ My 1st Project/D1/measurements.txt
 
 A couple of things to note. First there is no starting slash, ie its "My 1st Project" and not "/My 1st Project". In file system terms
 "My 1st Project" is the "root" or start of your projects files. Secondly you separate the remaining parts of the path with a forward 
-slash "/", and not the windows backward slash "\".
+slash "/", and not the Windows backward slash "\".
 
 ### Using the file: keyword
 
@@ -102,7 +102,7 @@ The file: keyword is used to specify the directory in a column where files are l
 | S3          |                        | My 1st Project/Other/S3.jpeg      |
 
 There are a couple of things going on in this example. First you can see an example using each of the forms of the file: keyword. Secondly
-you can have blank column, as S2 and S3 have for the "file:My 1st Project/D1" column. And lastly the S3 file entry looks different because
+you can have blank cells, as S2 and S3 have for the "file:My 1st Project/D1" column. And lastly the S3 file entry looks different because
 the cell for the file contains a full path.
 
 The sample S3 entry demonstrates one other feature of the file: column. If you have a cell that contains a "/" in it, then it is assumed
@@ -166,8 +166,8 @@ Sheet: **Heat Treatment**
 
 
 The example above is for a spreadsheet with two worksheets. One named "SEM" and one named "Heat Treatment". The From column
-specifies the previous processing to SEM S1 sample. That is it went through a "Heat Treatment" process. Materials Commons
-will construct a workflow that looks as follows:
+specifies the processing step previous to SEM for the S1 sample. That is sample S1 went through a "Heat Treatment" process 
+before SEM was performed. Materials Commons will construct a workflow that looks as follows:
 
 Create Samples -> Heat Treatment -> SEM
 
@@ -184,7 +184,7 @@ create a new experiment. To do this go to your project home page:
 ![Project Home Page](images/project_home_page.png)
 
 In the right hand panel at the top are four buttons. The last one is labeled "NEW EXPERIMENT FROM SPREADSHEET". Press this button
-and follow its prompts. If you are building a workflow with your spreadsheet make sure to review the "Building A Workflow" section
+and follow it's prompts. If you are building a workflow with your spreadsheet make sure to review the "Building A Workflow" section
 above and to select "Second column is Parent column":
 
 ![Create Experiment From Spreadsheet](images/create_experiment_from_spreadsheet.png)
