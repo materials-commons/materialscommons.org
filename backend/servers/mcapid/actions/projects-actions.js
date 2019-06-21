@@ -219,3 +219,39 @@ module.exports.RemoveUserFromProjectAction = class RemoveUserFromProjectAction e
         response.data = {removed: removed};
     }
 };
+
+module.exports.TransferProjectOwnerAction = class TransferProjectOwnerAction extends Action {
+    constructor() {
+        super();
+        this.name = 'transferProjectOwner';
+        this.description = 'Transfers project owner';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            to_user: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params, user}) {
+        if (!await api.mc.check.isProjectOwner(params.project_id, user.id)) {
+            throw new Error(`Cannot add user to project, you are not the project owner`);
+        }
+
+        if (!await api.mc.check.userExists(params.to_user)) {
+            throw new Error(`User ${params.to_user} not found`);
+        }
+
+        let transferArgs = {
+            projectId: params.project_id,
+            toUser: params.to_user,
+        };
+
+        await api.tasks.enqueue('transfer-project-owner', transferArgs, 'admin');
+
+        response.data = {transfer_started: true};
+    }
+};
