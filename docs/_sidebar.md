@@ -1,7 +1,7 @@
 - Getting started
 
   - [Overview](overview.md)
-  - [Quick start](quickstart.md)
+  - [Getting Started](getting_started.md)
   - [Concepts](concepts.md)
 
 - Guide

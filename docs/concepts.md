@@ -1,26 +1,22 @@
 The Materials Commons
 =====================
 
-Authors:
 
-- Brian Puchala
-- Glenn Tarcea
-- Steve DeWitt
-- Tracy Berman
-- John Allison
-
-Date: draft in progress
-
-Version: 1
 
 Introduction
 ------------
 
-The Materials Commons is an information repository and collaboration platform specifically designed for the materials community. The Materials Commons provides a common place for researchers to store project files and data with provenance information, privately share it with collaborators, and then publish completed datasets for the entire community to use. 
+The Materials Commons is an information repository and collaboration platform specifically designed for the materials community. 
+The Materials Commons provides a common place for researchers to store project files and data with provenance information, privately 
+share it with collaborators, and then publish completed datasets for the entire community to use. 
 
-This document is the Materials Commons data model and rules specification. It will be versioned and kept up-to-date it evolves. It is also intended to be a reference document with a high-level overview for new users and devopers along with links to the API calls that perform the specific actions described in the specification. 
+This document is the Materials Commons data model and rules specification. It will be versioned and kept up-to-date it evolves. 
+It is also intended to be a reference document with a high-level overview for new users and devopers along with links to the API 
+calls that perform the specific actions described in the specification. 
 
-There may be some places in which the current implementation of Materials Commons differs from the specification. This difference may be intentional (small design change), unintentional (bug), or due to incomplete implementation. To the extent possible, these differences will be noted.
+There may be some places in which the current implementation of Materials Commons differs from the specification. 
+This difference may be intentional (small design change), unintentional (bug), or due to incomplete implementation. 
+To the extent possible, these differences will be noted.
 
 
 Overview
