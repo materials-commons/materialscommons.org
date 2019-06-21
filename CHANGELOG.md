@@ -7,6 +7,7 @@
 - :star: **New Feature:** Beta support for publishing datasets to a Globus endpoint
 - :star: **New Feature:** Beta support for downloading published datasets using Globus
 - :star: **New Feature:** Owners of projects can now transfer their project ownership to another project user
+- :star: **New Feature:** Add API call to get all new files added to a project during a date range
 - :star: **Improvement:** Add notes as an ignored keyword for spreadsheet processing
 
 ## May 2019
