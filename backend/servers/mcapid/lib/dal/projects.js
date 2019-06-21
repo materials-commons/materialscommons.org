@@ -247,6 +247,33 @@ module.exports = function(r) {
         return await r.table('background_process').getAll([userId, projectId], {index: 'user_project'}).orderBy(r.desc('birthtime'));
     }
 
+    async function filesChangedSince(projectId, from, to) {
+        let fd = new Date(Date.parse(from));
+        let fromDate = r.time(fd.getFullYear(), fd.getMonth() + 1, fd.getDate(), 'Z');
+        let td = to ? new Date(Date.parse(to)) : null;
+        let toDate = td ? r.time(td.getFullYear(), td.getMonth() + 1, td.getDate(), 'Z') : r.maxval;
+
+        let files = await r.table('datafiles')
+            .between(fromDate, toDate, {index: 'birthtime'})
+            .eqJoin([projectId, r.row('id')], r.table('project2datafile'), {index: 'project_datafile'}).without({right: {id: true}}).zip()
+            .eqJoin('id', r.table('datadir2datafile'), {index: 'datafile_id'}).zip()
+            .eqJoin('datadir_id', r.table('datadirs')).map(r.row.merge(d => {
+                return {
+                    'right': {
+                        'dirname': d('right')('name')
+                    }
+                };
+            }))
+            .without({'right': {'name': true}}).zip()
+            .filter({current: true}).pluck('id', 'datadir_id', 'name', 'dirname', 'checksum', 'birthtime', 'size')
+            .merge(function(f) {
+                return {
+                    birthtime: f('birthtime').toEpochTime()
+                };
+            });
+        return {files};
+    }
+
     return {
         createProject,
         getProjectSimple,
@@ -255,6 +282,7 @@ module.exports = function(r) {
         getProjectExperiment,
         deleteProject,
         getUsersGlobusUploadStatus,
+        filesChangedSince,
         ui: {
             getProjectsForUser,
             getProjectOverview,

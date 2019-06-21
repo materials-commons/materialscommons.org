@@ -255,3 +255,34 @@ module.exports.TransferProjectOwnerAction = class TransferProjectOwnerAction ext
         response.data = {transfer_started: true};
     }
 };
+
+module.exports.ProjectFilesChangedSinceAction = class ProjectFilesChangedSinceAction extends Action {
+    constructor() {
+        super();
+        this.name = 'projectFilesChangedSince';
+        this.description = 'Return files changed or new since given date';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            from_date: {
+                required: true,
+            },
+
+            to_date: {
+                default: 'blank'
+            }
+        };
+    }
+
+    async run({response, params}) {
+        let toDate = params.to_date === 'blank' ? null : params.to_date;
+        let files = await dal.tryCatch(async() => await api.mc.projects.filesChangedSince(params.project_id, params.from_date, toDate));
+        if (!files) {
+            throw new Error(`Unable to retrieve file changes`);
+        }
+
+        response.data = files;
+    }
+};

@@ -32,7 +32,7 @@ def create_mc_tables():
 
     create_mc_table("events", "project_id", "birthtime")
 
-    create_mc_table("datafiles", "name", "owner", "checksum", "usesid", "mediatype")
+    create_mc_table("datafiles", "name", "owner", "checksum", "usesid", "mediatype", "birthtime")
     run(r.db("materialscommons").table("datafiles")
         .index_create("mime", r.row["mediatype"]["mime"]))
     run(r.db('materialscommons').table("datafiles")
