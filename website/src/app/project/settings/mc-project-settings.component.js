@@ -2,8 +2,9 @@ class MCProjectSettingsComponentController {
     /*@ngInject*/
 
     /*@ngInject*/
-    constructor(projectsAPI, mcprojstore, mcStateStore, toast, $mdDialog, $state, User) {
+    constructor(projectsAPI, projectSettingsService, mcprojstore, mcStateStore, toast, $mdDialog, $state, User) {
         this.projectsAPI = projectsAPI;
+        this.projectSettingsService = projectSettingsService;
         this.mcprojstore = mcprojstore;
         this.mcStateStore = mcStateStore;
         this.toast = toast;
@@ -11,7 +12,6 @@ class MCProjectSettingsComponentController {
         this.$state = $state;
         this.projectName = '';
         this.user = User.u();
-
     }
 
     $onInit() {
@@ -52,6 +52,10 @@ class MCProjectSettingsComponentController {
                 }
             );
         }
+    }
+
+    transferProjectOwner() {
+        this.projectSettingsService.transferProjectOwner(this.project);
     }
 
     cancel() {

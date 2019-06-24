@@ -1,37 +1,5 @@
-const {spawn} = require('child_process');
 let {api} = require('actionhero');
-
-async function spawnJob(cmd, args, path) {
-    return new Promise((resolve, reject) => {
-        api.mc.log.info(cmd, args);
-        let child = spawn(cmd, args);
-        let log = '';
-        child.stderr.on('data', data => {
-            let entry = '' + data;
-            log = log + entry;
-            api.mc.log.info(entry);
-        });
-        child.stdout.on('data', data => {
-            let entry = '' + data;
-            log = log + entry;
-            api.mc.log.info(entry);
-        });
-        child.on('close', exitCode => {
-            api.mc.log.info('exitCode', exitCode);
-            if (exitCode === 0) {
-                resolve(log);
-            } else {
-                reject(log);
-            }
-        });
-
-        child.on('error', err => {
-            log.push(`Failed to start processing job for file ${path}: ${err}`);
-            api.mc.log.info(log);
-            reject(log);
-        });
-    });
-}
+const spawn = require('./spawn');
 
 async function checkSpreadsheet(path, hasParent, projectId, apikey) {
     let args = ['check', '--files', path, '--mcurl', process.env.MCURL, '--apikey', apikey, '--project-id', projectId], output, success;
@@ -39,7 +7,7 @@ async function checkSpreadsheet(path, hasParent, projectId, apikey) {
         args.push('--has-parent');
     }
     try {
-        output = await spawnJob('../../prodbin/mcetl', args, path);
+        output = await spawn.runCmd('../../prodbin/mcetl', args);
         success = true;
     } catch (e) {
         api.mc.log.info('spawnJob failed', e);

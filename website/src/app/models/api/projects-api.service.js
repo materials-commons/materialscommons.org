@@ -37,7 +37,7 @@ class ProjectsAPIService {
             project_id: projectId,
         }).then(
             status => status.plain().data,
-            e => this.toast.error(e.data.error)
+            e => this.toast.error(e.error)
         );
     }
 
@@ -48,8 +48,7 @@ class ProjectsAPIService {
         }).then(
             file => file.plain().data,
             e => {
-                console.log('e', e);
-                this.toast.error(e.data.error);
+                this.toast.error(e.error);
             }
         );
     }
@@ -57,35 +56,45 @@ class ProjectsAPIService {
     setupGlobusProjectDownload(projectId) {
         return this.Restangular.one('v4').one('createGlobusProjectDownload').customPOST({project_id: projectId}).then(
             resp => resp.plain(),
-            e => this.toast.error(e.data.error)
+            e => this.toast.error(e.error)
         );
     }
 
     getProcessesForProject(projectId) {
         return this.Restangular.one('v3').one('getProcessesForProject').customPOST({project_id: projectId}).then(
             processes => processes.plain().data,
-            e => this.toast.error(e.data.error)
+            e => this.toast.error(e.error)
         );
     }
 
     getSamplesForProject(projectId) {
         return this.Restangular.one('v3').one('getSamplesForProject').customPOST({project_id: projectId}).then(
             samples => samples.plain().data,
-            e => this.toast.error(e.data.error)
+            e => this.toast.error(e.error)
         );
     }
 
     getSamplesWithConditionsForProject(projectId) {
         return this.Restangular.one('v3').one('getSamplesWithConditionsForProject').customPOST({project_id: projectId}).then(
             samples => samples.plain().data,
-            e => this.toast.error(e.data.error)
+            e => this.toast.error(e.error)
         );
     }
 
     getProcessForProject(projectId, processId) {
         return this.Restangular.one('v3').one('getProcessForProject').customPOST({project_id: projectId, process_id: processId}).then(
             process => process.plain().data,
-            e => this.toast.error(e.data.error)
+            e => this.toast.error(e.error)
+        );
+    }
+
+    transferProjectOwner(projectId, toUser) {
+        return this.Restangular.one('v3').one('transferProjectOwner').customPOST({project_id: projectId, to_user: toUser}).then(
+            () => true,
+            e => {
+                console.log(e);
+                this.toast.error(e.error);
+            }
         );
     }
 

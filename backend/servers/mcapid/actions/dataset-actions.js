@@ -562,6 +562,13 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
             throw new Error(`Unable to publish dataset ${params.dataset_id}`);
         }
 
+        let dsJobArgs = {
+            projectId: params.project_id,
+            datasetId: params.dataset_id
+        };
+
+        await api.tasks.enqueue('publish-ds-to-globus', dsJobArgs, 'datasets');
+
         response.data = ds;
     }
 };
@@ -592,6 +599,12 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
         if (!ds) {
             throw new Error(`Unable to publish dataset ${params.dataset_id}`);
         }
+
+        let dsJobArgs = {
+            datasetId: params.dataset_id
+        };
+
+        await api.tasks.enqueue('remove-ds-in-globus', dsJobArgs, 'datasets');
 
         response.data = ds;
     }

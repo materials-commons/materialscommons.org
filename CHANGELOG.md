@@ -1,5 +1,24 @@
 # Release Notes
 
+## June 2019
+- :star: **New Feature:** Add support for ignoring columns in ETL
+- :star: **New Feature:** Project level publishing allows recursive file selection
+- :star: **New Feature:** New APIs to get and set Metadata on various objects in system
+- :star: **New Feature:** Beta support for publishing datasets to a Globus endpoint
+- :star: **New Feature:** Beta support for downloading published datasets using Globus
+- :star: **New Feature:** Owners of projects can now transfer their project ownership to another project user
+- :star: **New Feature:** Add API call to get all new files added to a project during a date range
+- :star: **Improvement:** Add notes as an ignored keyword for spreadsheet processing
+
+## May 2019
+- :star: **New Feature:** Add support for ignoring cells in ETL
+- :star: **New Feature:** Add support for actions in ETL
+- :star: **New Feature:** Beta simple search of matching samples by process attributes
+- :star: **New Feature:** Add support for Files in ETL
+- :star: **New Feature:** Add support for spreadsheets with no parent column
+- :star: **Improvement:** Handle extra starting/trailing spaces in headers and value cells
+- :boom: **Fixed:** Various project level publishing fixes
+
 ## April 2019
 - :star: **New Feature:** Added backend support for new ETL process
 - :star: **New Feature:** New ETL format in Beta

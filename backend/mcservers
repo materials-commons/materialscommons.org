@@ -20,6 +20,11 @@ function build_mcetl() {
     (cp ${MCETL_SRC}/cmd/mcetl/mcetl prodbin)
 }
 
+function build_mcdsbuild() {
+    (cd ${MCSERV_SRC}; make cli)
+    (cp ${MCSERV_SRC}/cmd/mcdsbuild/mcdsbuild prodbin)
+}
+
 function move_log() {
     if [[ ${MC_LOG_DIR} != "" ]]; then
         mkdir -p ${MC_LOG_DIR}/archive 2> /dev/null
@@ -255,7 +260,7 @@ function stop_mcapid() {
     echo "Stopping mcapid (${SERVERTYPE})..."
     ps -eo "pid,command" | grep "mcapid-${SERVERTYPE}" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
     do
-        kill ${line}
+        kill -9 ${line}
         echo "  Stopped mcapid server with pid ${line}"
     done
 }
@@ -595,6 +600,10 @@ function deploy_backend() {
     (cd ..; rm -rf "${MC_DEPLOY_DIR}/backend"; cp -r backend "${MC_DEPLOY_DIR}")
 }
 
+function deploy_docs() {
+    cp -r ../docs "${MC_DEPLOY_DIR}"
+}
+
 function deploy_mc() {
 
     export DB_BACKUP=/tmp/rethinkdb.update.${SERVERTYPE}.tar.gz
@@ -638,6 +647,12 @@ function deploy_mc() {
 
     echo "  Updating mcetl command..."
     build_mcetl
+
+    echo "  Update mcdsbuild command..."
+    build_mcdsbuild
+
+    echo "  Updating docs..."
+    deploy_docs
 
     echo "  Updating server dependencies..."
     rm -f package-lock.json
