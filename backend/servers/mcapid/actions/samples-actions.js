@@ -71,6 +71,37 @@ module.exports.GetSamplesWithProcessAttributesForExperimentAction = class GetSam
     }
 };
 
+module.exports.GetSamplesWithAttributesForExperimentAction = class GetSamplesWithAttributesForExperimentAction extends Action {
+    constructor() {
+        super();
+        this.name = 'getSamplesWithAttributesForExperiment';
+        this.description = 'Returns samples with their attributes';
+        this.inputs = {
+            project_id: {
+                required: true,
+            },
+
+            experiment_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const inProject = await api.mc.check.experimentInProject(params.experiment_id, params.project_id);
+        if (!inProject) {
+            throw new Error(`Experiment not in project`);
+        }
+
+        const samples = await dal.tryCatch(async() => await api.mc.samples.getSamplesWithAttributesForExperiment(params.experiment_id));
+        if (samples === null) {
+            throw new Error(`Unable to retrieve samples for experiment`);
+        }
+
+        response.data = samples;
+    }
+};
+
 module.exports.GetSampleAction = class GetSampleAction extends Action {
     constructor() {
         super();

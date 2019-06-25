@@ -57,7 +57,7 @@
     "angular-markdown-it": "^0.6.1",
     "intro.js": "^2.7.0",
     "ng-qtip2": "^1.3.3",
-    "angular-chart.js": "angular-chartjs#^1.1.1"
+    "chart.js": "^2.8.0"
   },
   "overrides": {
     "cytoscape-panzoom": {

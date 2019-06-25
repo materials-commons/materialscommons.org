@@ -65,6 +65,33 @@ module.exports = function(r) {
         };
     }
 
+    async function getSamplesWithAttributesForExperiment(experimentId) {
+        return await r.table('experiment2sample').getAll(experimentId, {index: 'experiment_id'})
+            .eqJoin('sample_id', r.table('samples')).zip()
+            .without('group_size', 'has_group', 'is_grouped', 'permissions', 'project_id',
+                'project_name', 'sample_id', 'status', 'user_id', 'experiment_id')
+            .merge(s => {
+                return {
+                    attributes: r.table('sample2propertyset').getAll(s('id'), {index: 'sample_id'})
+                        .eqJoin('property_set_id', r.table('propertyset2property'), {index: 'property_set_id'}).zip()
+                        .eqJoin('property_id', r.table('properties')).zip()
+                        .without('parent_id', 'property_id', 'property_set_id', 'birthtime')
+                        .merge(a => {
+                            return {
+                                best_measure: r.branch(a('best_measure_id').eq(''), 'None',
+                                    r.table('best_measure_history').getAll(a('best_measure_id'))
+                                        .eqJoin('measurement_id', r.table('measurements')).zip().pluck('measurement_id', 'unit', 'value').nth(0),
+                                ),
+                                measurements: r.table('property2measurement').getAll(a('id'), {index: 'property_id'})
+                                    .eqJoin('measurement_id', r.table('measurements')).zip()
+                                    .pluck('id', 'otype', 'unit', 'value')
+                                    .coerceTo('array'),
+                            };
+                        }).coerceTo('array'),
+                };
+            });
+    }
+
     async function getSample(sampleId, userId) {
         return await r.table('access').getAll(userId, {index: 'user_id'})
             .eqJoin([r.row('project_id'), sampleId], r.table('project2sample'), {index: 'project_sample'}).zip().limit(1)
@@ -318,6 +345,7 @@ module.exports = function(r) {
         getSamplesForProject,
         getSamplesWithProcessAttributesForExperiment,
         getSamplesWithConditionsForProject,
+        getSamplesWithAttributesForExperiment,
         getSample,
         getSampleSimple,
         addSampleToProject,

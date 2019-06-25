@@ -1,8 +1,8 @@
 <div class="layout-margin" flex="90">
     <div layout="row">
-        <md-input-container>
+        <md-input-container flex="20">
             <label>Select Chart Type</label>
-            <md-select ng-model="$ctrl.state.selectedChart">
+            <md-select ng-model="$ctrl.state.selectedChart" ng-change="$ctrl.chartSelected()">
                 <md-opt-group label="charts">
                     <md-option ng-value="chart" ng-repeat="chart in $ctrl.state.charts">
                         {{chart}}
@@ -10,12 +10,26 @@
                 </md-opt-group>
             </md-select>
         </md-input-container>
-        <md-input-container>
-            <label>Select Samples</label>
-        </md-input-container>
+        <md-button class="md-primary md-raised" ng-click="$ctrl.selectSamples()">Select Samples</md-button>
+        <md-button class="md-primary md-raised" ng-click="$ctrl.selectAttributes()">Select Attributes</md-button>
+        <md-button class="md-primary md-raised" ng-click="$ctrl.drawChart()"
+                   ng-disabled="$ctrl.state.selectedAttributes.length === 0">
+            Draw Chart
+        </md-button>
     </div>
-    <canvas id="line" class="chart chart-line" chart-data="$ctrl.state.data"
-            chart-labels="$ctrl.state.labels" chart-series="$ctrl.state.series" chart-options="$ctrl.state.options"
-            chart-dataset-override="$ctrl.state.datasetOverride" chart-click="$ctrl.onClick">
+    <canvas id="line" class="chart chart-line" chart-data="$ctrl.state.line.data" ng-if="$ctrl.state.selectedChart === 'line'"
+            chart-labels="$ctrl.state.line.labels" chart-series="$ctrl.state.line.series" chart-options="$ctrl.state.line.options"
+            chart-dataset-override="$ctrl.state.line.datasetOverride" chart-click="$ctrl.onClick">
     </canvas>
+
+    <canvas id="scatter" class="chart chart-scatter"
+            chart-data="$ctrl.state.scatter.data"
+            chart-options="$ctrl.state.scatter.options"
+            ng-if="$ctrl.state.selectedChart === 'scatter'">
+    </canvas>
+
+    <canvas id="bar" class="chart chart-bar" ng-if="$ctrl.state.selectedChart === 'bar'"
+            chart-data="$ctrl.state.bar.data" chart-labels="$ctrl.state.bar.labels"> chart-series="series"
+    </canvas>
+
 </div>
