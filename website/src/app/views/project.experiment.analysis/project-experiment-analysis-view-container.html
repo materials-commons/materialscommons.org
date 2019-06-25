@@ -1,4 +1,19 @@
 <div class="layout-margin" flex="90">
+    <div layout="row">
+        <md-input-container>
+            <label>Select Chart Type</label>
+            <md-select ng-model="$ctrl.state.selectedChart">
+                <md-opt-group label="charts">
+                    <md-option ng-value="chart" ng-repeat="chart in $ctrl.state.charts">
+                        {{chart}}
+                    </md-option>
+                </md-opt-group>
+            </md-select>
+        </md-input-container>
+        <md-input-container>
+            <label>Select Samples</label>
+        </md-input-container>
+    </div>
     <canvas id="line" class="chart chart-line" chart-data="$ctrl.state.data"
             chart-labels="$ctrl.state.labels" chart-series="$ctrl.state.series" chart-options="$ctrl.state.options"
             chart-dataset-override="$ctrl.state.datasetOverride" chart-click="$ctrl.onClick">

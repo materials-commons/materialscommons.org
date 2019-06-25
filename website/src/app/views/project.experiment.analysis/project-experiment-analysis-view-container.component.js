@@ -26,7 +26,9 @@ class MCProjectExperimentAnalysisViewContainerComponentController {
                         }
                     ]
                 }
-            }
+            },
+            charts: ['bar', 'line'],
+            selectedChart: "",
         };
     }
 
