@@ -93,7 +93,7 @@ class MCProjectExperimentAnalysisViewContainerComponentController {
                     });
                 });
                 this.state.attributes = _.keys(attributes);
-            },
+            }
         );
     }
 
