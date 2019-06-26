@@ -1,8 +1,9 @@
 class MCProjectExperimentAnalysisViewContainerComponentController {
     /*@ngInject*/
-    constructor(experimentsAPI, $stateParams) {
+    constructor(experimentsAPI, $stateParams, mcChartService) {
         this.experimentsAPI = experimentsAPI;
         this.$stateParams = $stateParams;
+        this.mcChartService = mcChartService;
         this.state = {
             line: {
                 labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -86,6 +87,10 @@ class MCProjectExperimentAnalysisViewContainerComponentController {
         this.experimentsAPI.getSamplesWithAttributesForExperiment(this.$stateParams.experiment_id, this.$stateParams.project_id).then(
             (samples) => {
                 this.state.samples = samples;
+                // By default all samples are selected
+                this.state.selectedSamples = angular.copy(samples);
+
+                // Build a unique list of known attributes
                 let attributes = {};
                 samples.forEach(s => {
                     s.attributes.forEach(attr => {
@@ -94,6 +99,18 @@ class MCProjectExperimentAnalysisViewContainerComponentController {
                 });
                 this.state.attributes = _.keys(attributes);
             }
+        );
+    }
+
+    selectSamples() {
+        this.mcChartService.selectSamples(this.state.samples).then(
+            selectedSamples => this.state.selectedSamples = selectedSamples
+        );
+    }
+
+    selectAttributes() {
+        this.mcChartService.selectAttributes(this.state.attributes, this.state.selectedChart).then(
+            selectedAttributes => this.state.selectedAttributes = selectedAttributes
         );
     }
 

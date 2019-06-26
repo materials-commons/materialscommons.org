@@ -11,7 +11,10 @@
             </md-select>
         </md-input-container>
         <md-button class="md-primary md-raised" ng-click="$ctrl.selectSamples()">Select Samples</md-button>
-        <md-button class="md-primary md-raised" ng-click="$ctrl.selectAttributes()">Select Attributes</md-button>
+        <md-button class="md-primary md-raised" ng-click="$ctrl.selectAttributes()"
+                   ng-disabled="$ctrl.state.selectedChart === ''">
+            Select Attributes
+        </md-button>
         <md-button class="md-primary md-raised" ng-click="$ctrl.drawChart()"
                    ng-disabled="$ctrl.state.selectedAttributes.length === 0">
             Draw Chart
