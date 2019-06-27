@@ -13,6 +13,10 @@ module.exports.PublishDatasetToGlobusTask = class PublishDatasetToGlobusTask ext
     async run(dsArgs) {
         let args = ['create-globus-dataset', '--project-id', dsArgs.projectId, '--dataset-id', dsArgs.datasetId,
             '--db-connection', process.env.MCDB_CONNECTION, '--mcdir', process.env.MCDIR];
+        if (dsArgs.isPrivate) {
+            args.push('--private');
+        }
+
         try {
             api.mc.log.info('mcdsbuild', args);
             await spawn.runCmd('../../prodbin/mcdsbuild', args);
@@ -39,6 +43,9 @@ module.exports.RemoveDatasetInGlobusTask = class RemoveDatasetInGlobusTask exten
 
     async run(dsArgs) {
         let args = ['remove-globus-dataset', '--dataset-id', dsArgs.datasetId, '--mcdir', process.env.MCDIR];
+        if (dsArgs.isPrivate) {
+            args.push('--private');
+        }
         try {
             api.mc.log.info('mcdsbuild', args);
             await spawn.runCmd('../../prodbin/mcdsbuild', args);

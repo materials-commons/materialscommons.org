@@ -414,6 +414,9 @@ module.exports = function(r) {
 
     async function unpublishDatasetProcesses(datasetId) {
         let processes = await r.db('mcpub').table('dataset2process').getAll(datasetId, {index: 'dataset_id'});
+        if (!processes.length) {
+            return;
+        }
         let processIds = processes.map(p => p.process_id);
         let process2setupEntries = await r.db('mcpub').table('process2setup').getAll(r.args(processIds), {index: 'process_id'});
         let setupIds = process2setupEntries.map(e => e.setup_id);
@@ -426,6 +429,9 @@ module.exports = function(r) {
 
     async function unpublishDatasetSamples(datasetId) {
         let samples = await r.db('mcpub').table('dataset2sample').getAll(datasetId, {index: 'dataset_id'});
+        if (!samples.length) {
+            return;
+        }
         let sampleIds = samples.map(s => s.sample_id);
         await r.db('mcpub').table('samples').getAll(r.args(sampleIds)).delete();
         await r.db('mcpub').table('process2sample').getAll(r.args(sampleIds), {index: 'sample_id'}).delete();
