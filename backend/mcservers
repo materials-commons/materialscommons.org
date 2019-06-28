@@ -72,16 +72,6 @@ function stop_es() {
     fi
 }
 
-function stop_etl_server() {
-    echo "Stopping mcetlserver (${SERVERTYPE})..."
-    ps -eo "pid,command" | grep "mc_etlserver.py" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
-    do
-        kill ${line}
-        echo "  Stopped mcetlserver with pid ${line}"
-        sleep 3
-    done
-}
-
 function start_rethinkdb() {
     R=$(is_running "rethinkdb" "driver-port $MCDB_PORT")
     if [[ ! -d "${MCDB_DIR}" ]]; then
@@ -129,15 +119,6 @@ function stop_rethinkdb() {
         kill ${RPID}
         echo "  Stopped rethinkdb with pid ${RPID}"
     fi
-}
-
-function stop_mcapiserver() {
-    echo "Stopping mcapiserver (${SERVERTYPE})..."
-    ps -eo "pid,command" | grep mcapiserver.py | grep "p $MC_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
-    do
-        kill ${line}
-        echo "  Stopped mcapiserver with pid ${line}"
-    done
 }
 
 function start_mcserv() {
@@ -205,24 +186,6 @@ function stop_mcapi() {
     do
         kill ${line}
         echo "  Stopped mcapi with pid ${line}"
-    done
-}
-
-function stop_mcpub() {
-    echo "Stopping mcpub ($SERVERTYPE)..."
-    ps -eo "pid,command" | grep "mcpub.js" | grep "p $MC_PUB_SERVICE_PORT" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
-    do
-        kill ${line}
-        echo "  Stopped mcpub with pid ${line}"
-    done
-}
-
-function stop_mcmon() {
-    echo "Stopping mcmon ($SERVERTYPE)..."
-    ps -eo "pid,command" | grep "servers/mcmon/main.js" | grep "servertype $SERVERTYPE" | grep -v grep | sed 's/^[ ]*//' | cut -f1 -d' ' | while read line
-    do
-        kill ${line}
-        echo "  Stopped mcmon with pid ${line}"
     done
 }
 
@@ -332,13 +295,9 @@ function stop_servers() {
 
     echo Stopping ${SERVERTYPE} servers....
 
-    stop_etl_server
-    stop_mcapiserver
     stop_mcstored
     stop_mcserv
     stop_mcapi
-    stop_mcpub
-    stop_mcmon
     stop_mcapid
 
     delete_old_logs
@@ -348,10 +307,6 @@ function stop_servers() {
 
 function stop_named_server() {
     case "$1" in
-        mcapiserver)
-            stop_mcapiserver
-            ;;
-
         mcstored)
             stop_mcstored
             ;;
@@ -364,24 +319,12 @@ function stop_named_server() {
             stop_mcapi
             ;;
 
-        mcpub)
-            stop_mcpub
-            ;;
-
         es)
             stop_es
             ;;
 
-        mcetl)
-            stop_etl_server
-            ;;
-
         rethinkdb)
             stop_rethinkdb
-            ;;
-
-        mcmon)
-            stop_mcmon
             ;;
 
         redis)
@@ -642,8 +585,8 @@ function deploy_mc() {
     echo "  Stopping servers..."
     stop_servers
 
-    echo "  Updating pymcetl command..."
-    (cd ../../pymcetl; python3 setup.py install --user)
+#    echo "  Updating pymcetl command..."
+#    (cd ../../pymcetl; python3 setup.py install --user)
 
     echo "  Updating mcetl command..."
     build_mcetl
