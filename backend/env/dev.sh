@@ -12,8 +12,8 @@ export MCDB_DIR=~/devdb
 export RETHINKDB_HTTP_PORT=8090
 export RETHINKDB_CLUSTER_PORT=31815
 
-export MCSTOREDBIN=testbin/mcstored
-export MCSERVBIN=testbin/mcserv
+export MCSTOREDBIN=prodbin/mcstored
+export MCSERVBIN=prodbin/mcserv
 export MCETLBIN=prodbin/mcetl
 
 export MC_ES_URL="http://localhost:9500"

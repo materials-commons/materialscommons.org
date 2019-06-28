@@ -564,12 +564,50 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
 
         let dsJobArgs = {
             projectId: params.project_id,
-            datasetId: params.dataset_id
+            datasetId: params.dataset_id,
+            isPrivate: false,
         };
 
         await api.tasks.enqueue('publish-ds-to-globus', dsJobArgs, 'datasets');
 
         response.data = ds;
+    }
+};
+
+module.exports.PublishPrivateDatasetAction = class PublishPrivateDatasetAction extends Action {
+    constructor() {
+        super();
+        this.name = 'publishPrivateDataset';
+        this.description = 'Publish a private dataset';
+        this.inputs = {
+            dataset_id: {
+                required: true,
+            },
+
+            project_id: {
+                required: true,
+            }
+        };
+    }
+
+    async run({response, params}) {
+        const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
+        if (!inProject) {
+            throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
+        }
+
+        let dsJobArgs = {
+            projectId: params.project_id,
+            datasetId: params.dataset_id,
+            isPrivate: true,
+        };
+
+        await api.tasks.enqueue('publish-ds-to-globus', dsJobArgs, 'datasets');
+
+        response.data = {
+            globus_path: `/__datasets/${params.dataset_id}/`,
+            endpoint_id: process.env.MC_CONFIDENTIAL_CLIENT_ENDPOINT,
+        };
     }
 };
 
@@ -595,13 +633,19 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
+        const originalDataset = await dal.tryCatch(async() => await api.mc.datasets.getDataset(params.dataset_id));
+        if (!originalDataset) {
+            throw new Error(`Unable to retrieve dataset`);
+        }
+
         const ds = await dal.tryCatch(async() => await api.mc.datasets.unpublish(params.dataset_id));
         if (!ds) {
             throw new Error(`Unable to publish dataset ${params.dataset_id}`);
         }
 
         let dsJobArgs = {
-            datasetId: params.dataset_id
+            datasetId: params.dataset_id,
+            isPrivate: !originalDataset.published,
         };
 
         await api.tasks.enqueue('remove-ds-in-globus', dsJobArgs, 'datasets');
