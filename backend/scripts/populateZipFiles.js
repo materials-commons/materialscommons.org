@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 'use strict';
 const program = require('commander');
-const Promise = require("bluebird");
-const fsa = Promise.promisifyAll(require("fs"));
+const Promise = require('bluebird');
+const fsa = Promise.promisifyAll(require('fs'));
 const achiver = require('archiver');
 const fs = require('fs');
 
 const mkdirpAsync = Promise.promisify(require('mkdirp'));
 const zipFileUtils = require('../servers/lib/zipFileUtils.js');
 
-const defaultPort =  28015; // true default
+const defaultPort = 28015; // true default
 // const defaultPort = 30815; // localhost version
 
 let parameters = getControlParameters();
@@ -22,7 +22,7 @@ var idList = parameters.id;
 var all = !!parameters.all;
 var numberProcessed = 0;
 var totalNumberToProcess = 0;
-var pathForFileInZip = "Dataset/";
+var pathForFileInZip = 'Dataset/';
 
 main();
 
@@ -44,17 +44,17 @@ function main() {
 
 function* buildZipFiles() {
     try {
-        console.log("setup");
+        console.log('setup');
         var r = require('rethinkdbdash')({
             db: 'materialscommons',
             port: port
         });
-        console.log("setup done");
+        console.log('setup done');
 
         var idSet = new Set(idList);
         var ids = (idList.length > 0);
 
-        let allDatasetIds = yield r.db('materialscommons').table('datasets').pluck(["id", "published"]);
+        let allDatasetIds = yield r.db('materialscommons').table('datasets').pluck(['id', 'published']);
 
         var idsToProcess = [];
         allDatasetIds.forEach(record => {
@@ -63,15 +63,15 @@ function* buildZipFiles() {
                 if (record['published']) {
                     idsToProcess.push(id);
                 } else {
-                    console.log("No zip will be created for unpublished dataset: " + id);
+                    console.log('No zip will be created for unpublished dataset: ' + id);
                 }
             }
         });
 
-        console.log("Zip files to be created for " + idsToProcess.length + " datasets");
+        console.log('Zip files to be created for ' + idsToProcess.length + ' datasets');
 
         if (idsToProcess.length === 0) {
-            return Promise.reject("Error: no dataset id values to process");
+            return Promise.reject('Error: no dataset id values to process');
         }
 
         totalNumberToProcess = idsToProcess.length;
@@ -84,24 +84,27 @@ function* buildZipFiles() {
         }
 
     } catch (error) {
-        console.log("Error in buildZipFiles: ", error)
+        console.log('Error in buildZipFiles: ', error);
     }
 }
 
 function* publishDatasetZipFile(r, datasetId) {
     try {
-        console.log("zip", datasetId);
+        console.log('zip', datasetId);
         let ds = yield r.db('materialscommons').table('datasets').get(datasetId);
         let zipDirPath = zipFileUtils.zipDirPath(ds);
         let zipFileName = zipFileUtils.zipFilename(ds);
         let fillPathAndFilename = zipFileUtils.fullPathAndFilename(ds);
 
-        console.log("full path and filename: ", fillPathAndFilename);
+        console.log('full path and filename: ', fillPathAndFilename);
         if (fs.existsSync(fillPathAndFilename)) {
             console.log('  zip file exists, not rebuilding', fillPathAndFilename);
             numberProcessed++;
             return new Promise(function(resolve) {
                 resolve();
+                if (numberProcessed >= totalNumberToProcess) {
+                    process.exit(0);
+                }
             });
         }
 
@@ -111,9 +114,12 @@ function* publishDatasetZipFile(r, datasetId) {
         if (!ds2dfEntries.length) {
             numberProcessed++;
             console.log('no zip for id = ' + datasetId);
-            console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
+            console.log('total number of zip files processed: ' + numberProcessed + ' of ' + totalNumberToProcess);
             return new Promise(function(resolve) {
-                resolve()
+                resolve();
+                if (numberProcessed >= totalNumberToProcess) {
+                    process.exit(0);
+                }
             });
         }
 
@@ -125,7 +131,7 @@ function* publishDatasetZipFile(r, datasetId) {
                 return {
                     dir: r.table('datadir2datafile').getAll(df('id'), {index: 'datafile_id'})
                         .eqJoin('datadir_id', r.table('datadirs')).zip().coerceTo('array')
-                }
+                };
             });
         let nameSourceList = [];
 
@@ -141,7 +147,7 @@ function* publishDatasetZipFile(r, datasetId) {
             console.log('name = ', name);
             console.log('filePath = ', filePath);
             console.log('sourcePath = ', path);
-            console.log('name = ',name);
+            console.log('name = ', name);
 
             let stream = fsa.createReadStream(path, {
                 flags: 'r',
@@ -153,18 +159,18 @@ function* publishDatasetZipFile(r, datasetId) {
             nameSourceList.push({name: name, path: filePath, source: stream});
         }
 
-        console.log("For id = " + datasetId + ", there are " + nameSourceList.length + " files");
+        console.log('For id = ' + datasetId + ', there are ' + nameSourceList.length + ' files');
 
         var output = fsa.createWriteStream(fillPathAndFilename);
 
-        let retP = new Promise(function (resolve, reject) {
+        let retP = new Promise(function(resolve, reject) {
             var archive = achiver('zip');
 
-            output.on('close', function () {
+            output.on('close', function() {
                 let zipfileSize = archive.pointer();
-                console.log('for dataset: ' + datasetId + " with " + zipfileSize + ' total bytes');
+                console.log('for dataset: ' + datasetId + ' with ' + zipfileSize + ' total bytes');
                 numberProcessed++;
-                console.log('total number of zip files processed: ' + numberProcessed + " of " + totalNumberToProcess);
+                console.log('total number of zip files processed: ' + numberProcessed + ' of ' + totalNumberToProcess);
                 let zip = {size: zipfileSize, filename: zipFileName};
                 r.db('materialscommons').table('datasets').get(datasetId).update({zip: zip}).then(() => {
                     resolve();
@@ -176,7 +182,7 @@ function* publishDatasetZipFile(r, datasetId) {
 
             archive.on('error', reject);
 
-            archive.on('close', function () {
+            archive.on('close', function() {
                 console.log('archive close');
             });
 
@@ -190,12 +196,12 @@ function* publishDatasetZipFile(r, datasetId) {
             archive.finalize();
         });
 
-        console.log("Starting of zip file For id = " + datasetId + "... (wait)");
+        console.log('Starting of zip file For id = ' + datasetId + '... (wait)');
 
         return retP;
 
     } catch (error) {
-        return yield Promise.reject("Error in publishDatasetZipFile: " + error.message);
+        return yield Promise.reject('Error in publishDatasetZipFile: ' + error.message);
     }
 }
 
@@ -204,15 +210,15 @@ function verifyParameters() {
 
     if (!all && !ids) {
         program.help(text => {
-            var banner = "\t--------------------------------\n";
-            return banner + "\tOne of --id or --all is required\n"
+            var banner = '\t--------------------------------\n';
+            return banner + '\tOne of --id or --all is required\n'
                 + banner + text;
-        })
+        });
     }
 
     if (ids && all) {
-        console.log("WARNING: --all (or -a) was specified, but one of more id valeus were given\n"
-            + "\tThe id values take precident");
+        console.log('WARNING: --all (or -a) was specified, but one of more id valeus were given\n'
+            + '\tThe id values take precident');
     }
 
     if (ids) {
@@ -222,17 +228,17 @@ function verifyParameters() {
 }
 
 function reportParameters() {
-    console.log("use --help for list of parameter options");
-    console.log("port = " + port);
-    console.log("base = " + base);
-    console.log("zipbase = " + zipbase);
-    console.log("replace = " + replace);
+    console.log('use --help for list of parameter options');
+    console.log('port = ' + port);
+    console.log('base = ' + base);
+    console.log('zipbase = ' + zipbase);
+    console.log('replace = ' + replace);
     if (all) {
-        console.log("process all")
+        console.log('process all');
     } else {
-        console.log("input id(s)");
+        console.log('input id(s)');
         idList.forEach(id => {
-            console.log("\tid = " + id);
+            console.log('\tid = ' + id);
         });
     }
 }
