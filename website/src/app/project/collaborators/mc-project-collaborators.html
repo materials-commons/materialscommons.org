@@ -34,7 +34,7 @@
                     </thead>
                     <tbody>
                     <tr md-row class="md-row-hover" ng-repeat="user in $ctrl.users | orderBy:'lastName'">
-                        <td md-cell>{{user.fullname}} ({{user.id}})</td>
+                        <td md-cell>{{user.fullname}} ({{user.user_id}})</td>
                         <td md-cell ng-if="$ctrl.isOwner($ctrl.signedInUser)">
                             <div ng-if="$ctrl.signedInUser === user.user_id">
                                 Owner
