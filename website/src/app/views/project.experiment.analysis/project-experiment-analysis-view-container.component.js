@@ -97,20 +97,26 @@ class MCProjectExperimentAnalysisViewContainerComponentController {
                         attributes[attr.attribute] = true;
                     });
                 });
-                this.state.attributes = _.keys(attributes);
+                this.state.attributes = _.keys(attributes).map(a => ({name: a}));
             }
         );
     }
 
     selectSamples() {
         this.mcChartService.selectSamples(this.state.samples).then(
-            selectedSamples => this.state.selectedSamples = selectedSamples
+            selectedSamples => {
+                this.state.selectedSamples = selectedSamples;
+                console.log('this.state.selectedSamples =', this.state.selectedSamples);
+            }
         );
     }
 
     selectAttributes() {
         this.mcChartService.selectAttributes(this.state.attributes, this.state.selectedChart).then(
-            selectedAttributes => this.state.selectedAttributes = selectedAttributes
+            selectedAttributes => {
+                this.state.selectedAttributes = selectedAttributes;
+                console.log('this.state.selectedAttributes', this.state.selectedAttributes);
+            }
         );
     }
 

@@ -1,4 +1,4 @@
-<md-dialog flex="40">
+<md-dialog flex="40" aria-label="select samples">
     <md-toolbar layout="row">
         <div layout-margin>
             Select Samples
@@ -6,6 +6,24 @@
     </md-toolbar>
     <md-dialog-content layout-margin>
         <md-content>
+            <md-table-container>
+                <table md-table class="margin-top-10">
+                    <thead md-head>
+                    <tr md-row>
+                        <th md-column>Select</th>
+                        <th md-column>Sample</th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row class="md-row-hover" ng-repeat="sample in $ctrl.samples track by $index">
+                        <td md-cell>
+                            <md-checkbox ng-model="sample.selected" aria-label="select sample"></md-checkbox>
+                        </td>
+                        <td md-cell>{{sample.name}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
         </md-content>
     </md-dialog-content>
     <md-dialog-actions layout="row">

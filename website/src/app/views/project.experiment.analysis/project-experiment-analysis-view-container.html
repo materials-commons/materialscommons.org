@@ -10,13 +10,13 @@
                 </md-opt-group>
             </md-select>
         </md-input-container>
-        <md-button class="md-primary md-raised" ng-click="$ctrl.selectSamples()">Select Samples</md-button>
+        <md-button class="md-primary md-raised" ng-click="$ctrl.selectSamples()" ng-disabled="$ctrl.state.selectedChart === ''">Select Samples</md-button>
         <md-button class="md-primary md-raised" ng-click="$ctrl.selectAttributes()"
-                   ng-disabled="$ctrl.state.selectedChart === ''">
+                   ng-disabled="$ctrl.state.selectedChart === '' || $ctrl.state.selectedSamples.length === 0">
             Select Attributes
         </md-button>
         <md-button class="md-primary md-raised" ng-click="$ctrl.drawChart()"
-                   ng-disabled="$ctrl.state.selectedAttributes.length === 0">
+                   ng-disabled="$ctrl.state.selectedSamples.length === 0 || $ctrl.state.selectedAttributes.length === 0 || $ctrl.state.selectedChart === ''">
             Draw Chart
         </md-button>
     </div>

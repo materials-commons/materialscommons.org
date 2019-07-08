@@ -17,27 +17,27 @@ class MCChartService {
                             }
      */
 
-    selectSamples() {
+    selectSamples(samples) {
         return this.$mdDialog.show({
-            templateUrl: 'app/modal/select-samples-dialog.html',
+            templateUrl: 'app/modals/select-samples-dialog.html',
             controller: MCSelectSamplesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             clickOutsideToClose: true,
-            locals: {}
+            locals: {samples}
         }).then(
             selected => selected
         );
     }
 
-    selectAttributes() {
+    selectAttributes(attributes, chartType) {
         return this.$mdDialog.show({
-            templateUrl: 'app/modal/select-attributes-for-chart-dialog.html',
+            templateUrl: 'app/modals/select-attributes-for-chart-dialog.html',
             controller: MCSelectAttributesDialogController,
             controllerAs: '$ctrl',
             bindToController: true,
             clickOutsideToClose: true,
-            locals: {}
+            locals: {attributes, chartType}
         }).then(
             selected => selected
         )
@@ -50,10 +50,12 @@ class MCSelectSamplesDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
+        console.log('samples = ', this.samples);
     }
 
     done() {
-        this.$mdDialog.hide();
+        let selected = this.samples.filter(s => s.selected);
+        this.$mdDialog.hide(selected);
     }
 
     cancel() {
@@ -65,10 +67,22 @@ class MCSelectAttributesDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
+        console.log('this.chartType =', this.chartType);
+
+    }
+
+    handleAttributeSelected(attr, selected) {
+        for (let i = 0; i < this.attributes.length; i++) {
+            if (this.attributes[i].name === attr) {
+                this.attributes[i].selected = selected;
+                break;
+            }
+        }
     }
 
     done() {
-        this.$mdDialog.hide();
+        let selected = this.attributes.filter(a => a.selected);
+        this.$mdDialog.hide(selected);
     }
 
     cancel() {

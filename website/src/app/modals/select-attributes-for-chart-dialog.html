@@ -6,9 +6,10 @@
     </md-toolbar>
     <md-dialog-content layout-margin>
         <md-content>
-            <mc-select-line-chart-attributes ng-if="$ctrl.chart === 'line'"></mc-select-line-chart-attributes>
-            <mc-select-bar-chart-attributes ng-if="$ctrl.chart === 'bar'"></mc-select-bar-chart-attributes>
-            <mc-select-scatter-plot-attributes ng-if="$ctrl.chart === 'scatter'"></mc-select-scatter-plot-attributes>
+            <mc-select-line-chart-attributes attributes="$ctrl.attributes" ng-if="$ctrl.chartType === 'line'"></mc-select-line-chart-attributes>
+            <mc-select-bar-chart-attributes attributes="$ctrl.attributes" ng-if="$ctrl.chartType === 'bar'"
+                                            on-attribute-selected="$ctrl.handleAttributeSelected(attr, selected)"></mc-select-bar-chart-attributes>
+            <mc-select-scatter-plot-attributes attributes="$ctrl.attributes" ng-if="$ctrl.chartType === 'scatter'"></mc-select-scatter-plot-attributes>
         </md-content>
     </md-dialog-content>
     <md-dialog-actions layout="row">
