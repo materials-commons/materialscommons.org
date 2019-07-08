@@ -143,7 +143,4 @@ as you move the mouse. Attach the arrow to the Red dot that appears on the SEM c
 You have now created a workflow that has two steps. You can continue constructing your workflow by repeating the above
 steps. You can select different process templates.
 
-## Sharing Your Files Using Globus
-
-## Publishing Your Data
 
