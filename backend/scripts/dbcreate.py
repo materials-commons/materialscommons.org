@@ -152,6 +152,10 @@ def create_mc_tables():
 
     create_mc_table('fileselection')
 
+    create_mc_table('file_events')
+
+    create_mc_table('file_series')
+
     run(r.db('materialscommons').wait())
 
 
