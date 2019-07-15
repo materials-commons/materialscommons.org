@@ -26,8 +26,8 @@ class MCProjectsListViewComponentController {
         this.onCreateDemoProject();
     }
 
-    hideDemoProjectButton() {
-        this.onHideCreateDemoProject();
+    hideDemoProject() {
+        this.onHideDemoProject();
     }
 
     refreshProjects() {
@@ -42,7 +42,7 @@ angular.module('materialscommons').component('mcProjectsListView', {
         projects: '<',
         user: '<',
         onCreateDemoProject: '&',
-        onHideCreateDemoProject: '&',
+        onHideDemoProject: '&',
         onCreateProject: '&',
         onSync: '&'
     }

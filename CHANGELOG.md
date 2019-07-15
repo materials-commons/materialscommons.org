@@ -11,6 +11,7 @@
 - :boom: **Fixed:** Creating an account with an existing email address didn't return an error
 - :boom: **Fixed:** Cancel button on login wasn't doing anything
 - :boom: **Fixed:** Demo projects button was not creating the demo project
+- :boom: **Fixed:** Hide demo button checkbox was ignoring selection
 - :boom: **Fixed:** 
 
 ## June 2019
