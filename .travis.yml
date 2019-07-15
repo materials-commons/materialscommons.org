@@ -57,7 +57,7 @@ before_install:
 
 install:
   - sudo apt-get install nginx
-  - sudo apt-get install rethinkdb
+  - sudo apt-get install -y --allow-unauthenticated rethinkdb
 
   - node --version
 
