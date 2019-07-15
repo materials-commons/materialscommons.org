@@ -100,9 +100,14 @@ module.exports.CreateNewUserAction = class CreateNewUserAction extends Action {
     }
 
     async run({response, params}) {
+        let userExists = await dal.tryCatch(async() => await api.mc.check.userExists(params.email));
+        if (userExists) {
+            throw new Error(`User ${params.email} already exists`);
+        }
+
         let user = await dal.tryCatch(async() => await api.mc.users.createNewUser(params.email, params.fullname, params.password));
         if (!user) {
-            throw new Error(`Unable to create create '${params.fullname}' with email ${params.email}`);
+            throw new Error(`Unable to create user '${params.fullname}' with email ${params.email}`);
         }
 
         response.data = user;
