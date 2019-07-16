@@ -63,6 +63,13 @@ class DatasetsAPIService {
         }).then(d => d.plain().data);
     }
 
+    publishPrivateProjectDataset(projectId, datasetId) {
+        return this.Restangular.one('v3').one('publishPrivateDataset').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId
+        }).then(d => d.plain().data);
+    }
+
     unpublishProjectDataset(projectId, datasetId) {
         return this.Restangular.one('v3').one('unpublishDataset').customPOST({
             project_id: projectId,

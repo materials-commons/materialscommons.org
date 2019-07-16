@@ -22,7 +22,7 @@ class MCDatasetDetails2ComponentController {
 
     }
 
-    $onInit () {
+    $onInit() {
         this.state.dataset = angular.copy(this.dataset);
         if (this.$window.location.hostname === 'mcdev.localhost') {
             let port = this.$window.location.port;
@@ -33,7 +33,7 @@ class MCDatasetDetails2ComponentController {
         }
     }
 
-    $onChanges (changes) {
+    $onChanges(changes) {
         if (changes.dataset) {
             this.state.dataset = angular.copy(changes.dataset.currentValue);
         }
@@ -45,20 +45,20 @@ class MCDatasetDetails2ComponentController {
         }
     }
 
-    addAuthor () {
+    addAuthor() {
         this.datasetDetails2Service.addAuthor(this.state.dataset).then(author => this.onAddAuthor({author: author}));
     }
 
-    removeAuthor (index) {
+    removeAuthor(index) {
         this.state.dataset.authors.splice(index, 1);
         this.changesMade = true;
     }
 
-    addPaper () {
+    addPaper() {
         this.datasetDetails2Service.addPaper(this.state.dataset).then(paper => this.onAddPaper({paper: paper}));
     }
 
-    removePaper (index) {
+    removePaper(index) {
         this.state.dataset.papers.splice(index, 1);
         this.changesMade = true;
     }
@@ -67,20 +67,24 @@ class MCDatasetDetails2ComponentController {
         this.changesMade = true;
     }
 
-    addDoi () {
+    addDoi() {
         this.datasetDetails2Service.addDoi(this.state.dataset).then(doiDetails => this.onAddDoi({doiDetails: doiDetails}));
     }
 
-    updateDataset () {
+    updateDataset() {
         this.onUpdateDataset({dataset: this.state.dataset});
         this.changesMade = false;
     }
 
-    publishDataset () {
+    publishPublicDataset() {
         this.datasetDetails2Service.publishDataset(this.state.dataset).then(() => this.onPublishDataset());
     }
 
-    unpublishDataset () {
+    publishPrivateDataset() {
+        this.onPublishPrivateDataset();
+    }
+
+    unpublishDataset() {
         this.datasetDetails2Service.unpublishDataset(this.state.dataset).then(() => this.onUnpublishDataset());
     }
 
@@ -97,6 +101,7 @@ angular.module('materialscommons').component('mcDatasetDetails2', {
         dataset: '<',
         onUpdateDataset: '&',
         onPublishDataset: '&',
+        onPublishPrivateDataset: '&',
         onAddPaper: '&',
         onAddAuthor: '&',
         onUnpublishDataset: '&',

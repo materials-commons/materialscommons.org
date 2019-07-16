@@ -557,6 +557,15 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
+        let originalDataset = await dal.tryCatch(async() => await api.mc.datasets.getDataset(params.dataset_id));
+        if (!originalDataset) {
+            throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
+        } else if (originalDataset.is_published_private) {
+            throw new Error(`Dataset ${params.dataset_id} is already published as a private dataset`);
+        } else if (originalDataset.published) {
+            throw new Error(`Dataset ${params.dataset_id} is already published as a public dataset`);
+        }
+
         const ds = await dal.tryCatch(async() => await api.mc.datasets.publish(params.dataset_id));
         if (!ds) {
             throw new Error(`Unable to publish dataset ${params.dataset_id}`);
@@ -596,6 +605,20 @@ module.exports.PublishPrivateDatasetAction = class PublishPrivateDatasetAction e
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
+        let originalDataset = await dal.tryCatch(async() => await api.mc.datasets.getDataset(params.dataset_id));
+        if (!originalDataset) {
+            throw new Error(`Unable to retrieve dataset ${params.dataset_id}`);
+        } else if (originalDataset.is_published_private) {
+            throw new Error(`Dataset ${params.dataset_id} is already published as a private dataset`);
+        } else if (originalDataset.published) {
+            throw new Error(`Dataset ${params.dataset_id} is already published as a public dataset`);
+        }
+
+        const ds = await dal.tryCatch(async() => await api.mc.datasets.publishPrivate(params.dataset_id));
+        if (!ds) {
+            throw new Error(`Unable to publish dataset ${params.dataset_id}`);
+        }
+
         let dsJobArgs = {
             projectId: params.project_id,
             datasetId: params.dataset_id,
@@ -604,10 +627,9 @@ module.exports.PublishPrivateDatasetAction = class PublishPrivateDatasetAction e
 
         await api.tasks.enqueue('publish-ds-to-globus', dsJobArgs, 'datasets');
 
-        response.data = {
-            globus_path: `/__datasets/${params.dataset_id}/`,
-            endpoint_id: process.env.MC_CONFIDENTIAL_CLIENT_ENDPOINT,
-        };
+        ds.globus_path = `/__datasets/${params.dataset_id}/`;
+        ds.endpoint_id = process.env.MC_CONFIDENTIAL_CLIENT_ENDPOINT;
+        response.data = ds;
     }
 };
 
@@ -638,14 +660,25 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
             throw new Error(`Unable to retrieve dataset`);
         }
 
-        const ds = await dal.tryCatch(async() => await api.mc.datasets.unpublish(params.dataset_id));
-        if (!ds) {
-            throw new Error(`Unable to publish dataset ${params.dataset_id}`);
+        let ds;
+
+        if (originalDataset.is_published_private) {
+            ds = await dal.tryCatch(async() => await api.mc.datasets.unpublishPrivate(params.dataset_id));
+            if (!ds) {
+                throw new Error(`Unable to unpublish private dataset ${params.dataset_id}`);
+            }
+        } else if (originalDataset.published) {
+            const ds = await dal.tryCatch(async() => await api.mc.datasets.unpublish(params.dataset_id));
+            if (!ds) {
+                throw new Error(`Unable to unpublish dataset ${params.dataset_id}`);
+            }
+        } else {
+            throw new Error(`Datasets ${params.dataset_id} was not published`);
         }
 
         let dsJobArgs = {
             datasetId: params.dataset_id,
-            isPrivate: !originalDataset.published,
+            isPrivate: originalDataset.is_published_private ? true : false,
         };
 
         await api.tasks.enqueue('remove-ds-in-globus', dsJobArgs, 'datasets');
