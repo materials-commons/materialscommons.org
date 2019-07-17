@@ -74,15 +74,31 @@ module.exports = function(r) {
     }
 
     async function fileByPath(projectId, filePath) {
+        let rql = fileByPathQuery(projectId, filePath);
+        let f = await rql.run();
+
+        if (f.length) {
+            return await getFile(f[0].datafile_id);
+        }
+
+        return null;
+    }
+
+    async function etlFileByPath(projectId, filePath) {
+        let rql = fileByPathQuery(projectId, filePath);
+        let f = await rql.run();
+        return f.length ? f[0] : null;
+    }
+
+    function fileByPathQuery(projectId, filePath) {
         let fileName = path.basename(filePath);
         let dir = path.dirname(filePath);
-        let f = await r.table('datadirs').getAll(dir, {index: 'name'})
+        return r.table('datadirs').getAll(dir, {index: 'name'})
             .eqJoin('id', r.table('project2datadir'), {index: 'datadir_id'}).zip()
             .filter({project_id: projectId})
             .eqJoin('datadir_id', r.table('datadir2datafile'), {index: 'datadir_id'}).zip()
             .eqJoin('datafile_id', r.table('datafiles')).zip()
             .filter({current: true, name: fileName});
-        return f.length ? f[0] : null;
     }
 
     async function linkFilesByIdToProcessAndSample(files, processId, sampleId) {
@@ -161,5 +177,6 @@ module.exports = function(r) {
         updateProcessFiles,
         updateSampleFiles,
         fileByPath,
+        etlFileByPath,
     };
 };
