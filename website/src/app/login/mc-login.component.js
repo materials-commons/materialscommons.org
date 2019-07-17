@@ -27,7 +27,7 @@ function MCLoginController($state, User, toast, Restangular, mcbus, templates, m
                 User.setAuthenticated(true, user);
                 Restangular.setDefaultRequestParams({apikey: User.apikey()});
                 templates.getServerTemplates().then((t) => templates.set(t));
-                let route = ctrl.whichSite == 'published' ? 'data.home.top' : 'projects.list';
+                let route = ctrl.whichSite === 'published' ? 'data.home.top' : 'projects.list';
                 mcprojstore.reset().then(() => $state.go(route));
                 mcbus.send('USER$LOGIN');
             },
@@ -41,6 +41,7 @@ function MCLoginController($state, User, toast, Restangular, mcbus, templates, m
     function cancel() {
         ctrl.userLogin = "";
         ctrl.password = "";
+        $state.go('data.home.top');
     }
 
 }

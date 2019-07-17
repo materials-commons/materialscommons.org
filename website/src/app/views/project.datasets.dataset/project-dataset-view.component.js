@@ -45,6 +45,10 @@ class MCProjectDatasetViewComponentController {
         this.onPublishDataset();
     }
 
+    handlePublishPrivateDataset() {
+        this.onPublishPrivateDataset();
+    }
+
     handleUnpublishDataset() {
         this.onUnpublishDataset();
     }
@@ -98,6 +102,7 @@ angular.module('materialscommons').component('mcProjectDatasetView', {
         onAddFiles: '&',
         onUpdateDataset: '&',
         onPublishDataset: '&',
+        onPublishPrivateDataset: '&',
         onUnpublishDataset: '&',
         onSelectionChanged: '&',
         onAddAuthor: '&',

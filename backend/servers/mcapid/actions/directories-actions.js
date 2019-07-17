@@ -139,16 +139,14 @@ module.exports.DeleteFilesFromDirectoryInProjectAction = class DeleteFilesFromDi
                             throw new Error(errorMsg);
                         }
 
-                        if (!_.contains(keys, 'id')) {
+                        if (!_.has(f, 'id')) {
                             throw new Error(errorMsg);
                         }
 
-                        if (!_.contains(keys, 'otype')) {
+                        if (!_.has(f, 'otype')) {
                             throw new Error(errorMsg);
                         }
                     });
-
-                    return true;
                 }
             }
         };

@@ -19,7 +19,7 @@ class ProjectFilesView2BreadcrumbsComponentController {
         }
     }
 
-    // createPathNameEntries will popup this.state.paths as follows:
+    // createPathNameEntries will create this.state.paths as follows:
     //
     // Split path on '/' so that we can construct a list of
     // names and their part of the path. This partial path allows

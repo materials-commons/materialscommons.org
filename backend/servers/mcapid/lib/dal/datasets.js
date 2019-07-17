@@ -452,6 +452,16 @@ module.exports = function(r) {
         }
     }
 
+    async function publishPrivate(datasetId) {
+        await r.table('datasets').get(datasetId).update({is_published_private: true});
+        return await getDataset(datasetId);
+    }
+
+    async function unpublishPrivate(datasetId) {
+        await r.table('datasets').get(datasetId).update({is_published_private: false});
+        return await getDataset(datasetId);
+    }
+
     return {
         createDataset,
         deleteDataset,
@@ -468,6 +478,8 @@ module.exports = function(r) {
         deleteSamplesFromDataset,
         deleteProcessesFromDataset,
         publish,
-        unpublish
+        unpublish,
+        publishPrivate,
+        unpublishPrivate,
     };
 };

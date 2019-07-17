@@ -117,6 +117,13 @@ class MCProjectDatasetViewContainerComponentController {
         );
     }
 
+    handlePublishPrivateDataset() {
+        this.datasetsAPI.publishPrivateProjectDataset(this.state.project.id, this.state.dataset.id).then(
+            (d) => this.state.dataset = angular.copy(d),
+            () => this.toast.error('Unable to publish private dataset')
+        );
+    }
+
     handleUnpublishDataset() {
         this.datasetsAPI.unpublishProjectDataset(this.state.project.id, this.state.dataset.id).then(
             (d) => this.state.dataset = angular.copy(d),
@@ -168,6 +175,7 @@ angular.module('materialscommons').component('mcProjectDatasetViewContainer', {
                                     on-selection-changed="$ctrl.handleSelectionChanged()"
                                     on-update-dataset="$ctrl.handleUpdateDataset(dataset)"
                                     on-publish-dataset="$ctrl.handlePublishDataset()"
+                                    on-publish-private-dataset="$ctrl.handlePublishPrivateDataset()"
                                     on-unpublish-dataset="$ctrl.handleUnpublishDataset()"
                                     on-add-doi="$ctrl.handleAddDOI(doiDetails)"
                                     on-add-paper="$ctrl.handleAddPaper(paper)"
@@ -175,6 +183,6 @@ angular.module('materialscommons').component('mcProjectDatasetViewContainer', {
                                     on-cancel="$ctrl.handleCancel()"
                                     on-load-files="$ctrl.handleLoadFiles()"
                                     on-load-samples="$ctrl.handleLoadSamples()"
-                                    layout-fill ng-if="$ctrl.state.dataset"></mc-project-dataset-view>`,
+                                    layout-fill></mc-project-dataset-view>`,
     controller: MCProjectDatasetViewContainerComponentController
 });

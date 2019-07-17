@@ -1,9 +1,13 @@
 <div layout="column" flex="70" class="margin-top-10">
     <form layout="column">
         <div layout="row">
-            <md-button ng-show="!$ctrl.state.dataset.published" class="md-primary md-raised"
-                       ng-click="$ctrl.publishDataset()">
-                <i class="fa fa-fw fa-cloud-upload"></i>Publish Dataset
+            <md-button ng-show="!$ctrl.state.dataset.published && !$ctrl.state.dataset.is_published_private" class="md-primary md-raised"
+                       ng-click="$ctrl.publishPublicDataset()">
+                <i class="fa fa-fw fa-cloud-upload"></i>Publish As Public Dataset
+            </md-button>
+            <md-button ng-show="!$ctrl.state.dataset.published && !$ctrl.state.dataset.is_published_private" class="md-primary md-raised"
+                       ng-click="$ctrl.publishPrivateDataset()">
+                <i class="fa fa-fw fa-cloud-upload"></i>Publish As Private Dataset
             </md-button>
             <md-button class="md-primary md-raised" ng-click="$ctrl.updateDataset()">Save Changes</md-button>
             <md-button class="md-warn md-raised" ng-click="$ctrl.cancel()">Cancel</md-button>
@@ -15,12 +19,12 @@
                 samples.
             </p>
         </div>
-        <div ng-show="$ctrl.state.dataset.published">
+        <div ng-show="$ctrl.state.dataset.published || $ctrl.state.dataset.is_published_private">
             <md-button class="md-warn md-raised" ng-disabled="true">
                 <span class="mc-done-color"><i class="fa fa-fw fa-check-circle-o"></i>Dataset published</span>
             </md-button>
-            <md-button class="md-warn" ng-click="$ctrl.unpublishDataset()">Unpublish Dataset</md-button>
-            <a ng-href="{{::$ctrl.state.publishedLink}}" target="_blank">View published dataset</a>
+            <md-button class="md-warn md-raised" ng-click="$ctrl.unpublishDataset()">Unpublish Dataset</md-button>
+            <a ng-href="{{::$ctrl.state.publishedLink}}" target="_blank" ng-if="$ctrl.state.dataset.published">View published dataset</a>
         </div>
         <h3 class="md-subhead">Dataset</h3>
         <div layout-margin layout="column" flex>

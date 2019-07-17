@@ -1,9 +1,9 @@
 <div>
-    <div layout="row">
+    <div layout="row" ng-if="false">
         <md-button class="md-primary">save changes</md-button>
         <md-button class="md-warn">discard</md-button>
     </div>
-    <div layout="row">
+    <div layout="row" ng-if="false">
         <md-button class="md-primary" ng-disabled="$ctrl.editTable" ng-click="$ctrl.chooseExistingSamples()">
             <i class="fa fa-fw fa-plus"></i>Add Existing Samples
         </md-button>

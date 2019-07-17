@@ -1,5 +1,14 @@
 # Release Notes
 
+## July 2019
+- :star: **New Feature:** Published datasets can be downloaded using Globus
+- :star: **New Feature:** Publish private datasets to Globus
+- :star: **New Feature:** Publish datasets moved to project level
+- :boom: **Fixed:** Creating an account with an existing email address didn't return an error
+- :boom: **Fixed:** Cancel button on login wasn't doing anything
+- :boom: **Fixed:** Demo projects button was not creating the demo project
+- :boom: **Fixed:** Hide demo button checkbox was ignoring selection
+
 ## June 2019
 - :star: **New Feature:** Add support for ignoring columns in ETL
 - :star: **New Feature:** Project level publishing allows recursive file selection
