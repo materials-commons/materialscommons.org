@@ -235,7 +235,7 @@ module.exports.RenameDirectoryInProjectAction = class RenameDirectoryInProjectAc
             throw new Error(`Directory ${params.directory_id} cannot be found in project ${params.project_id}`);
         }
 
-        let dir = await dal.tryCatch(async() => await api.mc.directories.renameDirectory(params.directory_name, params.name));
+        let dir = await dal.tryCatch(async() => await api.mc.directories.renameDirectory(params.directory_id, params.name));
 
         if (!dir) {
             throw new Error(`Unable rename directory ${params.directory_id} to ${params.name} in project ${params.project_id}`);
