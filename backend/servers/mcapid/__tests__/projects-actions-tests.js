@@ -19,6 +19,7 @@ describe('createProject action tests', () => {
         };
         let result = await api.specHelper.runAction('createProject', params);
         expect(result.data.name).toEqual(projName);
+
         await tutil.deleteProject(result.data.id);
     });
 
@@ -34,6 +35,8 @@ describe('createProject action tests', () => {
         let result2 = await api.specHelper.runAction('createProject', params);
         expect(result2.data.name).toEqual(projName);
         expect(result2.data.id).toEqual(result.data.id);
+
+        await tutil.deleteProject(result.data.id);
     });
 
     test('It should fail to create a project with an empty name', async () => {
@@ -47,38 +50,75 @@ describe('createProject action tests', () => {
     });
 });
 
-// describe(' action tests', () => {
-//     beforeAll(async () => api = await actionhero.start());
-//     afterAll(async () => await actionhero.stop());
-//
-//     test('It should ', () => {
-//
-//     });
-// });
-//
-// describe(' action tests', () => {
-//     beforeAll(async () => api = await actionhero.start());
-//     afterAll(async () => await actionhero.stop());
-//
-//     test('It should ', () => {
-//
-//     });
-// });
-//
-// describe(' action tests', () => {
-//     beforeAll(async () => api = await actionhero.start());
-//     afterAll(async () => await actionhero.stop());
-//
-//     test('It should ', () => {
-//
-//     });
-// });
-//
-// describe(' action tests', () => {
-//     beforeAll(async () => api = await actionhero.start());
-//     afterAll(async () => await actionhero.stop());
-//
-//     test('It should ', () => {
-//
-//     });
-// });
+describe('deleteProject action tests', () => {
+    let api;
+
+    beforeAll(async () => api = await actionhero.start());
+    afterAll(async () => {
+        await actionhero.stop();
+    });
+
+    test('It should ', () => {
+
+    });
+});
+
+describe('getProjectOverviewByName action tests', () => {
+    let api;
+    beforeAll(async () => api = await actionhero.start());
+    afterAll(async () => {
+        await actionhero.stop();
+    });
+
+    test('It should ', () => {
+
+    });
+});
+
+describe('getProject action tests', () => {
+    let api;
+    beforeAll(async () => api = await actionhero.start());
+    afterAll(async () => {
+        await actionhero.stop();
+    });
+
+    test('It should ', () => {
+
+    });
+});
+
+describe('getProjectExperiment action tests', () => {
+    let api;
+    beforeAll(async () => api = await actionhero.start());
+    afterAll(async () => {
+        await actionhero.stop();
+    });
+
+    test('It should ', () => {
+
+    });
+});
+
+describe('addUserToProject action tests', () => {
+    let api;
+    beforeAll(async () => api = await actionhero.start());
+    afterAll(async () => {
+        await actionhero.stop();
+    });
+
+    test('It should ', () => {
+
+    });
+});
+
+describe('removeUserFromProject action tests', () => {
+    let api;
+    beforeAll(async () => api = await actionhero.start());
+    afterAll(async () => {
+        await actionhero.stop();
+    });
+
+    test('It should ', () => {
+
+    });
+});
