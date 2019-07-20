@@ -165,7 +165,7 @@ function checkEnvValues() {
         let key = keys[i];
         let value = expectedEnvValues[key];
         if (!value) {
-            missingValueKeys.append(key)
+            missingValueKeys.push(key)
         }
     }
     if (missingValueKeys.len > 0) {
