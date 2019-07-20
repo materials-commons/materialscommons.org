@@ -114,6 +114,8 @@ function MCFilesSelectDir2DirectiveController(projectFileTreeAPI, fileSelection,
         } else {
             if (ctrl.file.data.selected) {
                 fileSelection.excludeFile(file.data.path);
+            } else if (!file.data.selected) {
+                fileSelection.excludeFile(file.data.path);
             }
         }
 
