@@ -211,6 +211,11 @@ module.exports.DeleteDatasetAction = class DeleteDatasetAction extends Action {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
         }
 
+        const isPublished = await dal.tryCatch(async() => await api.mc.check.datasetIsPublished(params.dataset_id));
+        if (isPublished) {
+            throw new Error(`Cannot delete a published dataset`);
+        }
+
         const success = await dal.tryCatch(async() => await api.mc.datasets.deleteDataset(params.dataset_id));
         if (!success) {
             throw new Error(`unable to delete dataset ${params.dataset_id}`);

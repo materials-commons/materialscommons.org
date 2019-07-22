@@ -1,4 +1,4 @@
-module.exports = function(r) {
+module.exports = function (r) {
 
     async function allFilesInProject(fileIds, projectId) {
         let indexArgs = fileIds.map(fid => [projectId, fid]);
@@ -35,6 +35,17 @@ module.exports = function(r) {
     async function datasetInProject(datasetId, projectId) {
         let d = await r.table('project2dataset').getAll([projectId, datasetId], {index: 'project_dataset'});
         return d.length !== 0;
+    }
+
+    async function datasetIsPublished(datasetId) {
+        let ds = await r.table('datasets').get(datasetId);
+        if (!ds) {
+            return false;
+        } else if (ds.published) {
+            return true;
+        } else {
+            return ds.is_published_private;
+        }
     }
 
     async function fileInProject(fileId, projectId) {
@@ -110,6 +121,7 @@ module.exports = function(r) {
         allSamplesInProject,
         sampleInProject,
         datasetInProject,
+        datasetIsPublished,
         directoryInProject,
         fileInProject,
         fileInDirectory,
