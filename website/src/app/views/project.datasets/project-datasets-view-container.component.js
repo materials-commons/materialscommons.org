@@ -39,7 +39,7 @@ class MCProjectDatasetsViewContainerComponentController {
             () => {
                 this.mcStateStore.fire('sync:project');
                 this.loadDatasets();
-            },
+            }
         );
     }
 }
