@@ -6,8 +6,8 @@ const tutil = require('@lib/test-utils')(r);
 
 describe('listDatasets action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -18,8 +18,8 @@ describe('listDatasets action tests', () => {
 
 describe('getDataset action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -30,8 +30,8 @@ describe('getDataset action tests', () => {
 
 describe('getDatasetFiles action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -42,8 +42,8 @@ describe('getDatasetFiles action tests', () => {
 
 describe('getDatasetSamplesAndProcesses action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -54,12 +54,12 @@ describe('getDatasetSamplesAndProcesses action tests', () => {
 
 describe('createDataset action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
-    test('It should create a dataset', async () => {
+    test('It should create a dataset', async() => {
         let proj = await tutil.createTestProject();
         let title = uuid();
         let params = {
@@ -80,25 +80,54 @@ describe('createDataset action tests', () => {
 });
 
 describe('deleteDataset action tests', () => {
-    let api;
+    let api, ds, proj;
 
-    beforeAll(async () => {
+    beforeAll(async() => {
         api = await actionhero.start();
+        proj = await tutil.createTestProject();
+        let title = uuid();
+        let params = {
+            title: title,
+            project_id: proj.id,
+            apikey: 'totally-bogus',
+        };
+        let result = await api.specHelper.runAction('createDataset', params);
+        expect(result.error).toBeFalsy();
+        ds = result.data;
     });
 
-    afterAll(async () => {
+    afterAll(async() => {
         await actionhero.stop();
+        await tutil.deleteProject(proj.id);
     });
 
-    test('It should ', () => {
+    test('It should return an error when dataset is published', async() => {
+        await r.table('datasets').get(ds.id).update({published: true});
+        let params = {project_id: proj.id, dataset_id: ds.id, apikey: 'totally-bogus'};
+        let result = await api.specHelper.runAction('deleteDataset', params);
+        expect(result.error).toBeTruthy();
+        await r.table('datasets').get(ds.id).update({published: false});
+    });
 
+    test('It should return an error when dataset is privately published', async() => {
+        await r.table('datasets').get(ds.id).update({is_published_private: true});
+        let params = {project_id: proj.id, dataset_id: ds.id, apikey: 'totally-bogus'};
+        let result = await api.specHelper.runAction('deleteDataset', params);
+        expect(result.error).toBeTruthy();
+        await r.table('datasets').get(ds.id).update({is_published_private: false});
+    });
+
+    test('It should delete a dataset that is not published', async() => {
+        let params = {project_id: proj.id, dataset_id: ds.id, apikey: 'totally-bogus'};
+        let result = await api.specHelper.runAction('deleteDataset', params);
+        expect(result.error).toBeFalsy();
     });
 });
 
 describe('updateDatasetFileSelection action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -109,8 +138,8 @@ describe('updateDatasetFileSelection action tests', () => {
 
 describe('addDatasetFiles action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -121,8 +150,8 @@ describe('addDatasetFiles action tests', () => {
 
 describe('addDatasetSamples action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -133,8 +162,8 @@ describe('addDatasetSamples action tests', () => {
 
 describe('deleteDatasetSamples action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -145,8 +174,8 @@ describe('deleteDatasetSamples action tests', () => {
 
 describe('deleteProcessesFromDatasetSample action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -157,8 +186,8 @@ describe('deleteProcessesFromDatasetSample action tests', () => {
 
 describe('publishDataset action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -169,8 +198,8 @@ describe('publishDataset action tests', () => {
 
 describe('publishPrivateDataset action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
@@ -181,8 +210,8 @@ describe('publishPrivateDataset action tests', () => {
 
 describe('unpublishDataset action tests', () => {
     let api;
-    beforeAll(async () => api = await actionhero.start());
-    afterAll(async () => {
+    beforeAll(async() => api = await actionhero.start());
+    afterAll(async() => {
         await actionhero.stop();
     });
 
