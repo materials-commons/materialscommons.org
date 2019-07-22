@@ -33,11 +33,19 @@ class MCProjectDatasetsViewContainerComponentController {
         this.mcStateStore.fire('sync:project');
         this.loadDatasets();
     }
+
+    handleDeleteDataset(datasetId) {
+        this.datasetsAPI.deleteDataset(this.$stateParams.project_id, datasetId).then(
+            () => this.loadDatasets(),
+        );
+    }
 }
 
 angular.module('materialscommons').component('mcProjectDatasetsViewContainer', {
     template: `
-        <mc-project-datasets-view datasets="$ctrl.state.datasets" on-new-dataset="$ctrl.handleNewDataset(dataset)">
+        <mc-project-datasets-view datasets="$ctrl.state.datasets"
+                                  on-delete-dataset="$ctrl.handleDeleteDataset(id)"
+                                  on-new-dataset="$ctrl.handleNewDataset(dataset)">
         </mc-project-datasets-view>`,
     controller: MCProjectDatasetsViewContainerComponentController
 });

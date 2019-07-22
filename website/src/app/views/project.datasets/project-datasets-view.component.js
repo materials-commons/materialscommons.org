@@ -21,6 +21,10 @@ class MCProjectDatasetsViewComponentController {
             }
         );
     }
+
+    handleDeleteDataset(id) {
+        this.onDeleteDataset({id: id});
+    }
 }
 
 angular.module('materialscommons').component('mcProjectDatasetsView', {
@@ -28,6 +32,7 @@ angular.module('materialscommons').component('mcProjectDatasetsView', {
     controller: MCProjectDatasetsViewComponentController,
     bindings: {
         datasets: '<',
-        onNewDataset: '&'
+        onNewDataset: '&',
+        onDeleteDataset: '&',
     }
 });

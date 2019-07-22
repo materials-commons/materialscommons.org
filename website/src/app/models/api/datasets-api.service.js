@@ -88,6 +88,16 @@ class DatasetsAPIService {
         );
     }
 
+    deleteDataset(projectId, datasetId) {
+        return this.Restangular.one('v3').one('deleteDataset').customPOST({
+            project_id: projectId,
+            dataset_id: datasetId,
+        }).then(
+            () => true,
+            () => this.toast.error(`Unable to delete dataset`)
+        );
+    }
+
     ////////////////////
 
     getDatasetsForExperiment(projectId, experimentId) {

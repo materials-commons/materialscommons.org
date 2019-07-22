@@ -7,6 +7,7 @@
             <th md-column>Has Files</th>
             <th md-column># Samples</th>
             <th md-column>Published?</th>
+            <th md-column></th>
         </tr>
         </thead>
         <tbody md-body>
@@ -16,6 +17,11 @@
             <td md-cell>{{dataset.hasFiles ? "Yes" : "No"}}</td>
             <td md-cell>{{dataset.samples_count ? dataset.samples_count : dataset.samples.length}}</td>
             <td md-cell>{{dataset.published ? "Yes" : "No"}}</td>
+            <td md-cell>
+                <a class="mc-error-color" ng-click="$ctrl.handleDeleteDataset(dataset.id)">
+                    <i class="fa fa-fw fa-remove"></i>
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>

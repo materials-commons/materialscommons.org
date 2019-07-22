@@ -20,6 +20,10 @@ class MCDatasetsTableComponentController {
             });
         }
     }
+
+    handleDeleteDataset(id) {
+        this.onDatasetDelete({id: id});
+    }
 }
 
 angular.module('materialscommons').component('mcDatasetsTable', {
@@ -27,5 +31,6 @@ angular.module('materialscommons').component('mcDatasetsTable', {
     controller: MCDatasetsTableComponentController,
     bindings: {
         datasets: '<',
+        onDatasetDelete: '&',
     }
 });
