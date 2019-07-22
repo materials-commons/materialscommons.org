@@ -18,7 +18,7 @@
             <td md-cell>{{dataset.samples_count ? dataset.samples_count : dataset.samples.length}}</td>
             <td md-cell>{{dataset.published ? "Yes" : "No"}}</td>
             <td md-cell>
-                <a class="mc-error-color" ng-click="$ctrl.handleDeleteDataset(dataset.id)">
+                <a class="mc-error-color" ng-click="$ctrl.handleDeleteDataset(dataset)">
                     <i class="fa fa-fw fa-remove"></i>
                 </a>
             </td>

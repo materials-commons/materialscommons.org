@@ -1,9 +1,10 @@
 class MCDatasetsTableComponentController {
     /*@ngInject*/
-    constructor() {
+    constructor($mdDialog) {
+        this.$mdDialog = $mdDialog;
         this.state = {
             datasets: []
-        }
+        };
     }
 
     $onChanges(changes) {
@@ -21,8 +22,17 @@ class MCDatasetsTableComponentController {
         }
     }
 
-    handleDeleteDataset(id) {
-        this.onDatasetDelete({id: id});
+    handleDeleteDataset(dataset) {
+        let confirmDeleteDialog = this.$mdDialog.confirm()
+            .title(`Delete Dataset ${dataset.title}`)
+            .textContent(`Delete dataset ${dataset.title}?`)
+            .ariaLabel('delete dataset')
+            .ok('Delete Dataset')
+            .cancel('Cancel');
+
+        this.$mdDialog.show(confirmDeleteDialog).then(
+            () => this.onDatasetDelete({id: dataset.id})
+        );
     }
 }
 
