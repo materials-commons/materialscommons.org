@@ -72,8 +72,8 @@ class MCProjectDatasetViewContainerComponentController {
 
     handleSelectionChanged() {
         let selection = this.fileSelection.toSelection();
+        // console.log('selection =', selection);
         this.datasetsAPI.updateDatasetFileSelection(this.state.project.id, this.state.dataset.id, selection).then(
-            // d => this.state.dataset = angular.copy(d)
             () => null
         );
     }
