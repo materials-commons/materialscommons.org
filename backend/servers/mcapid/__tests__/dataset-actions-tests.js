@@ -5,26 +5,158 @@ const r = require('@lib/test-utils/r');
 const tutil = require('@lib/test-utils')(r);
 
 describe('listDatasets action tests', () => {
-    let api;
-    beforeAll(async() => api = await actionhero.start());
-    afterAll(async() => {
-        await actionhero.stop();
+    let api, ds, proj;
+
+    beforeAll(async() => {
+        api = await actionhero.start();
+        proj = await tutil.createTestProject();
+        let title = uuid();
+        let params = {
+            title: title,
+            project_id: proj.id,
+            apikey: 'totally-bogus',
+        };
+        let result = await api.specHelper.runAction('createDataset', params);
+        expect(result.error).toBeFalsy();
+        ds = result.data;
     });
 
-    test('It should ', () => {
+    afterAll(async() => {
+        await actionhero.stop();
+        let params = {
+            project_id: proj.id,
+            dataset_id: ds.id,
+            apikey: 'totally-bogus'
+        };
+        let result = await api.specHelper.runAction('deleteDataset', params);
+        expect(result.error).toBeFalsy();
 
+        await tutil.deleteProject(proj.id);
+    });
+
+    test('It should list datasets for user', async() => {
+        let params = {
+            project_id: proj.id,
+            apikey: 'totally-bogus',
+        };
+
+        let result = await api.specHelper.runAction('listDatasets', params);
+        expect(result.error).toBeFalsy();
+    });
+
+    test('It should return an error when there is no apikey', async() => {
+        let params = {
+            project_id: proj.id,
+        };
+        let result = await api.specHelper.runAction('listDatasets', params);
+        expect(result.error).toBeTruthy();
+    });
+
+    test('It should return an error when the wrong project is given', async() => {
+        let params = {
+            project_id: 'does-not-exist',
+            apikey: 'totally-bogus',
+        };
+
+        let result = await api.specHelper.runAction('listDatasets', params);
+        expect(result.error).toBeTruthy();
+    });
+
+    test('It should return an error when no project_id is given', async() => {
+        let params = {
+            apikey: 'totally-bogus',
+        };
+
+        let result = await api.specHelper.runAction('listDatasets', params);
+        expect(result.error).toBeTruthy();
     });
 });
 
 describe('getDataset action tests', () => {
-    let api;
-    beforeAll(async() => api = await actionhero.start());
-    afterAll(async() => {
-        await actionhero.stop();
+    let api, ds, proj, proj2;
+
+    beforeAll(async() => {
+        api = await actionhero.start();
+        proj = await tutil.createTestProject();
+        proj2 = await tutil.createTestProject();
+        let title = uuid();
+        let params = {
+            title: title,
+            project_id: proj.id,
+            apikey: 'totally-bogus',
+        };
+        let result = await api.specHelper.runAction('createDataset', params);
+        expect(result.error).toBeFalsy();
+        ds = result.data;
     });
 
-    test('It should ', () => {
+    afterAll(async() => {
+        await actionhero.stop();
+        let params = {
+            project_id: proj.id,
+            dataset_id: ds.id,
+            apikey: 'totally-bogus'
+        };
+        let result = await api.specHelper.runAction('deleteDataset', params);
+        expect(result.error).toBeFalsy();
 
+        await tutil.deleteProject(proj.id);
+        await tutil.deleteProject(proj2.id);
+    });
+
+    test('It should get the dataset', async() => {
+        let params = {
+            project_id: proj.id,
+            dataset_id: ds.id,
+            apikey: 'totally-bogus',
+        };
+
+        let result = await api.specHelper.runAction('getDataset', params);
+        expect(result.error).toBeFalsy();
+        expect(result.data.id).toEqual(ds.id);
+    });
+
+    test('It should error when no such dataset', async() => {
+        let params = {
+            project_id: proj.id,
+            dataset_id: 'does-not-exist',
+            apikey: 'totally-bogus',
+        };
+
+        let result = await api.specHelper.runAction('getDataset', params);
+        expect(result.error).toBeTruthy();
+    });
+
+    test('It should error when no apikey', async() => {
+        let params = {
+            project_id: proj.id,
+            dataset_id: ds.id,
+        };
+
+        let result = await api.specHelper.runAction('getDataset', params);
+        expect(result.error).toBeTruthy();
+    });
+
+    test('It should error when project does not exist', async() => {
+        let params = {
+            project_id: 'no-such-project',
+            dataset_id: ds.id,
+            apikey: 'totally-bogus',
+        };
+
+        let result = await api.specHelper.runAction('getDataset', params);
+        expect(result.error).toBeTruthy();
+    });
+
+    test('It should error when given a user project, but dataset not in project', async() => {
+        let params = {
+            project_id: proj2.id,
+            dataset_id: ds.id,
+            apikey: 'totally-bogus',
+        };
+
+        let result = await api.specHelper.runAction('getDataset', params);
+        expect(result.error).toBeTruthy();
     });
 });
 
