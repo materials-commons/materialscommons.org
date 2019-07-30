@@ -1,6 +1,7 @@
 const path = require('path');
 const model = require('@lib/model');
 const _ = require('lodash');
+const {api} = require('actionhero');
 
 module.exports = function(r) {
 
@@ -66,7 +67,7 @@ module.exports = function(r) {
         for (let f of files) {
             let file = await fileByPath(projectId, f.path);
             if (file) {
-                filesById.push({file_id: file.datafile_id, direction: f.direction});
+                filesById.push({file_id: file.datafile_id ? file.datafile_id : file.id, direction: f.direction});
             }
         }
 
@@ -76,7 +77,6 @@ module.exports = function(r) {
     async function fileByPath(projectId, filePath) {
         let rql = fileByPathQuery(projectId, filePath);
         let f = await rql.run();
-
         if (f.length) {
             return await getFile(f[0].datafile_id);
         }
