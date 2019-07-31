@@ -3,7 +3,7 @@ const model = require('@lib/model');
 const _ = require('lodash');
 const {api} = require('actionhero');
 
-module.exports = function(r) {
+module.exports = function (r) {
 
     const {addFileToDirectoryInProject} = require('./dir-utils')(r);
 
@@ -17,7 +17,21 @@ module.exports = function(r) {
         if (!rv.replaced) {
             throw new Error(`Unable to move file ${fileId} in directory ${oldDirectoryId} into directory ${newDirectoryId}`);
         }
+
+        await movePreviousVersions(fileId, oldDirectoryId, newDirectoryId);
+
         return await getFile(fileId);
+    }
+
+    async function movePreviousVersions(fileId, oldDirectoryId, newDirectoryId) {
+        let f = await r.table('datafiles').get(fileId);
+        while (f.parent !== '') {
+            await r.table('datadir2datafile').getAll([oldDirectoryId, f.parent], {index: 'datadir_datafile'})
+                .update({datadir_id: newDirectoryId});
+            f = await r.table('datafiles').get(f.parent);
+        }
+
+        return true;
     }
 
     async function getFile(fileId) {
@@ -58,6 +72,16 @@ module.exports = function(r) {
 
     async function renameFile(fileId, name) {
         await r.table('datafiles').get(fileId).update({name: name});
+        await renamePreviousVersions(fileId, name);
+        return true;
+    }
+
+    async function renamePreviousVersions(fileId, name) {
+        let f = await r.table('datafiles').get(fileId);
+        while (f.parent !== '') {
+            let result = await r.table('datafiles').get(f.parent).update({name: name}, {returnChanges: 'always'});
+            f = result.changes[0].new_val;
+        }
         return true;
     }
 
