@@ -78,9 +78,11 @@ function* update(next) {
     let file = yield parse(this);
     let rv = yield files.update(this.params.file_id, this.params.project_id, this.reqctx.user.id, file);
     if (rv.error) {
-        this.throw(httpStatus.BAD_REQUEST, rv.error);
+        this.body = rv;
+        this.status = httpStatus.BAD_REQUEST;
+    } else {
+        this.body = rv.val;
     }
-    this.body = rv.val;
     yield next;
 }
 
@@ -88,9 +90,11 @@ function* update(next) {
 function* deleteFile(next) {
     let rv = yield files.deleteFile(this.params.file_id);
     if (rv.error) {
-        this.throw(httpStatus.BAD_REQUEST, rv.error);
+        this.body = rv;
+        this.status = httpStatus.BAD_REQUEST;
+    } else {
+        this.body = rv.val;
     }
-    this.body = rv.val;
     yield next;
 }
 
@@ -98,9 +102,11 @@ function* byPath(next) {
     let args = yield parse(this);
     let rv = yield files.byPath(this.params.project_id, args.file_path);
     if (rv.error) {
-        this.throw(httpStatus.BAD_REQUEST, rv.error);
+        this.body = rv;
+        this.status = httpStatus.BAD_REQUEST;
+    } else {
+        this.body = rv.val;
     }
-    this.body = rv.val;
     yield next;
 }
 
