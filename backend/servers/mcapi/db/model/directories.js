@@ -382,7 +382,8 @@ function* isEmpty(dirID) {
         return false;
     }
 
-    let childrenFiles = yield dbExec(r.table('datadir2datafile').getAll(dirID, {index: 'datadir_id'}));
+    let childrenFiles = yield dbExec(r.table('datadir2datafile').getAll(dirID, {index: 'datadir_id'})
+        .eqJoin('datafile_id', r.table('datafiles')).zip().filter({current: true}));
     return childrenFiles.length === 0;
 }
 

@@ -178,7 +178,8 @@ module.exports = function(r) {
             return false;
         }
 
-        let fileCount = await r.table('datadir2datafile').getAll(dirId, {index: 'datadir_id'}).count();
+        let fileCount = await r.table('datadir2datafile').getAll(dirId, {index: 'datadir_id'})
+            .eqJoin('datafile_id', r.table('datafiles')).filter({current: true}).count();
         return fileCount === 0;
     }
 
