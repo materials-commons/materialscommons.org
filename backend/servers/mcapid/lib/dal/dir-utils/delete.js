@@ -68,7 +68,6 @@ module.exports = function(r) {
         await r.table('datafiles').get(fileId).delete();
 
         if (file.current && file.parent !== '') {
-            console.log('file', file);
             // We are deleting the current or leaf version. So set its parent
             // to be the current file so that the file doesn't disappear from
             // the directory structure.
