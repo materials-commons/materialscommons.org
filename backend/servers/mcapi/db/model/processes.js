@@ -84,6 +84,11 @@ function* quickDeleteProcess(projectId, processId) {
         return {error: `Process ${processId} is not a leaf node`};
     }
 
+    let count = yield r.table('process2file').getAll(processId, {index: 'process_id'}).count();
+    if (count !== 0) {
+        return {error: `Process has linked files`};
+    }
+
     let experiments = yield processExperiments(processId);
     if (experiments.length > 1) {
         return {error: `Process is in multiple experiments`};
