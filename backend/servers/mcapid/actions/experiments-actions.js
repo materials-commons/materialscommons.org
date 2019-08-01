@@ -315,12 +315,12 @@ module.exports.RenameExperimentInProjectAction = class RenameExperimentInProject
             throw new Error(`Name ${params.name} is not unique in project ${params.project_id}`);
         }
 
-        let renamed = await dal.tryCatch(async() => await api.mc.experiments.renameExperiment(params.experimentId, params.name));
+        let renamed = await dal.tryCatch(async() => await api.mc.experiments.renameExperiment(params.experiment_id, params.name));
         if (!renamed) {
             throw new Error(`Unable to rename experiment ${params.experiment_id} to ${params.name}`);
         }
 
-        let e = await dal.tryCatch(async() => await api.mc.experiment.getExperiment(params.experimentId));
+        let e = await dal.tryCatch(async() => await api.mc.experiment.getExperiment(params.experiment_id));
         if (!e) {
             throw new Error(`Unable to retrieve updated experiment ${params.experiment_id}`);
         }
