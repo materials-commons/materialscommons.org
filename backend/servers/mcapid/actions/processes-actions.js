@@ -140,7 +140,7 @@ module.exports.AddFilesToProcessAction = class AddFilesToProcessAction extends A
     }
 
     async run({response, params}) {
-        if (!await api.mc.check.processInProject(params.process_id, params.projectId)) {
+        if (!await api.mc.check.processInProject(params.process_id, params.project_id)) {
             throw new Error(`process is not in project`);
         }
 
@@ -190,11 +190,11 @@ module.exports.RemoveFilesFromProcessAction = class RemoveFilesFromProcessAction
     }
 
     async run({response, params}) {
-        if (!await api.mc.check.processInProject(params.process_id, params.projectId)) {
+        if (!await api.mc.check.processInProject(params.process_id, params.project_id)) {
             throw new Error(`process is not in project`);
         }
 
-        if (!await api.mc.check.allFilesInProject(file, params.project_id)) {
+        if (!await api.mc.check.allFilesInProject(params.files, params.project_id)) {
             throw new Error(`1 or more samples are not in project`);
         }
 
@@ -345,7 +345,7 @@ module.exports.RemoveSamplesFromProcessAction = class RemoveSamplesFromProcessAc
     }
 
     async run({response, params}) {
-        if (!await api.mc.check.processInProject(params.process_id, params.projectId)) {
+        if (!await api.mc.check.processInProject(params.process_id, params.project_id)) {
             throw new Error(`process is not in project`);
         }
 
