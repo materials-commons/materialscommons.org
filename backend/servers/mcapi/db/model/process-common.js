@@ -211,8 +211,9 @@ function* updateProcessSamples(process, samples) {
     let canBeDeleted = yield sampleCommon.canDeleteSamples(sampleIds, processId);
     if (!canBeDeleted) {
         // Ugh... work around - don't delete if used in other processes.
-        return 'Some samples used in other processes - cannot be deleted.';
+        return 'Some samples used in other processes, or are input samples but outputs remain - cannot be deleted.';
     }
+
     if (samplesToDeleteFromProcess.length) {
         yield r.table('process2sample')
             .getAll(r.args(samplesToDeleteFromProcess), {index: 'process_sample_property_set'}).delete();

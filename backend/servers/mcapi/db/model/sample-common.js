@@ -1,4 +1,5 @@
 const r = require('../r');
+const _ = require('lodash');
 
 function* removeUnusedSamples(sampleIds) {
     for (let i = 0; i < sampleIds.length; i++) {
@@ -66,6 +67,27 @@ function* samplesUsedInOtherProcesses(sampleIds, processId) {
     });
 
     return foundOther;
+}
+
+function* samplesHaveAnOutput(samples, processId) {
+    // console.log("   Attempt to delete input samples but there are output samples")
+    let sampleprocess = samples.map(s => [processId, s.id]);
+    // Get all sample entries in the process
+    let sampleEntries = yield r.table('process2sample').getAll(r.args(sampleprocess), {index: 'process_sample'});
+
+    // Get all sample entries to delete
+    let samplePSetProcess = samples.map(s => [processId, s.id, s.property_set_id]);
+    let samplePSetEntries = yield r.table('process2sample')
+        .getAll(r.args(samplePSetProcess), {index: 'process_sample_property_set'});
+    let allIns = sampleEntries.filter(s => s.direction === 'in');
+    let allInsMap = _.indexBy(allIns, 'sample_id');
+
+    // Look for sampleEntries that are only in that have an out that we've been asked to delete
+    // for (let i = 0; i < samplePSetEntries.length; i++) {
+    //     if ()
+    // }
+
+    return false;
 }
 
 module.exports = {
