@@ -24,7 +24,7 @@
 
 const model = require('@lib/model');
 
-module.exports = function(r) {
+module.exports = function (r) {
     const db = require('@dal/db')(r);
 
     async function createProcessFromTemplate(projectId, template, name, owner, processType) {
@@ -39,6 +39,7 @@ module.exports = function(r) {
     }
 
     async function createProcess(projectId, name, owner) {
+        let template = await r.table('templates').get('global_Generic Transform Samples Template');
         let p = new model.Process(name, owner, template.id, template.does_transform);
         p.process_type = 'transform';
         p.template_name = '';
