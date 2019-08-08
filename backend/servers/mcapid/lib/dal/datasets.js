@@ -239,6 +239,7 @@ module.exports = function(r) {
     async function addSamplesToDataset(datasetId, samples) {
         const samplesToAdd = samples.map(sid => ({dataset_id: datasetId, sample_id: sid}));
         await r.table('dataset2sample').insert(samplesToAdd, {conflict: 'update'});
+        await addProcessesToCreatedDataset(datasetId);
         return await getDataset(datasetId);
     }
 
@@ -250,7 +251,7 @@ module.exports = function(r) {
 
     async function deleteProcessesFromDataset(datasetId, processes) {
         const processesToDelete = processes.map(pid => [datasetId, pid]);
-        await r.table('dataset2sample').getAll(r.args(processesToDelete), {index: 'dataset_process'}).delete();
+        await r.table('dataset2process').getAll(r.args(processesToDelete), {index: 'dataset_process'}).delete();
         return await getDataset(datasetId);
     }
 
