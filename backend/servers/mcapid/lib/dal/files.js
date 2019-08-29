@@ -3,7 +3,7 @@ const model = require('@lib/model');
 const _ = require('lodash');
 const {api} = require('actionhero');
 
-module.exports = function (r) {
+module.exports = function(r) {
 
     const {addFileToDirectoryInProject} = require('./dir-utils')(r);
 
@@ -71,8 +71,16 @@ module.exports = function (r) {
     }
 
     async function renameFile(fileId, name) {
+        let original = await r.table('datafiles').get(fileId);
+        let versions = await r.table('datadir2datafile').getAll(fileId, {index: 'datafile_id'})
+            .eqJoin('datadir_id', r.db('materialscommons').table('datadir2datafile'), {index: 'datadir_id'}).zip()
+            .eqJoin('datafile_id', r.db('materialscommons').table('datafiles')).zip()
+            .filter(f => f('id').ne(fileId).and(f('name').eq(original.name))).pluck('datafile_id');
         await r.table('datafiles').get(fileId).update({name: name});
-        await renamePreviousVersions(fileId, name);
+        if (versions.length) {
+            let versionIds = versions.map(entry => entry.datafile_id);
+            await r.table('datafiles').getAll(r.args(versionIds)).update({name: name});
+        }
         return true;
     }
 

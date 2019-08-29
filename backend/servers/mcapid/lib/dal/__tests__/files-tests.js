@@ -29,3 +29,28 @@ describe('Test moveFileToDirectory', () => {
         expect(file.directory.id).toBe(dir11.id);
     });
 });
+
+describe('Test renameFile', () => {
+    let project, file1, file1Child;
+
+    beforeAll(async() => {
+        project = await tutil.createTestProject();
+        [dir1, dir11] = await dirUtils.createDirsFromParent('dir1/dir11', project.root_dir.id, project.id);
+        file1 = await tutil.createFile('file1.txt', dir1.id, project.id);
+        file1Child = await tutil.createFile('file1.txt', dir1.id, project.id);
+        await r.table('datafiles').get(file1Child.id).update({parent: file1.id});
+    });
+
+    afterAll(async() => {
+        await tutil.deleteProject(project.id);
+    });
+
+    test('it should rename the file and its different versions', async() => {
+        let status = await files.renameFile(file1.id, 'file1-renamed.txt');
+        expect(status).toBeTruthy();
+        let f1 = await r.table('datafiles').get(file1.id);
+        let f1Child = await r.table('datafiles').get(file1Child.id);
+        expect(f1.name).toBe('file1-renamed.txt');
+        expect(f1Child.name).toBe('file1-renamed.txt');
+    });
+});
