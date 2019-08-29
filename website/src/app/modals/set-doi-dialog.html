@@ -19,7 +19,7 @@
         <md-input-container class="md-block">
             <label>Title</label>
             <input name="title"
-                   ng-model="$ctrl.doiTitle" required
+                   ng-model="$ctrl.state.doi.title" required
                    ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
             >
             <div ng-messages="doiForm.title.$error">
@@ -29,27 +29,17 @@
         <md-input-container class="md-block">
             <label>Author</label>
             <input name="author"
-                   ng-model="$ctrl.doiAuthor" required
+                   ng-model="$ctrl.state.doi.author" required
                    ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
             >
             <div ng-messages="doiForm.author.$error">
                 <div ng-message="required">Author is required!</div>
             </div>
         </md-input-container>
-        <md-input-container class="md-block" ng-if="false">
-            <label>Publication Date</label>
-            <input name="year"
-                   ng-model="$ctrl.doiPublicationDate" required
-                   ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
-            >
-            <div ng-messages="doiForm.year.$error">
-                <div ng-message="required">Publication year is required!</div>
-            </div>
-        </md-input-container>
         <md-input-container class="md-block">
             <label>Description</label>
             <textarea rows="3" cols="50"
-                   ng-model="$ctrl.doiDescription"
+                   ng-model="$ctrl.state.doi.description"
                    ng-model-options="{updateOn: 'default blur', debounce:{default: 1000, blur: 0}}"
             ></textarea>
         </md-input-container>

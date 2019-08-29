@@ -103,20 +103,18 @@ class SetDatasetDoiDialogController {
     /*@ngInject*/
     constructor($mdDialog) {
         this.$mdDialog = $mdDialog;
+        this.doiAuthor = "";
         if (this.dataset.authors.length > 0) {
             this.doiAuthor = this.dataset.authors[0].firstname
                 + ' ' + this.dataset.authors[0].lastname;
         }
 
-        this.doiTitle = this.dataset.title;
-        this.doiDescription = this.dataset.description;
-
         this.state = {
             doi: {
-                title: this.doiTitle,
+                title: angular.copy(this.dataset.title),
                 author: this.doiAuthor,
                 publication_year: (new Date()).getFullYear(),
-                description: angular.copy(this.doiDescription),
+                description: angular.copy(this.dataset.description),
             }
         };
     }
