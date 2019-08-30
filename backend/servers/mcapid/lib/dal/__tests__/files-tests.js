@@ -4,12 +4,14 @@ const tutil = require('@lib/test-utils')(r);
 const dirUtils = require('@dal/dir-utils')(r);
 
 describe('Test moveFileToDirectory', () => {
-    let project, dir1, fileInDir1;
+    let project, dir1, dir11, file1, file1Child;
 
     beforeAll(async() => {
         project = await tutil.createTestProject();
         [dir1, dir11] = await dirUtils.createDirsFromParent('dir1/dir11', project.root_dir.id, project.id);
-        fileInDir1 = await tutil.createFile('file1.txt', dir1.id, project.id);
+        file1 = await tutil.createFile('file1.txt', dir1.id, project.id);
+        file1Child = await tutil.createFile('file1.txt', dir1.id, project.id);
+        await r.table('datafiles').get(file1Child.id).update({parent: file1.id});
     });
 
     afterAll(async() => {
@@ -17,16 +19,20 @@ describe('Test moveFileToDirectory', () => {
     });
 
     test('it should throw an error if file directory does not exist', async() => {
-        await expect(files.moveFileToDirectory(fileInDir1.id, 'does-not-exist', dir11.id)).rejects.toThrow();
+        await expect(files.moveFileToDirectory(file1.id, 'does-not-exist', dir11.id)).rejects.toThrow();
     });
 
     test('it should throw an error if file does not exist', async() => {
         await expect(files.moveFileToDirectory('does-not-exist', dir1.id, dir11.id)).rejects.toThrow();
     });
 
-    test('it should move the file', async() => {
-        let file = await files.moveFileToDirectory(fileInDir1.id, dir1.id, dir11.id);
+    test('it should move the file and all versions', async() => {
+        let file = await files.moveFileToDirectory(file1.id, dir1.id, dir11.id);
         expect(file.directory.id).toBe(dir11.id);
+        let file1dir = await r.table('datadir2datafile').getAll(file1.id, {index: 'datafile_id'}).nth(0);
+        let file1Childdir = await r.table('datadir2datafile').getAll(file1Child.id, {index: 'datafile_id'}).nth(0);
+        expect(file1dir.datadir_id).toBe(dir11.id);
+        expect(file1Childdir.datadir_id).toBe(dir11.id);
     });
 });
 

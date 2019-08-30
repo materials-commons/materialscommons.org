@@ -17,16 +17,14 @@ module.exports = function(r) {
             throw new Error(`Unable to move file ${fileId} in directory ${oldDirectoryId} into directory ${newDirectoryId}`);
         }
 
-        await movePreviousVersions(fileId, oldDirectoryId, newDirectoryId);
+        await movePreviousFileVersions(fileId, oldDirectoryId, newDirectoryId);
 
         return await getFile(fileId);
     }
 
-    async function movePreviousVersions(fileId, oldDirectoryId, newDirectoryId) {
+    async function movePreviousFileVersions(fileId, oldDirectoryId, newDirectoryId) {
         let original = await r.table('datafiles').get(fileId);
-        let versions = r.table('datadir2datafile')
-            .getAll(fileId, {index: 'datafile_id'})
-            .eqJoin('datadir_id', r.db('materialscommons').table('datadir2datafile'), {index: 'datadir_id'}).zip()
+        let versions = await r.table('datadir2datafile').getAll(oldDirectoryId, {index: 'datadir_id'})
             .eqJoin('datafile_id', r.db('materialscommons').table('datafiles')).zip()
             .filter(f => f('id').ne(fileId).and(f('name').eq(original.name)));
         if (versions.length) {
