@@ -39,7 +39,7 @@ angular.module('materialscommons').component('mcDatasetPropertyFiles', {
                     ng-click="$ctrl.onDownload()"
                     download="{{$ctrl.filenameForDownload()}}">
                 <i class="fa fa-fw fa-download"></i>
-                Download Dataset - {{$ctrl.dataset.file_count}} files
+                Download Dataset Zipfile
             </a>
             ({{$ctrl.dataset.zip.size | bytes}})
         </span>
