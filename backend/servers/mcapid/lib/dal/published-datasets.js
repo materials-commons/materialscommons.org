@@ -11,8 +11,8 @@ module.exports = function(r) {
             .eqJoin('process_id', r.db('mcpub').table('processes')).zip(), r.db('mcpub'));
         let dataset = await r.db('materialscommons').table('datasets').get(datasetId).merge(function(ds) {
             return {
-                files: r.db('mcpub').table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
-                    .eqJoin('datafile_id', r.db('mcpub').table('datafiles')).zip().coerceTo('array'),
+                // files: r.db('mcpub').table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
+                //     .eqJoin('datafile_id', r.db('mcpub').table('datafiles')).zip().coerceTo('array'),
                 other_datasets: r.db('materialscommons').table('datasets').getAll(ds('owner'), {index: 'owner'})
                     .filter({published: true}).merge(function(od) {
                         return {
@@ -53,6 +53,7 @@ module.exports = function(r) {
         }
 
         if (dataset.selection_id) {
+            dataset.file_selection = await r.table('fileselection').get(dataset.selection_id);
             // Dataset has a file selection associated with it. These dataset are also published to globus
             dataset.published_to_globus = true;
             let endpointId = process.env.MC_CONFIDENTIAL_CLIENT_ENDPOINT;
@@ -61,6 +62,12 @@ module.exports = function(r) {
         } else {
             dataset.published_to_globus = false;
             dataset.globus_url = '';
+            dataset.file_selection = {
+                include_files: [],
+                exclude_files: [],
+                include_dirs: [],
+                exclude_dirs: [],
+            };
         }
 
         return dataset;

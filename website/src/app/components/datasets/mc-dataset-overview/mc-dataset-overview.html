@@ -34,11 +34,14 @@
             </md-tab-body>
         </md-tab>
 
-        <md-tab>
+        <md-tab ng-if="false">
             <md-tab-label>Files</md-tab-label>
             <md-tab-body>
-                <mc-dataset-overview-files dataset="$ctrl.dataset">
+                <mc-dataset-overview-files dataset="$ctrl.dataset" ng-if="!$ctrl.dataset.selection_id">
                 </mc-dataset-overview-files>
+                <div ng-if="$ctrl.dataset.selection_id">
+                    Show as selection
+                </div>
             </md-tab-body>
         </md-tab>
 

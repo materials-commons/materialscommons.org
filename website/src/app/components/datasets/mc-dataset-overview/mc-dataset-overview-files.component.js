@@ -8,6 +8,10 @@ class MCDatasetOverviewFilesComponentController {
         this.mcfile = mcfile;
     }
 
+    $onInit() {
+        console.log('this.dataset', this.dataset);
+    }
+
     downloadSrc(file) {
         return this.mcfile.downloadSrc(file.original_id);
     }

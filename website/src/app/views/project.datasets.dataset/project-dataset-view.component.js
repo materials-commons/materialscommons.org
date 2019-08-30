@@ -1,7 +1,6 @@
 class MCProjectDatasetViewComponentController {
     /*@ngInject*/
-    constructor(datasetsAPI, mcshow) {
-        this.datasetsAPI = datasetsAPI;
+    constructor(mcshow) {
         this.mcshow = mcshow;
         this.state = {
             dataset: null,
