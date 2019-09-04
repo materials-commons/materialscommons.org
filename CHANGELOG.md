@@ -1,5 +1,17 @@
 # Release Notes
 
+## September 2019
+- :star: **Improvement:** Changes to showing files in datasets for selection
+- :star: **Improvement:** REST API fixes and improvements
+- :boom: **Fixed:** Adding a DOI was referring to wrong fields causing inconsistent errors
+
+## August 2019
+
+- :star: **Improvement:** Better handling of multiple file versions on moves and deletes
+- :star: **Improvement:** Remove unused fields from experiments page
+- :boom: **Fixed:** Fixes to publishing datasets to globus to ensure all files are published
+- :boom: **Fixed:** Various fixes to file selection
+
 ## July 2019
 - :star: **New Feature:** Published datasets can be downloaded using Globus
 - :star: **New Feature:** Publish private datasets to Globus
