@@ -11,8 +11,8 @@ module.exports = function(r) {
             .eqJoin('process_id', r.db('mcpub').table('processes')).zip(), r.db('mcpub'));
         let dataset = await r.db('materialscommons').table('datasets').get(datasetId).merge(function(ds) {
             return {
-                // files: r.db('mcpub').table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
-                //     .eqJoin('datafile_id', r.db('mcpub').table('datafiles')).zip().coerceTo('array'),
+                files: r.db('mcpub').table('dataset2datafile').getAll(ds('id'), {index: 'dataset_id'})
+                    .eqJoin('datafile_id', r.db('mcpub').table('datafiles')).zip().coerceTo('array'),
                 other_datasets: r.db('materialscommons').table('datasets').getAll(ds('owner'), {index: 'owner'})
                     .filter({published: true}).merge(function(od) {
                         return {
