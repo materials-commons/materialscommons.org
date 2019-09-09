@@ -79,7 +79,8 @@ module.exports = function(r) {
         if (!doi) {
             return '';
         }
-        return `${doiUrl}id/${doi}`;
+        let dl = doi.substring('doi:'.length);
+        return `https://doi.org/${dl}`;
     }
 
     async function getTopViewedDatasets() {
