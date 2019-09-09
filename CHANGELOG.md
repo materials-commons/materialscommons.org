@@ -4,6 +4,7 @@
 - :star: **Improvement:** Changes to showing files in datasets for selection
 - :star: **Improvement:** REST API fixes and improvements
 - :boom: **Fixed:** Adding a DOI was referring to wrong fields causing inconsistent errors
+- :boom: **Fixed:** EZ Datacite link updated to point through doi.org
 
 ## August 2019
 
