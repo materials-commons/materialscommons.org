@@ -37,7 +37,7 @@ class MCProjectDatasetViewComponentController {
     }
 
     handleUpdateDataset(dataset) {
-        this.onUpdateDataset({dataset: dataset});
+        return this.onUpdateDataset({dataset: dataset});
     }
 
     handlePublishDataset() {

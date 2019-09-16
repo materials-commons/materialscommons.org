@@ -84,7 +84,7 @@ class MCProjectDatasetViewContainerComponentController {
         delete ds['samples'];
         delete ds['processes'];
         delete ds['comments'];
-        this.datasetsAPI.updateProjectDatasetDetails(this.state.project.id, dataset.id, ds).then(
+        return this.datasetsAPI.updateProjectDatasetDetails(this.state.project.id, dataset.id, ds).then(
             (d) => {
                 // Update doesn't return the full dataset, so we need to construct it
                 // First copy over into returned object, then to trigger events copy

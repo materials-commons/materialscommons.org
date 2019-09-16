@@ -46,7 +46,9 @@ class MCDatasetDetails2ComponentController {
     }
 
     addAuthor() {
-        this.datasetDetails2Service.addAuthor(this.state.dataset).then(author => this.onAddAuthor({author: author}));
+        this.datasetDetails2Service.addAuthor(this.state.dataset).then(author => {
+            this.updateDataset().then(() => this.onAddAuthor({author: author}));
+        });
     }
 
     removeAuthor(index) {
@@ -55,7 +57,9 @@ class MCDatasetDetails2ComponentController {
     }
 
     addPaper() {
-        this.datasetDetails2Service.addPaper(this.state.dataset).then(paper => this.onAddPaper({paper: paper}));
+        this.datasetDetails2Service.addPaper(this.state.dataset).then(paper => {
+            this.updateDataset().then(() => this.onAddPaper({paper: paper}));
+        });
     }
 
     removePaper(index) {
@@ -68,16 +72,19 @@ class MCDatasetDetails2ComponentController {
     }
 
     addDoi() {
-        this.datasetDetails2Service.addDoi(this.state.dataset).then(doiDetails => this.onAddDoi({doiDetails: doiDetails}));
+        this.datasetDetails2Service.addDoi(this.state.dataset).then(doiDetails => {
+            this.updateDataset().then(() => this.onAddDoi({doiDetails: doiDetails}));
+        });
     }
 
     updateDataset() {
-        this.onUpdateDataset({dataset: this.state.dataset});
-        this.changesMade = false;
+        return this.onUpdateDataset({dataset: this.state.dataset}).then(() => this.changesMade = false);
     }
 
     publishPublicDataset() {
-        this.datasetDetails2Service.publishDataset(this.state.dataset).then(() => this.onPublishDataset());
+        this.datasetDetails2Service.publishDataset(this.state.dataset).then(() => {
+            this.updateDataset().then(() => this.onPublishDataset());
+        });
     }
 
     publishPrivateDataset() {
@@ -85,7 +92,9 @@ class MCDatasetDetails2ComponentController {
     }
 
     unpublishDataset() {
-        this.datasetDetails2Service.unpublishDataset(this.state.dataset).then(() => this.onUnpublishDataset());
+        this.datasetDetails2Service.unpublishDataset(this.state.dataset).then(() => {
+            this.updateDataset().then(() => this.onUnpublishDataset());
+        });
     }
 
     cancel() {
