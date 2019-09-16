@@ -5,6 +5,7 @@
 - :star: **Improvement:** REST API fixes and improvements
 - :boom: **Fixed:** Adding a DOI was referring to wrong fields causing inconsistent errors
 - :boom: **Fixed:** EZ Datacite link updated to point through doi.org
+- :boom: **Fixed:** Publish page was reseting page when a new author was added, losing previously entered data
 
 ## August 2019
 
