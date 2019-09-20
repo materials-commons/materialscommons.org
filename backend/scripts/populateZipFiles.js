@@ -64,6 +64,7 @@ function* buildZipFiles() {
                     idsToProcess.push(id);
                 } else {
                     console.log('No zip will be created for unpublished dataset: ' + id);
+                    process.exit(0);
                 }
             }
         });
