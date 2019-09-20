@@ -681,7 +681,7 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
                 throw new Error(`Unable to unpublish private dataset ${params.dataset_id}`);
             }
         } else if (originalDataset.published) {
-            const ds = await dal.tryCatch(async() => await api.mc.datasets.unpublish(params.dataset_id));
+            ds = await dal.tryCatch(async() => await api.mc.datasets.unpublish(params.dataset_id));
             if (!ds) {
                 throw new Error(`Unable to unpublish dataset ${params.dataset_id}`);
             }
