@@ -28,9 +28,31 @@ module.exports.PublishDatasetToGlobusTask = class PublishDatasetToGlobusTask ext
     }
 };
 
-// module.exports.PublishDatasetToZipfileTask = class PublishDatasetToZipfileTask extends Task {
-//
-// }
+module.exports.CreateDatasetZipfileTask = class CreateDatasetZipfileTask extends Task {
+    constructor() {
+        super();
+        this.name = 'publish-ds-zipfile';
+        this.description = 'Create zipfile for dataset';
+        this.frequency = 0;
+        this.queue = 'datasets';
+    }
+
+    async run(dsArgs) {
+        let zipfile = `${process.env.MCDIR}/zipfiles/${dsArgs.datasetId}/${dsArgs.datasetName}.zip`;
+        let args = ['create-zipfile', '--project-id', dsArgs.projectId, '--dataset-id', dsArgs.datasetId,
+            '--db-connection', process.env.MCDB_CONNECTION, '--zipfile', zipfile];
+
+        try {
+            api.mc.log.info('mcdsbuild', args);
+            await spawn.runCmd('../../prodbin/mcdsbuild', args);
+            return true;
+        } catch (e) {
+            api.mc.log.info(`Failed to create zipfile for dataset: ${e}`);
+            return false;
+        }
+    }
+};
+
 
 module.exports.RemoveDatasetInGlobusTask = class RemoveDatasetInGlobusTask extends Task {
     constructor() {

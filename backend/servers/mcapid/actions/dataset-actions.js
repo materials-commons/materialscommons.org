@@ -584,6 +584,14 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
 
         await api.tasks.enqueue('publish-ds-to-globus', dsJobArgs, 'datasets');
 
+        let dsZipJobArgs = {
+            projectId: params.project_id,
+            datasetId: params.dataset_id,
+            datasetName: originalDataset.title,
+        };
+
+        await api.tasks.enqueue('publish-ds-zipfile', dsZipJobArgs, 'datasets');
+
         response.data = ds;
     }
 };
@@ -683,7 +691,7 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
 
         let dsJobArgs = {
             datasetId: params.dataset_id,
-            isPrivate: originalDataset.is_published_private ? true : false,
+            isPrivate: originalDataset.is_published_private,
         };
 
         await api.tasks.enqueue('remove-ds-in-globus', dsJobArgs, 'datasets');
