@@ -2,6 +2,7 @@ const run = require('./run');
 const commonQueries = require('@lib/common-queries');
 const processCommon = require('@lib/common/process-common');
 const zipFileUtils = require('@lib/zipFileUtils');
+const fsExtra = require('fs-extra');
 
 module.exports = function(r) {
 
@@ -214,10 +215,18 @@ module.exports = function(r) {
             .limit(20);
     }
 
-    async function updataDownloadCountAndReturnFilePath(datasetId) {
+    async function updateDownloadCountAndReturnFilePath(datasetId) {
         let ds = await r.db('materialscommons').table('datasets').get(datasetId);
         await r.db('materialscommons').table('datasets').get(datasetId)
             .update({download_count: r.row('download_count').add(1).default(1)});
+
+        // check if file exists without modifications
+        let zippath = zipFileUtils.zipDirPath(ds) + '/' + ds.title + '.zip';
+        let exists = await fsExtra.pathExists(zippath);
+        if (exists) {
+            return zippath;
+        }
+
         return zipFileUtils.fullPathAndFilename(ds);
     }
 
@@ -232,6 +241,6 @@ module.exports = function(r) {
         markDatasetAsUseful,
         unmarkDatasetAsUseful,
         getMostPopularTagsForDatasets,
-        updataDownloadCountAndReturnFilePath,
+        updateDownloadCountAndReturnFilePath,
     };
 };

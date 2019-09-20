@@ -221,7 +221,7 @@ module.exports.DownloadDatasetZipfileAction = class DownloadDatasetZipFileAction
     }
 
     async run(data) {
-        const filepath = await dal.tryCatch(async() => await api.mc.publishedDatasets.updataDownloadCountAndReturnFilePath(data.params.dataset_id));
+        const filepath = await dal.tryCatch(async() => await api.mc.publishedDatasets.updateDownloadCountAndReturnFilePath(data.params.dataset_id));
         if (!filepath) {
             throw new Error(`Unable to retrieve zip file for dataset ${data.params.dataset_id}`);
         }
