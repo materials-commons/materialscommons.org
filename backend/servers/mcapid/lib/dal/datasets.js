@@ -3,7 +3,6 @@ const dbExec = require('./run');
 const commonQueries = require('@lib/common-queries');
 const _ = require('lodash');
 const doiUrl = process.env.MC_DOI_SERVICE_URL || 'https://ezid.lib.purdue.edu/';
-const {api} = require('actionhero');
 
 module.exports = function(r) {
 
@@ -294,7 +293,6 @@ module.exports = function(r) {
             // no processes in dataset
             return;
         }
-        api.mc.log.info('d2pEntries', d2pEntries);
         let processIds = d2pEntries.map(entry => entry.process_id);
         let processes = await r.table('processes').getAll(r.args(processIds));
         processes.forEach(p => {
