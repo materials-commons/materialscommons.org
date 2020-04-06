@@ -1,5 +1,6 @@
 const {Action, api} = require('actionhero');
 const dal = require('@dal');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.GetPropertyMeasurementsAction = class GetPropertyMeasurementsAction extends Action {
     constructor() {
@@ -39,7 +40,11 @@ module.exports.SetAsBestMeasureAction = class SetAsBestMeasureAction extends Act
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let status = await dal.tryCatch(async() => await api.mc.samples.addAsBestMeasure(params.property_id, params.measurement_id));
         if (!status) {
             throw new Error(`Unable to set measurement ${params.measurement_id} for attribute ${params.property_id} as best measure.`);
@@ -61,7 +66,11 @@ module.exports.ClearBestMeasureAction = class ClearBestMeasureAction extends Act
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let status = await dal.tryCatch(async() => await api.mc.properties.clearBestMeasureForProperty(params.property_id));
 
         if (!status) {

@@ -2,6 +2,7 @@ const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const _ = require('lodash');
 const validators = require('@lib/validators');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.ListDatasetsAction = class ListDatasetsAction extends Action {
     constructor() {
@@ -173,6 +174,10 @@ module.exports.CreateDatasetAction = class CreateDatasetAction extends Action {
             samples: params.samples,
         };
 
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (params.samples.length) {
             const allInProject = await dal.tryCatch(async() => await api.mc.check.allSamplesInProject(params.samples, params.project_id));
             if (!allInProject) {
@@ -205,7 +210,11 @@ module.exports.DeleteDatasetAction = class DeleteDatasetAction extends Action {
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -245,7 +254,11 @@ module.exports.UpdateDatasetFileSelectionAction = class UpdateDatasetFileSelecti
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -295,7 +308,11 @@ module.exports.AddDatasetFilesAction = class AddDatasetFilesAction extends Actio
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -344,7 +361,11 @@ module.exports.AddFilesAndDirsToDatasetAction = class AddFilesAndDirsToDatasetAc
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -400,7 +421,11 @@ module.exports.DeleteDatasetFilesAction = class DeleteDatasetFilesAction extends
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -440,7 +465,11 @@ module.exports.AddDatasetSamplesAction = class AddDatasetSamplesAction extends A
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -485,7 +514,11 @@ module.exports.DeleteDatasetSamplesAction = class DeleteDatasetSamplesAction ext
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -525,7 +558,11 @@ module.exports.DeleteProcessesFromDatasetSampleAction = class DeleteProcessesFro
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -556,7 +593,11 @@ module.exports.PublishDatasetAction = class PublishDatasetAction extends Action 
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -612,7 +653,11 @@ module.exports.PublishPrivateDatasetAction = class PublishPrivateDatasetAction e
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);
@@ -662,7 +707,11 @@ module.exports.UnpublishDatasetAction = class UnpublishDatasetAction extends Act
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const inProject = await dal.tryCatch(async() => await api.mc.check.datasetInProject(params.dataset_id, params.project_id));
         if (!inProject) {
             throw new Error(`Dataset ${params.dataset_id} not in project ${params.project_id}`);

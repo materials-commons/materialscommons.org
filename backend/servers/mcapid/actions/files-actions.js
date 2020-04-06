@@ -1,5 +1,6 @@
 const {Action, api} = require('actionhero');
 const dal = require('@dal');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.UploadFileToProjectDirectoryAction = class UploadFileToProjectDirectoryAction extends Action {
     constructor() {
@@ -31,6 +32,10 @@ module.exports.UploadFileToProjectDirectoryAction = class UploadFileToProjectDir
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let directoryInProject = await api.mc.check.directoryInProject(params.directory_id, params.project_id);
         if (!directoryInProject) {
             throw new Error(`Directory ${params.directory_id} not found in project ${params.project_id}`);
@@ -78,7 +83,11 @@ module.exports.MoveFileAction = class MoveFileAction extends Action {
         this.outputExample = {};
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.allDirectoriesInProject([params.to_directory_id, params.from_directory_id], params.project_id)) {
             throw new Error(`One or more directories ${params.to_directory_id}, ${params.from_directory_id} not found in project ${params.project_id}`);
         }
@@ -125,7 +134,11 @@ module.exports.RenameFileInProjectAction = class RenameFileInProjectAction exten
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
             throw new Error(`File ${params.file_id} not found in project ${params.project_id}`);
         }

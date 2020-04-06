@@ -1,6 +1,7 @@
 const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const _ = require('lodash');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.DeleteProjectAction = class DeleteProjectAction extends Action {
     constructor() {
@@ -15,6 +16,10 @@ module.exports.DeleteProjectAction = class DeleteProjectAction extends Action {
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.isProjectOwner(params.project_id, user.id)) {
             throw new Error(`User is not owner of project ${params.project_id}`);
         }
@@ -58,6 +63,10 @@ module.exports.CreateProjectAction = class CreateProjectAction extends Action {
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const project = await dal.tryCatch(async() => await api.mc.projects.createProject(user.id, params.name, params.description));
         if (!project) {
             throw new Error(`Unable to create project`);
@@ -173,6 +182,10 @@ module.exports.AddUserToProjectAction = class AddUserToProjectAction extends Act
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.isProjectOwner(params.project_id, user.id)) {
             throw new Error(`Cannot add user to project, you are not the project owner`);
         }
@@ -207,6 +220,10 @@ module.exports.RemoveUserFromProjectAction = class RemoveUserFromProjectAction e
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.isProjectOwner(params.project_id, user.id)) {
             throw new Error(`Cannot add user to project, you are not the project owner`);
         }
@@ -237,6 +254,10 @@ module.exports.TransferProjectOwnerAction = class TransferProjectOwnerAction ext
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.isProjectOwner(params.project_id, user.id)) {
             throw new Error(`Cannot add user to project, you are not the project owner`);
         }

@@ -1,6 +1,7 @@
 const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const _ = require('lodash');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.CreateDirectoryInProjectAction = class CreateDirectoryInProjectAction extends Action {
     constructor() {
@@ -31,7 +32,11 @@ module.exports.CreateDirectoryInProjectAction = class CreateDirectoryInProjectAc
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let {path, project_id, parent_directory_id, return_parent} = params;
         let dir = await dal.tryCatch(async() => await api.mc.directories.createDirectoryInProject(path, project_id, parent_directory_id, return_parent));
 
@@ -152,7 +157,11 @@ module.exports.DeleteFilesFromDirectoryInProjectAction = class DeleteFilesFromDi
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let results = await dal.tryCatch(async() => await api.mc.directories.deleteFilesFromDirectoryInProject(params.files, params.directory_id, params.project_id));
         if (results === null) {
             throw new Error(`Unable to delete files in directory ${params.directory_id} for project ${params.project_id}`);
@@ -184,7 +193,11 @@ module.exports.MoveDirectoryInProjectAction = class MoveDirectoryInProjectAction
         this.outputExample = {};
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.allDirectoriesInProject([params.directory_id, params.to_directory_id], params.project_id)) {
             throw new Error(`One or more directories ${params.to_directory_id}, ${params.directory_id} not found in project ${params.project_id}`);
         }
@@ -230,7 +243,11 @@ module.exports.RenameDirectoryInProjectAction = class RenameDirectoryInProjectAc
         this.outputExample = {};
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.directoryInProject(params.directory_id, params.project_id)) {
             throw new Error(`Directory ${params.directory_id} cannot be found in project ${params.project_id}`);
         }

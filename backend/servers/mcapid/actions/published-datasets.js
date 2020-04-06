@@ -2,6 +2,7 @@ const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const fs = require('fs');
 const path = require('path');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.GetTopViewedPublishedDatasetsAction = class GetTopViewedPublishedDatasetsAction extends Action {
     constructor() {
@@ -139,7 +140,11 @@ module.exports.IncrementPublishedDatasetViewsAction = class IncrementPublishedDa
         };
     }
 
-    async run({response, params, request}) {
+    async run({response, params, request, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let userId = params.user_id ? params.user_id : request.remoteIP;
         const dataset = await dal.tryCatch(async() => await api.mc.publishedDatasets.incrementViewForDataset(params.dataset_id, userId));
         if (!dataset) {
@@ -173,7 +178,11 @@ module.exports.UpdatePublishedDatasetUsefulCountAction = class UpdatePublishedDa
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let ds;
 
         if (params.action === 'add') {

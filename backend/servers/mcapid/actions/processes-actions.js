@@ -2,6 +2,7 @@ const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const joi = require('joi');
 const _ = require('lodash');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.GetProcessesForProjectAction = class GetProcessesForProjectAction extends Action {
     constructor() {
@@ -139,7 +140,11 @@ module.exports.AddFilesToProcessAction = class AddFilesToProcessAction extends A
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.processInProject(params.process_id, params.project_id)) {
             throw new Error(`process is not in project`);
         }
@@ -189,7 +194,11 @@ module.exports.RemoveFilesFromProcessAction = class RemoveFilesFromProcessAction
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.processInProject(params.process_id, params.project_id)) {
             throw new Error(`process is not in project`);
         }
@@ -257,6 +266,10 @@ module.exports.AddSamplesToProcessAction = class AddSamplesToProcessAction exten
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.processInProject(params.process_id, params.project_id)) {
             throw new Error(`process is not in project`);
         }
@@ -344,7 +357,11 @@ module.exports.RemoveSamplesFromProcessAction = class RemoveSamplesFromProcessAc
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.processInProject(params.process_id, params.project_id)) {
             throw new Error(`process is not in project`);
         }
@@ -403,7 +420,11 @@ module.exports.CreateProcessAction = class CreateProcessAction extends Action {
     }
 
     async run({response, params, user}) {
-        let processType = params.process_type !== "" ? params.process_type : params.name;
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
+        let processType = params.process_type !== '' ? params.process_type : params.name;
 
         let process = await dal.tryCatch(async() => await api.mc.processes.createTransformProcessFromTemplate(params.project_id, params.experiment_id, params.name, user.id, params.attributes, processType));
         if (!process) {
@@ -487,6 +508,10 @@ module.exports.AddNewProcessAction = class AddNewProcessAction extends Action {
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.experimentInProject(params.experiment_id, params.project_id)) {
             throw new Error(`Experiment ${params.experiment_id} not in project ${params.project_id}`);
         }

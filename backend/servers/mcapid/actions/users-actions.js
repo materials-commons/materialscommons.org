@@ -3,6 +3,7 @@ const dal = require('@dal');
 const {failAuth} = require('@lib/connection-helpers');
 const validator = require('validator');
 const _ = require('lodash');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.GetAllUsersAction = class GetAllUsersAction extends Action {
     constructor() {
@@ -29,6 +30,10 @@ module.exports.ResetUserApikeyAction = class ResetUserApikeyAction extends Actio
     }
 
     async run({response, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let apikey = await dal.tryCatch(async() => await api.mc.users.resetApikey(user.id));
         if (!apikey) {
             throw new Error(`Unable to reset apikey`);
@@ -99,18 +104,22 @@ module.exports.CreateNewUserAction = class CreateNewUserAction extends Action {
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let userExists = await dal.tryCatch(async() => await api.mc.check.userExists(params.email));
         if (userExists) {
             throw new Error(`User ${params.email} already exists`);
         }
 
-        let user = await dal.tryCatch(async() => await api.mc.users.createNewUser(params.email, params.fullname, params.password));
-        if (!user) {
+        let user2 = await dal.tryCatch(async() => await api.mc.users.createNewUser(params.email, params.fullname, params.password));
+        if (!user2) {
             throw new Error(`Unable to create user '${params.fullname}' with email ${params.email}`);
         }
 
-        response.data = user;
+        response.data = user2;
     }
 };
 
@@ -127,6 +136,10 @@ module.exports.ChangeUserPasswordAction = class ChangeUserPasswordAction extends
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let status = await dal.tryCatch(async() => await api.mc.users.changeUserPassword(user.id, params.password));
         if (!status) {
             throw new Error(`Unable to change password for user`);
@@ -153,7 +166,11 @@ module.exports.ResetUserPasswordFromUuidAction = class ResetUserPasswordFromUuid
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         let status = await dal.tryCatch(async() => await api.mc.users.resetUserPasswordFromUuid(params.password, params.validate_uuid));
         if (!status) {
             throw new Error(`Unable to reset password for user tied to validate_uuid ${params.validate_uuid}`);

@@ -4,6 +4,7 @@ const convertible = require('@lib/convertible');
 const path = require('path');
 const etl = require('@lib/etl');
 const mcdir = require('@lib/mcdir');
+const {isReadonly} = require('@lib/readonly');
 
 // module.exports.TestETLTaskAction = class TestETLTaskAction extends Action {
 //     constructor() {
@@ -56,6 +57,10 @@ module.exports.CreateExperimentFromSpreadsheetV2Action = class CreateExperimentF
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
             throw new Error(`File ${params.file_id} not in project ${params.project_id}`);
         }
@@ -109,6 +114,10 @@ module.exports.CreateExperimentFromSpreadsheetV1Action = class CreateExperimentF
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
             throw new Error(`File ${params.file_id} not in project ${params.project_id}`);
         }
@@ -165,6 +174,10 @@ module.exports.CheckSpreadsheetAction = class CheckSpreadsheetAction extends Act
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.fileInProject(params.file_id, params.project_id)) {
             throw new Error(`File ${params.file_id} not in project ${params.project_id}`);
         }
@@ -204,7 +217,11 @@ module.exports.UpdateExperimentProgressStatusAction = class UpdateExperimentProg
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const {project_id, experiment_id, in_progress} = params;
 
         if (!await api.mc.check.experimentInProject(experiment_id, project_id)) {
@@ -245,6 +262,10 @@ module.exports.CreateExperimentInProjectAction = class CreateExperimentInProject
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.experimentNameIsUniqueInProject(params.name, params.project_id)) {
             throw new Error(`Experiment name ${params.name} is not unique in project ${params.project_id}`);
         }
@@ -310,7 +331,11 @@ module.exports.RenameExperimentInProjectAction = class RenameExperimentInProject
         };
     }
 
-    async run({response, params}) {
+    async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         if (!await api.mc.check.experimentNameIsUniqueInProject(params.name, params.project_id)) {
             throw new Error(`Name ${params.name} is not unique in project ${params.project_id}`);
         }
@@ -346,6 +371,10 @@ module.exports.DeleteExperimentInProjectAction = class DeleteExperimentInProject
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const {experiment_id, project_id} = params;
 
         if (!await api.mc.check.experimentInProject(experiment_id, project_id)) {

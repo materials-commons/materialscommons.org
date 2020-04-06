@@ -2,6 +2,7 @@ const {Action, api} = require('actionhero');
 const dal = require('@dal');
 const _ = require('lodash');
 const joi = require('joi');
+const {isReadonly} = require('@lib/readonly');
 
 module.exports.GetSamplesForProjectAction = class GetSamplesForProjectAction extends Action {
     constructor() {
@@ -153,6 +154,10 @@ module.exports.CreateSampleInProcessAction = class CreateSampleInProcessAction e
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const {project_id, experiment_id, process_id, name, description, attributes} = params;
         let sample = await dal.tryCatch(async() => await api.mc.samples.createSampleInProcess(name, description, user.id, process_id, project_id));
         if (!sample) {
@@ -213,9 +218,13 @@ module.exports.CreateSampleAction = class CreateSampleAction extends Action {
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const {project_id, experiment_id, name, description, attributes} = params;
 
-        let process = await dal.tryCatch(async() => await api.mc.processes.createTransformProcessFromTemplate(project_id, experiment_id, 'Create Samples', user.id, [], "Create Samples"));
+        let process = await dal.tryCatch(async() => await api.mc.processes.createTransformProcessFromTemplate(project_id, experiment_id, 'Create Samples', user.id, [], 'Create Samples'));
 
         if (!process) {
             throw new Error(`Unable to create process to add sample ${name} to`);
@@ -278,6 +287,10 @@ module.exports.AddSampleToProcessInExperimentAction = class AddSampleToProcessIn
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const {sample_id, property_set_id, process_id, transform} = params;
         const propertySetId = await dal.tryCatch(async() => await api.mc.samples.addSampleToProcess(sample_id, property_set_id, process_id, transform));
         if (!propertySetId) {
@@ -395,6 +408,10 @@ module.exports.AddSampleAndFilesToProcessAction = class AddSampleAndFilesToProce
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const {sample_id, property_set_id, process_id, transform} = params;
         const propertySetId = await dal.tryCatch(async() => await api.mc.samples.addSampleToProcess(sample_id, property_set_id, process_id, transform));
         if (!propertySetId) {
@@ -494,6 +511,10 @@ module.exports.AddMeasurementsToSampleInProcessAction = class AddMeasurementsToS
     }
 
     async run({response, params, user}) {
+        if (isReadonly(user)) {
+            throw new Error(`Only read operations are allowed`);
+        }
+
         const {sample_id, property_set_id, process_id, attributes} = params;
         const result = await dal.tryCatch(async() => await api.mc.samples.addMeasurementsToSampleInProcess(attributes, sample_id, property_set_id, process_id));
         if (!result) {
